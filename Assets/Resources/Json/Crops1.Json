@@ -1,0 +1,20 @@
+{
+  "1001": {
+    "index": 1001,
+    "name": "a",
+    "price": 100,
+    "cropsClass": 1
+  },
+  "1002": {
+    "index": 1002,
+    "name": "b",
+    "price": 200,
+    "cropsClass": 2
+  },
+  "1003": {
+    "index": 1003,
+    "name": "c",
+    "price": 500,
+    "cropsClass": 5
+  }
+}

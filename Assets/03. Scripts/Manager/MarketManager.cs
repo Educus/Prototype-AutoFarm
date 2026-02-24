@@ -6,11 +6,11 @@ public class MarketManager : MonoBehaviour
     // 가격변동을 담당
     [SerializeField] DataManager dataManager;
 
-    [Tooltip("평균값")]    // 기본값이 0이며, 이벤트에 따라 상승 및 하락
+    [Tooltip("평균값")]    // 기본값이 0이며, 이벤트에 따라 상승 및 하락 (이벤트 처리)
     public float average { get; private set; } = 0;
     [Tooltip("표준편차")]  // 작물의 등급에 따라 고벨류작물은 높고 저벨류작물은 낮음
     public float standard { get; private set; } = 0;
-    [Tooltip("난수")]     
+    [Tooltip("난수")]     // (이벤트 처리)
     public float randomNum { get; private set; } = 0;
 
     [Tooltip("종가")]

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using Newtonsoft.Json;
 
 [Serializable]
 public class Crops
@@ -10,58 +12,75 @@ public class Crops
     [SerializeField] public int price;
     [SerializeField] public int cropsClass;
 }
-[Serializable]
-public class CropsData : Loader<int, Crops>
-{
-    public List<Crops> crops = new List<Crops>();
-
-    public Dictionary<int, Crops> MakeDict()
-    {
-        Dictionary<int, Crops> dict = new Dictionary<int, Crops> ();
-
-        foreach (Crops s in crops)
-        {
-            if (!dict.ContainsValue(s))
-            {
-                dict.Add(s.index, s);
-            }
-        }
-        return dict;
-    }
-}
 
 public class DataManager : MonoBehaviour
 {
     // Json파일 읽기 쓰기
 
     public Dictionary<int, Crops> cropsDict = new Dictionary<int, Crops>();
-    
-    private void Start()
+
+    private string path;
+
+    private void Awake()
     {
-        // Json파일 불러오기
-        cropsDict = LoadJson<CropsData, int, Crops>("Json/Crops").MakeDict();
+        // 게임 실행 시 origin파일 불러오기
+        path = Path.Combine(Application.dataPath, "Resources/Json/CropsOrigin.Json");
 
-        /*
-        // Load 갯수 확인
-        Debug.Log("Crops Count: " + cropsDict.Count);
-
-        // Load 내용물 확인
-        foreach (var pair in cropsDict)
-        {
-            Debug.Log(
-                $"Key: {pair.Key} | " +
-                $"Index: {pair.Value.index} | " +
-                $"Name: {pair.Value.name} | " +
-                $"Price: {pair.Value.price} | " +
-                $"Class: {pair.Value.cropsClass}"
-            );
-        }
-        */
+        LoadCrops();
+        
+        PrintAll();
     }
 
-    Load LoadJson<Load, Key, Value>(string path) where Load : Loader<Key, Value>
+    // 이어하기
+    public void ContinueGame()
     {
-        TextAsset textAsset = Resources.Load<TextAsset>(path);
-        return JsonUtility.FromJson<Load>(textAsset.text);
+        // 이어하기 시 저장된 파일 불러오기
+        path = Path.Combine(Application.dataPath, "Resources/Json/Crops1.Json");
+
+        LoadCrops();
+    }
+
+    // 저장
+    public void SaveCrops()
+    {
+        try
+        {
+            string json = JsonConvert.SerializeObject(cropsDict, Formatting.Indented);
+            path = Path.Combine(Application.dataPath, "Resources/Json/Crops1.Json");
+            File.WriteAllText(path, json);
+
+            Debug.Log("저장 성공" + path);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error saving data : {ex.Message}");
+        }
+    }
+
+    // 로드
+    public void LoadCrops()
+    {
+        if (!File.Exists(path))
+        {
+            // 저장된 파일이 없을 경우
+            Debug.Log("파일 없음");
+            cropsDict = new Dictionary<int, Crops>();
+            return;
+        }
+
+        string json = File.ReadAllText(path);
+
+        cropsDict = JsonConvert.DeserializeObject<Dictionary<int, Crops>>(json);
+
+        Debug.Log("로드 성공");
+    }
+
+    // 저장 내용 출력
+    public void PrintAll()
+    {
+        foreach (var pair in cropsDict)
+        {
+            Debug.Log($"Key:{pair.Key} Name:{pair.Value.name} Price:{pair.Value.price} Class:{pair.Value.cropsClass}");
+        }
     }
 }
