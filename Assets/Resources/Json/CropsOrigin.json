@@ -1,20 +1,29 @@
 {
   "1001": {
-    "index": 1001,
-    "name": "a",
-    "price": 100,
-    "cropsClass": 1
+    "itemId": 1001,       // int 아이템 ID
+    "itemName": "a",      // string 아이템명
+    "priceStdDev": 100.0, // float 표준편차
+    "costPrice": 1,       // int 원가
+    "growthTime": 1,      // int 성장시간
+    maximumYield: 1,    // int 최대 수확량
+    waterConsumption: 1,  // int 수분 사용량
   },
   "1002": {
-    "index": 1002,
-    "name": "b",
-    "price": 200,
-    "cropsClass": 2
+    "itemId": 1002, // int 아이템 ID
+    "itemName": "b", // string 아이템명
+    "priceStdDev": 100.0, // float 표준편차
+    "costPrice": 5, // int 원가
+    "growthTime": 3, // int 성장시간
+    "maximumYield": 3, // int 최대 수확량
+    "waterConsumption": 1 // int 수분 사용량
   },
   "1003": {
-    "index": 1003,
-    "name": "c",
-    "price": 500,
-    "cropsClass": 5
+    "itemId": 1003, // int 아이템 ID
+    "itemName": "c", // string 아이템명
+    "priceStdDev": 100.0, // float 표준편차
+    "costPrice": 20, // int 원가
+    "growthTime": 10, // int 성장시간
+    "maximumYield": 5, // int 최대 수확량
+    "waterConsumption": 1 // int 수분 사용량
   }
 }

@@ -27,8 +27,8 @@ public class MarketManager : MonoBehaviour
         foreach (var pair in dataManager.cropsDict)
         {
             // pair.Value.price = (int)(pair.Value.price * (1 + average + pair.Value.cropsClass * randomNum));
-            pair.Value.price = (int)(pair.Value.price * (1 + 1 + pair.Value.cropsClass * 1));
-            print(pair.Value.price);
+            pair.Value.costPrice = (int)(pair.Value.costPrice * (1 + 1 + pair.Value.priceStdDev * 1));
+            print(pair.Value.costPrice);
         }
     }
 

@@ -7,14 +7,18 @@ using Newtonsoft.Json;
 [Serializable]
 public class Crops
 {
-    [SerializeField] public int index;
-    [SerializeField] public string name;
-    [SerializeField] public int price;
-    [SerializeField] public int cropsClass;
+    [SerializeField] public int itemId;
+    [SerializeField] public string itemName;
+    [SerializeField] public float priceStdDev;
+    [SerializeField] public int costPrice;
+    [SerializeField] public string growthTime;
+    [SerializeField] public string maximumYield;
+    [SerializeField] public string waterConsumption;
 }
 
 public class DataManager : MonoBehaviour
 {
+    // 아이템 시세 불러오기 저장하기
     // Json파일 읽기 쓰기
 
     public Dictionary<int, Crops> cropsDict = new Dictionary<int, Crops>();
@@ -80,7 +84,7 @@ public class DataManager : MonoBehaviour
     {
         foreach (var pair in cropsDict)
         {
-            Debug.Log($"Key:{pair.Key} Name:{pair.Value.name} Price:{pair.Value.price} Class:{pair.Value.cropsClass}");
+            Debug.Log($"Key:{pair.Key} Name:{pair.Value.itemName} Price:{pair.Value.costPrice} Class:{pair.Value.priceStdDev}");
         }
     }
 }
