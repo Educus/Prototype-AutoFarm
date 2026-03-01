@@ -6,7 +6,8 @@
         "CostPrice":1000,
         "GrowthTime":1,
         "MaximumYield":1,
-        "WaterConsumption":5
+        "WaterConsumption":5,
+        "StoragePeriod":30
     },
     {
         "ItemID":1002,
@@ -15,7 +16,8 @@
         "CostPrice":900,
         "GrowthTime":2,
         "MaximumYield":1,
-        "WaterConsumption":5
+        "WaterConsumption":5,
+        "StoragePeriod":30
     },
     {
         "ItemID":2001,
@@ -24,7 +26,8 @@
         "CostPrice":1000,
         "GrowthTime":1,
         "MaximumYield":1,
-        "WaterConsumption":5
+        "WaterConsumption":5,
+        "StoragePeriod":20
     },
     {
         "ItemID":2002,
@@ -33,7 +36,8 @@
         "CostPrice":1100,
         "GrowthTime":2,
         "MaximumYield":1,
-        "WaterConsumption":5
+        "WaterConsumption":5,
+        "StoragePeriod":20
     },
     {
         "ItemID":3001,
@@ -42,7 +46,8 @@
         "CostPrice":1200,
         "GrowthTime":1,
         "MaximumYield":1,
-        "WaterConsumption":5
+        "WaterConsumption":5,
+        "StoragePeriod":15
     },
     {
         "ItemID":3002,
@@ -51,7 +56,8 @@
         "CostPrice":1100,
         "GrowthTime":2,
         "MaximumYield":1,
-        "WaterConsumption":1
+        "WaterConsumption":1,
+        "StoragePeriod":15
     },
     {
         "ItemID":4001,
@@ -60,6 +66,7 @@
         "CostPrice":2000,
         "GrowthTime":1,
         "MaximumYield":1,
-        "WaterConsumption":5
+        "WaterConsumption":5,
+        "StoragePeriod":3
     }
 ]
