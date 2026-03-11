@@ -1,100 +1,194 @@
 [
     {
         "ItemID":1011,
-        "ItemName":"Corn",
+        "ItemName":"CornSeed",
         "ItemType":"Seed",
+        "BasicPrice":800,
         "Stack":200,
-        "StoragePeriod":90
+        "StoragePeriod":-1
     },
     {
         "ItemID":1012,
         "ItemName":"Corn",
         "ItemType":"Product",
+        "BasicPrice":1000,
         "Stack":50,
         "StoragePeriod":30
     },
     {
         "ItemID":1021,
-        "ItemName":"Potato",
+        "ItemName":"PotatoSeed",
         "ItemType":"Seed",
+        "BasicPrice":720,
         "Stack":200,
-        "StoragePeriod":90
+        "StoragePeriod":-1
     },
     {
         "ItemID":1022,
         "ItemName":"Potato",
         "ItemType":"Product",
+        "BasicPrice":900,
         "Stack":50,
         "StoragePeriod":30
     },
     {
         "ItemID":2011,
-        "ItemName":"Carrot",
+        "ItemName":"CarrotSeed",
         "ItemType":"Seed",
+        "BasicPrice":800,
         "Stack":200,
-        "StoragePeriod":60
+        "StoragePeriod":-1
     },
     {
         "ItemID":2012,
         "ItemName":"Carrot",
         "ItemType":"Product",
+        "BasicPrice":1000,
         "Stack":50,
         "StoragePeriod":20
     },
     {
         "ItemID":2021,
-        "ItemName":"Onion",
+        "ItemName":"OnionSeed",
         "ItemType":"Seed",
+        "BasicPrice":880,
         "Stack":200,
-        "StoragePeriod":60
+        "StoragePeriod":-1
     },
     {
         "ItemID":2022,
         "ItemName":"Onion",
         "ItemType":"Product",
+        "BasicPrice":1100,
         "Stack":50,
         "StoragePeriod":20
     },
     {
         "ItemID":3011,
-        "ItemName":"Strawberry",
+        "ItemName":"StrawberrySeed",
         "ItemType":"Seed",
+        "BasicPrice":960,
         "Stack":200,
-        "StoragePeriod":45
+        "StoragePeriod":-1
     },
     {
         "ItemID":3012,
         "ItemName":"Strawberry",
         "ItemType":"Product",
+        "BasicPrice":1200,
         "Stack":50,
         "StoragePeriod":15
     },
     {
         "ItemID":3021,
-        "ItemName":"BlueBerry",
+        "ItemName":"BlueBerrySeed",
         "ItemType":"Seed",
+        "BasicPrice":880,
         "Stack":200,
-        "StoragePeriod":45
+        "StoragePeriod":-1
     },
     {
         "ItemID":3022,
         "ItemName":"BlueBerry",
         "ItemType":"Product",
+        "BasicPrice":1100,
         "Stack":50,
         "StoragePeriod":15
+    },
+    {
+        "ItemID":4011,
+        "ItemName":"Bottle",
+        "ItemType":"Material",
+        "BasicPrice":1600,
+        "Stack":10,
+        "StoragePeriod":-1
     },
     {
         "ItemID":4012,
         "ItemName":"Milk",
         "ItemType":"Product",
+        "BasicPrice":2000,
         "Stack":1,
         "StoragePeriod":3
     },
     {
-        "ItemID":4013,
-        "ItemName":"Bottle",
-        "ItemType":"Material",
-        "Stack":10,
+        "ItemID":8011,
+        "ItemName":"MainInvLv1",
+        "ItemType":"UpgPerk",
+        "BasicPrice":10000,
+        "Stack":1,
+        "StoragePeriod":-1
+    },
+    {
+        "ItemID":8012,
+        "ItemName":"MainInvLv2",
+        "ItemType":"UpgPerk",
+        "BasicPrice":20000,
+        "Stack":1,
+        "StoragePeriod":-1
+    },
+    {
+        "ItemID":8021,
+        "ItemName":"SubInvLv1",
+        "ItemType":"UpgPerk",
+        "BasicPrice":10000,
+        "Stack":1,
+        "StoragePeriod":-1
+    },
+    {
+        "ItemID":8022,
+        "ItemName":"SubInvLv2",
+        "ItemType":"UpgPerk",
+        "BasicPrice":20000,
+        "Stack":1,
+        "StoragePeriod":-1
+    },
+    {
+        "ItemID":8031,
+        "ItemName":"SpeedLv1",
+        "ItemType":"UpgPerk",
+        "BasicPrice":10000,
+        "Stack":1,
+        "StoragePeriod":-1
+    },
+    {
+        "ItemID":8032,
+        "ItemName":"SpeedLv2",
+        "ItemType":"UpgPerk",
+        "BasicPrice":20000,
+        "Stack":1,
+        "StoragePeriod":-1
+    },
+    {
+        "ItemID":8041,
+        "ItemName":"EfficLv1",
+        "ItemType":"UpgPerk",
+        "BasicPrice":10000,
+        "Stack":1,
+        "StoragePeriod":-1
+    },
+    {
+        "ItemID":8042,
+        "ItemName":"EfficLv2",
+        "ItemType":"UpgPerk",
+        "BasicPrice":20000,
+        "Stack":1,
+        "StoragePeriod":-1
+    },
+    {
+        "ItemID":9011,
+        "ItemName":"Storage",
+        "ItemType":"BuildingKit",
+        "BasicPrice":50000,
+        "Stack":1,
+        "StoragePeriod":-1
+    },
+    {
+        "ItemID":9021,
+        "ItemName":"Barn",
+        "ItemType":"BuildingKit",
+        "BasicPrice":50000,
+        "Stack":1,
         "StoragePeriod":-1
     }
 ]
