@@ -28,6 +28,20 @@
         "Text":"수요가 급격히 감소했습니다."
     },
     {
+        "EventID":105,
+        "EventType":"DemandIExplosion",
+        "Average":0.05,
+        "Linkage":0,
+        "Text":"폭발적인 반응과 함께 수요도 폭발하고 있습니다."
+    },
+    {
+        "EventID":106,
+        "EventType":"DemandCrash",
+        "Average":-0.05,
+        "Linkage":0,
+        "Text":"무슨 일인지 수요가 폭락하였습니다."
+    },
+    {
         "EventID":201,
         "EventType":"DiseaseOutbreak",
         "Average":-0.03,
@@ -98,6 +112,13 @@
         "Text":"다행히도 A씨의 사인에 직접적인 영향을 끼치진 않았습니다."
     },
     {
+        "EventID":304,
+        "EventType":"CauseUnderInvestigation",
+        "Average":-0.02,
+        "Linkage":302,
+        "Text":"A씨의 사인에 대한 원인 분석이 지연되고 있습니다."
+    },
+    {
         "EventID":311,
         "EventType":"FestivalSeason",
         "Average":0.04,
@@ -110,12 +131,5 @@
         "Average":-0.03,
         "Linkage":0,
         "Text":"청년들의 지원 사업으로 생산량이 크게 증가했습니다."
-    },
-    {
-        "EventID":304,
-        "EventType":"CauseUnderInvestigation",
-        "Average":-0.02,
-        "Linkage":302,
-        "Text":"A씨의 사인에 대한 원인 분석이 지연되고 있습니다."
     }
 ]
