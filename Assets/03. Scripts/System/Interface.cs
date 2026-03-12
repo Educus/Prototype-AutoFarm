@@ -11,6 +11,5 @@ public interface IInteractable
 {
     string GetName();
     string GetStatus();
-    void OnInteract(Player player);
-    public Transform GetTransform();
+    void OnInteract();
 }

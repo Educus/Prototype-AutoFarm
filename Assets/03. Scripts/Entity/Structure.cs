@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class Structure : EntityBase
 {
+    public override void OnInteract()
+    {
+        Debug.Log($"{entityName} 상호작용");
+    }
     public override string GetStatus()
     {
         throw new System.NotImplementedException();
-    }
-
-    public override void OnInteract(Player player)
-    {
-        Debug.Log($"{entityName} with Player!");
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
+    /*
     public float moveSpeed = 5f;
 
     private Queue<Vector2> path = new Queue<Vector2>();
@@ -42,9 +43,9 @@ public class PlayerController : MonoBehaviour
 
         if (interactTarget != null)
         {
-            interactTarget.Interact(player);
+            // interactTarget.Interact(player);
             interactTarget = null;
         }
     }
-
+    */
 }

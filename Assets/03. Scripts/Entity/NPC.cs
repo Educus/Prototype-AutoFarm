@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class NPC : EntityBase
+public class NPC : StatusBase
 {
     public override string GetStatus()
     {
         throw new System.NotImplementedException();
     }
 
-    public override void OnInteract(Player player)
+    public override void OnInteract()
     {
-        Debug.Log($"{entityName} with Player!");
+        Debug.Log($"{entityName} 상호작용");
     }
 }

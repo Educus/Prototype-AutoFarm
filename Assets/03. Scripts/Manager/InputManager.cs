@@ -2,7 +2,24 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    public Player player;
+    // 좌클릭 시 UI매니저를 통한 UI 오픈
+    // 우클릭 시 플레이어 이동 및 해당 위치에 상호작용 대상이 있을 경우 상호작용
+    // 창고, NPC의 경우 UI오픈 // 물탱크, 마른밭의 경우 행동 상호작용
+    [SerializeField] private MovingManager movingManager;
+    [SerializeField] private InteractionUIManager uiManager;
+
+    [SerializeField] public Player player;
+
+    private Camera camera;
+
+    int layerMask;
+
+    private void Start()
+    {
+        camera = Camera.main;
+
+        layerMask = LayerMask.GetMask("NPC", "Structure");
+    }
 
     void Update()
     {
@@ -19,22 +36,42 @@ public class InputManager : MonoBehaviour
 
     void LeftClick()
     {
-        Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        var target = InteractionHandler.GetInteractable(worldPos);
+        Collider2D hit = Physics2D.OverlapPoint(mousePos, layerMask);
 
-        if (target != null)
+        IInteractable interactable = null;
+
+        if (hit != null)
         {
-            // target.Interact(player);
+            interactable = hit.GetComponentInParent<IInteractable>();
+        }
+
+        if (interactable != null)
+        {
+            interactable.OnInteract();
         }
     }
 
     void RightClick()
     {
-        Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
 
-        var target = InteractionHandler.GetInteractable(worldPos);
+        Collider2D hit = Physics2D.OverlapPoint(mousePos, layerMask);
 
-        // player.MoveTo(worldPos, target);
+        IInteractable interactable = null;
+
+        if (hit != null)
+        {
+            interactable = hit.GetComponentInParent<IInteractable>();
+        }
+
+        movingManager.Moving
+            (
+                player.transform,
+                mousePos,
+                player.moveSpeed,
+                () => { if (interactable != null) { interactable.OnInteract(); } }
+            );
     }
 }
