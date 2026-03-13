@@ -102,11 +102,11 @@ MonoBehaviour:
       textureList:
       - {fileID: 2800000, guid: 3796eb8603750314c830b23646146d50, type: 3}
     - spriteList:
-      - {fileID: 243566233, guid: 3796eb8603750314c830b23646146d50, type: 3}
-      - {fileID: 1718957002, guid: 3796eb8603750314c830b23646146d50, type: 3}
       - {fileID: -35520484, guid: 3796eb8603750314c830b23646146d50, type: 3}
-      - {fileID: -1852853188, guid: 3796eb8603750314c830b23646146d50, type: 3}
       - {fileID: 365355525, guid: 3796eb8603750314c830b23646146d50, type: 3}
+      - {fileID: -1852853188, guid: 3796eb8603750314c830b23646146d50, type: 3}
+      - {fileID: 1718957002, guid: 3796eb8603750314c830b23646146d50, type: 3}
+      - {fileID: 243566233, guid: 3796eb8603750314c830b23646146d50, type: 3}
       textureList:
       - {fileID: 2800000, guid: 3796eb8603750314c830b23646146d50, type: 3}
       - {fileID: 2800000, guid: 3796eb8603750314c830b23646146d50, type: 3}

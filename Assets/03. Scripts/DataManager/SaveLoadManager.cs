@@ -4,6 +4,15 @@ using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
 
+public enum ItemType
+{
+    Seed,
+    Product,
+    Material,
+    UpgPerk,
+    BuildingKit
+}
+
 [Serializable]
 public class Crops
 {
@@ -16,8 +25,9 @@ public class Crops
     [SerializeField] public string waterConsumption;
 }
 
-public class DataManager : MonoBehaviour
+public class SaveLoadManager : MonoBehaviour
 {
+    // 맵, 오브젝트, 아이템 저장 및 불러오기
     // 아이템 시세 불러오기 저장하기
     // Json파일 읽기 쓰기
 

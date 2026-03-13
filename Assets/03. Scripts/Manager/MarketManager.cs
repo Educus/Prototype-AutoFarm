@@ -4,7 +4,7 @@ using System;
 public class MarketManager : MonoBehaviour
 {
     // 가격변동을 담당
-    [SerializeField] DataManager dataManager;
+    [SerializeField] SaveLoadManager dataManager;
 
     [Tooltip("평균값")]    // 기본값이 0이며, 이벤트에 따라 상승 및 하락 (이벤트 처리)
     public float average { get; private set; } = 0;
