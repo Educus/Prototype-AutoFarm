@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
+
+public enum ItemType
+{
+    Seed,
+    Product,
+    Material,
+    UpgPerk,
+    BuildingKit
+}
 public class ItemData
 {
     [SerializeField] public int itemID;

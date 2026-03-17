@@ -349,6 +349,7 @@ Transform:
   - {fileID: 1374134809}
   - {fileID: 1948688190}
   - {fileID: 1863106909}
+  - {fileID: 1396356971}
   m_Father: {fileID: 1516238695}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &165399817
@@ -366,6 +367,7 @@ MonoBehaviour:
   itemsDataManager: {fileID: 1374134810}
   productDataManager: {fileID: 1948688191}
   eventDataManager: {fileID: 1863106910}
+  saveLoadManager: {fileID: 1396356970}
 --- !u!1 &201209885
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,7 +414,6 @@ GameObject:
   - component: {fileID: 292274684}
   - component: {fileID: 292274683}
   - component: {fileID: 292274686}
-  - component: {fileID: 292274685}
   - component: {fileID: 292274687}
   m_Layer: 0
   m_Name: Player
@@ -471,7 +472,7 @@ SpriteRenderer:
   m_SortingOrder: 10
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 5f5c0257c5481f44599bbbb8cf31c9ac, type: 3}
-  m_Color: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -495,18 +496,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &292274685
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 292274682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b26ad91827ac6dd4393a11f58e45179b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
 --- !u!114 &292274686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10604,6 +10593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f57712c5651f24bb1e563ce96e717f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EventManager
+  dataManager: {fileID: 165399817}
 --- !u!1 &915378957
 GameObject:
   m_ObjectHideFlags: 0
@@ -10767,6 +10757,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f5e328f8d5cd854ea8515304f22f869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemDataManager
+--- !u!1 &1396356969
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1396356971}
+  - component: {fileID: 1396356970}
+  m_Layer: 0
+  m_Name: SaveLoadManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1396356970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396356969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ade65760f3dde5469a37ce1ea0af874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveLoadManager
+--- !u!4 &1396356971
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396356969}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 165399816}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1516238694
 GameObject:
   m_ObjectHideFlags: 0
@@ -10844,6 +10878,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce857ba6009212249894a4050404117b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  isPlay: 0
 --- !u!1 &1707473407
 GameObject:
   m_ObjectHideFlags: 0
@@ -11001,7 +11036,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17b0026f03c0f0a4998c95f41ae093e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MarketManager
-  dataManager: {fileID: 0}
+  dataManager: {fileID: 165399817}
+  timeManager: {fileID: 2128320187}
 --- !u!4 &1804111520
 Transform:
   m_ObjectHideFlags: 0
@@ -11229,6 +11265,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 473ccd7aef0da1f4caa28713545e6440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeManager
+  gameManager: {fileID: 0}
+  currentDay: 1
+  currntHour: 0
+  currntMinute: 0
 --- !u!1 &2145550358
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,8 +9,7 @@ public class DataManager : MonoBehaviour
     public Dictionary<int, Product> productsData { get; private set; }
     [SerializeField] EventDataManager eventDataManager;
     public Dictionary<int, EventData> eventsData { get; private set; }
-
-
+    [SerializeField] SaveLoadManager saveLoadManager;
 
     private void Start()
     {
@@ -22,5 +21,10 @@ public class DataManager : MonoBehaviour
         itemsData = itemsDataManager.itemData;
         productsData = productDataManager.productData;
         eventsData = eventDataManager.eventData;
+    }
+
+    public void ContinueGame()
+    { 
+        saveLoadManager.ContinueGame();
     }
 }

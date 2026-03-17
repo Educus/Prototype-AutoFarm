@@ -4,7 +4,8 @@ using System;
 public class MarketManager : MonoBehaviour
 {
     // 가격변동을 담당
-    [SerializeField] SaveLoadManager dataManager;
+    [SerializeField] DataManager dataManager;
+    [SerializeField] TimeManager timeManager;
 
     [Tooltip("평균값")]    // 기본값이 0이며, 이벤트에 따라 상승 및 하락 (이벤트 처리)
     public float average { get; private set; } = 0;
@@ -18,28 +19,34 @@ public class MarketManager : MonoBehaviour
     [Tooltip("시가")]
     public float marketPrice { get; private set; } = 0;
 
+    private void Start()
+    {
+        // 타임매니저에서 일주일마다 가격 변동 이벤트 발생
+        timeManager.onWeekEvent += UpdatePrice;
+    }
+    private void Update()
+    {
+        // 테스트용
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            UpdatePrice();
+        }
+    }
 
     public void UpdatePrice()
     {
         // 가격 변동 후 = 변동 전 * (1 + 평균값 + 표준편차 * 난수)
         marketPrice = closingPrice * (1 + average + standard * randomNum);
 
-        foreach (var pair in dataManager.cropsDict)
+        foreach (var pair in dataManager.productsData)
         {
             // pair.Value.price = (int)(pair.Value.price * (1 + average
             // + pair.Value.cropsClass * randomNum));
-            pair.Value.costPrice = (int)(pair.Value.costPrice * (1 + 1 + pair.Value.priceStdDev * 1));
-            print(pair.Value.costPrice);
+            // pair.Value.costPrice = (int)(pair.Value.costPrice * (1 + 1 + pair.Value.priceStdDev * 1));
+            // print(pair.Value.costPrice);
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            UpdatePrice();
-        }
-    }
 
 }
 
