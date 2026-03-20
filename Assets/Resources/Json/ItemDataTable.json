@@ -1,11 +1,21 @@
 [
     {
+        "ItemID":1001,
+        "ItemName":"Water",
+        "ItemType":"Water",
+        "BasicPrice":0,
+        "Stack":100,
+        "StoragePeriod":-1,
+        "UseToDemo":1
+    },
+    {
         "ItemID":1011,
         "ItemName":"CornSeed",
         "ItemType":"Seed",
         "BasicPrice":800,
         "Stack":200,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":0
     },
     {
         "ItemID":1012,
@@ -13,7 +23,8 @@
         "ItemType":"Product",
         "BasicPrice":1000,
         "Stack":50,
-        "StoragePeriod":30
+        "StoragePeriod":30,
+        "UseToDemo":0
     },
     {
         "ItemID":1021,
@@ -21,7 +32,8 @@
         "ItemType":"Seed",
         "BasicPrice":720,
         "Stack":200,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":1
     },
     {
         "ItemID":1022,
@@ -29,7 +41,8 @@
         "ItemType":"Product",
         "BasicPrice":900,
         "Stack":50,
-        "StoragePeriod":30
+        "StoragePeriod":30,
+        "UseToDemo":1
     },
     {
         "ItemID":2011,
@@ -37,7 +50,8 @@
         "ItemType":"Seed",
         "BasicPrice":800,
         "Stack":200,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":1
     },
     {
         "ItemID":2012,
@@ -45,7 +59,8 @@
         "ItemType":"Product",
         "BasicPrice":1000,
         "Stack":50,
-        "StoragePeriod":20
+        "StoragePeriod":20,
+        "UseToDemo":1
     },
     {
         "ItemID":2021,
@@ -53,7 +68,8 @@
         "ItemType":"Seed",
         "BasicPrice":880,
         "Stack":200,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":0
     },
     {
         "ItemID":2022,
@@ -61,7 +77,8 @@
         "ItemType":"Product",
         "BasicPrice":1100,
         "Stack":50,
-        "StoragePeriod":20
+        "StoragePeriod":20,
+        "UseToDemo":0
     },
     {
         "ItemID":3011,
@@ -69,7 +86,8 @@
         "ItemType":"Seed",
         "BasicPrice":960,
         "Stack":200,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":1
     },
     {
         "ItemID":3012,
@@ -77,7 +95,8 @@
         "ItemType":"Product",
         "BasicPrice":1200,
         "Stack":50,
-        "StoragePeriod":15
+        "StoragePeriod":15,
+        "UseToDemo":1
     },
     {
         "ItemID":3021,
@@ -85,7 +104,8 @@
         "ItemType":"Seed",
         "BasicPrice":880,
         "Stack":200,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":0
     },
     {
         "ItemID":3022,
@@ -93,7 +113,8 @@
         "ItemType":"Product",
         "BasicPrice":1100,
         "Stack":50,
-        "StoragePeriod":15
+        "StoragePeriod":15,
+        "UseToDemo":0
     },
     {
         "ItemID":4011,
@@ -101,7 +122,8 @@
         "ItemType":"Material",
         "BasicPrice":1600,
         "Stack":10,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":1
     },
     {
         "ItemID":4012,
@@ -109,7 +131,8 @@
         "ItemType":"Product",
         "BasicPrice":2000,
         "Stack":1,
-        "StoragePeriod":3
+        "StoragePeriod":3,
+        "UseToDemo":1
     },
     {
         "ItemID":8011,
@@ -117,7 +140,8 @@
         "ItemType":"UpgPerk",
         "BasicPrice":10000,
         "Stack":1,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":1
     },
     {
         "ItemID":8012,
@@ -125,7 +149,8 @@
         "ItemType":"UpgPerk",
         "BasicPrice":20000,
         "Stack":1,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":0
     },
     {
         "ItemID":8021,
@@ -133,7 +158,8 @@
         "ItemType":"UpgPerk",
         "BasicPrice":10000,
         "Stack":1,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":1
     },
     {
         "ItemID":8022,
@@ -141,7 +167,8 @@
         "ItemType":"UpgPerk",
         "BasicPrice":20000,
         "Stack":1,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":0
     },
     {
         "ItemID":8031,
@@ -149,7 +176,8 @@
         "ItemType":"UpgPerk",
         "BasicPrice":10000,
         "Stack":1,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":1
     },
     {
         "ItemID":8032,
@@ -157,7 +185,8 @@
         "ItemType":"UpgPerk",
         "BasicPrice":20000,
         "Stack":1,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":0
     },
     {
         "ItemID":8041,
@@ -165,7 +194,8 @@
         "ItemType":"UpgPerk",
         "BasicPrice":10000,
         "Stack":1,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":1
     },
     {
         "ItemID":8042,
@@ -173,7 +203,8 @@
         "ItemType":"UpgPerk",
         "BasicPrice":20000,
         "Stack":1,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":0
     },
     {
         "ItemID":9011,
@@ -181,7 +212,8 @@
         "ItemType":"BuildingKit",
         "BasicPrice":50000,
         "Stack":1,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":1
     },
     {
         "ItemID":9021,
@@ -189,6 +221,7 @@
         "ItemType":"BuildingKit",
         "BasicPrice":50000,
         "Stack":1,
-        "StoragePeriod":-1
+        "StoragePeriod":-1,
+        "UseToDemo":1
     }
 ]
