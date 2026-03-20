@@ -20,7 +20,15 @@ public class Product
 public class ProductClosing
 {
     // 종가 7일치 저장
-    public List<int> productsPriorPrice = new List<int>();
+    public List<int> productsClosingPrice = new List<int>();
+}
+
+public class ProductSubData
+{
+    [Tooltip("남은 성장 시간")]
+    public int remainingGrowthTime = -1;     // 남은 성장 시간
+    [Tooltip("남은 저장 기간")]
+    public int remainingStoragePeriod = -1;  // 남은 저장 기간
 }
 
 public class ProductDataManager : MonoBehaviour

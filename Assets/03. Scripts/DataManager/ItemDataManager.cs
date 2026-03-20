@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 public enum ItemType
 {
+    Water,
     Seed,
     Product,
     Material,
@@ -20,6 +21,7 @@ public class ItemData
     [SerializeField] public int basicPrice;
     [SerializeField] public int stack;
     [SerializeField] public int storagePeriod;
+    [SerializeField] public int useToDemo;
 }
 public class ItemDataManager : MonoBehaviour
 {

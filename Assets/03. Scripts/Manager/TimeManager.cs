@@ -6,7 +6,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private GameManager gameManager;
 
     [Tooltip("현실 시간 기준 하루 길이(초)")]
-    private float realSecondsPerDay = 1800f; // 30분
+    private float realSecondsPerDay = 900f; // 15분
 
     [Tooltip("표시 시간 단위")]
     public int miniteStep = 10; // 10분 단위로 표시
