@@ -1,0 +1,210 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc2acaac6c5d45c9b52f770dfd9e6bfb, type: 3}
+  m_Name: New AutoTile Template2
+  m_EditorClassIdentifier: Unity.2D.Tilemap.Extras.Editor::UnityEngine.Tilemaps.AutoTileTemplate
+  width: 2048
+  height: 2048
+  maskType: 1
+  sprites:
+  - x: 0
+    y: 1792
+    mask: 54
+  - x: 256
+    y: 1792
+    mask: 57
+  - x: 512
+    y: 1792
+    mask: 58
+  - x: 768
+    y: 1792
+    mask: 58
+  - x: 1024
+    y: 1792
+    mask: 58
+  - x: 1280
+    y: 1792
+    mask: 58
+  - x: 1536
+    y: 1792
+    mask: 60
+  - x: 1792
+    y: 1792
+    mask: 27
+  - x: 0
+    y: 1536
+    mask: 402
+  - x: 256
+    y: 1536
+    mask: 68
+  - x: 512
+    y: 1536
+    mask: 135
+  - x: 768
+    y: 1536
+    mask: 135
+  - x: 1024
+    y: 1536
+    mask: 135
+  - x: 1280
+    y: 1536
+    mask: 135
+  - x: 1536
+    y: 1536
+    mask: 257
+  - x: 1792
+    y: 1536
+    mask: 210
+  - x: 0
+    y: 1280
+    mask: 178
+  - x: 256
+    y: 1280
+    mask: 300
+  - x: 512
+    y: 1280
+    mask: 511
+  - x: 768
+    y: 1280
+    mask: 511
+  - x: 1024
+    y: 1280
+    mask: 511
+  - x: 1280
+    y: 1280
+    mask: 511
+  - x: 1536
+    y: 1280
+    mask: 105
+  - x: 1792
+    y: 1280
+    mask: 154
+  - x: 0
+    y: 1024
+    mask: 178
+  - x: 256
+    y: 1024
+    mask: 300
+  - x: 512
+    y: 1024
+    mask: 511
+  - x: 768
+    y: 1024
+    mask: 511
+  - x: 1024
+    y: 1024
+    mask: 511
+  - x: 1280
+    y: 1024
+    mask: 511
+  - x: 1536
+    y: 1024
+    mask: 105
+  - x: 1792
+    y: 1024
+    mask: 154
+  - x: 0
+    y: 768
+    mask: 178
+  - x: 256
+    y: 768
+    mask: 300
+  - x: 512
+    y: 768
+    mask: 511
+  - x: 768
+    y: 768
+    mask: 511
+  - x: 1024
+    y: 768
+    mask: 511
+  - x: 1280
+    y: 768
+    mask: 511
+  - x: 1536
+    y: 768
+    mask: 105
+  - x: 1792
+    y: 768
+    mask: 154
+  - x: 0
+    y: 512
+    mask: 178
+  - x: 256
+    y: 512
+    mask: 300
+  - x: 512
+    y: 512
+    mask: 511
+  - x: 768
+    y: 512
+    mask: 511
+  - x: 1024
+    y: 512
+    mask: 511
+  - x: 1280
+    y: 512
+    mask: 511
+  - x: 1536
+    y: 512
+    mask: 105
+  - x: 1792
+    y: 512
+    mask: 154
+  - x: 0
+    y: 256
+    mask: 150
+  - x: 256
+    y: 256
+    mask: 257
+  - x: 512
+    y: 256
+    mask: 450
+  - x: 768
+    y: 256
+    mask: 450
+  - x: 1024
+    y: 256
+    mask: 450
+  - x: 1280
+    y: 256
+    mask: 450
+  - x: 1536
+    y: 256
+    mask: 68
+  - x: 1792
+    y: 256
+    mask: 147
+  - x: 0
+    y: 0
+    mask: 432
+  - x: 256
+    y: 0
+    mask: 120
+  - x: 512
+    y: 0
+    mask: 184
+  - x: 768
+    y: 0
+    mask: 184
+  - x: 1024
+    y: 0
+    mask: 184
+  - x: 1280
+    y: 0
+    mask: 184
+  - x: 1536
+    y: 0
+    mask: 312
+  - x: 1792
+    y: 0
+    mask: 216

@@ -15,10 +15,7 @@ public class Player : StatusBase
     {
         agent = GetComponent<NavMeshAgent>();
     }
-    void Update()
-    {
 
-    }
     public override string GetStatus()
     {
         throw new System.NotImplementedException();

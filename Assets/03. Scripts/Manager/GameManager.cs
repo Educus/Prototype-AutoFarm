@@ -6,4 +6,14 @@ public class GameManager : MonoBehaviour
 
     // 일시정지
     public bool isPlay = false;
+
+    private void Start()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isPlay = !isPlay;
+
+            Debug.Log(isPlay ? "게임 시작" : "게임 일시정지");
+        }
+    }
 }

@@ -17,9 +17,16 @@ public class Product
     [SerializeField] public int waterConsumption;
     [SerializeField] public int storagePeriod;
 }
+public class ProductClosing
+{
+    // 종가 7일치 저장
+    public List<int> productsPriorPrice = new List<int>();
+}
+
 public class ProductDataManager : MonoBehaviour
 {
     public Dictionary<int, Product> productData = new Dictionary<int, Product>();
+    public Dictionary<int, ProductClosing> productClosingData = new Dictionary<int, ProductClosing>();
 
     private TextAsset jsonFile;
 
@@ -48,6 +55,14 @@ public class ProductDataManager : MonoBehaviour
         foreach (var product in productList)
         {
             productData[product.itemID] = product;
+        }
+
+        productClosingData.Clear();
+
+        foreach (var product in productList)
+        {
+            productClosingData[product.itemID] = new ProductClosing();
+            // productClosingData[product.itemID].productsPriorPrice.Add(product.basicCost);
         }
     }
 

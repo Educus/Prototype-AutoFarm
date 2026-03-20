@@ -3,13 +3,18 @@ using System.Collections.Generic;
 
 public class DataManager : MonoBehaviour
 {
-    [SerializeField] ItemDataManager itemsDataManager;
+    [SerializeField] private ItemDataManager itemsDataManager;
     public Dictionary<int, ItemData> itemsData { get; private set; }
-    [SerializeField] ProductDataManager productDataManager;
+
+    [SerializeField] private ProductDataManager productDataManager;
     public Dictionary<int, Product> productsData { get; private set; }
-    [SerializeField] EventDataManager eventDataManager;
+    public Dictionary<int, ProductClosing> productClosingData { get; private set; }
+
+    [SerializeField] private EventDataManager eventDataManager;
     public Dictionary<int, EventData> eventsData { get; private set; }
-    [SerializeField] SaveLoadManager saveLoadManager;
+
+    [SerializeField] private SaveLoadManager saveLoadManager;
+    public SaveLoadManager SaveLoadManager { get; private set; }
 
     private void Start()
     {
@@ -18,9 +23,14 @@ public class DataManager : MonoBehaviour
 
     private void LoadData()
     {
+        // 원본 데이터 로드
         itemsData = itemsDataManager.itemData;
         productsData = productDataManager.productData;
+        productClosingData = productDataManager.productClosingData;
         eventsData = eventDataManager.eventData;
+
+        // 세이브 데이터 로드
+
     }
 
     public void ContinueGame()

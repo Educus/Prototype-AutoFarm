@@ -66,6 +66,14 @@ public class InputManager : MonoBehaviour
             interactable = hit.GetComponentInParent<IInteractable>();
         }
 
+        // 가까울 경우 바로 상호작용
+        if (Vector2.Distance(player.transform.position, mousePos) <= 1f)
+        {
+            if (interactable != null) interactable.OnInteract();
+            return;
+        }
+
+        // 멀 경우 이동 후 상호작용
         movingManager.Moving
             (
                 player.transform,

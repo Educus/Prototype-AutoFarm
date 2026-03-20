@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 public class MarketManager : MonoBehaviour
 {
@@ -26,28 +28,42 @@ public class MarketManager : MonoBehaviour
     }
     private void Update()
     {
-        // 테스트용
+        // 테스트
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            Debug.Log("가격 변동 이벤트");
             UpdatePrice();
         }
     }
 
+    public List<int> testList = new List<int> { 0, 1, 2, 3, 0, 1, 2 };
+
     public void UpdatePrice()
     {
-        // 가격 변동 후 = 변동 전 * (1 + 평균값 + 표준편차 * 난수)
-        marketPrice = closingPrice * (1 + average + standard * randomNum);
 
-        foreach (var pair in dataManager.productsData)
+        foreach (var pair in dataManager.productClosingData)
         {
-            // pair.Value.price = (int)(pair.Value.price * (1 + average
-            // + pair.Value.cropsClass * randomNum));
-            // pair.Value.costPrice = (int)(pair.Value.costPrice * (1 + 1 + pair.Value.priceStdDev * 1));
-            // print(pair.Value.costPrice);
+            // 데이터가 없을 경우
+            if (pair.Value.productsPriorPrice.Count == 0)
+            {
+                // 초기 가격 설정 (기본 가격)
+                pair.Value.productsPriorPrice.Add(dataManager.productsData[pair.Key].basicCost);
+            }
+
+            // 가격 변동(수정 예정)
+            // 가격 변동 후 = 변동 전 * (1 + 평균값 + 표준편차 * 난수)
+            marketPrice = closingPrice * (1 + average + standard * randomNum);
+
+            // 종가 업데이트
+            pair.Value.productsPriorPrice.Add((int)marketPrice);
+
+            // 7일치 가격만 저장
+            if (pair.Value.productsPriorPrice.Count > 7)
+            {
+                pair.Value.productsPriorPrice.RemoveAt(0);
+            }
         }
     }
-
-
 }
 
 
