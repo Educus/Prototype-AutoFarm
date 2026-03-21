@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+using Newtonsoft.Json;
+
+public enum ItemType
+{
+    Water,
+    Seed,
+    Product,
+    Material,
+    UpgPerk,
+    BuildingKit,
+    Battery
+}
+public class ItemData
+{
+    [SerializeField] public int itemID;
+    [SerializeField] public string itemName;
+    [SerializeField] public ItemType itemType;
+    [SerializeField] public int basicPrice;
+    [SerializeField] public int stack;
+    [SerializeField] public int storagePeriod;
+    [SerializeField] public int useToDemo;
+}
+public class ItemDataManager : MonoBehaviour
+{
+    public Dictionary<int, ItemData> itemData = new Dictionary<int, ItemData>();
+
+    private TextAsset jsonFile;
+
+    private void Awake()
+    {
+        // ���� ���� �� ProductDataTable �ҷ�����
+        LoadItemDataTable();
+
+        // PrintAll();
+    }
+
+    private void LoadItemDataTable()
+    {
+        jsonFile = Resources.Load<TextAsset>("Json/ItemDataTable");
+
+        if (jsonFile == null)
+        {
+            Debug.Log("���� ����");
+            return;
+        }
+
+        List<ItemData> itemList = JsonConvert.DeserializeObject<List<ItemData>>(jsonFile.text);
+
+        itemData.Clear();
+
+        foreach (var item in itemList)
+        {
+            itemData[item.itemID] = item;
+        }
+    }
+
+    // �׽�Ʈ ���
+    public void PrintAll()
+    {
+        foreach (var pair in itemData)
+        {
+            Debug.Log($"Key:{pair.Key} ID:{pair.Value.itemID} Name:{pair.Value.itemName} Price:{pair.Value.itemType}");
+        }
+    }
+}
