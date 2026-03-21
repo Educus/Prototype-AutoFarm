@@ -1,14 +1,5 @@
 [
     {
-        "ItemID":1001,
-        "ItemName":"Water",
-        "ItemType":"Water",
-        "BasicPrice":0,
-        "Stack":100,
-        "StoragePeriod":-1,
-        "UseToDemo":1
-    },
-    {
         "ItemID":1011,
         "ItemName":"CornSeed",
         "ItemType":"Seed",
@@ -132,6 +123,24 @@
         "BasicPrice":2000,
         "Stack":1,
         "StoragePeriod":3,
+        "UseToDemo":1
+    },
+    {
+        "ItemID":5001,
+        "ItemName":"Water",
+        "ItemType":"Water",
+        "BasicPrice":0,
+        "Stack":1,
+        "StoragePeriod":-1,
+        "UseToDemo":1
+    },
+    {
+        "ItemID":7011,
+        "ItemName":"BatteryLv1",
+        "ItemType":"Battery",
+        "BasicPrice":1000,
+        "Stack":1,
+        "StoragePeriod":-1,
         "UseToDemo":1
     },
     {
