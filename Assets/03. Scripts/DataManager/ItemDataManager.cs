@@ -11,7 +11,8 @@ public enum ItemType
     Product,
     Material,
     UpgPerk,
-    BuildingKit
+    BuildingKit,
+    Battery
 }
 public class ItemData
 {
