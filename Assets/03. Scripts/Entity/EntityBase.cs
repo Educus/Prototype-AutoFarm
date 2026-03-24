@@ -13,7 +13,7 @@ public abstract class EntityBase : MonoBehaviour, IInteractable
         return entityName;
     }
     public abstract string GetStatus();
-
+    public abstract void SetStatus();
     public virtual void OnInteract()
     {
         Debug.Log($"{entityName} interact");

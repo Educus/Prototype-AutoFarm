@@ -20,4 +20,9 @@ public class Player : StatusBase
     {
         throw new System.NotImplementedException();
     }
+
+    public override void SetStatus()
+    {
+        throw new System.NotImplementedException();
+    }
 }
