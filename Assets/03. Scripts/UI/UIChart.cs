@@ -137,9 +137,8 @@ public class UIChart : MonoBehaviour
         // itemImage.sprite = // 으... 아이템 이미지... 데이터 테이블...
 
         // 아이템 텍스트
-        itemDescription.text = 
+        itemDescription.text =
             $"{itemData.itemName}\n" +
-            $"<color=#{colorHex}>{nowPrice}{priceText}</color>\n" +
-            $"보유수량:XX";
+            $"<color=#{colorHex}>{nowPrice}{priceText}</color>\n";
     }
 }

@@ -42,7 +42,8 @@ public class MarketManager : MonoBehaviour
             else
             {
                 // 가격 변동
-                // 가격 변동 후 = 변동 전 * (1 + 평균값 + 표준편차 * 난수)
+                // 1.가격 변동 후 = 변동 전 * (1 + 평균값 + 표준편차 * 난수)
+                // 2.가격 변동 후 = 변동 전 * e^(평균값 + 표준편차 * 난수)
 
                 // 변동 전 가격
                 float beforePrice = pair.Value.productsClosingPrice[pair.Value.productsClosingPrice.Count - 1];
@@ -74,10 +75,11 @@ public class MarketManager : MonoBehaviour
     {
         float rand = GetStandardNormal();
 
-        float multiplier = 1f + mean + stdDev * rand;
+        float exponent = mean + stdDev * rand;
+        float multiplier = Mathf.Exp(exponent);
 
         // 변동 제한 (최대 20% 상승 또는 하락) // 필요 없으면 삭제
-        multiplier = Mathf.Clamp(multiplier, 0.8f, 1.2f);
+        // multiplier = Mathf.Clamp(multiplier, 0.8f, 1.2f);
 
         float newPrice = currentPrice * multiplier;
 
