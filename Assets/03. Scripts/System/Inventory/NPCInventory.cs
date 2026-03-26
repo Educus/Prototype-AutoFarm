@@ -26,7 +26,7 @@ public class NPCInventory : InventoryBase
     {
         for (int i = 0; i < amount; i++)
         {
-            slots.Add(new InventorySlot(0, 0));
+            slots.Add(new InventorySlot(0, 0, -1));
         }
 
         Debug.Log($"{gameObject.name}의 인벤토리가 {amount}칸 확장됨. 현재 크기 : {slots.Count}");

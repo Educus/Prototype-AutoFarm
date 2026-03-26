@@ -30,7 +30,7 @@ public abstract class InventoryBase : MonoBehaviour
 
         for (int i = 0; i < size; i++)
         {
-            slots.Add(new InventorySlot(0, 0));
+            slots.Add(new InventorySlot(0, 0, -1));
         }
     }
 
