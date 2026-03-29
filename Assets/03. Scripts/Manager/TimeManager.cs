@@ -6,7 +6,8 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private GameManager gameManager;
 
     [Tooltip("현실 시간 기준 하루 길이(초)")]
-    private float realSecondsPerDay = 900f; // 15분
+    // private float realSecondsPerDay = 900f; // 15분
+    private float realSecondsPerDay = 60f; // 테스트 1분
 
     [Tooltip("표시 시간 단위")]
     public int miniteStep = 10; // 10분 단위로 표시
@@ -41,6 +42,12 @@ public class TimeManager : MonoBehaviour
             timer -= timerGameMinute;
             AddMinute(1);
         }
+    }
+
+    // 테스트용 시간 추가 함수
+    public void TestAddTime(int value)
+    {
+        AddMinute(value);
     }
 
     void AddMinute(int minutes)
@@ -95,8 +102,13 @@ public class TimeManager : MonoBehaviour
     }
 
     // UI용 시간 반환
-    public int[] GetTimeString()
+    public string[] GetTimeString()
     {
-        return new int[] { currentDay, currentHour, displayMinute };
+        return new string[] 
+        { 
+            currentDay.ToString(), 
+            currentHour >= 10 ? currentHour.ToString() : $"0{currentHour}",
+            displayMinute >= 10 ? displayMinute.ToString() : $"0{displayMinute}"
+        };
     }
 }

@@ -23,6 +23,7 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
+        // 좌클릭, 우클릭
         if (Input.GetMouseButtonDown(0))
         {
             LeftClick();
