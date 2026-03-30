@@ -939,6 +939,10 @@ MonoBehaviour:
   timeManager: {fileID: 2128320187}
   dayText: {fileID: 1052942608}
   timeText: {fileID: 1230655109}
+  resourceManager: {fileID: 1121094564}
+  npcText: {fileID: 277978109}
+  storageText: {fileID: 1146005361}
+  goldText: {fileID: 2137970091}
 --- !u!1 &155324027
 GameObject:
   m_ObjectHideFlags: 0
@@ -15612,7 +15616,7 @@ GameObject:
   - component: {fileID: 1537228908}
   - component: {fileID: 1537228907}
   m_Layer: 5
-  m_Name: BoxStat
+  m_Name: StorageStat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
