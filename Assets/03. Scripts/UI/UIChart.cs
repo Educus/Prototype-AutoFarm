@@ -131,7 +131,6 @@ public class UIChart : MonoBehaviour
         string colorHex = ColorUtility.ToHtmlStringRGB(priceColor);
 
         var priceText = priceColor == Color.red ? "▲" : priceColor == Color.blue ? "▼" : "■";
-        Debug.Log(priceColor);
 
         // 아이템 이미지
         // itemImage.sprite = // 으... 아이템 이미지... 데이터 테이블...

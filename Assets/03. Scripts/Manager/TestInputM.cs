@@ -7,6 +7,8 @@ public class TestInputM : MonoBehaviour
     [SerializeField] private TMP_Text testKeyText;
     [SerializeField] private TimeManager timeManager;
 
+    [SerializeField] private MarketManager marketManager;
+
     void Update()
     {
         // 임시 테스트용 키
@@ -17,7 +19,8 @@ public class TestInputM : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            testKeyText.text = "2번 키 입력";
+            testKeyText.text = "2번 키 입력\n상점 가격 업데이트";
+            marketManager.UpdatePrice();
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {

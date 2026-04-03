@@ -56,8 +56,6 @@ public class MarketManager : MonoBehaviour
                 // 변동 후 가격
                 int newPrice = (int)GetNextPrice(beforePrice, mean, stdDev);
 
-                Debug.Log($"물품:{dataManager.productsData[pair.Key].itemName} 변동전:{beforePrice} 변동후:{newPrice}");
-
                 // 종가 업데이트
                 pair.Value.productsClosingPrice.Add(newPrice);
 
