@@ -16,15 +16,6 @@ public class MarketManager : MonoBehaviour
 
         UpdatePrice();
     }
-    private void Update()
-    {
-        // 테스트
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Debug.Log("가격 변동 이벤트");
-            UpdatePrice();
-        }
-    }
 
     public List<int> testList = new List<int> { 0, 1, 2, 3, 0, 1, 2 };
 
