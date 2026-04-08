@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Structure : EntityBase
+public class BuildingInteraction : EntityBase
 {
     public override void OnInteract()
     {

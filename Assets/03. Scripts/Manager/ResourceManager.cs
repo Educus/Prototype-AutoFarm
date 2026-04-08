@@ -22,8 +22,7 @@ public class ResourceManager : MonoBehaviour
         onSetGold?.Invoke();
     }
     /*
-     dadasfklaflakdn flndkl
-     ssssssssssssssssssssssssssssssssssssssssssss
+     
      
      */
 }
