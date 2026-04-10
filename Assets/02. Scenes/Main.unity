@@ -1805,7 +1805,6 @@ MonoBehaviour:
   - {fileID: 5477845361673729255, guid: a4cb5802f88e4434a87b2c71e2129ece, type: 3}
   gridManager: {fileID: 494453411}
   chunkManager: {fileID: 47825731}
-  alpha: 0.7
 --- !u!1 &165399815
 GameObject:
   m_ObjectHideFlags: 0
@@ -13988,7 +13987,7 @@ Transform:
   m_GameObject: {fileID: 780109180}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.56, y: -3.16, z: 0}
+  m_LocalPosition: {x: 9.83, y: -6.96, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

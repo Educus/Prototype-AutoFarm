@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fdf45303631b78141b24226708b46b54
+guid: c347fcd3fe59dfc41854931cf3c1e7f1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1287928489944353340
-    second: "\uD50C\uB808\uC774\uC5B4 \uCE90\uB9AD\uD130 \uD6C4\uBA74\uC0F7_0"
+      213: 1023916491357838081
+    second: UI_PopUp_DataChip_Yellow_Light_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 512
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\uD50C\uB808\uC774\uC5B4 \uCE90\uB9AD\uD130 \uD6C4\uBA74\uC0F7_0"
+      name: UI_PopUp_DataChip_Yellow_Light_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 28
-        width: 508
-        height: 940
+        x: 0
+        y: 0
+        width: 330
+        height: 192
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c3a0d3b4324afd110800000000000000
-      internalID: 1287928489944353340
+      spriteID: 10b5c0bbf9ea53e00800000000000000
+      internalID: 1023916491357838081
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: bceee8487d12b6e4187061b0754fe694
+    spriteID: 3508e34f13a62b34db14d87b98cd4943
     internalID: 0
     vertices: []
     indices: 
@@ -163,7 +163,7 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      "\uD50C\uB808\uC774\uC5B4 \uCE90\uB9AD\uD130 \uD6C4\uBA74\uC0F7_0": 1287928489944353340
+      UI_PopUp_DataChip_Yellow_Light_0: 1023916491357838081
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -56,7 +56,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -132,12 +132,12 @@ TextureImporter:
       name: UI_Icon_PopUp_Menu_BuildingKit_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 18
-        width: 43
-        height: 44
+        x: 6
+        y: 17
+        width: 45
+        height: 46
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -154,12 +154,12 @@ TextureImporter:
       name: UI_Icon_PopUp_Menu_BuildingKit_1
       rect:
         serializedVersion: 2
-        x: 8
-        y: 7
-        width: 41
-        height: 8
+        x: 7
+        y: 6
+        width: 43
+        height: 10
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -176,7 +176,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 38a24a01f31b145419745687da95808a
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -184,9 +184,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
       UI_Icon_PopUp_Menu_BuildingKit_0: 7855018862540639051
       UI_Icon_PopUp_Menu_BuildingKit_1: 7102791622665112432
