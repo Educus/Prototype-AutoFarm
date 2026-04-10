@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: baf37517305a7cc4caf2306fb9e12522
+guid: 410354731a8986a4cab42eaab331765e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5881266509721300080
-    second: UI_PopUp_DataChip_Green_Light_0
+      213: -6517308299103824634
+    second: "npc \uCE90\uB9AD\uD130 \uCE21\uBA74\uC0F7_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 512
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 4
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_PopUp_DataChip_Green_Light_0
+      name: "npc \uCE90\uB9AD\uD130 \uCE21\uBA74\uC0F7_0"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 330
-        height: 192
+        x: 5
+        y: 91
+        width: 485
+        height: 592
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 09319aa054b816ea0800000000000000
-      internalID: -5881266509721300080
+      spriteID: 6051634d1aedd85a0800000000000000
+      internalID: -6517308299103824634
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: e15812ecc9e8a5f488825309e4deb6ee
+    spriteID: b145f14f259256046bc63670d3567251
     internalID: 0
     vertices: []
     indices: 
@@ -163,7 +163,7 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      UI_PopUp_DataChip_Green_Light_0: -5881266509721300080
+      "npc \uCE90\uB9AD\uD130 \uCE21\uBA74\uC0F7_0": -6517308299103824634
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
