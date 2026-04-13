@@ -1,0 +1,561 @@
+fileFormatVersion: 2
+guid: 6e19e471ec207cf40920cbaebfaf6616
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8098370379102218983
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_0"
+  - first:
+      213: -5895813467528573105
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_1"
+  - first:
+      213: -8823545773607541702
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_2"
+  - first:
+      213: -2458204147976991691
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_3"
+  - first:
+      213: -1947128282906272338
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_4"
+  - first:
+      213: -1950923235945368602
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_5"
+  - first:
+      213: 7283117524010302652
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_6"
+  - first:
+      213: 1673299428855348208
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_7"
+  - first:
+      213: 8372043224757885284
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_8"
+  - first:
+      213: -6344164156390574371
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_9"
+  - first:
+      213: 3722858266766486900
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_10"
+  - first:
+      213: -2557150126269288610
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_11"
+  - first:
+      213: 6155073461541582698
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_12"
+  - first:
+      213: 6483447140466795750
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_13"
+  - first:
+      213: 481884153730064665
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_14"
+  - first:
+      213: -828542505299031002
+    second: "npc \uD6C4\uBA74\uC0F7 \uB300\uAE30 \uBAA8\uC158_15"
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 512
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_0
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 1117
+        width: 569
+        height: 600
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04a23757d732fd44cb23f2f644221a05
+      internalID: 16792869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_1
+      rect:
+        serializedVersion: 2
+        x: 866
+        y: 1117
+        width: 572
+        height: 602
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74755bf2921df114f969902c5c1018c2
+      internalID: -543758764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_2
+      rect:
+        serializedVersion: 2
+        x: 1628
+        y: 1117
+        width: 584
+        height: 603
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ee09302fa9d00d4c9629ac7a235c523
+      internalID: -662200893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_3
+      rect:
+        serializedVersion: 2
+        x: 2384
+        y: 1117
+        width: 608
+        height: 603
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f027427a200ea4c4b949feb8dd13ab86
+      internalID: -1175513213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_4
+      rect:
+        serializedVersion: 2
+        x: 3149
+        y: 1117
+        width: 611
+        height: 603
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53b32ee56609ffa49bb29c2cd6876cab
+      internalID: -1334382777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_5
+      rect:
+        serializedVersion: 2
+        x: 3920
+        y: 1117
+        width: 608
+        height: 603
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7c0e5d2d3045c343b0dbe6e35275913
+      internalID: -399744413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_6
+      rect:
+        serializedVersion: 2
+        x: 4691
+        y: 1117
+        width: 602
+        height: 595
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f054d373400cbfc438d33a339da3d299
+      internalID: 316026977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_7
+      rect:
+        serializedVersion: 2
+        x: 5471
+        y: 1117
+        width: 577
+        height: 597
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b5129b07f2182a43a14d1d0adee51e1
+      internalID: 1599583684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_8
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 92
+        width: 572
+        height: 602
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9fd9089da87f6241b1c6a196bda0acf
+      internalID: 1573258220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_9
+      rect:
+        serializedVersion: 2
+        x: 866
+        y: 92
+        width: 572
+        height: 602
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d3240427ef74564096157a6914666f1
+      internalID: -100271355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_10
+      rect:
+        serializedVersion: 2
+        x: 1628
+        y: 92
+        width: 584
+        height: 602
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05d393136cc9fd24bb60057012fa47b6
+      internalID: 1739785600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_11
+      rect:
+        serializedVersion: 2
+        x: 2384
+        y: 91
+        width: 608
+        height: 606
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2375f0e69a7133e45a0b3ae6d7928e15
+      internalID: 672684551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_12
+      rect:
+        serializedVersion: 2
+        x: 3149
+        y: 91
+        width: 611
+        height: 606
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b08c85e8cde28940bd8cdca25f5e4e1
+      internalID: 147722032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_13
+      rect:
+        serializedVersion: 2
+        x: 3920
+        y: 91
+        width: 608
+        height: 603
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42c1344b681dca04ab0d547410566b18
+      internalID: -1855045295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_14
+      rect:
+        serializedVersion: 2
+        x: 4691
+        y: 91
+        width: 602
+        height: 597
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2dc64bc08fd838b40ae3a5e70e021e04
+      internalID: 965040098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Prototype_Idle_Back_15
+      rect:
+        serializedVersion: 2
+        x: 5471
+        y: 92
+        width: 577
+        height: 599
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 639eba3cbe92ef745a4bc39a3d4e7cdd
+      internalID: -138583241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 79efdd2c48fb25442bdef4783f5c22a3
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Prototype_Idle_Back_0: 16792869
+      Prototype_Idle_Back_1: -543758764
+      Prototype_Idle_Back_10: 1739785600
+      Prototype_Idle_Back_11: 672684551
+      Prototype_Idle_Back_12: 147722032
+      Prototype_Idle_Back_13: -1855045295
+      Prototype_Idle_Back_14: 965040098
+      Prototype_Idle_Back_15: -138583241
+      Prototype_Idle_Back_2: -662200893
+      Prototype_Idle_Back_3: -1175513213
+      Prototype_Idle_Back_4: -1334382777
+      Prototype_Idle_Back_5: -399744413
+      Prototype_Idle_Back_6: 316026977
+      Prototype_Idle_Back_7: 1599583684
+      Prototype_Idle_Back_8: 1573258220
+      Prototype_Idle_Back_9: -100271355
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
