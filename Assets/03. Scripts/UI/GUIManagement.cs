@@ -38,7 +38,7 @@ public class GUIManagement : MonoBehaviour
     {
         value = timeManager.GetTimeString();
 
-        dayText.text = $"Day {value[0]}";
+        dayText.text = $"Day-{value[0]}";
         timeText.text = $"{value[1]}:{value[2]}";
     }
 
