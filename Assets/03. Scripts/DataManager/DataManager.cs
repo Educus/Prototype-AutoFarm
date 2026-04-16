@@ -16,6 +16,8 @@ public class DataManager : MonoBehaviour
     [SerializeField] private SaveLoadManager saveLoadManager;
     public SaveLoadManager SaveLoadManager { get; private set; }
 
+    public int nowEventID = -1;
+
     private void Start()
     {
         LoadData();
@@ -34,7 +36,7 @@ public class DataManager : MonoBehaviour
     }
 
     public void ContinueGame()
-    { 
+    {
         saveLoadManager.ContinueGame();
     }
 }

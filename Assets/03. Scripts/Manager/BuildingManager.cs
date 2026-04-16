@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -168,5 +169,51 @@ public class BuildingManager : MonoBehaviour
 
         isPlacing = false;
         CurrentItemID = -1;
+    }
+
+    public List<BuildingSaveData> SaveBuildings()
+    {
+        List<BuildingSaveData> list = new List<BuildingSaveData>();
+
+        Building[] allBuildings = FindObjectsOfType<Building>();
+
+        foreach (var building in allBuildings)
+        {
+            Vector2Int pos = gridManager.WorldToGrid(building.transform.position);
+
+            list.Add(new BuildingSaveData
+            {
+                itemID = building.itemID,
+                x = pos.x,
+                y = pos.y,
+                extraData = building.Save()
+            });
+        }
+
+        return list;
+    }
+
+    public void LoadBuildings(List<BuildingSaveData> list)
+    {
+        foreach (var data in list)
+        {
+            GameObject prefab = System.Array.Find(buildingPrefabs, p => p.name == data.itemID.ToString());
+
+            if (prefab == null)
+            {
+                Debug.LogError($"ÇÁ¸®ÆÕ ¾øÀ½ itemID:{data.itemID}");
+                continue;
+            }
+
+            GameObject obj = Instantiate(prefab);
+            obj.transform.position = new Vector2(data.x, data.y);
+
+            Building buildings = obj.GetComponent<Building>();
+
+            buildings.Load(data.extraData);
+
+            currentData = buildings.data;
+            ApplyToGrid(new Vector2Int(data.x, data.y));
+        }
     }
 }

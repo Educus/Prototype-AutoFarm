@@ -9,14 +9,12 @@ public class SaveLoadManager : MonoBehaviour
     // 맵, 오브젝트, 아이템 저장 및 불러오기
     // 아이템 시세 불러오기 저장하기
     // Json파일 읽기 쓰기
-
-    private TextAsset jsonFile;
+    [SerializeField] private BuildingManager buildingManager;
 
     private void Awake()
     {
         // 게임 실행 시 origin파일 불러오기
-
-        jsonFile = Resources.Load<TextAsset>("Json/Save/");
+        Debug.Log("저장 위치:"+Application.persistentDataPath);
     }
 
     // 이어하기
@@ -41,6 +39,28 @@ public class SaveLoadManager : MonoBehaviour
     // 로드
     public void LoadCrops()
     {
+    }
+
+    public void Save()
+    {
+        SaveData data = new SaveData();
+
+        data.buildings = buildingManager.SaveBuildings();
+
+        string json = JsonUtility.ToJson(data, true);
+        System.IO.File.WriteAllText(Application.persistentDataPath + "/save.json", json);
+    }
+
+    public void Load()
+    {
+        string path = Application.persistentDataPath + "/save.json";
+
+        if (!System.IO.File.Exists(path)) return;
+
+        string json = System.IO.File.ReadAllText(path);
+        SaveData data = JsonUtility.FromJson<SaveData>(json);
+
+        buildingManager.LoadBuildings(data.buildings);
     }
 
     // 저장 내용 출력

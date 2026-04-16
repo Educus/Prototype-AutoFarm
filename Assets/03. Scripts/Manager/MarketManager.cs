@@ -17,11 +17,8 @@ public class MarketManager : MonoBehaviour
         UpdatePrice();
     }
 
-    public List<int> testList = new List<int> { 0, 1, 2, 3, 0, 1, 2 };
-
     public void UpdatePrice()
     {
-
         foreach (var pair in dataManager.productClosingData)
         {
             // 데이터가 없을 경우

@@ -13,3 +13,9 @@ public interface IInteractable
     string GetStatus();
     void OnInteract();
 }
+
+public interface ISaveable
+{
+    string Save();
+    void Load(string json);
+}

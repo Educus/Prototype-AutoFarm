@@ -26,6 +26,7 @@ public class TimeManager : MonoBehaviour
     public event Action onTimeSetpEvent;        // 시간 단위 이벤트
     public event Action onDayEvent;             // 매일
     public event Action onWeekEvent;            // 매주
+    public event Action onEvent;                // 7일마다 오전9시에 이벤트 발생
     public event Action<int> onSpecificDay;     // 특정 날짜
 
     void Update()
@@ -71,6 +72,7 @@ public class TimeManager : MonoBehaviour
         }
 
         OnTimeSetpEvent();
+        CheckEvent();               // 특정 시간 이벤트 발생
     }
 
     // 이벤트 추가 방법
@@ -99,6 +101,14 @@ public class TimeManager : MonoBehaviour
     void CheckSpecificDayEvent()
     {
         onSpecificDay?.Invoke(currentDay);
+    }
+
+    void CheckEvent()
+    {
+        if (currentDay % 7 == 0 && currentHour == 9 && currentMinute == 0)
+        {
+            onEvent?.Invoke();
+        }
     }
 
     // UI용 시간 반환
