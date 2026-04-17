@@ -22,4 +22,14 @@ public class BuildUIManager : MonoBehaviour
 
         itemInfoUI.Show(itemID, building.data, building.icon);
     }
+
+    public void BuildMode(bool isBuildMode)
+    {
+        itemInfoUI.Hide();
+
+        if (isBuildMode)
+            gameObject.SetActive(true);
+        else
+            gameObject.SetActive(false);
+    }
 }

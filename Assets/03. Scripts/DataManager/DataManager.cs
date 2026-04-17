@@ -18,6 +18,9 @@ public class DataManager : MonoBehaviour
 
     public int nowEventID = -1;
 
+    [SerializeField] private Sprite[] itemImage;
+    public Sprite[] ItemImage { get { return itemImage; }  }
+
     private void Start()
     {
         LoadData();
@@ -38,5 +41,18 @@ public class DataManager : MonoBehaviour
     public void ContinueGame()
     {
         saveLoadManager.ContinueGame();
+    }
+
+    public Sprite GetItemImage(int itemId)
+    {
+        foreach (var sprite in itemImage)
+        {
+            if (sprite.name == itemId.ToString())
+            {
+                return sprite;
+            }
+        }
+
+        return null; // 아이템 ID에 해당하는 이미지가 없는 경우
     }
 }

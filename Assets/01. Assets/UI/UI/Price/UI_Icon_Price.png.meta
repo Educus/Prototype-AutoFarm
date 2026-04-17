@@ -1,16 +1,19 @@
 fileFormatVersion: 2
-guid: 185e066ad9982e741959924514e8068b
+guid: 245e0e9a3a892964bb3258c815e67fb5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1678259666000291645
-    second: UI_Icon_PopUp_Menu_News_0
+      213: -5748014807646848423
+    second: UI_Icon_Price_0
   - first:
-      213: -3608825065976487283
-    second: UI_Icon_PopUp_Menu_News_1
+      213: -5184563674537128284
+    second: UI_Icon_Price_1
   - first:
-      213: 3381616690967943983
-    second: UI_Icon_PopUp_Menu_News_2
+      213: 2962768767601619224
+    second: UI_Icon_Price_2
+  - first:
+      213: 6344242163126444653
+    second: UI_Icon_Price_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -30,7 +33,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -60,7 +63,7 @@ TextureImporter:
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
-  alphaUsage: 1
+  alphaUsage: 0
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
@@ -102,53 +105,49 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Icon_PopUp_Menu_News_1
+      name: UI_Icon_Price_0
       rect:
         serializedVersion: 2
-        x: 11
+        x: 9
         y: 7
-        width: 52
-        height: 62
+        width: 29
+        height: 30
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: d8222fd09b0eaedc0800000000000000
-      internalID: -3608825065976487283
+      spriteID: 3a55707a2296a7f4bb911d579b12c536
+      internalID: -5748014807646848423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Icon_Price_1
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 8
+        width: 29
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 315bafa317403e245b4bce92f12ba69f
+      internalID: -5184563674537128284
       vertices: []
       indices: 
       edges: []
@@ -157,7 +156,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 1c84f16c865277a4c842e7c65926f79d
+    spriteID: d603180e9b35da84ab20c77374c4c6ec
     internalID: 0
     vertices: []
     indices: 
@@ -167,11 +166,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":2.0,"y":1.0},"gridSpriteSize":{"x":44.0,"y":42.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      UI_Icon_PopUp_Menu_News_0: 1678259666000291645
-      UI_Icon_PopUp_Menu_News_1: -3608825065976487283
-      UI_Icon_PopUp_Menu_News_2: 3381616690967943983
+      UI_Icon_Price_0: -5748014807646848423
+      UI_Icon_Price_1: -5184563674537128284
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

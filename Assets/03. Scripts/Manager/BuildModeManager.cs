@@ -6,13 +6,18 @@ public class BuildModeManager : MonoBehaviour
 
     [SerializeField] private GameManager gameManager;
     [SerializeField] private BuildingManager buildingManager;
-    [SerializeField] private GameObject buildModeUI;
+    [SerializeField] private BuildUIManager buildModeUI;
+
+    private void Start()
+    {
+        buildModeUI.BuildMode(false);
+    }
 
     public void ToggleBuildMode()
     {
         gameManager.isBuildMode = !gameManager.isBuildMode;
 
-        buildModeUI.SetActive(gameManager.isBuildMode);
+        buildModeUI.BuildMode(gameManager.isBuildMode);
 
         if (!gameManager.isBuildMode)
         {

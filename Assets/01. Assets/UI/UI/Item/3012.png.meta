@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 971095cada622ea4abea2e735ed7a3b2
+guid: 92d8539545d885347b5e63ec69cefb24
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1464178891388595176
-    second: UI_Icon_PopUp_Menu_Robot_0
-  - first:
-      213: 3839865835181088376
-    second: UI_Icon_PopUp_Menu_Robot_1
+      213: 3650107295209925109
+    second: UI_Item_Strawberry_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -129,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Icon_PopUp_Menu_Robot_0
+      name: 3012
       rect:
         serializedVersion: 2
-        x: 10
-        y: 8
-        width: 56
-        height: 63
+        x: 27
+        y: 41
+        width: 257
+        height: 237
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 814582b4e013eabe0800000000000000
-      internalID: -1464178891388595176
+      spriteID: 5f9ac03fe39c7a230800000000000000
+      internalID: 3650107295209925109
       vertices: []
       indices: 
       edges: []
@@ -154,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 34342a547b4bc1e4394fb58371cff469
+    spriteID: c80fd7f4edc035a4d9bb9852f4da44df
     internalID: 0
     vertices: []
     indices: 
@@ -162,12 +159,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      UI_Icon_PopUp_Menu_Robot_0: -1464178891388595176
-      UI_Icon_PopUp_Menu_Robot_1: 3839865835181088376
+      3012: 3650107295209925109
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

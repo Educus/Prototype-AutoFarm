@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: f4d5659999ec58f4db5579c43a74b9b5
+guid: 6acefb0204be7764c8bfbc7f1a5150d6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3479568926671922659
-    second: UI_Icon_PopUp_Menu_Online_0
+      213: -6709966619011763276
+    second: UI_Icon_Price1_0
+  - first:
+      213: -1499010118913443190
+    second: UI_Icon_Price1_1
+  - first:
+      213: 6666763601937791790
+    second: UI_Icon_Price1_2
+  - first:
+      213: 6685934978988206947
+    second: UI_Icon_Price1_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,53 +105,93 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Icon_PopUp_Menu_Online_0
+      name: UI_Icon_Price1_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 6
-        width: 50
-        height: 52
+        x: 10
+        y: 22
+        width: 27
+        height: 15
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d1a9b3a2f7616bfc0800000000000000
-      internalID: -3479568926671922659
+      spriteID: 4b3331339e861e2a0800000000000000
+      internalID: -6709966619011763276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Icon_Price1_1
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 25
+        width: 27
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8ab27b2d32723be0800000000000000
+      internalID: -1499010118913443190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Icon_Price1_2
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 7
+        width: 27
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2b71078c2a158c50800000000000000
+      internalID: 6666763601937791790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Icon_Price1_3
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 8
+        width: 27
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36b63f5907639cc50800000000000000
+      internalID: 6685934978988206947
       vertices: []
       indices: 
       edges: []
@@ -151,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: e728dea6a7277fb44a45588caf15170a
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -159,11 +208,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      UI_Icon_PopUp_Menu_Online_0: -3479568926671922659
+      UI_Icon_Price1_0: -6709966619011763276
+      UI_Icon_Price1_1: -1499010118913443190
+      UI_Icon_Price1_2: 6666763601937791790
+      UI_Icon_Price1_3: 6685934978988206947
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

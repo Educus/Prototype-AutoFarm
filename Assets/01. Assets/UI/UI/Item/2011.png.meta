@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fa1df40dce5033b4092a4f80a1bea046
+guid: f14633f49a6c6d248bf9c028a1bbf699
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1381207934627061588
-    second: UI_Hydro_WaterTank_0
+      213: -8733411429352840068
+    second: UI_Item_Seed_Carrot_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Hydro_WaterTank_0
+      name: 2011
       rect:
         serializedVersion: 2
-        x: 270
-        y: 598
-        width: 1722
-        height: 2890
+        x: 52
+        y: 28
+        width: 211
+        height: 263
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 45f95607c490b2310800000000000000
-      internalID: 1381207934627061588
+      spriteID: c74661c9390bcc680800000000000000
+      internalID: -8733411429352840068
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 0142935acedb8224da1c064e9e1d80f2
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      UI_Hydro_WaterTank_0: 1381207934627061588
+      2011: -8733411429352840068
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

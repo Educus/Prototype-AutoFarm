@@ -19,8 +19,8 @@ public class TestInputM : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            testKeyText.text = "2번 키 입력\n상점 가격 업데이트";
-            marketManager.UpdatePrice();
+            testKeyText.text = "2번 키 입력\n매일 이벤트 갱신(날짜변경X)";
+            timeManager.CheckDayEvent();
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {

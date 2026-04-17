@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 9c6070b32114c7845a41690cd524abcf
+guid: 971095cada622ea4abea2e735ed7a3b2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4630796973364724311
-    second: UI_Item_Bottle_Empty_0
+      213: -1464178891388595176
+    second: UI_Icon_PopUp_Menu_Robot_0
+  - first:
+      213: 3839865835181088376
+    second: UI_Icon_PopUp_Menu_Robot_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +40,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +77,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,23 +129,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Item_Bottle_Empty_0
+      name: UI_Icon_PopUp_Menu_Robot_0
       rect:
         serializedVersion: 2
-        x: 47
-        y: 29
-        width: 236
-        height: 261
+        x: 10
+        y: 8
+        width: 55
+        height: 63
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9ad34af00ba1cbfb0800000000000000
-      internalID: -4630796973364724311
+      spriteID: 814582b4e013eabe0800000000000000
+      internalID: -1464178891388595176
       vertices: []
       indices: 
       edges: []
@@ -151,7 +154,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 34342a547b4bc1e4394fb58371cff469
     internalID: 0
     vertices: []
     indices: 
@@ -159,9 +162,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      UI_Item_Bottle_Empty_0: -4630796973364724311
+      UI_Icon_PopUp_Menu_Robot_0: -1464178891388595176
+      UI_Icon_PopUp_Menu_Robot_1: 3839865835181088376
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -87,7 +87,10 @@ public class TimeManager : MonoBehaviour
             onTimeSetpEvent?.Invoke();
         }
     }
-    void CheckDayEvent()
+
+    // test
+    // void CheckDayEvent()
+    public void CheckDayEvent()
     {
         onDayEvent?.Invoke();
     }
