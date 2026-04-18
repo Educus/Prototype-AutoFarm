@@ -5,6 +5,7 @@ public class UIManagement : MonoBehaviour
 {
     [SerializeField] private GameObject management;
     [SerializeField] public DataManager dataManager;
+    [SerializeField] public UIChart uiChart;
 
     [SerializeField] private GameObject[] chips0;
     [SerializeField] private GameObject[] chips1;
@@ -94,12 +95,32 @@ public class UIManagement : MonoBehaviour
     {
         int count = chipMenu[onChips].transform.childCount;
 
-        for (int i = 0; i < count; i++)
+        int index = value;
+
+        // 즐겨찾기
+        if (value == 1)
         {
-            chipMenu[onChips].transform.GetChild(i).gameObject.SetActive(i == value);
+            index = 0;
         }
 
-        coiceB.transform.position = icons[value][0].transform.position;
+        for (int i = 0; i < count; i++)
+        {
+            chipMenu[onChips].transform.GetChild(i).gameObject.SetActive(i == index);
+        }
+
+        if (value == 0)
+        {
+            // 즐겨찾기 모드 해제
+            uiChart.OffBookMark();
+        }
+
+        if (value == 1)
+        {
+            // 즐겨찾기 모드 사용
+            uiChart.OnBookMark();
+        }
+
+        coiceB.transform.position = icons[index][0].transform.position;
     }
 
     public void ExitButton()

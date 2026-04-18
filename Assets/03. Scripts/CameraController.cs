@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -33,7 +34,7 @@ public class CameraController : MonoBehaviour
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
-        if (scroll != 0)
+        if (scroll != 0 && !EventSystem.current.IsPointerOverGameObject())
         {
             camera.orthographicSize -= scroll * zoomSpeed;
             camera.orthographicSize = Mathf.Clamp(camera.orthographicSize, minZoom, maxZoom);

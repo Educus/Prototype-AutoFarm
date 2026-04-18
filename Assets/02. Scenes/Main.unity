@@ -5085,6 +5085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIManagement
   management: {fileID: 1826260565}
   dataManager: {fileID: 165399817}
+  uiChart: {fileID: 600827998}
   chips0:
   - {fileID: 1826415209}
   - {fileID: 2095317987}
@@ -61301,7 +61302,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 5
   m_Viewport: {fileID: 1301940137}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 594094156}
@@ -63978,7 +63979,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 5
   m_Viewport: {fileID: 1912560506}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}

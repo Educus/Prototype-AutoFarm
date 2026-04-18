@@ -76,4 +76,13 @@ public class UIChartIcon : MonoBehaviour
         bookMark[0].SetActive(!isBookMark);
         bookMark[1].SetActive(isBookMark);
     }
+
+    public void OnBookMark()
+    {
+        gameObject.SetActive(isBookMark);
+    }
+    public void OffBookMark()
+    {
+        gameObject.SetActive(true);
+    }
 }

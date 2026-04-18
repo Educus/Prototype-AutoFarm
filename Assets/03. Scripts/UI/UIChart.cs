@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,6 +10,9 @@ public class UIChart : MonoBehaviour
 
     [SerializeField] private GameObject chartIconPrefab;
     [SerializeField] private GameObject chartIconContent;
+
+    public event Action eventOnBookMark;
+    public event Action eventOffBookMark;
 
     void Start()
     {
@@ -30,6 +34,14 @@ public class UIChart : MonoBehaviour
             {
                 chartIcon.GetComponent<UIChartIcon>().SetData();
             };
+            eventOnBookMark += () =>
+            {
+                chartIcon.GetComponent<UIChartIcon>().OnBookMark();
+            };
+            eventOffBookMark += () =>
+            {
+                chartIcon.GetComponent<UIChartIcon>().OffBookMark();
+            };
         }
     }
 
@@ -47,5 +59,14 @@ public class UIChart : MonoBehaviour
         uiChart.gameObject.SetActive(true);
 
         uiChart.DrawChart(dataManager.productsData[itemID].itemID);
+    }
+
+    public void OnBookMark()
+    {
+        eventOnBookMark?.Invoke();
+    }
+    public void OffBookMark()
+    {
+        eventOffBookMark?.Invoke();
     }
 }
