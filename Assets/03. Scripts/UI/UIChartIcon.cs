@@ -8,6 +8,7 @@ public class UIChartIcon : MonoBehaviour
     [SerializeField] private DataManager dataManager;
     [SerializeField] private UIChart uIChart;
 
+    private ProductSubData productSubData;
     private int itemID;
 
     private Button button;
@@ -18,23 +19,21 @@ public class UIChartIcon : MonoBehaviour
     [SerializeField] private TMP_Text itemPrice;
     [SerializeField] private GameObject[] bookMark;
 
-    public bool isBookMark;
-
     private void Awake()
     {
         button = GetComponent<Button>();
-        isBookMark = true;
-        BookMark();
     }
 
     public void GetInfo(DataManager data, UIChart ui,int id)
     {
         dataManager = data;
+        productSubData = dataManager.productSubData[id];
         uIChart = ui;
         itemID = id;
 
         SetInfo();
         SetData();
+        SetBookMark();
     }
     // 최초 정보 설정
     private void SetInfo()
@@ -72,14 +71,20 @@ public class UIChartIcon : MonoBehaviour
 
     public void BookMark()
     {
-        isBookMark = !isBookMark;
-        bookMark[0].SetActive(!isBookMark);
-        bookMark[1].SetActive(isBookMark);
+        productSubData.OnOffBookMark();
+        bookMark[0].SetActive(!productSubData.isBookMarked);
+        bookMark[1].SetActive(productSubData.isBookMarked);
+    }
+    private void SetBookMark()
+    {
+        productSubData.GetBookMark();
+        bookMark[0].SetActive(!productSubData.isBookMarked);
+        bookMark[1].SetActive(productSubData.isBookMarked);
     }
 
     public void OnBookMark()
     {
-        gameObject.SetActive(isBookMark);
+        gameObject.SetActive(productSubData.isBookMarked);
     }
     public void OffBookMark()
     {

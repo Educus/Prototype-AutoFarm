@@ -26,15 +26,26 @@ public class ProductClosing
 public class ProductSubData
 {
     [Tooltip("남은 성장 시간")]
-    public int remainingGrowthTime = -1;     // 남은 성장 시간
+    public int remainingGrowthTime = -1;    // 남은 성장 시간
     [Tooltip("남은 저장 기간")]
-    public int remainingStoragePeriod = -1;  // 남은 저장 기간
+    public int remainingStoragePeriod = -1; // 남은 저장 기간
+    public bool isBookMarked = false;       // 북마크 여부
+
+    public bool GetBookMark()
+    {
+        return isBookMarked;
+    }   
+    public void OnOffBookMark()
+    {
+        isBookMarked = !isBookMarked;
+    }
 }
 
 public class ProductDataManager : MonoBehaviour
 {
     public Dictionary<int, Product> productData = new Dictionary<int, Product>();
     public Dictionary<int, ProductClosing> productClosingData = new Dictionary<int, ProductClosing>();
+    public Dictionary<int, ProductSubData> productSubData = new Dictionary<int, ProductSubData>();
 
     private TextAsset jsonFile;
 
@@ -59,18 +70,14 @@ public class ProductDataManager : MonoBehaviour
         List<Product> productList = JsonConvert.DeserializeObject<List<Product>>(jsonFile.text);
 
         productData.Clear();
+        productClosingData.Clear();
+        productSubData.Clear();
 
         foreach (var product in productList)
         {
             productData[product.itemID] = product;
-        }
-
-        productClosingData.Clear();
-
-        foreach (var product in productList)
-        {
             productClosingData[product.itemID] = new ProductClosing();
-            // productClosingData[product.itemID].productsPriorPrice.Add(product.basicCost);
+            productSubData[product.itemID] = new ProductSubData();
         }
     }
 

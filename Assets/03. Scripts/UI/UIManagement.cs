@@ -64,6 +64,7 @@ public class UIManagement : MonoBehaviour
         }
     }
 
+    // UIChart 부분
     public void OpenManagement()
     {
         management.SetActive(!management.activeSelf);
@@ -98,7 +99,7 @@ public class UIManagement : MonoBehaviour
         int index = value;
 
         // 즐겨찾기
-        if (value == 1)
+        if (value == 1 && onChips == 0)
         {
             index = 0;
         }
@@ -120,11 +121,19 @@ public class UIManagement : MonoBehaviour
             uiChart.OnBookMark();
         }
 
-        coiceB.transform.position = icons[index][0].transform.position;
+        coiceB.transform.position = icons[value][0].transform.position;
     }
 
     public void ExitButton()
     {
         management.SetActive(false);
     }
+
+    // UIShop 부분
+
+
+
+    // UIRobot 부분
+
+
 }

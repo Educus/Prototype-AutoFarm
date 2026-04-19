@@ -9,6 +9,7 @@ public class DataManager : MonoBehaviour
     [SerializeField] private ProductDataManager productDataManager;
     public Dictionary<int, Product> productsData { get; private set; }
     public Dictionary<int, ProductClosing> productClosingData { get; private set; }
+    public Dictionary<int, ProductSubData> productSubData { get; private set; }
 
     [SerializeField] private EventDataManager eventDataManager;
     public Dictionary<int, EventData> eventsData { get; private set; }
@@ -32,6 +33,7 @@ public class DataManager : MonoBehaviour
         itemsData = itemsDataManager.itemData;
         productsData = productDataManager.productData;
         productClosingData = productDataManager.productClosingData;
+        productSubData = productDataManager.productSubData;
         eventsData = eventDataManager.eventData;
 
         // 세이브 데이터 로드
