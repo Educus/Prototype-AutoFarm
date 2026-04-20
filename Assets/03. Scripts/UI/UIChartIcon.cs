@@ -5,19 +5,19 @@ using UnityEngine.UI;
 
 public class UIChartIcon : MonoBehaviour
 {
-    [SerializeField] private DataManager dataManager;
-    [SerializeField] private UIChart uIChart;
+    private DataManager dataManager;
+    private UIChart uiChart;
 
     private ProductSubData productSubData;
     private int itemID;
 
     private Button button;
 
-    [SerializeField] private GameObject[] backGround;
+    [SerializeField] private GameObject[] backGround;   // 가격 상승 하락 배경 이미지
     [SerializeField] private Image itemImage;
     [SerializeField] private TMP_Text itemName;
     [SerializeField] private TMP_Text itemPrice;
-    [SerializeField] private GameObject[] bookMark;
+    [SerializeField] private GameObject[] bookMark;     // 북마크 이미지
 
     private void Awake()
     {
@@ -28,7 +28,7 @@ public class UIChartIcon : MonoBehaviour
     {
         dataManager = data;
         productSubData = dataManager.productSubData[id];
-        uIChart = ui;
+        uiChart = ui;
         itemID = id;
 
         SetInfo();
@@ -38,7 +38,7 @@ public class UIChartIcon : MonoBehaviour
     // 최초 정보 설정
     private void SetInfo()
     {
-        button.onClick.AddListener(() => uIChart.OnClickChartButton(itemID));
+        button.onClick.AddListener(() => uiChart.OnClickChartButton(itemID));
         itemImage.sprite = dataManager.GetItemImage(itemID);
         itemName.text = dataManager.productsData[itemID].itemName;
     }

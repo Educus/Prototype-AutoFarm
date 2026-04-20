@@ -22,7 +22,7 @@ public class ItemData
     [SerializeField] public int basicPrice;
     [SerializeField] public int stack;
     [SerializeField] public int storagePeriod;
-    [SerializeField] public int useToDemo;
+    [SerializeField] public bool useToDemo;
 }
 public class ItemDataManager : MonoBehaviour
 {

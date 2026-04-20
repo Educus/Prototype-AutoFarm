@@ -20,7 +20,6 @@ public class DataManager : MonoBehaviour
     public int nowEventID = -1;
 
     [SerializeField] private Sprite[] itemImage;
-    public Sprite[] ItemImage { get { return itemImage; }  }
 
     private void Start()
     {

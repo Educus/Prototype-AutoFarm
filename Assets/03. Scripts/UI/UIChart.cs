@@ -16,10 +16,10 @@ public class UIChart : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(IEStart());
+        StartCoroutine(IEUIChartStart());
     }
     
-    private IEnumerator IEStart()
+    private IEnumerator IEUIChartStart()
     {
         // product의 아이템 수만큼 게임 오브젝트 생성
         // onDayEvent에 등록하여 매일 데이터 갱신
@@ -42,15 +42,6 @@ public class UIChart : MonoBehaviour
             {
                 chartIcon.GetComponent<UIChartIcon>().OffBookMark();
             };
-        }
-    }
-
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            uiChart.DrawChart(dataManager.productsData[1022].itemID);
         }
     }
 
