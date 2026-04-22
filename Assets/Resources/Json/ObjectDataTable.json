@@ -1,6 +1,6 @@
 [
     {
-        "ObjectID":11,
+        "ObjectID":6011,
         "ObjectName":"Player",
         "ObjectType":"PC",
         "Price":0,
@@ -12,7 +12,7 @@
         "UseToDemo":1
     },
     {
-        "ObjectID":21,
+        "ObjectID":6021,
         "ObjectName":"Prototype",
         "ObjectType":"NPC",
         "Price":10000,
@@ -24,7 +24,7 @@
         "UseToDemo":1
     },
     {
-        "ObjectID":31,
+        "ObjectID":6031,
         "ObjectName":"Cow",
         "ObjectType":"Cattle",
         "Price":20000,
@@ -36,7 +36,7 @@
         "UseToDemo":1
     },
     {
-        "ObjectID":32,
+        "ObjectID":6032,
         "ObjectName":"Chicken",
         "ObjectType":"Cattle",
         "Price":5000,
