@@ -1,5 +1,10 @@
 using UnityEngine;
 
+public enum BuildingType
+{
+
+}
+
 public class Building : MonoBehaviour, ISaveable
 {
     // 프리팹에 저장된 데이터
