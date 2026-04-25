@@ -135,6 +135,33 @@
         "UseToDemo":1
     },
     {
+        "ItemID":6021,
+        "ItemName":"Prototype",
+        "ItemType":"Object",
+        "BasicPrice":10000,
+        "Stack":1,
+        "StoragePeriod":-1,
+        "UseToDemo":1
+    },
+    {
+        "ItemID":6031,
+        "ItemName":"Cow",
+        "ItemType":"Object",
+        "BasicPrice":20000,
+        "Stack":1,
+        "StoragePeriod":-1,
+        "UseToDemo":1
+    },
+    {
+        "ItemID":6032,
+        "ItemName":"Chicken",
+        "ItemType":"Object",
+        "BasicPrice":5000,
+        "Stack":1,
+        "StoragePeriod":-1,
+        "UseToDemo":0
+    },
+    {
         "ItemID":7011,
         "ItemName":"BatteryLv1",
         "ItemType":"Battery",
