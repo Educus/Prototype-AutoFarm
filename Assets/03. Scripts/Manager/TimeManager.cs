@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
+
     [SerializeField] private GameManager gameManager;
 
     [Tooltip("현실 시간 기준 하루 길이(초)")]
@@ -28,6 +29,14 @@ public class TimeManager : MonoBehaviour
     public event Action onWeekEvent;            // 매주
     public event Action onEvent;                // 7일마다 오전9시에 이벤트 발생
     public event Action<int> onSpecificDay;     // 특정 날짜
+
+    public static TimeManager Instance;
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
 
     void Update()
     {

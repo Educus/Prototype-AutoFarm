@@ -6,13 +6,4 @@ public class BuildingInteraction : EntityBase
     {
         Debug.Log($"{entityName} 상호작용");
     }
-    public override string GetStatus()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void SetStatus()
-    {
-        throw new System.NotImplementedException();
-    }
 }

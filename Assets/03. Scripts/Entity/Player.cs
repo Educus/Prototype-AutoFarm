@@ -5,24 +5,19 @@ public class Player : StatusBase
 {
     public float moveSpeed = 3f;
 
-    NavMeshAgent agent;
-
     IInteractable interactTarget;
     bool isInteracting;
 
+    public Inventory mainInventory;
+    public Inventory subInventory;
 
-    private void Awake()
+    void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
+        mainInventory.Initialize(5);
+        subInventory.Initialize(3);
     }
 
-    public override string GetStatus()
+    public override void OnInteract()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override void SetStatus()
-    {
-        throw new System.NotImplementedException();
     }
 }

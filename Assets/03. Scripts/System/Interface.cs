@@ -9,8 +9,6 @@ public interface Loader<Key, Value>
 
 public interface IInteractable
 {
-    string GetName();
-    string GetStatus();
     void OnInteract();
 }
 

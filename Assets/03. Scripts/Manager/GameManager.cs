@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     // 일시정지
     public bool isPlay = false;
 
+    // 카메라 타겟
+    public GameObject targetLock;
+
     private void Start()
     {
         if (Input.GetKeyDown(KeyCode.Space))

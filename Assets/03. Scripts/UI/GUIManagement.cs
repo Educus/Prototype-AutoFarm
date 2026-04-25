@@ -11,7 +11,7 @@ public class GUIManagement : MonoBehaviour
 
     private string[] value;
 
-    [SerializeField] private ResourceManager resourceManager;
+    [SerializeField] private CurrencyManager currencyManager;
     // NPC
     [SerializeField] private TMP_Text npcText;
 
@@ -24,13 +24,16 @@ public class GUIManagement : MonoBehaviour
     private void Awake()
     {
         timeManager.onTimeSetpEvent += SetTime;
-        resourceManager.onSetNPC += SetNPC;
-        resourceManager.onSetStorage += SetStorage;
-        resourceManager.onSetGold += SetGold;
     }
     private void Start()
     {
         SetTime();
+    }
+    private void Update()
+    {
+        SetNPC();
+        SetStorage();
+        SetGold();
     }
 
     // 시간 GUI 자동 갱신
@@ -45,18 +48,37 @@ public class GUIManagement : MonoBehaviour
     // NPC GUI 자동 갱신
     private void SetNPC()
     {
-        npcText.text = $"{resourceManager.npcCount}/99";
+        foreach (var npc in DataManager.Instance.NPCManager.npcs)
+        {
+            // 일 하는 중인 NPC
+        }
+        npcText.text = $"/{DataManager.Instance.NPCManager.npcs.Count}";
     }
 
     // 창고 GUI 자동 갱신
     private void SetStorage()
     {
-        storageText.text = $"{resourceManager.storageCapacity}/999";
+        int totalStorage = 0;
+        int storage = 0;
+
+        foreach (var invens in DataManager.Instance.InventoryManager.inventories)
+        {
+            if (invens.Value.type == InventoryType.Unified)
+            {
+                totalStorage += invens.Value.slots.Count;
+
+                foreach (var slot in invens.Value.slots)
+                {
+                    storage += slot.IsEmpty() ? 0 : 1;
+                }
+            }
+        }
+        storageText.text = $"{storage}/{totalStorage}";
     }
 
     // 골드 GUI 자동 갱신
     private void SetGold()
     {
-        goldText.text = $"{resourceManager.gold}";
+        goldText.text = $"{DataManager.Instance.CurrencyManager.money}";
     }
 }

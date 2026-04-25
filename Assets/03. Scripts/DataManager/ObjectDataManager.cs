@@ -39,6 +39,7 @@ public class ObjectDataManager : MonoBehaviour
         // PrintAll();
     }
 
+    // 기본 베이스 오브젝트 데이터 테이블 불러오기
     private void LoadObjectDataTable()
     {
         jsonFile = Resources.Load<TextAsset>("Json/ObjectDataTable");
@@ -56,15 +57,6 @@ public class ObjectDataManager : MonoBehaviour
         foreach (var obj in objectList)
         {
             objectData[obj.ObjectID] = obj;
-        }
-    }
-
-    // 테스트 출력
-    public void PrintAll()
-    {
-        foreach (var pair in objectData)
-        {
-            Debug.Log($"Key:{pair.Key} ID:{pair.Value.ObjectID} Name:{pair.Value.ObjectName} Price:{pair.Value.Price}");
         }
     }
 }

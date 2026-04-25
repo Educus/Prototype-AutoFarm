@@ -17,9 +17,28 @@ public class DataManager : MonoBehaviour
     [SerializeField] private SaveLoadManager saveLoadManager;
     public SaveLoadManager SaveLoadManager { get; private set; }
 
+    [SerializeField] private CurrencyManager currencyManager;
+    public CurrencyManager CurrencyManager { get; private set; }
+
+    [SerializeField] private NPCManager npcManager;
+    public NPCManager NPCManager { get; private set; }
+
+    [SerializeField] private InventoryManager inventoryManager;
+    public InventoryManager InventoryManager { get; private set; }
+
+
     public int nowEventID = -1;
 
     [SerializeField] private Sprite[] itemImage;
+
+
+    public static DataManager Instance;
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
 
     private void Start()
     {
@@ -34,6 +53,9 @@ public class DataManager : MonoBehaviour
         productClosingData = productDataManager.productClosingData;
         productSubData = productDataManager.productSubData;
         eventsData = eventDataManager.eventData;
+        CurrencyManager = currencyManager;
+        NPCManager = npcManager;
+        InventoryManager = inventoryManager;
 
         // 세이브 데이터 로드
 
@@ -41,7 +63,7 @@ public class DataManager : MonoBehaviour
 
     public void ContinueGame()
     {
-        saveLoadManager.ContinueGame();
+        // saveLoadManager.ContinueGame();
     }
 
     public Sprite GetItemImage(int itemId)

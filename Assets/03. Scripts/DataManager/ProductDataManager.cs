@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -78,15 +79,6 @@ public class ProductDataManager : MonoBehaviour
             productData[product.itemID] = product;
             productClosingData[product.itemID] = new ProductClosing();
             productSubData[product.itemID] = new ProductSubData();
-        }
-    }
-
-    // 테스트 출력
-    public void PrintAll()
-    {
-        foreach (var pair in productData)
-        {
-            Debug.Log($"Key:{pair.Key} ID:{pair.Value.itemID} Name:{pair.Value.itemName} Price:{pair.Value.itemType}");
         }
     }
 }

@@ -27,8 +27,8 @@ public class InteractionUI : MonoBehaviour
     {
         while (interactable != null)
         {
-            nameText.text = interactable.GetName();
-            statusText.text = interactable.GetStatus();
+            // nameText.text = interactable.GetName();
+            // statusText.text = interactable.GetStatus();
 
             yield return new WaitForSeconds(1f);
         }
