@@ -1,35 +1,26 @@
 using System;
 using UnityEngine;
 
-
-public class UpgPerk
-{
-    // 메인 인벤토리 레벨
-    int mainInvLv = 0;
-    // 서브 인벤토리 레벨
-    int subInvLv = 0;
-    // 스피드 레벨
-    int speedLv = 0;
-    // ???
-    int efficLv = 0;
-}
+[RequireComponent(typeof(NPCJobController))]
 public class NPC : StatusBase
 {
     // NPC
     public string id;
+
+    [Header("Water")]
     public int water;
     public int maxWater;
 
+    [Header("Inventory")]
     public Inventory mainInventory;
     public Inventory subInventory;
     public Inventory upgradeInventory;
 
+    [Header("Job")]
+    public NPCJobConfig job = new NPCJobConfig();
+
     private void Start()
     {
-        mainInventory.Initialize(5);
-        subInventory.Initialize(3);
-        upgradeInventory.Initialize(4);
-
         DataManager.Instance.NPCManager.Register(this);
 
         InitializeInventories();
@@ -41,6 +32,7 @@ public class NPC : StatusBase
         Debug.Log($"{entityName} 상호작용");
     }
 
+    // NPC 기본 세팅
     private void InitializeInventories()
     {
         // ID는 반드시 고유해야 함 (Save/Load 기준)
@@ -122,7 +114,6 @@ public class NPC : StatusBase
     }
     #endregion
 
-
     #region Save / Load
     public NPCSaveData GetSaveData()
     {
@@ -136,7 +127,9 @@ public class NPC : StatusBase
 
             mainInventory = mainInventory.GetSaveData(),
             subInventory = subInventory.GetSaveData(),
-            upgradeInventory = upgradeInventory.GetSaveData()
+            upgradeInventory = upgradeInventory.GetSaveData(),
+
+            job = job
         };
     }
     public void Load(NPCSaveData data)
@@ -153,6 +146,8 @@ public class NPC : StatusBase
         mainInventory.Load(data.mainInventory);
         subInventory.Load(data.subInventory);
         upgradeInventory.Load(data.upgradeInventory);
+
+        job = data.job;
     }
     #endregion
 }

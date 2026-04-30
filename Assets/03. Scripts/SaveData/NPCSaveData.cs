@@ -6,7 +6,6 @@ public class NPCSaveData
 {
     public string id;
     public string entityName;
-
     public Vector3 position;
 
     public int water;
@@ -15,4 +14,6 @@ public class NPCSaveData
     public InventorySaveData mainInventory;
     public InventorySaveData subInventory;
     public InventorySaveData upgradeInventory;
+
+    public NPCJobConfig job;
 }

@@ -30,6 +30,7 @@ public class CameraController : MonoBehaviour
         ClampCamera();
     }
 
+    // 줌 인 아웃
     void HandleZoom()
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
@@ -41,6 +42,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    // 카메라 이동
     void HandleMovement()
     {
         Vector3 pos = transform.position;
@@ -66,6 +68,7 @@ public class CameraController : MonoBehaviour
         transform.position = pos;
     }
 
+    // 카메라 최대값
     void ClampCamera()
     {
         float camHeight = camera.orthographicSize;

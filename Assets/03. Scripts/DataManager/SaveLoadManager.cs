@@ -24,6 +24,9 @@ public class SaveLoadManager : MonoBehaviour
         // Currency
         data.currency = DataManager.Instance.CurrencyManager.GetSaveData();
 
+        // Building
+        // data.buildings = DataManager.Instance.BuildingManager.SaveBuildings();
+
         return data;
     }
 
@@ -45,5 +48,8 @@ public class SaveLoadManager : MonoBehaviour
 
         // Currency
         DataManager.Instance.CurrencyManager.Load(data.currency);
+
+        // Building
+        // DataManager.Instance.BuildingManager.LoadBuildings(data.buildings);
     }
 }

@@ -26,6 +26,9 @@ public class DataManager : MonoBehaviour
     [SerializeField] private InventoryManager inventoryManager;
     public InventoryManager InventoryManager { get; private set; }
 
+    [SerializeField] private BuildingManager buildingManager;
+    public BuildingManager BuildingManager { get; private set; }
+
 
     public int nowEventID = -1;
 
@@ -56,6 +59,7 @@ public class DataManager : MonoBehaviour
         CurrencyManager = currencyManager;
         NPCManager = npcManager;
         InventoryManager = inventoryManager;
+        BuildingManager = buildingManager;
 
         // 세이브 데이터 로드
 

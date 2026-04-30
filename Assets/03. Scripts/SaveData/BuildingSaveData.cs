@@ -3,10 +3,10 @@ using UnityEngine;
 [System.Serializable]
 public class BuildingSaveData
 {
-    // 건물의 아이디, 위치 정보
-    public int itemID;
-    public int x;
-    public int y;
+    public int itemId;  // 아이템 아이디
+    public string id;   // 건물 이름(저장 키)
+    public Vector2 position;
 
-    public string extraData; // 추가 데이터
+    public BuildingType type;   // 건물 타입
+    public string jsonData;     // 건물 상세 데이터
 }

@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1202687540150481283}
   - component: {fileID: 8335902909012370265}
-  - component: {fileID: 3141953761331422101}
+  - component: {fileID: 8836592921761960403}
   - component: {fileID: 2298148226287491116}
   - component: {fileID: -5266771422279777814}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: 9011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &3141953761331422101
+--- !u!114 &8836592921761960403
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,12 +103,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 5477845361673729255}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38650d0376196214a8f8a07f5e3f2ffb, type: 3}
+  m_Script: {fileID: 11500000, guid: 54078a2951514054792c44148b38f0b2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Building
+  m_EditorClassIdentifier: Assembly-CSharp::FarmBuilding
+  type: 1
   itemID: 9011
+  id: 
+  isClone: 0
   data: {fileID: 11400000, guid: 6f922cf0b5c7e5446b99980de8154da1, type: 2}
   icon: {fileID: -7893941329492782660, guid: d4fd9f21cac1c4248addf1f3aa3f1f86, type: 3}
+  tiles: []
 --- !u!114 &2298148226287491116
 MonoBehaviour:
   m_ObjectHideFlags: 0

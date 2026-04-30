@@ -1622,7 +1622,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4eb148555b78fd4190b6638255e65b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildManager
-  gameManager: {fileID: 1570929483}
   buildingPrefabs:
   - {fileID: 5477845361673729255, guid: a4cb5802f88e4434a87b2c71e2129ece, type: 3}
   gridManager: {fileID: 494453411}
@@ -1684,6 +1683,7 @@ MonoBehaviour:
   currencyManager: {fileID: 1625470979}
   npcManager: {fileID: 1751103716}
   inventoryManager: {fileID: 1615718535}
+  buildingManager: {fileID: 160995762}
   nowEventID: -1
   itemImage:
   - {fileID: 1102096949, guid: 80ed0aea6449bda47ad878a4c1d0f334, type: 3}
@@ -3148,6 +3148,7 @@ GameObject:
   - component: {fileID: 395423126}
   - component: {fileID: 395423128}
   - component: {fileID: 395423127}
+  - component: {fileID: 395423131}
   m_Layer: 6
   m_Name: npc
   m_TagString: Untagged
@@ -3349,6 +3350,25 @@ MonoBehaviour:
   mainInventory: {fileID: 395423129}
   subInventory: {fileID: 395423128}
   upgradeInventory: {fileID: 395423127}
+  job:
+    jobType: 0
+    buildingIDs: []
+    productItemID: 0
+    step: 0
+--- !u!114 &395423131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395423122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2f9298ffb4dbe94480cbc244011621f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCJobController
+  npc: {fileID: 0}
+  interval: 1
 --- !u!1 &401536314
 GameObject:
   m_ObjectHideFlags: 0
@@ -62459,6 +62479,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1169072017}
   m_CullTransparentMesh: 1
+--- !u!1 &1172304373 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5477845361673729255, guid: a4cb5802f88e4434a87b2c71e2129ece, type: 3}
+  m_PrefabInstance: {fileID: 179851318669208922}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1172304380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172304373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54078a2951514054792c44148b38f0b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FarmBuilding
+  type: 0
+  itemID: 0
+  id: 
+  isClone: 0
+  data: {fileID: 0}
+  icon: {fileID: 0}
+  tiles: []
 --- !u!1 &1184548432
 GameObject:
   m_ObjectHideFlags: 0
@@ -65624,6 +65668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   isBuildMode: 0
+  isWorkMode: 0
   isPlay: 0
   targetLock: {fileID: 0}
 --- !u!1 &1580639594
@@ -70830,14 +70875,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stable1_0
       objectReference: {fileID: 0}
-    - target: {fileID: 5477845361673729255, guid: a4cb5802f88e4434a87b2c71e2129ece, type: 3}
-      propertyPath: m_Layer
-      value: 7
+    - target: {fileID: 8044505485300211080, guid: a4cb5802f88e4434a87b2c71e2129ece, type: 3}
+      propertyPath: data
+      value: 
+      objectReference: {fileID: 11400000, guid: 6f922cf0b5c7e5446b99980de8154da1, type: 2}
+    - target: {fileID: 8044505485300211080, guid: a4cb5802f88e4434a87b2c71e2129ece, type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: -7893941329492782660, guid: d4fd9f21cac1c4248addf1f3aa3f1f86, type: 3}
+    - target: {fileID: 8044505485300211080, guid: a4cb5802f88e4434a87b2c71e2129ece, type: 3}
+      propertyPath: itemID
+      value: 9011
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3141953761331422101, guid: a4cb5802f88e4434a87b2c71e2129ece, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5477845361673729255, guid: a4cb5802f88e4434a87b2c71e2129ece, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1172304380}
   m_SourcePrefab: {fileID: 100100000, guid: a4cb5802f88e4434a87b2c71e2129ece, type: 3}
 --- !u!1001 &2604794240276216390
 PrefabInstance:

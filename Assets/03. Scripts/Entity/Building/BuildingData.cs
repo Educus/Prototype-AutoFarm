@@ -5,6 +5,7 @@ public class BuildingData : ScriptableObject
 {
     // 프리팹에 저장된 데이터의 구조체(프리팹이랑 같이 보관)
     public int itemID;
+    public string name;
     public int width;
     public int height;
     public int cost;

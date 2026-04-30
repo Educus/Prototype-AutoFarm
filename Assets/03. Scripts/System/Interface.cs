@@ -11,9 +11,3 @@ public interface IInteractable
 {
     void OnInteract();
 }
-
-public interface ISaveable
-{
-    string Save();
-    void Load(string json);
-}

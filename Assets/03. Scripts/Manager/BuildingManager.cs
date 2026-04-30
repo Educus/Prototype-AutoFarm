@@ -1,10 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
+using static UnityEditor.Progress;
+
+public enum BuildingType
+{
+    None,
+    Farm,
+    Ranch,
+    Rocket,
+    Storage
+}
 
 public class BuildingManager : MonoBehaviour
 {
-    [SerializeField] private GameManager gameManager;
     [SerializeField] private GameObject[] buildingPrefabs;
     [SerializeField] private GridManager gridManager;
     [SerializeField] private ChunkManager chunkManager;
@@ -17,11 +27,13 @@ public class BuildingManager : MonoBehaviour
 
     public int CurrentItemID { get; private set; } = -1;
 
+    public Dictionary<string, BuildingBase> buildings = new Dictionary<string, BuildingBase>();
+
     private bool isPlacing = false;
 
     void Update()
     {
-        if (!gameManager.isBuildMode) return;
+        if (!GameManager.Instance.isBuildMode) return;
         if (!isPlacing) return;
 
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -33,6 +45,12 @@ public class BuildingManager : MonoBehaviour
         {
             TryPlace(gridPos);
         }
+    }
+
+    public void Register(BuildingBase building)
+    {
+        if (!buildings.ContainsKey(building.id))
+            buildings.Add(building.id, building);
     }
 
     public void StartPlacement(int itemID)
@@ -51,7 +69,7 @@ public class BuildingManager : MonoBehaviour
 
         SetPreviewAlpha(previewObj, alpha);
 
-        currentData = previewObj.GetComponent<Building>().data;
+        currentData = previewObj.GetComponent<BuildingBase>().data;
 
         CurrentItemID = itemID;
         isPlacing = true;
@@ -109,6 +127,7 @@ public class BuildingManager : MonoBehaviour
         return true;
     }
 
+    // 설치
     void TryPlace(Vector2Int pos)
     {
         if (!CanPlace(pos))
@@ -118,6 +137,7 @@ public class BuildingManager : MonoBehaviour
         }
 
         bool hasMoney = true; // 테스트용 가능
+        // bool haveItem = DataManager.Instance.InventoryManager.GetTotalItemCount(1000) > 0;
 
         if (!hasMoney)
         {
@@ -127,6 +147,9 @@ public class BuildingManager : MonoBehaviour
 
         GameObject prefab = System.Array.Find(buildingPrefabs, p => p.name == CurrentItemID.ToString());
         GameObject obj = Instantiate(prefab);
+        obj.name = "Building_" + CurrentItemID.ToString() + $"_{buildings.Count}";
+        obj.GetComponent<BuildingBase>().name = "Building_" + CurrentItemID.ToString() + $"_{buildings.Count}";
+        obj.GetComponent<BuildingBase>().isClone = true;
 
         obj.transform.position = (Vector2)pos;
 
@@ -150,7 +173,7 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    public Building GetBuilding(int itemID)
+    public BuildingBase GetBuilding(int itemID)
     {
         GameObject prefab = System.Array.Find(buildingPrefabs, p => p.name == itemID.ToString());
 
@@ -159,7 +182,7 @@ public class BuildingManager : MonoBehaviour
             return null;
         }
 
-        return prefab.GetComponent<Building>();
+        return prefab.GetComponent<BuildingBase>();
     }
 
     public void CancelPlacement()
@@ -171,49 +194,50 @@ public class BuildingManager : MonoBehaviour
         CurrentItemID = -1;
     }
 
-    public List<BuildingSaveData> SaveBuildings()
+    public T Get<T>(string id) where T : BuildingBase
     {
-        List<BuildingSaveData> list = new List<BuildingSaveData>();
+        return buildings[id] as T;
+    }
 
-        Building[] allBuildings = FindObjectsOfType<Building>();
+    #region Save / Load
 
-        foreach (var building in allBuildings)
+    public List<BuildingSaveData> GetSaveData()
+    {
+        var list = new List<BuildingSaveData>();
+
+        foreach (var b in buildings.Values)
         {
-            Vector2Int pos = gridManager.WorldToGrid(building.transform.position);
-
             list.Add(new BuildingSaveData
             {
-                itemID = building.itemID,
-                x = pos.x,
-                y = pos.y,
-                extraData = building.Save()
+                id = b.id,
+                itemId = b.itemID,
+
+                position = b.transform.position,
+
+                jsonData = b.GetJsonData()
             });
         }
 
         return list;
     }
-
-    public void LoadBuildings(List<BuildingSaveData> list)
+    public void Load(List<BuildingSaveData> dataList)
     {
-        foreach (var data in list)
+        foreach (var data in dataList)
         {
-            GameObject prefab = System.Array.Find(buildingPrefabs, p => p.name == data.itemID.ToString());
+            // 1? 프리팹 로드
+            GameObject prefab = System.Array.Find(buildingPrefabs, p => p.name == data.itemId.ToString());
 
-            if (prefab == null)
-            {
-                Debug.LogError($"프리팹 없음 itemID:{data.itemID}");
-                continue;
-            }
-
+            // 2? 생성
             GameObject obj = Instantiate(prefab);
-            obj.transform.position = new Vector2(data.x, data.y);
+            obj.transform.position = data.position;
+            obj.name = data.id;
 
-            Building buildings = obj.GetComponent<Building>();
+            // 3? 컴포넌트
+            var building = obj.GetComponent<BuildingBase>();
 
-            buildings.Load(data.extraData);
-
-            currentData = buildings.data;
-            ApplyToGrid(new Vector2Int(data.x, data.y));
+            // 4 데이터 로드
+            building.LoadJsonData(data.jsonData);
         }
     }
+    #endregion
 }

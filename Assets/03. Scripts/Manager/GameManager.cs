@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 
     // 게임 모드 관리
     public bool isBuildMode = false;
+    public bool isWorkMode = false;
 
     // 일시정지
     public bool isPlay = false;
@@ -13,6 +14,13 @@ public class GameManager : MonoBehaviour
     // 카메라 타겟
     public GameObject targetLock;
 
+    public static GameManager Instance;
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
     private void Start()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -20,6 +28,14 @@ public class GameManager : MonoBehaviour
             isPlay = !isPlay;
 
             Debug.Log(isPlay ? "게임 시작" : "게임 일시정지");
+        }
+    }
+    private void Update()
+    {
+        if (targetLock == null) return;
+        else
+        {
+            Debug.Log($"타겟 대상 : {targetLock.name}");
         }
     }
 }
