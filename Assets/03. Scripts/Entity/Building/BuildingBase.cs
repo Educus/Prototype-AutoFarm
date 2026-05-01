@@ -7,7 +7,7 @@ public abstract class BuildingBase : MonoBehaviour
     public BuildingType type = BuildingType.None;
 
     public int itemID;
-    // [HideInInspector]
+    [HideInInspector]
     public string id;
     public bool isClone = false;
 

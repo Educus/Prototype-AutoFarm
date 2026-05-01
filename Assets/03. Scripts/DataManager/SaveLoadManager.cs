@@ -3,7 +3,12 @@ using UnityEngine;
 
 public class SaveLoadManager : MonoBehaviour
 {
-    public GameSaveData CreateSaveData()
+    private void Start()
+    {
+        GameManager.Instance.save += Save;
+        GameManager.Instance.load += Load;
+    }
+    public void Save()
     {
         GameSaveData data = new GameSaveData();
 
@@ -25,13 +30,19 @@ public class SaveLoadManager : MonoBehaviour
         data.currency = DataManager.Instance.CurrencyManager.GetSaveData();
 
         // Building
-        // data.buildings = DataManager.Instance.BuildingManager.SaveBuildings();
+        data.buildings = DataManager.Instance.BuildingManager.GetSaveData();
 
-        return data;
+        string json = JsonUtility.ToJson(data, true);
+        System.IO.File.WriteAllText(GetPath(), json);
     }
 
-    public void Load(GameSaveData data)
+    // public void Load(GameSaveData data)
+    public void Load()
     {
+        string json = System.IO.File.ReadAllText(GetPath());
+        GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
+
+
         // Inventory
         foreach (var invData in data.inventories)
         {
@@ -50,6 +61,11 @@ public class SaveLoadManager : MonoBehaviour
         DataManager.Instance.CurrencyManager.Load(data.currency);
 
         // Building
-        // DataManager.Instance.BuildingManager.LoadBuildings(data.buildings);
+        DataManager.Instance.BuildingManager.Load(data.buildings);
+    }
+
+    private string GetPath()
+    {
+        return Application.persistentDataPath + "/save.json";
     }
 }

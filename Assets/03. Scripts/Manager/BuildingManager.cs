@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.LightTransport;
 using UnityEngine.UIElements;
+using static UnityEditor.PlayerSettings;
 using static UnityEditor.Progress;
 
 public enum BuildingType
@@ -38,6 +40,11 @@ public class BuildingManager : MonoBehaviour
 
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2Int gridPos = gridManager.WorldToGrid(mousePos);
+
+        gridPos -= new Vector2Int(
+            currentData.width / 2,
+            currentData.height / 2
+        );
 
         UpdatePreview(gridPos);
 
@@ -77,12 +84,20 @@ public class BuildingManager : MonoBehaviour
 
     void UpdatePreview(Vector2Int pos)
     {
-        previewObj.transform.position = (Vector2)pos;
+        Vector3 world = gridManager.GridToWorld(pos.x, pos.y);
+
+        Vector3 center = world + new Vector3(
+            currentData.width * 0.5f,
+            currentData.height * 0.5f,
+            0
+        );
+
+        previewObj.transform.position = center;
 
         bool canPlace = CanPlace(pos);
 
         Color color = canPlace ? Color.green : Color.red;
-        color.a = alpha;
+        color.a = 0.5f;
 
         previewObj.GetComponent<SpriteRenderer>().color = color;
     }
@@ -118,6 +133,8 @@ public class BuildingManager : MonoBehaviour
 
                 Node node = gridManager.GetNode(checkPos.x, checkPos.y);
 
+                if (node == null) return false;
+
                 if (!node.isWalkable) return false;
                 if (!chunkManager.IsUnlocked(checkPos)) return false;
                 if (node.tileType == TileType.Water) return false;
@@ -151,7 +168,15 @@ public class BuildingManager : MonoBehaviour
         obj.GetComponent<BuildingBase>().name = "Building_" + CurrentItemID.ToString() + $"_{buildings.Count}";
         obj.GetComponent<BuildingBase>().isClone = true;
 
-        obj.transform.position = (Vector2)pos;
+        Vector3 world = gridManager.GridToWorld(pos.x, pos.y);
+
+        Vector3 center = world + new Vector3(
+            currentData.width * 0.5f,
+            currentData.height * 0.5f,
+            0
+        );
+
+        obj.transform.position = center;
 
         ApplyToGrid(pos);
     }
@@ -200,7 +225,6 @@ public class BuildingManager : MonoBehaviour
     }
 
     #region Save / Load
-
     public List<BuildingSaveData> GetSaveData()
     {
         var list = new List<BuildingSaveData>();
@@ -224,15 +248,18 @@ public class BuildingManager : MonoBehaviour
     {
         foreach (var data in dataList)
         {
-            // 1? 프리팹 로드
+            // 1 프리팹 로드
             GameObject prefab = System.Array.Find(buildingPrefabs, p => p.name == data.itemId.ToString());
 
-            // 2? 생성
+            // 2 생성
             GameObject obj = Instantiate(prefab);
             obj.transform.position = data.position;
             obj.name = data.id;
+            // grid 위치 저장(길찾기)
+            Vector2Int pos = new Vector2Int((int)data.position.x, (int)data.position.y);
+            ApplyToGrid(pos);
 
-            // 3? 컴포넌트
+            // 3 컴포넌트
             var building = obj.GetComponent<BuildingBase>();
 
             // 4 데이터 로드

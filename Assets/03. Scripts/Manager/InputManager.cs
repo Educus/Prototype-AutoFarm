@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
@@ -7,13 +9,15 @@ public class InputManager : MonoBehaviour
     // 창고, NPC의 경우 UI오픈 // 물탱크, 마른밭의 경우 행동 상호작용
     [SerializeField] private MovingManager movingManager;
     [SerializeField] private InteractionUIManager uiManager;
+    [SerializeField] private GridManager gridManager;
+    [SerializeField] private Pathfinder pathfinder;
 
     [SerializeField] public Player player;
 
     private Camera camera;
 
     int layerMask;
-
+    Coroutine moveCoroutine;
     private void Start()
     {
         camera = Camera.main;
@@ -29,10 +33,22 @@ public class InputManager : MonoBehaviour
             LeftClick();
         }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            RightClick();
-        }
+        // if (Input.GetMouseButtonDown(1))
+        // {
+        //     Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //     Vector2Int gridPos = gridManager.WorldToGrid(mousePos);
+        // 
+        //     Vector2Int currentPos = gridManager.WorldToGrid(player.transform.position);
+        //     List<Node> path = pathfinder.FindPath(currentPos, gridPos);
+        // 
+        //     if (path != null && path.Count > 0)
+        //     {
+        //         Move(path);
+        //     }
+        // 
+        //     return;
+        //     RightClick();
+        // }
     }
 
     void LeftClick()
@@ -82,5 +98,31 @@ public class InputManager : MonoBehaviour
                 player.moveSpeed,
                 () => { if (interactable != null) { interactable.OnInteract(); } }
             );
+    }
+
+    public void Move(List<Node> path)
+    {
+        if (moveCoroutine != null)
+            StopCoroutine(moveCoroutine);
+
+        moveCoroutine = StartCoroutine(MoveAlongPath(path, 1f));
+    }
+    IEnumerator MoveAlongPath(List<Node> path, float speed)
+    {
+        foreach (Node node in path)
+        {
+            Vector3 targetPos = new Vector3(node.x, node.y, 0);
+
+            while (Vector3.Distance(transform.position, targetPos) > 0.05f)
+            {
+                transform.position = Vector3.MoveTowards(
+                    transform.position,
+                    targetPos,
+                    speed * Time.deltaTime
+                );
+
+                yield return null;
+            }
+        }
     }
 }

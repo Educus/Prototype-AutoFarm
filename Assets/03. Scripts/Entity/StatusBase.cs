@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class StatusBase : EntityBase
@@ -19,4 +21,5 @@ public abstract class StatusBase : EntityBase
     {
         return invenNum;
     }
+
 }

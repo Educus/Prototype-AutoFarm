@@ -11,6 +11,7 @@ public class MovingManager : MonoBehaviour
 
     // 아직은 직선 이동만, 이후 AI길찾기 활용하여 수정할 예정
     // PathFinder? NavMeshAgent?
+    [SerializeField] private GridManager grid;
 
     private Dictionary<Transform, Coroutine> movingObj = new Dictionary<Transform, Coroutine>();
 

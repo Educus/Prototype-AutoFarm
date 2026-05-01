@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -15,6 +16,10 @@ public class GameManager : MonoBehaviour
     public GameObject targetLock;
 
     public static GameManager Instance;
+
+    // Save/Load
+    public event Action save;
+    public event Action load;
 
     private void Awake()
     {
@@ -38,4 +43,5 @@ public class GameManager : MonoBehaviour
             Debug.Log($"Å¸°Ù ´ë»ó : {targetLock.name}");
         }
     }
+
 }
