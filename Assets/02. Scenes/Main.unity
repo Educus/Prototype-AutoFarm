@@ -1669,6 +1669,11 @@ MonoBehaviour:
   - {fileID: -4630796973364724311, guid: 9c6070b32114c7845a41690cd524abcf, type: 3}
   - {fileID: -440134416756147114, guid: dab1c57ec7ff2b948b3f104cba420d46, type: 3}
   - {fileID: 2593879557639305930, guid: 987924f0566028249afa38e85413fdab, type: 3}
+  - {fileID: 2090617569798717132, guid: 3b89c8080d5d50548b888bfc9443a5a1, type: 3}
+  - {fileID: -3717145113293058601, guid: f8895c03076e5a148b304c79f7d9a7e9, type: 3}
+  - {fileID: 1712660817554479198, guid: 28653b29d2ba5a046be2672e66d504bd, type: 3}
+  - {fileID: -6479269345417231632, guid: 004fc3dc4a397af428c8896c1d1ea8e4, type: 3}
+  - {fileID: 3340919273358579491, guid: ac50494007db919489a122972affc677, type: 3}
 --- !u!1 &201209885
 GameObject:
   m_ObjectHideFlags: 0
@@ -112061,6 +112066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce857ba6009212249894a4050404117b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  isShopMode: 0
   isBuildMode: 0
   isWorkMode: 0
   selectedNPC: {fileID: 0}
