@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 44576608312b56d48b76c27c33c6b208
+guid: 1ef9420c484e25b4db4529addaea2c58
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3380042617427355779
-    second: UI_PopUp_Robot_Production_On_0
+      213: 1809899445002959112
+    second: UI_PopUp_Robot_State_Off_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_PopUp_Robot_Production_On_0
+      name: UI_PopUp_Robot_State_Off_0
       rect:
         serializedVersion: 2
-        x: 12
-        y: 14
-        width: 74
-        height: 74
+        x: 17
+        y: 13
+        width: 159
+        height: 210
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 38860713ad258ee20800000000000000
-      internalID: 3380042617427355779
+      spriteID: 809f39ab4fd0e1910800000000000000
+      internalID: 1809899445002959112
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7cdc85fe56fec6b4daa1b4cc29d594c4
+    spriteID: c091fcada5bac4e4c8ef22712a743f94
     internalID: 0
     vertices: []
     indices: 
@@ -163,7 +163,7 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      UI_PopUp_Robot_Production_On_0: 3380042617427355779
+      UI_PopUp_Robot_State_Off_0: 1809899445002959112
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

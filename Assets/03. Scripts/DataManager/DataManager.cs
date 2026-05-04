@@ -13,6 +13,8 @@ public class DataManager : MonoBehaviour
 
     [SerializeField] private EventDataManager eventDataManager;
     public Dictionary<int, EventData> eventsData { get; private set; }
+    [SerializeField] private ObjectDataManager objectDataManager;
+    public Dictionary<int, ObjectData> objectsData { get; private set; }
 
     [SerializeField] private SaveLoadManager saveLoadManager;
     public SaveLoadManager SaveLoadManager { get; private set; }
@@ -56,18 +58,17 @@ public class DataManager : MonoBehaviour
         productClosingData = productDataManager.productClosingData;
         productSubData = productDataManager.productSubData;
         eventsData = eventDataManager.eventData;
+        objectsData = objectDataManager.objectData;
+        SaveLoadManager = saveLoadManager;
         CurrencyManager = currencyManager;
         NPCManager = npcManager;
         InventoryManager = inventoryManager;
         BuildingManager = buildingManager;
-
-        // 세이브 데이터 로드
-
     }
 
     public void ContinueGame()
     {
-        // saveLoadManager.ContinueGame();
+        saveLoadManager.Load();
     }
 
     public Sprite GetItemImage(int itemId)

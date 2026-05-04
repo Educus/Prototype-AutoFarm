@@ -6,6 +6,8 @@ public class UIManagement : MonoBehaviour
     [SerializeField] private GameObject management;
     [SerializeField] public DataManager dataManager;
     [SerializeField] public UIChart uiChart;
+    [SerializeField] public UIShop uiShop;
+    [SerializeField] public UIRobot uiRobot;
 
     [SerializeField] private GameObject[] chips0;
     [SerializeField] private GameObject[] chips1;
@@ -60,14 +62,14 @@ public class UIManagement : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.P))
         {
-            management.SetActive(!management.activeSelf);
+            OpenManagement();
         }
     }
 
-    // UIChart 부분
     public void OpenManagement()
     {
         management.SetActive(!management.activeSelf);
+        GameManager.Instance.isShopMode = true;
     }
 
     public void ChangeChip(int value)
@@ -98,8 +100,11 @@ public class UIManagement : MonoBehaviour
 
         int index = value;
 
-        // 즐겨찾기
-        if (value == 1 && onChips == 0)
+        // 사용안함
+        if (value == 3 && (onChips == 0 || onChips == 2)) return;
+
+        // chart 즐겨찾기 || shop || robot
+        if ((value == 1 && onChips == 0) || onChips != 0)
         {
             index = 0;
         }
@@ -109,16 +114,32 @@ public class UIManagement : MonoBehaviour
             chipMenu[onChips].transform.GetChild(i).gameObject.SetActive(i == index);
         }
 
-        if (value == 0)
+        if (onChips == 0)
         {
-            // 즐겨찾기 모드 해제
-            uiChart.OffBookMark();
+            if (value == 0)
+            {
+                // 즐겨찾기 모드 해제
+                uiChart.OffBookMark();
+            }
+            else if (value == 1)
+            {
+                // 즐겨찾기 모드 사용
+                uiChart.OnBookMark();
+            }
+            else if (value == 2)
+            {
+                uiChart.ChartNews();
+            }
         }
 
-        if (value == 1)
+        if (onChips == 1)
         {
-            // 즐겨찾기 모드 사용
-            uiChart.OnBookMark();
+            uiShop.ViewShopItem(value);
+        }
+
+        if (onChips == 2)
+        {
+            uiRobot.ViewRobot(value);
         }
 
         coiceB.transform.position = icons[value][0].transform.position;
@@ -126,14 +147,7 @@ public class UIManagement : MonoBehaviour
 
     public void ExitButton()
     {
+        GameManager.Instance.isShopMode = false;
         management.SetActive(false);
     }
-
-    // UIShop 부분
-
-
-
-    // UIRobot 부분
-
-
 }

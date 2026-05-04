@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(NPCJobController))]
@@ -19,11 +21,25 @@ public class NPC : StatusBase
     [Header("Job")]
     public NPCJobConfig job = new NPCJobConfig();
 
+    private GridManager gridManager;
+    private Pathfinder pathfinder;
+
+    private Coroutine moveCoroutine;
+    private Vector2Int currentGridPos;
+
+    public bool isMoving {  get; private set; }
+    public float moveSpeed = 3f;
+
     private void Start()
     {
+        gridManager = GridManager.Instance;
+        pathfinder = gridManager.Pathfinder;
+
         DataManager.Instance.NPCManager.Register(this);
 
         InitializeInventories();
+
+        currentGridPos = gridManager.WorldToGrid(transform.position);
     }
 
     // 상호작용
@@ -83,6 +99,54 @@ public class NPC : StatusBase
 
         water -= amount;
         return true;
+    }
+    #endregion
+
+    #region 이동
+    public void MoveTo(Vector2Int target)
+    {
+        // 이동 중이면 무시
+        if (isMoving) return;
+
+        List<Node> path = pathfinder.FindPath(currentGridPos, target);
+
+        if (path == null || path.Count == 0)
+            return;
+
+        if (moveCoroutine != null)
+            StopCoroutine(moveCoroutine);
+
+        moveCoroutine = StartCoroutine(MoveAlongPath(path));
+    }
+
+    IEnumerator MoveAlongPath(List<Node> path)
+    {
+        isMoving = true;
+
+        foreach (Node node in path)
+        {
+            Vector3 target = new Vector3(node.x + 0.5f, node.y, 0);
+
+            while (Vector3.Distance(transform.position, target) > 0.05f)
+            {
+                transform.position = Vector3.MoveTowards(
+                    transform.position,
+                    target,
+                    moveSpeed * Time.deltaTime
+                );
+
+                yield return null;
+            }
+
+            currentGridPos = new Vector2Int(node.x, node.y);
+        }
+
+        isMoving = false;
+    }
+
+    public Vector2Int GetGridPos()
+    {
+        return currentGridPos;
     }
     #endregion
 

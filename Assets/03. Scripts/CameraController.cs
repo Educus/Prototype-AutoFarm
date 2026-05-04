@@ -25,8 +25,17 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        HandleZoom();
-        HandleMovement();
+        if (GameManager.Instance.targetLock != null)
+        {
+            FolloewTarget();
+        }
+
+        if (!GameManager.Instance.isShopMode)
+        {
+            HandleZoom();
+            HandleMovement();
+        }
+
         ClampCamera();
     }
 
@@ -46,26 +55,44 @@ public class CameraController : MonoBehaviour
     void HandleMovement()
     {
         Vector3 pos = transform.position;
+        bool isMoving = false;
 
         if (Input.mousePosition.x >= Screen.width - edgeSize)
         {
             pos.x += moveSpeed * Time.deltaTime;
+            isMoving = true;
         }
         else if (Input.mousePosition.x <= edgeSize)
         {
             pos.x -= moveSpeed * Time.deltaTime;
+            isMoving = true;
         }
 
         if (Input.mousePosition.y >= Screen.height - edgeSize)
         {
             pos.y += moveSpeed * Time.deltaTime;
+            isMoving = true;
         }
         else if (Input.mousePosition.y <= edgeSize)
         {
             pos.y -= moveSpeed * Time.deltaTime;
+            isMoving = true;
+        }
+
+        if (isMoving && GameManager.Instance.targetLock != null)
+        {
+            GameManager.Instance.targetLock = null;
         }
 
         transform.position = pos;
+    }
+
+    void FolloewTarget()
+    {
+        Vector3 targetPos = GameManager.Instance.targetLock.transform.position;
+        targetPos.z = transform.position.z;
+
+        transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);
     }
 
     // 카메라 최대값

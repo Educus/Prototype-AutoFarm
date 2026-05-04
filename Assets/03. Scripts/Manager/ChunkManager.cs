@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ChunkManager : MonoBehaviour
 {
-    public int ChunkSize = 100;
+    public int chunkSize = 100;
 
     private HashSet<Vector2Int> unlockedChunks = new HashSet<Vector2Int>();
 
@@ -15,14 +15,15 @@ public class ChunkManager : MonoBehaviour
     private void Start()
     {
         UnlockChunk(Vector2Int.zero);
+        UnlockChunk(new Vector2Int(0,1));
     }
 
     // 청크 좌표 변환
     public Vector2Int WorldToChunk(Vector2Int gridPos)
     {
         return new Vector2Int(
-            Mathf.FloorToInt((float)gridPos.x / ChunkSize),
-            Mathf.FloorToInt((float)gridPos.y / ChunkSize)
+            Mathf.FloorToInt((float)gridPos.x / chunkSize),
+            Mathf.FloorToInt((float)gridPos.y / chunkSize)
         );
     }
 
@@ -60,12 +61,12 @@ public class ChunkManager : MonoBehaviour
                 Gizmos.color = unlocked ? unlockedColor : lockedColor;
 
                 Vector3 center = new Vector3(
-                    (cx * ChunkSize) + ChunkSize / 2f,
-                    (cy * ChunkSize) + ChunkSize / 2f,
+                    (cx * chunkSize) + chunkSize / 2f,
+                    (cy * chunkSize) + chunkSize / 2f,
                     0
                 );
 
-                Vector3 size = new Vector3(ChunkSize, ChunkSize, 0.1f);
+                Vector3 size = new Vector3(chunkSize, chunkSize, 0.1f);
 
                 Gizmos.DrawCube(center, size);
 
@@ -74,6 +75,32 @@ public class ChunkManager : MonoBehaviour
                 Gizmos.DrawWireCube(center, size);
             }
         }
+
+        Gizmos.color = new Color(0f, 0f, 1f, 1f); // 진한 파랑
+
+        foreach (var chunk in unlockedChunks)
+        {
+            DrawChunkBorder(chunk, chunkSize);
+        }
+    }
+
+    void DrawChunkBorder(Vector2Int chunk, float size)
+    {
+        float t = 0.2f; // 두께
+
+        Vector3 center = new Vector3(chunk.x * size + size / 2, chunk.y * size + size / 2, 0);
+
+        // 아래
+        Gizmos.DrawCube(center + new Vector3(0, -size / 2, 0), new Vector3(size, t, 0));
+
+        // 위
+        Gizmos.DrawCube(center + new Vector3(0, size / 2, 0), new Vector3(size, t, 0));
+
+        // 왼쪽
+        Gizmos.DrawCube(center + new Vector3(-size / 2, 0, 0), new Vector3(t, size, 0));
+
+        // 오른쪽
+        Gizmos.DrawCube(center + new Vector3(size / 2, 0, 0), new Vector3(t, size, 0));
     }
 }
 /*

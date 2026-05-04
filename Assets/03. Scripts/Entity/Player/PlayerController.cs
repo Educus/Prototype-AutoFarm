@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -10,16 +11,22 @@ public class PlayerController : MonoBehaviour
     private Coroutine moveCoroutine;
     public float speed = 5f;
 
+    private Vector2Int currentGridPos;
+
+    void Start()
+    {
+        currentGridPos = gridManager.WorldToGrid(transform.position);
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(1))
         {
             Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            Vector2Int start = gridManager.WorldToGrid(transform.position);
             Vector2Int end = gridManager.WorldToGrid(mouse);
 
-            List<Node> path = pathfinder.FindPath(start, end);
+            List<Node> path = pathfinder.FindPath(currentGridPos, end);
 
             if (path != null && path.Count > 0)
                 Move(path);
@@ -38,11 +45,6 @@ public class PlayerController : MonoBehaviour
     {
         foreach (Node node in path)
         {
-            float playerHeight = 2f;
-
-            // Vector3 target = gridManager.GetCellCenter(node.x, node.y)
-            //           - new Vector3(0, playerHeight / 2f, 0);
-
             Vector3 target = new Vector3(node.x + 0.5f, node.y, 0);
 
             while (Vector3.Distance(transform.position, target) > 0.05f)
@@ -55,8 +57,8 @@ public class PlayerController : MonoBehaviour
 
                 yield return null;
             }
+
+            currentGridPos = new Vector2Int(node.x, node.y);
         }
     }
-
-    
 }

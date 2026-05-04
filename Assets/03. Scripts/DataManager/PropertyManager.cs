@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-
 public class PropertyManager : MonoBehaviour
 {
     // 플레이어의 재산, 재물을 관리 및 저장

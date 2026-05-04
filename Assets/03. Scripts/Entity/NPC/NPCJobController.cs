@@ -52,7 +52,17 @@ public class NPCJobController : MonoBehaviour
                 break;
 
             case JobStep.MoveToStorage:
+
+                if (npc.isMoving) return;
+
+                Vector2Int storagePos = DataManager.Instance
+                    .BuildingManager
+                    .GetStoragePosition();
+
+                npc.MoveTo(storagePos);
+
                 npc.job.step = JobStep.TakeResource;
+
                 break;
 
             case JobStep.TakeResource:
@@ -142,4 +152,6 @@ public class NPCJobController : MonoBehaviour
 
         npc.job.step = JobStep.Idle;
     }
+
+
 }

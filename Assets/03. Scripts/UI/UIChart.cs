@@ -27,6 +27,9 @@ public class UIChart : MonoBehaviour
 
         foreach (var product in dataManager.productsData.Values)
         {
+            if (dataManager.itemsData[product.itemID].useToDemo == false)
+                continue;
+
             GameObject chartIcon = Instantiate(chartIconPrefab, chartIconContent.transform);
             chartIcon.GetComponent<UIChartIcon>().GetInfo(dataManager, this, product.itemID);
 
@@ -59,5 +62,11 @@ public class UIChart : MonoBehaviour
     public void OffBookMark()
     {
         eventOffBookMark?.Invoke();
+    }
+
+    // 3¹ø ±â´É
+    public void ChartNews()
+    {
+
     }
 }

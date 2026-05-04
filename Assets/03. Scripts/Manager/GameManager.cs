@@ -6,8 +6,10 @@ public class GameManager : MonoBehaviour
     // 시스템, 이벤트 호출 담당
 
     // 게임 모드 관리
+    public bool isShopMode = false;
     public bool isBuildMode = false;
     public bool isWorkMode = false;
+    public NPC selectedNPC;
 
     // 일시정지
     public bool isPlay = false;
@@ -37,11 +39,14 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        if (targetLock == null) return;
-        else
+        // 작업 할당 시 건물 색깔 표시
+        RefreshHighlights();
+    }
+    public void RefreshHighlights()
+    {
+        foreach (var b in DataManager.Instance.BuildingManager.GetAll())
         {
-            Debug.Log($"타겟 대상 : {targetLock.name}");
+            b.UpdateHighlight();
         }
     }
-
 }

@@ -15,4 +15,14 @@ public class NPCManager : MonoBehaviour
     {
         return npcs[id];
     }
+
+    public bool IsBuildingAssigned(string buildingID)
+    {
+        foreach (var npc in npcs.Values)
+        {
+            if (npc.job.buildingIDs.Contains(buildingID))
+                return true;
+        }
+        return false;
+    }
 }

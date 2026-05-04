@@ -48,11 +48,15 @@ public class GUIManagement : MonoBehaviour
     // NPC GUI 자동 갱신
     private void SetNPC()
     {
+        int value = 0;
+
         foreach (var npc in DataManager.Instance.NPCManager.npcs)
         {
             // 일 하는 중인 NPC
+            if (npc.Value.job.productItemID != 0) value++;
         }
-        npcText.text = $"/{DataManager.Instance.NPCManager.npcs.Count}";
+
+        npcText.text = $"{value}/{DataManager.Instance.NPCManager.npcs.Count}";
     }
 
     // 창고 GUI 자동 갱신

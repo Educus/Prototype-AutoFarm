@@ -27,7 +27,7 @@ public class NPCJobConfig
     public List<String> buildingIDs = new List<string>();
 
     // 할당된 생산아이템
-    public int productItemID;
+    public int productItemID = 0;
 
     public JobStep step = JobStep.Idle;
 

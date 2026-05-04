@@ -60,6 +60,22 @@ public class BuildingManager : MonoBehaviour
             buildings.Add(building.id, building);
     }
 
+    // npc가 씨앗을 보유하고 있는 창고 찾기
+    public Vector2Int GetStoragePosition()
+    {
+        Vector2 position = new Vector2();
+
+        foreach (var building in buildings.Values)
+        {
+            if (building.type == BuildingType.Storage)
+            {
+                position = new Vector2(building.gameObject.transform.position.x, building.gameObject.transform.position.y);
+            }
+        }
+
+        return GridManager.Instance.WorldToGrid(position);
+    }
+
     public void StartPlacement(int itemID)
     {
         CancelPlacement();
@@ -222,6 +238,11 @@ public class BuildingManager : MonoBehaviour
     public T Get<T>(string id) where T : BuildingBase
     {
         return buildings[id] as T;
+    }
+
+    public IEnumerable<BuildingBase> GetAll()
+    {
+        return buildings.Values;
     }
 
     #region Save / Load

@@ -41,9 +41,19 @@ public class GridManager : MonoBehaviour
     private Node[,] grid;
 
     [SerializeField] private ChunkManager chunkManager;
+    public ChunkManager ChunkManager { get; private set; }
+    public Pathfinder Pathfinder { get; private set; }
+
+    public static GridManager Instance;
 
     private void Awake()
     {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+
+        ChunkManager = chunkManager;
+        Pathfinder = GetComponent<Pathfinder>();
+
         GenerateGrid();
     }
 
