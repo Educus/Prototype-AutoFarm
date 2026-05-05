@@ -5,25 +5,22 @@ public class FarmTileView : MonoBehaviour
     // 농장 이미지 애니메이션
     // 이후 추가 수정
 
+    [HideInInspector]
     public int index;
-    public Animator animator;
+    public Sprite[] field;
+    private SpriteRenderer sprite;
+    [SerializeField] private SpriteRenderer cropsSprite;
 
-    public void UpdateView(FarmTile tile, int seedID)
+    private void Awake()
     {
-        if (!tile.hasCrop)
-        {
-            animator.Play("Empty");
-            return;
-        }
+        index = transform.GetSiblingIndex();
+        sprite = GetComponent<SpriteRenderer>();
+    }
 
-        // 물 여부 이미지
-        if (tile.watered)
-            animator.Play("Wet_Land");
-        else
-            animator.Play("Dry_Land");
+    public void UpdateView(int value, Sprite image)
+    {
+        sprite.sprite = field[value];
 
-        // 씨앗 별 이미지
-        int grow = (int)(tile.growth * DataManager.Instance.productsData[seedID].growthTime);
-        animator.Play($"{seedID}_{grow}");
+        cropsSprite.sprite = image;
     }
 }

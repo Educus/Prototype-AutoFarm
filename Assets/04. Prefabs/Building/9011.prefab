@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5477845361673729255
+--- !u!1 &6812189756403695028
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,11 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1202687540150481283}
-  - component: {fileID: 8335902909012370265}
-  - component: {fileID: 8836592921761960403}
-  - component: {fileID: 2298148226287491116}
-  - component: {fileID: -5266771422279777814}
+  - component: {fileID: 1736315453683909895}
+  - component: {fileID: 4238837276518705272}
+  - component: {fileID: 3665069451105663902}
+  - component: {fileID: 8591489731997793235}
+  - component: {fileID: 7684442794435814336}
   m_Layer: 7
   m_Name: 9011
   m_TagString: Untagged
@@ -20,29 +20,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1202687540150481283
+--- !u!4 &1736315453683909895
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5477845361673729255}
+  m_GameObject: {fileID: 6812189756403695028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.8, y: -6.96, z: 0}
+  m_LocalPosition: {x: 25, y: 95, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &8335902909012370265
+--- !u!212 &4238837276518705272
 SpriteRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5477845361673729255}
+  m_GameObject: {fileID: 6812189756403695028}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -84,92 +84,61 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -7893941329492782660, guid: d4fd9f21cac1c4248addf1f3aa3f1f86, type: 3}
+  m_Sprite: {fileID: 3939487092822842150, guid: 289cd23b8dae36c44abfa637db8bd54c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 8, y: 8}
+  m_Size: {x: 4.921875, y: 6.234375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &8836592921761960403
+--- !u!114 &3665069451105663902
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5477845361673729255}
+  m_GameObject: {fileID: 6812189756403695028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54078a2951514054792c44148b38f0b2, type: 3}
+  m_Script: {fileID: 11500000, guid: cc1ed5d3f0be7e4468ec7221a6900599, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FarmBuilding
-  type: 1
-  itemID: 9011
+  m_EditorClassIdentifier: Assembly-CSharp::StorageBuilding
+  type: 0
+  itemID: 0
   id: 
   isClone: 0
-  data: {fileID: 11400000, guid: 6f922cf0b5c7e5446b99980de8154da1, type: 2}
-  icon: {fileID: -7893941329492782660, guid: d4fd9f21cac1c4248addf1f3aa3f1f86, type: 3}
-  renderer: {fileID: 8335902909012370265}
-  tiles: []
---- !u!114 &2298148226287491116
+  data: {fileID: 11400000, guid: ab17697ff2bca084cb2780d4fd168a7f, type: 2}
+  icon: {fileID: 3939487092822842150, guid: 289cd23b8dae36c44abfa637db8bd54c, type: 3}
+  renderer: {fileID: 0}
+  unified: {fileID: 8591489731997793235}
+--- !u!114 &8591489731997793235
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5477845361673729255}
+  m_GameObject: {fileID: 6812189756403695028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd14f1a20e119b947913733fcbb0bbb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Inventory
+  id: 
+  type: 0
+  slots: []
+--- !u!114 &7684442794435814336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6812189756403695028}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 314202446bce9d94598395a386ff0778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingInteraction
-  entityName: "\uAC74\uBB3C"
---- !u!61 &-5266771422279777814
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5477845361673729255}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 8, y: 8}
-    newSize: {x: 8, y: 8}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 8, y: 8}
-  m_EdgeRadius: 0
+  entityName: 

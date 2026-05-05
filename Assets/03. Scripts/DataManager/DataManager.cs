@@ -35,6 +35,7 @@ public class DataManager : MonoBehaviour
     public int nowEventID = -1;
 
     [SerializeField] private Sprite[] itemImage;
+    [SerializeField] private Sprite[] cropsImage;
 
 
     public static DataManager Instance;
@@ -82,5 +83,23 @@ public class DataManager : MonoBehaviour
         }
 
         return null; // 아이템 ID에 해당하는 이미지가 없는 경우
+    }
+
+    public Sprite GetCropImage(int itemId, float growth)
+    {
+        if (itemId == 0) return null;
+
+        int value = Mathf.RoundToInt(growth * productDataManager.productData[itemId].growthTime);
+        string name = itemId.ToString() + "_" + value;
+
+        foreach (var sprite in cropsImage)
+        {
+            if (sprite.name == name)
+            {
+                return sprite;
+            }
+        }
+
+        return null;
     }
 }

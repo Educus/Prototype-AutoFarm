@@ -5,10 +5,13 @@ using UnityEngine;
 public class FarmBuilding : BuildingBase
 {
     public List<FarmTile> tiles = new List<FarmTile>();
+    public List<FarmTileView> tileViews = new List<FarmTileView>();
 
     // 농장 타일 갯수
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
+
         type = BuildingType.Farm;
 
         if (tiles.Count == 0)
@@ -16,7 +19,17 @@ public class FarmBuilding : BuildingBase
             for (int i = 0; i < 9; i++) tiles.Add(new FarmTile());
         }
 
+        foreach (var tile in tiles)
+        {
+            tile.Harvest();
+        }
+
         TimeManager.Instance.onDayEvent += NextDay;
+    }
+
+    private void LateUpdate()
+    {
+        ViewUpdate();
     }
 
     #region NPC가 참조하는 영역
@@ -45,19 +58,24 @@ public class FarmBuilding : BuildingBase
             return false;
 
         tile.Plant(seedID);
+        ViewUpdate();
         return true;
     }
     // 물 주기
     public void Water(FarmTile tile)
     {
         if (tile.hasCrop)
+        {
             tile.Water();
+            ViewUpdate();
+        }
     }
     public void WaterAll()
     {
         foreach (var tile in tiles)
         {
             tile.Water();
+            ViewUpdate();
         }
     }
     public int TryHarvest(FarmTile tile)
@@ -65,7 +83,10 @@ public class FarmBuilding : BuildingBase
         if (!tile.IsReady())
             return 0;
 
-        return tile.Harvest();
+        int value = tile.Harvest();
+        ViewUpdate();
+
+        return value;
     }
     #endregion
 
@@ -76,6 +97,18 @@ public class FarmBuilding : BuildingBase
         foreach (var tile in tiles)
         {
             tile.Grow();
+            ViewUpdate();
+        }
+    }
+
+    private void ViewUpdate()
+    {
+        foreach (var tileView in tileViews)
+        {
+            int value = tiles[tileView.index].watered ? 1 : 0;
+            Sprite image = DataManager.Instance.GetCropImage(tiles[tileView.index].cropID, tiles[tileView.index].growth);
+
+            tileView.UpdateView(value,image);
         }
     }
 
