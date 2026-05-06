@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 068d9aa561162fd4489e2fa5c9c05f3c
+guid: 204e7579b4ce6cd4d95badd3b61b8800
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7255901657350343739
-    second: UI_Storage_SpaceShip_Background_0
+      213: -3465507110665535053
+    second: UI_Storage_Background_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Storage_SpaceShip_Background_0
+      name: UI_Storage_Background_0
       rect:
         serializedVersion: 2
-        x: 43
-        y: 38
-        width: 470
-        height: 490
+        x: 37
+        y: 36
+        width: 663
+        height: 336
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b3c098b2d1422b460800000000000000
-      internalID: 7255901657350343739
+      spriteID: 3b1c036d4ab08efc0800000000000000
+      internalID: -3465507110665535053
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      UI_Storage_SpaceShip_Background_0: 7255901657350343739
+      UI_Storage_Background_0: -3465507110665535053
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

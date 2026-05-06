@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c1a4b98e9757cd24397df40c91c11a21
+guid: 3fe2f1ced4cb2024fb5b0f94ec0c0b79
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4910171601835478275
-    second: UI_Storage_TextBox_0
+      213: 1519882170493138767
+    second: UI_Storage_SpaceShip_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Storage_TextBox_0
+      name: UI_Storage_SpaceShip_0
       rect:
         serializedVersion: 2
-        x: 35
-        y: 41
-        width: 243
-        height: 80
+        x: 53
+        y: 43
+        width: 598
+        height: 732
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 30d4d918e0f642440800000000000000
-      internalID: 4910171601835478275
+      spriteID: f4771b808c4b71510800000000000000
+      internalID: 1519882170493138767
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      UI_Storage_TextBox_0: 4910171601835478275
+      UI_Storage_SpaceShip_0: 1519882170493138767
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

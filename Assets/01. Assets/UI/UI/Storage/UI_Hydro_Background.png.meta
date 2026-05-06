@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 064c137f61eb3954a98b341fc76ecfe2
+guid: 98a77c6db9b70344284059f8523995d0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 740612224383460390
-    second: UI_Hydro_Pipe_0
+      213: 7948893845982697405
+    second: UI_Hydro_Background_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Hydro_Pipe_0
+      name: UI_Hydro_Background_0
       rect:
         serializedVersion: 2
-        x: 25
-        y: 29
-        width: 605
-        height: 147
+        x: 67
+        y: 60
+        width: 970
+        height: 657
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 62420b6e4ee274a00800000000000000
-      internalID: 740612224383460390
+      spriteID: db7561f76d4205e60800000000000000
+      internalID: 7948893845982697405
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      UI_Hydro_Pipe_0: 740612224383460390
+      UI_Hydro_Background_0: 7948893845982697405
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

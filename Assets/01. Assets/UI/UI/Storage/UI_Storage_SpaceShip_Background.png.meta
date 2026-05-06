@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 27471317ad0fa2647a7243128b3a6686
+guid: 068d9aa561162fd4489e2fa5c9c05f3c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4899592079573957050
-    second: UI_Hydro_BatteryInv_0
+      213: 7255901657350343739
+    second: UI_Storage_SpaceShip_Background_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Hydro_BatteryInv_0
+      name: UI_Storage_SpaceShip_Background_0
       rect:
         serializedVersion: 2
-        x: 49
-        y: 40
-        width: 596
-        height: 270
+        x: 43
+        y: 58
+        width: 470
+        height: 470
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ab9b2578909def340800000000000000
-      internalID: 4899592079573957050
+      spriteID: b3c098b2d1422b460800000000000000
+      internalID: 7255901657350343739
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: f64b4f6affe9ee0498bffc8f19d61a8d
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      UI_Hydro_BatteryInv_0: 4899592079573957050
+      UI_Storage_SpaceShip_Background_0: 7255901657350343739
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

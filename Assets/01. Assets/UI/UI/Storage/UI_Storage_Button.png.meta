@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: dd75544ffc30c204cb9414dc3f6fa408
+guid: ec63f395895d2144e86532f59a174460
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8009134152228124421
-    second: UI_Hydro_Piston_0
+      213: -6390703968779766030
+    second: UI_Storage_Button_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Hydro_Piston_0
+      name: UI_Storage_Button_0
       rect:
         serializedVersion: 2
-        x: 60
-        y: 47
-        width: 1250
-        height: 1272
+        x: 2
+        y: 2
+        width: 206
+        height: 100
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 507b106c319262f60800000000000000
-      internalID: 8009134152228124421
+      spriteID: 2f6f33c8998af47a0800000000000000
+      internalID: -6390703968779766030
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: ea66211d00822c343847221478038c35
     internalID: 0
     vertices: []
     indices: 
@@ -159,9 +159,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      UI_Hydro_Piston_0: 8009134152228124421
+      UI_Storage_Button_0: -6390703968779766030
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

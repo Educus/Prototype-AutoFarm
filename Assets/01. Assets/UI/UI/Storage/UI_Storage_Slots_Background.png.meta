@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 204e7579b4ce6cd4d95badd3b61b8800
+guid: 3f2f00d539f375448aba1ecb3780e7fd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3465507110665535053
-    second: UI_Storage_Background_0
+      213: -7820293076927301927
+    second: UI_Storage_Slots_Background_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Storage_Background_0
+      name: UI_Storage_Slots_Background_0
       rect:
         serializedVersion: 2
-        x: 37
-        y: 36
-        width: 663
-        height: 336
+        x: 2
+        y: 3
+        width: 661
+        height: 334
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3b1c036d4ab08efc0800000000000000
-      internalID: -3465507110665535053
+      spriteID: 9d63d4651ecb87390800000000000000
+      internalID: -7820293076927301927
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 68dd5b343fb8fac4e84191bdf31d5a99
     internalID: 0
     vertices: []
     indices: 
@@ -159,9 +159,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      UI_Storage_Background_0: -3465507110665535053
+      UI_Storage_Slots_Background_0: -7820293076927301927
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

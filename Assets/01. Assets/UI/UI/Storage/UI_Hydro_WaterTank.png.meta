@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 4907d0b6609c83d4da678b26837a9588
+guid: fa1df40dce5033b4092a4f80a1bea046
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2733126570010285282
-    second: "\uCD95\uC0AC_\uC6B8\uD0C0\uB9AC \uC5C6\uC74C_0"
-  - first:
-      213: -5354406575071762411
-    second: "\uCD95\uC0AC_\uC6B8\uD0C0\uB9AC \uC5C6\uC74C_1"
+      213: 1381207934627061588
+    second: UI_Hydro_WaterTank_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -54,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 512
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -129,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\uCD95\uC0AC_\uC6B8\uD0C0\uB9AC \uC5C6\uC74C_0"
+      name: UI_Hydro_WaterTank_0
       rect:
         serializedVersion: 2
-        x: 94
-        y: 2156
-        width: 3507
-        height: 2450
+        x: 270
+        y: 598
+        width: 1722
+        height: 2890
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2e415ab72240ee520800000000000000
-      internalID: 2733126570010285282
+      spriteID: 45f95607c490b2310800000000000000
+      internalID: 1381207934627061588
       vertices: []
       indices: 
       edges: []
@@ -154,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: b5985733ca23d274b806709babe2a3cc
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -162,12 +159,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      "\uCD95\uC0AC_\uC6B8\uD0C0\uB9AC \uC5C6\uC74C_0": 2733126570010285282
-      "\uCD95\uC0AC_\uC6B8\uD0C0\uB9AC \uC5C6\uC74C_1": -5354406575071762411
+      UI_Hydro_WaterTank_0: 1381207934627061588
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
