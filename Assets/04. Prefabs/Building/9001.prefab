@@ -393,10 +393,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmBuilding
   type: 1
-  itemID: 9011
+  itemID: 9001
   id: 
   isClone: 0
-  data: {fileID: 11400000, guid: 6f922cf0b5c7e5446b99980de8154da1, type: 2}
+  data: {fileID: 11400000, guid: ab17697ff2bca084cb2780d4fd168a7f, type: 2}
   icon: {fileID: 6048821170717042914, guid: 84a91d1605cd9e24eb7cf0d35c007d33, type: 3}
   renderer: {fileID: 0}
   tiles: []

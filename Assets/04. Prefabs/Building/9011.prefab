@@ -110,7 +110,7 @@ MonoBehaviour:
   itemID: 0
   id: 
   isClone: 0
-  data: {fileID: 11400000, guid: ab17697ff2bca084cb2780d4fd168a7f, type: 2}
+  data: {fileID: 11400000, guid: 6f922cf0b5c7e5446b99980de8154da1, type: 2}
   icon: {fileID: 3939487092822842150, guid: 289cd23b8dae36c44abfa637db8bd54c, type: 3}
   renderer: {fileID: 0}
   unified: {fileID: 8591489731997793235}
