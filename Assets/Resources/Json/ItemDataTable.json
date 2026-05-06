@@ -4,7 +4,7 @@
         "ItemName":"CornSeed",
         "ItemType":"Seed",
         "BasicPrice":800,
-        "Stack":200,
+        "Stack":99,
         "StoragePeriod":-1,
         "UseToDemo":0
     },
@@ -13,7 +13,7 @@
         "ItemName":"Corn",
         "ItemType":"Product",
         "BasicPrice":1000,
-        "Stack":50,
+        "Stack":10,
         "StoragePeriod":30,
         "UseToDemo":0
     },
@@ -22,7 +22,7 @@
         "ItemName":"PotatoSeed",
         "ItemType":"Seed",
         "BasicPrice":720,
-        "Stack":200,
+        "Stack":99,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -31,7 +31,7 @@
         "ItemName":"Potato",
         "ItemType":"Product",
         "BasicPrice":900,
-        "Stack":50,
+        "Stack":10,
         "StoragePeriod":30,
         "UseToDemo":1
     },
@@ -40,7 +40,7 @@
         "ItemName":"CarrotSeed",
         "ItemType":"Seed",
         "BasicPrice":800,
-        "Stack":200,
+        "Stack":99,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -49,7 +49,7 @@
         "ItemName":"Carrot",
         "ItemType":"Product",
         "BasicPrice":1000,
-        "Stack":50,
+        "Stack":10,
         "StoragePeriod":20,
         "UseToDemo":1
     },
@@ -58,7 +58,7 @@
         "ItemName":"OnionSeed",
         "ItemType":"Seed",
         "BasicPrice":880,
-        "Stack":200,
+        "Stack":99,
         "StoragePeriod":-1,
         "UseToDemo":0
     },
@@ -67,7 +67,7 @@
         "ItemName":"Onion",
         "ItemType":"Product",
         "BasicPrice":1100,
-        "Stack":50,
+        "Stack":10,
         "StoragePeriod":20,
         "UseToDemo":0
     },
@@ -76,7 +76,7 @@
         "ItemName":"StrawberrySeed",
         "ItemType":"Seed",
         "BasicPrice":960,
-        "Stack":200,
+        "Stack":99,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -85,7 +85,7 @@
         "ItemName":"Strawberry",
         "ItemType":"Product",
         "BasicPrice":1200,
-        "Stack":50,
+        "Stack":10,
         "StoragePeriod":15,
         "UseToDemo":1
     },
@@ -94,7 +94,7 @@
         "ItemName":"BlueBerrySeed",
         "ItemType":"Seed",
         "BasicPrice":880,
-        "Stack":200,
+        "Stack":99,
         "StoragePeriod":-1,
         "UseToDemo":0
     },
@@ -103,7 +103,7 @@
         "ItemName":"BlueBerry",
         "ItemType":"Product",
         "BasicPrice":1100,
-        "Stack":50,
+        "Stack":10,
         "StoragePeriod":15,
         "UseToDemo":0
     },
@@ -129,6 +129,24 @@
         "ItemID":5001,
         "ItemName":"Water",
         "ItemType":"Water",
+        "BasicPrice":0,
+        "Stack":99,
+        "StoragePeriod":-1,
+        "UseToDemo":1
+    },
+    {
+        "ItemID":5011,
+        "ItemName":"100000G",
+        "ItemType":"Developer",
+        "BasicPrice":0,
+        "Stack":1,
+        "StoragePeriod":-1,
+        "UseToDemo":1
+    },
+    {
+        "ItemID":5021,
+        "ItemName":"ObjectPackage",
+        "ItemType":"Tutorial",
         "BasicPrice":0,
         "Stack":1,
         "StoragePeriod":-1,
@@ -241,6 +259,15 @@
         "Stack":1,
         "StoragePeriod":-1,
         "UseToDemo":0
+    },
+    {
+        "ItemID":9001,
+        "ItemName":"Field",
+        "ItemType":"BuildingKit",
+        "BasicPrice":0,
+        "Stack":1,
+        "StoragePeriod":-1,
+        "UseToDemo":1
     },
     {
         "ItemID":9011,
