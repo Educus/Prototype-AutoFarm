@@ -32,6 +32,9 @@ public class SaveLoadManager : MonoBehaviour
         // Building
         data.buildings = DataManager.Instance.BuildingManager.GetSaveData();
 
+        // Animal
+
+
         string json = JsonUtility.ToJson(data, true);
         System.IO.File.WriteAllText(GetPath(), json);
     }
@@ -62,6 +65,9 @@ public class SaveLoadManager : MonoBehaviour
 
         // Building
         DataManager.Instance.BuildingManager.Load(data.buildings);
+
+        // Animal
+
     }
 
     private string GetPath()

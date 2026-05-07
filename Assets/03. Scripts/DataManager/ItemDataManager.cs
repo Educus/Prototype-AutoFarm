@@ -14,6 +14,8 @@ public enum ItemType
     BuildingKit,
     Battery,
     Object,
+    Tutorial,
+    Developer,
     ETC             // 기타 아이템
 }
 public class ItemData

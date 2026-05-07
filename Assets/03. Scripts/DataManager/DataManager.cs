@@ -24,6 +24,9 @@ public class DataManager : MonoBehaviour
 
     [SerializeField] private NPCManager npcManager;
     public NPCManager NPCManager { get; private set; }
+    
+    [SerializeField] AnimalManager animalManager;
+    public AnimalManager AnimalManager { get; private set; }
 
     [SerializeField] private InventoryManager inventoryManager;
     public InventoryManager InventoryManager { get; private set; }
@@ -36,7 +39,7 @@ public class DataManager : MonoBehaviour
 
     [SerializeField] private Sprite[] itemImage;
     [SerializeField] private Sprite[] cropsImage;
-
+    [SerializeField] private GameObject[] objPrefabs;
 
     public static DataManager Instance;
 
@@ -63,6 +66,7 @@ public class DataManager : MonoBehaviour
         SaveLoadManager = saveLoadManager;
         CurrencyManager = currencyManager;
         NPCManager = npcManager;
+        AnimalManager = animalManager;
         InventoryManager = inventoryManager;
         BuildingManager = buildingManager;
     }
@@ -101,5 +105,18 @@ public class DataManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public GameObject GetObjectPrefabs(int itemId)
+    {
+        foreach (var obj in objPrefabs)
+        {
+            if (obj.name == itemId.ToString())
+            {
+                return obj;
+            }
+        }
+
+        return null; // 아이템 ID에 해당하는 프리팹이 없는 경우
     }
 }
