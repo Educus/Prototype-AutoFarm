@@ -3,8 +3,8 @@
         "ItemID":1011,
         "ItemName":"CornSeed",
         "ItemType":"Seed",
-        "BasicPrice":800,
-        "Stack":99,
+        "BasicPrice":900,
+        "Stack":50,
         "StoragePeriod":-1,
         "UseToDemo":0
     },
@@ -21,8 +21,8 @@
         "ItemID":1021,
         "ItemName":"PotatoSeed",
         "ItemType":"Seed",
-        "BasicPrice":720,
-        "Stack":99,
+        "BasicPrice":810,
+        "Stack":50,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -39,8 +39,8 @@
         "ItemID":2011,
         "ItemName":"CarrotSeed",
         "ItemType":"Seed",
-        "BasicPrice":800,
-        "Stack":99,
+        "BasicPrice":900,
+        "Stack":50,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -57,8 +57,8 @@
         "ItemID":2021,
         "ItemName":"OnionSeed",
         "ItemType":"Seed",
-        "BasicPrice":880,
-        "Stack":99,
+        "BasicPrice":990,
+        "Stack":50,
         "StoragePeriod":-1,
         "UseToDemo":0
     },
@@ -75,8 +75,8 @@
         "ItemID":3011,
         "ItemName":"StrawberrySeed",
         "ItemType":"Seed",
-        "BasicPrice":960,
-        "Stack":99,
+        "BasicPrice":1080,
+        "Stack":50,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -93,8 +93,8 @@
         "ItemID":3021,
         "ItemName":"BlueBerrySeed",
         "ItemType":"Seed",
-        "BasicPrice":880,
-        "Stack":99,
+        "BasicPrice":990,
+        "Stack":50,
         "StoragePeriod":-1,
         "UseToDemo":0
     },
@@ -111,8 +111,8 @@
         "ItemID":4011,
         "ItemName":"Bottle",
         "ItemType":"Material",
-        "BasicPrice":1600,
-        "Stack":10,
+        "BasicPrice":1800,
+        "Stack":8,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -121,8 +121,8 @@
         "ItemName":"Milk",
         "ItemType":"Product",
         "BasicPrice":2000,
-        "Stack":1,
-        "StoragePeriod":3,
+        "Stack":4,
+        "StoragePeriod":7,
         "UseToDemo":1
     },
     {
@@ -273,7 +273,7 @@
         "ItemID":9011,
         "ItemName":"Storage",
         "ItemType":"BuildingKit",
-        "BasicPrice":50000,
+        "BasicPrice":100000,
         "Stack":1,
         "StoragePeriod":-1,
         "UseToDemo":1
@@ -282,7 +282,7 @@
         "ItemID":9021,
         "ItemName":"Barn",
         "ItemType":"BuildingKit",
-        "BasicPrice":50000,
+        "BasicPrice":30000,
         "Stack":1,
         "StoragePeriod":-1,
         "UseToDemo":1
