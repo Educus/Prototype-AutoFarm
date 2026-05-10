@@ -1,8 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(BuildingInteraction))]
-public abstract class BuildingBase : MonoBehaviour
+public abstract class BuildingBase : MonoBehaviour, IInteractable
 {
     public BuildingType type = BuildingType.None;
 
@@ -92,4 +91,6 @@ public abstract class BuildingBase : MonoBehaviour
     {
         renderer.material.color = color;
     }
+
+    public abstract void OnInteract();
 }

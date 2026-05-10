@@ -23,4 +23,9 @@ public class StorageBuilding : BuildingBase
     {
         throw new System.NotImplementedException();
     }
+
+    public override void OnInteract()
+    {
+        throw new System.NotImplementedException();
+    }
 }

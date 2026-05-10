@@ -141,4 +141,9 @@ public class FarmBuilding : BuildingBase
         }
     }
     #endregion
+
+    public override void OnInteract()
+    {
+        throw new System.NotImplementedException();
+    }
 }

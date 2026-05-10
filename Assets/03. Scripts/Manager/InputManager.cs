@@ -57,6 +57,8 @@ public class InputManager : MonoBehaviour
 
         Collider2D hit = Physics2D.OverlapPoint(mousePos, layerMask);
 
+        Debug.Log($"абе╛:{hit}");
+
         IInteractable interactable = null;
 
         if (hit != null)

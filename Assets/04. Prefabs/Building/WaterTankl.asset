@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01c4baaee45f6974298b8a429fcc8a83, type: 3}
-  m_Name: 9011
+  m_Name: WaterTankl
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
-  itemID: 9011
+  itemID: 0
   name: 
-  width: 6
+  width: 4
   height: 6
   cost: 0
-  patternFlat: 000000000000000000000000000000000000000000000000000000000000000000000000
+  patternFlat: 000000000000000000000000000000000000000000000000

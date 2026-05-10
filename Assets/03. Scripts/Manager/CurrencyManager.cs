@@ -8,7 +8,7 @@ public class CurrencyManager : MonoBehaviour
 
     public Action<int> OnMoneyChanged;
 
-    public void Add(int amount)
+    public void AddMoney(int amount)
     {
         money += amount;
         OnMoneyChanged?.Invoke(money);

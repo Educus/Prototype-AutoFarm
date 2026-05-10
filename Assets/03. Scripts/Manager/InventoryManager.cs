@@ -14,7 +14,12 @@ public class InventoryManager : MonoBehaviour
 
     public Inventory Get(string id)
     {
-        return inventories[id];
+        if (inventories.TryGetValue(id, out Inventory inventory))
+        {
+            return inventory;
+        }
+
+        return null;
     }
 
     public int GetTotalItemCount(int itemID)
