@@ -7,7 +7,7 @@ public class InventorySlot
 
     public int itemID;
     public int count;
-    public int remainingStoragePeriodl = -1;
+    public int remainingStoragePeriod = -1;
 
     public bool IsEmpty()
     {
@@ -18,6 +18,6 @@ public class InventorySlot
     {
         itemID = 0;
         count = 0;
-        remainingStoragePeriodl = -1;
+        remainingStoragePeriod = -1;
     }
 }

@@ -9,6 +9,7 @@ public class UIStorageManagement : MonoBehaviour
     [SerializeField] private GameObject npcStorage;
 
     public static UIStorageManagement Instance;
+    public string targetBuilding { get; private set; }
 
     private void Awake()
     {
@@ -20,18 +21,32 @@ public class UIStorageManagement : MonoBehaviour
     {
         rocketStorage.SetActive(!rocketStorage.activeSelf);
         npcInterface.ShowStaff();
+
+        PopUpMode(rocketStorage);
     }
     public void HtdroInv()
     {
         htdroStorage.SetActive(!htdroStorage.activeSelf);
+
+        PopUpMode(htdroStorage);
     }
-    public void BuildingInv()
+    public void BuildingInv(string buildingName)
     {
         buildingStorage.SetActive(!buildingStorage.activeSelf);
+        targetBuilding = buildingName;
+
+        PopUpMode(buildingStorage);
     }
     public void NPCInv()
     {
         npcStorage.SetActive(!npcStorage.activeSelf);
+
+        PopUpMode(npcStorage);
+    }
+
+    private void PopUpMode(GameObject obj)
+    {
+        GameManager.Instance.isPopUpMode = obj.activeSelf;
     }
 
 }

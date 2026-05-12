@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
     // 시스템, 이벤트 호출 담당
 
     // 게임 모드 관리
-    public bool isShopMode = false;
+    public bool isPopUpMode = false;
     public bool isBuildMode = false;
     public bool isWorkMode = false;
     public NPC selectedNPC;

@@ -69,7 +69,7 @@ public class UIManagement : MonoBehaviour
     public void OpenManagement()
     {
         management.SetActive(!management.activeSelf);
-        GameManager.Instance.isShopMode = true;
+        GameManager.Instance.isPopUpMode = true;
     }
 
     public void ChangeChip(int value)
@@ -147,7 +147,7 @@ public class UIManagement : MonoBehaviour
 
     public void ExitButton()
     {
-        GameManager.Instance.isShopMode = false;
+        GameManager.Instance.isPopUpMode = false;
         management.SetActive(false);
     }
 }

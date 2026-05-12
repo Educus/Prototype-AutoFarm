@@ -30,7 +30,7 @@ public class CameraController : MonoBehaviour
             FolloewTarget();
         }
 
-        if (!GameManager.Instance.isShopMode)
+        if (!GameManager.Instance.isPopUpMode)
         {
             HandleZoom();
             HandleMovement();

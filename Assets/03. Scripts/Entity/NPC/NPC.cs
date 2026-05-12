@@ -78,7 +78,7 @@ public class NPC : StatusBase
     }
     public bool AddUpgrade(int itemID)
     {
-        return upgradeInventory.AddItem(itemID, 1) > 0;
+        return upgradeInventory.AddItem(itemID, 1, -1) > 0;
     }
     public void RemoveUpgrade(int itemID)
     {
@@ -166,11 +166,11 @@ public class NPC : StatusBase
 
     public int AddItemToInventory(int itemID, int amount)
     {
-        int added = mainInventory.AddItem(itemID, amount);
+        int added = mainInventory.AddItem(itemID, amount, -1);
 
         if (added < amount)
         {
-            added += subInventory.AddItem(itemID, amount - added);
+            added += subInventory.AddItem(itemID, amount - added, -1);
         }
 
         return added;

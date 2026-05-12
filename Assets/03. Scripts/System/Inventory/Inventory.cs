@@ -44,11 +44,18 @@ public class Inventory : MonoBehaviour
     }
 
     #region Add / Remove
-    public int AddItem(int itemID, int amount)
+    public int AddNewItem(int itemID)
+    {
+        return 0;
+    }
+
+    public int AddItem(int itemID, int amount, int storagePeriod)
     {
         var data = DataManager.Instance.itemsData[itemID];
-        if (data != null) return 0;
+        if (data == null) return 0; // if (data != null) return 0; <= ?
         if (!CanAddItem(itemID)) return 0;
+
+        storagePeriod = (storagePeriod == -1) ? data.storagePeriod : storagePeriod;
 
         if (type == InventoryType.Upgrade)
         {
@@ -58,7 +65,7 @@ public class Inventory : MonoBehaviour
                 {
                     slot.itemID = itemID;
                     slot.count = 1;
-                    slot.remainingStoragePeriodl = -1;
+                    slot.remainingStoragePeriod = -1;
                     return 1;
                 }
             }
@@ -74,7 +81,7 @@ public class Inventory : MonoBehaviour
             if (slot.IsEmpty()) continue;
 
             if (slot.itemID == itemID &&
-            slot.remainingStoragePeriodl == data.storagePeriod)
+            slot.remainingStoragePeriod == storagePeriod)
             {
                 int canAdd = data.stack - slot.count;
                 int add = Mathf.Min(canAdd, remaining);
@@ -96,7 +103,7 @@ public class Inventory : MonoBehaviour
 
             slot.itemID = itemID;
             slot.count = add;
-            slot.remainingStoragePeriodl = data.storagePeriod;
+            slot.remainingStoragePeriod = storagePeriod;
             remaining -= add;
 
             if (remaining <= 0)
@@ -211,12 +218,12 @@ public class Inventory : MonoBehaviour
             if (data.itemType != ItemType.Product)
                 continue;
 
-            if (slot.remainingStoragePeriodl < 0)
+            if (slot.remainingStoragePeriod < 0)
                 continue;
 
-            slot.remainingStoragePeriodl--;
+            slot.remainingStoragePeriod--;
 
-            if (slot.remainingStoragePeriodl <= 0)
+            if (slot.remainingStoragePeriod <= 0)
                 slots.RemoveAt(i);
         }
     }
@@ -247,10 +254,10 @@ public class Inventory : MonoBehaviour
         if (data.itemType != ItemType.Product)
             return int.MaxValue;
 
-        if (slot.remainingStoragePeriodl < 0)
+        if (slot.remainingStoragePeriod < 0)
             return int.MaxValue - 1;
 
-        return slot.remainingStoragePeriodl;
+        return slot.remainingStoragePeriod;
     }
     #endregion
 
@@ -269,7 +276,7 @@ public class Inventory : MonoBehaviour
             {
                 itemID = slot.itemID,
                 count = slot.count,
-                remainingDays = slot.remainingStoragePeriodl
+                remainingDays = slot.remainingStoragePeriod
             });
         }
 
@@ -288,7 +295,7 @@ public class Inventory : MonoBehaviour
             {
                 itemID = s.itemID,
                 count = s.count,
-                remainingStoragePeriodl = s.remainingDays
+                remainingStoragePeriod = s.remainingDays
             });
         }
     }

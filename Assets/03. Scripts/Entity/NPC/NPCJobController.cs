@@ -74,7 +74,7 @@ public class NPCJobController : MonoBehaviour
 
                 if (taken > 0)
                 {
-                    npc.subInventory.AddItem(npc.job.productItemID, taken);
+                    npc.subInventory.AddItem(npc.job.productItemID, taken, -1);
                     npc.job.step = JobStep.MoveToBuilding;
                 }
                 else

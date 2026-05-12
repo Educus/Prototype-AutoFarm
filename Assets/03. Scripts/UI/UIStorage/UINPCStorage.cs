@@ -143,13 +143,13 @@ public class UINPCStorage : MonoBehaviour
 
     private void RefreshTimer(Image timer, InventorySlot slot)
     {
-        bool hasTimer = slot.remainingStoragePeriodl != -1;
+        bool hasTimer = slot.remainingStoragePeriod != -1;
 
         timer.gameObject.SetActive(hasTimer);
 
         if (!hasTimer) return;
 
-        float current = slot.remainingStoragePeriodl;
+        float current = slot.remainingStoragePeriod;
 
         float max = DataManager.Instance.productsData[slot.itemID].storagePeriod;
 

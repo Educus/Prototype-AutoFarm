@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
@@ -20,6 +21,14 @@ public class InventoryManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public Dictionary<string, Inventory> GetInvType(InventoryType type)
+    {
+        Dictionary<string, Inventory> result = new Dictionary<string, Inventory>();
+
+        return inventories.Where(pair => pair.Value.type == type)
+            .ToDictionary(pair => pair.Key, pair => pair.Value);
     }
 
     public int GetTotalItemCount(int itemID)
