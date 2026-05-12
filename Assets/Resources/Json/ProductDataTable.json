@@ -4,76 +4,76 @@
         "ItemName":"Corn",
         "ItemType":"Product",
         "PriceStdDev":0.02,
-        "BasicCost":1000,
+        "BasicPrice":1000,
         "GrowthTime":1,
-        "MaximumYield":1,
-        "WaterConsumption":5,
-        "StoragePeriod":30
+        "MaxYield":1,
+        "MinYield":1,
+        "WaterConsumption":5
     },
     {
         "ItemID":1022,
         "ItemName":"Potato",
         "ItemType":"Product",
         "PriceStdDev":0.01,
-        "BasicCost":900,
-        "GrowthTime":2,
-        "MaximumYield":1,
-        "WaterConsumption":5,
-        "StoragePeriod":30
+        "BasicPrice":900,
+        "GrowthTime":1,
+        "MaxYield":1,
+        "MinYield":1,
+        "WaterConsumption":5
     },
     {
         "ItemID":2012,
         "ItemName":"Carrot",
         "ItemType":"Product",
         "PriceStdDev":0.04,
-        "BasicCost":1000,
+        "BasicPrice":1000,
         "GrowthTime":1,
-        "MaximumYield":1,
-        "WaterConsumption":5,
-        "StoragePeriod":20
+        "MaxYield":1,
+        "MinYield":1,
+        "WaterConsumption":5
     },
     {
         "ItemID":2022,
         "ItemName":"Onion",
         "ItemType":"Product",
         "PriceStdDev":0.05,
-        "BasicCost":1100,
-        "GrowthTime":2,
-        "MaximumYield":1,
-        "WaterConsumption":5,
-        "StoragePeriod":20
+        "BasicPrice":1100,
+        "GrowthTime":1,
+        "MaxYield":1,
+        "MinYield":1,
+        "WaterConsumption":5
     },
     {
         "ItemID":3012,
         "ItemName":"Strawberry",
         "ItemType":"Product",
         "PriceStdDev":0.08,
-        "BasicCost":1200,
+        "BasicPrice":1200,
         "GrowthTime":1,
-        "MaximumYield":1,
-        "WaterConsumption":5,
-        "StoragePeriod":15
+        "MaxYield":1,
+        "MinYield":1,
+        "WaterConsumption":5
     },
     {
         "ItemID":3022,
         "ItemName":"BlueBerry",
         "ItemType":"Product",
         "PriceStdDev":0.07,
-        "BasicCost":1100,
-        "GrowthTime":2,
-        "MaximumYield":1,
-        "WaterConsumption":1,
-        "StoragePeriod":15
+        "BasicPrice":1100,
+        "GrowthTime":1,
+        "MaxYield":1,
+        "MinYield":1,
+        "WaterConsumption":5
     },
     {
         "ItemID":4012,
         "ItemName":"Milk",
         "ItemType":"Product",
-        "PriceStdDev":0.1,
-        "BasicCost":2000,
+        "PriceStdDev":0.2,
+        "BasicPrice":5000,
         "GrowthTime":1,
-        "MaximumYield":1,
-        "WaterConsumption":5,
-        "StoragePeriod":3
+        "MaxYield":1,
+        "MinYield":1,
+        "WaterConsumption":5
     }
 ]
