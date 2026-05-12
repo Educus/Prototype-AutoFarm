@@ -119091,7 +119091,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIBuildingStorage
   slotPrefab: {fileID: 6748358971288171815, guid: b47af872f9ff65645a4f1e344ef6d052, type: 3}
   content: {fileID: 885140981}
-  isTotal: 0
 --- !u!1 &1050088554
 GameObject:
   m_ObjectHideFlags: 0
