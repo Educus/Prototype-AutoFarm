@@ -23,7 +23,7 @@ public class UIRocketStorage : MonoBehaviour
 
     private void Start()
     {
-        if (!DataManager.Instance.InventoryManager.inventories.TryGetValue("Rocket", out rocketInv))
+        if (!DataManager.Instance.InventoryManager.inventories.TryGetValue("Building_-101_0", out rocketInv))
         {
             Debug.LogError("Rocket inventory not found.");
             return;

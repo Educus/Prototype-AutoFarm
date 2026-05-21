@@ -1,52 +1,111 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(Inventory))]
 public class Rocket : BuildingBase
 {
-    [SerializeField] UIStorageManagement uiStorageManagement;
+    [Header("UI")]
+    [SerializeField] private UIStorageManagement uiStorageManagement;
 
-    private Inventory inventory;
-    public Dictionary<int, int> buyItems = new Dictionary<int, int>();
+    [Header("Rocket")]
+    [SerializeField] private int defaultSlotCount = 16;
 
-    private int hour;
-    private int minute;
+    // 구매 예약 아이템
+    public Dictionary<int, int> buyItems = new();
+
     private int money = 0;
 
-    private bool isInvenClear;
+    // true = 로켓 비어있음
+    // false = 구매 아이템 남아있음
+    private bool isInvenClear = true;
+
+    #region Unity
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        type = BuildingType.Rocket;
+    }
 
     private void Start()
     {
-        isClone = true;
-
         uiStorageManagement = UIStorageManagement.Instance;
-
-        inventory = GetComponent<Inventory>();
-
-        SetInv();
-
-        DataManager.Instance.InventoryManager.inventories.Add("Rocket", inventory);
     }
+
     private void Update()
     {
-        hour = TimeManager.Instance.currentHour;
-        minute = TimeManager.Instance.currentMinute;
+        int hour = TimeManager.Instance.currentHour;
+        int minute = TimeManager.Instance.currentMinute;
 
-        // 판매, 구매 시간 체크
-        if (hour == 0 && minute == 30) Calculate();
-        if (hour == 23 && minute == 30) SellInv();
+        // 00:30 정산
+        if (hour == 0 && minute == 30)
+        {
+            Calculate();
+        }
 
-        // isInvenClear 체크
+        // 23:30 판매
+        if (hour == 23 && minute == 30)
+        {
+            SellInv();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (inventory != null)
+        {
+            inventory.OnInventoryChanged -= CheckInvenClear;
+        }
+    }
+
+    #endregion
+
+    #region Initialize
+
+    public override void Initialize()
+    {
+        // 건물 등록
+        base.Initialize();
+
+        if (inventory == null)
+        {
+            Debug.LogError($"Rocket Inventory Missing : {gameObject.name}");
+            return;
+        }
+
+        // 인벤토리 설정
+        inventory.id = id;
+        inventory.type = InventoryType.Rocket;
+
+        // 처음 생성 시만 슬롯 생성
+        if (inventory.slots == null ||
+            inventory.slots.Count == 0)
+        {
+            inventory.Initialize(defaultSlotCount);
+        }
+
+        // 인벤토리 등록
+        DataManager.Instance.InventoryManager.Register(inventory);
+
+        // 변경 이벤트 연결
+        inventory.OnInventoryChanged += CheckInvenClear;
+
+        // 초기 상태 체크
         CheckInvenClear();
     }
+
+    #endregion
+
+    #region Inventory State
+
     private void CheckInvenClear()
     {
-        if (isInvenClear) return;
-
         foreach (var slot in inventory.slots)
         {
-            if (slot.itemID != 0)
+            if (!slot.IsEmpty())
             {
+                isInvenClear = false;
                 return;
             }
         }
@@ -54,101 +113,129 @@ public class Rocket : BuildingBase
         isInvenClear = true;
     }
 
-    // 시작 인벤토리 초기화
-    private void SetInv()
-    {
-        inventory.id = gameObject.name;
-        inventory.type = InventoryType.Rocket;
-        isInvenClear = true;
+    #endregion
 
-        if (inventory.slots.Count == 0)
-            inventory.Initialize(16);
-    }
+    #region Sell
 
-    // 판매
     private void SellInv()
     {
-        if (!isInvenClear) return;
+        // 구매 아이템 남아있으면 판매 불가
+        if (!isInvenClear)
+            return;
 
-        // 판매
-        Dictionary<int, ProductClosing> product = DataManager.Instance.productClosingData;
+        Dictionary<int, ProductClosing> productData =
+            DataManager.Instance.productClosingData;
 
         foreach (var slot in inventory.slots)
         {
-            // 최신?값
-            money += product[slot.itemID].productsClosingPrice[0] * slot.count;
+            if (slot.IsEmpty())
+                continue;
+
+            money += productData[slot.itemID]
+                .productsClosingPrice[0] * slot.count;
+
             slot.Clear();
+        }
+
+        inventory.InvokeChange();
+    }
+
+    #endregion
+
+    #region Buy
+
+    // 상점 구매 예약
+    public void BuyInv(int itemID, int amount)
+    {
+        if (buyItems.ContainsKey(itemID))
+        {
+            buyItems[itemID] += amount;
+        }
+        else
+        {
+            buyItems[itemID] = amount;
         }
     }
 
-    // 구매(상점에서 호출)
-    public void BuyInv(int itemID, int amount)
-    {
-        // 구매
-        if (buyItems.ContainsKey(itemID))
-            buyItems[itemID] += amount;
-        else
-            buyItems[itemID] = amount;
-    }
+    #endregion
 
-    // 정산
+    #region Calculate
+
     private void Calculate()
     {
-        // 골드 정산
+        // 돈 지급
         DataManager.Instance.CurrencyManager.AddMoney(money);
+
         money = 0;
 
-        // 아이템 정산
-        // 구매한 아이템 창고로 이동
-        Dictionary<string, Inventory> buildingStorage = DataManager.Instance.InventoryManager.GetInvType(InventoryType.Unified);
+        // 모든 창고
+        Dictionary<string, Inventory> storages =
+            DataManager.Instance.InventoryManager
+            .GetInvType(InventoryType.Unified);
 
-        List<int> removeKeys = new List<int>();
+        List<int> removeKeys = new();
 
         foreach (var buyItem in buyItems)
         {
             int itemID = buyItem.Key;
             int remaining = buyItem.Value;
 
-            foreach (var inven in buildingStorage)
+            // 창고에 먼저 저장
+            foreach (var storage in storages.Values)
             {
                 if (remaining <= 0)
                     break;
 
-                int added = inven.Value.AddItem(itemID, remaining, -1);
+                int added =
+                    storage.AddItem(itemID, remaining, -1);
+
+                if (added > 0)
+                {
+                    storage.InvokeChange();
+                }
 
                 remaining -= added;
             }
 
-            // 모두 이동됨
+            // 전부 저장 성공
             if (remaining <= 0)
             {
                 removeKeys.Add(itemID);
             }
             else
             {
-                // 남은 수량만 유지
+                // 남은 수량 유지
                 buyItems[itemID] = remaining;
             }
         }
 
-        // Dictionary foreach 중 수정 방지
+        // 제거
         foreach (var key in removeKeys)
         {
             buyItems.Remove(key);
         }
 
-        // 남은 아이템 로켓 인벤토리로 이동
-        isInvenClear = false;
-
-        foreach (var buyItem in buyItems)
+        // 남은 아이템 로켓 보관
+        if (buyItems.Count > 0)
         {
-            int itemID = buyItem.Key;
-            int amount = buyItem.Value;
-            inventory.AddItem(itemID, amount, -1);
+            isInvenClear = false;
+
+            foreach (var buyItem in buyItems)
+            {
+                inventory.AddItem(
+                    buyItem.Key,
+                    buyItem.Value,
+                    -1);
+            }
+
+            inventory.InvokeChange();
         }
     }
 
-    // 저장기능
+    #endregion
+
+    #region Save / Load
+
     public override string GetJsonData()
     {
         throw new System.NotImplementedException();
@@ -159,10 +246,15 @@ public class Rocket : BuildingBase
         throw new System.NotImplementedException();
     }
 
-    // 상호작용
+    #endregion
+
+    #region Interaction
+
     public override void OnInteract()
     {
         uiStorageManagement.TargetBuilding(id);
         uiStorageManagement.RocketInv();
     }
+
+    #endregion
 }

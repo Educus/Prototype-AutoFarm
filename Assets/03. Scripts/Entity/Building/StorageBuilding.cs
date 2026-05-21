@@ -11,27 +11,37 @@ public class StorageBuilding : BuildingBase
 
         type = BuildingType.Storage;
 
+        if (inventory != null)
+        {
+            inventory.type = InventoryType.Unified;
+        }
     }
 
-    private void Start()
+    public override void Initialize()
     {
-        InitializeInventories();
+        base.Initialize();
 
-        Debug.Log(id);
-    }
-
-    private void InitializeInventories()
-    {
         Debug.Log($"{id} 등록");
 
-        unified = GetComponent<Inventory>();
-        unified.id = id;
-        unified.type = InventoryType.Unified;
+        // Inventory 연결
+        if (inventory == null)
+        {
+            Debug.LogError($"Inventory missing : {gameObject.name}");
+            return;
+        }
 
-        if (unified.slots.Count == 0)
-            unified.Initialize(30);
+        // Inventory 설정
+        inventory.id = id;
+        inventory.type = InventoryType.Unified;
 
-        DataManager.Instance.InventoryManager.Register(unified);
+        // 처음 생성 시만 슬롯 생성
+        if (inventory.slots == null || inventory.slots.Count == 0)
+        {
+            inventory.Initialize(30);
+        }
+
+        // Inventory 등록
+        DataManager.Instance.InventoryManager.Register(inventory);
     }
 
     public override string GetJsonData()
