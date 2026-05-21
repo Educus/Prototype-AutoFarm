@@ -7,6 +7,18 @@ public class InventoryManager : MonoBehaviour
     public Dictionary<string, Inventory> inventories =
         new Dictionary<string, Inventory>();
 
+    // Inspector 확인용
+    [System.Serializable]
+    public class InventoryDebugData
+    {
+        public string id;
+        public Inventory inventory;
+    }
+
+    [SerializeField]
+    private List<InventoryDebugData> debugInventories =
+       new List<InventoryDebugData>();
+
     public void Register(Inventory inv)
     {
         if (!inventories.ContainsKey(inv.id))
@@ -15,10 +27,18 @@ public class InventoryManager : MonoBehaviour
 
     public Inventory Get(string id)
     {
+        if (string.IsNullOrEmpty(id))
+        {
+            Debug.LogWarning("Inventory ID is null or empty.");
+            return null;
+        }
+
         if (inventories.TryGetValue(id, out Inventory inventory))
         {
             return inventory;
         }
+
+        Debug.LogWarning($"Inventory not found: {id}");
 
         return null;
     }
@@ -46,4 +66,27 @@ public class InventoryManager : MonoBehaviour
 
         return total;
     }
+
+    // Dictionary -> List 변환
+    private void RefreshDebugList()
+    {
+        debugInventories.Clear();
+
+        foreach (var pair in inventories)
+        {
+            debugInventories.Add(new InventoryDebugData
+            {
+                id = pair.Key,
+                inventory = pair.Value
+            });
+        }
+    }
+
+#if UNITY_EDITOR
+    // Inspector 실시간 갱신
+    private void Update()
+    {
+        RefreshDebugList();
+    }
+#endif
 }

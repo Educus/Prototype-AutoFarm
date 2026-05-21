@@ -3,11 +3,14 @@ using UnityEngine;
 
 public abstract class BuildingBase : MonoBehaviour, IInteractable
 {
+    [Header("Building Info")]
     public BuildingType type = BuildingType.None;
 
     public int itemID;
+
     [HideInInspector]
     public string id;
+
     public bool isClone = false;
 
     public BuildingData data;
@@ -36,6 +39,7 @@ public abstract class BuildingBase : MonoBehaviour, IInteractable
         while (!isClone) { yield return null; }
 
         id = gameObject.name;
+        Debug.Log(gameObject.name);
         DataManager.Instance.BuildingManager.Register(this);
     }
 

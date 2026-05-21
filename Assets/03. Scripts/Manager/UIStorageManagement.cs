@@ -30,13 +30,21 @@ public class UIStorageManagement : MonoBehaviour
 
         PopUpMode(htdroStorage);
     }
-    public void BuildingInv(string buildingName)
+    public void BuildingInv()
     {
+        RocketInv();
+
+        return;
         buildingStorage.SetActive(!buildingStorage.activeSelf);
-        targetBuilding = buildingName;
 
         PopUpMode(buildingStorage);
     }
+
+    public void TargetBuilding(string buildingName)
+    {
+        targetBuilding = buildingName;
+    }
+
     public void NPCInv()
     {
         npcStorage.SetActive(!npcStorage.activeSelf);

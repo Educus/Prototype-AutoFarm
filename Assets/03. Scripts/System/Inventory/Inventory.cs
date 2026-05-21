@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,6 +25,8 @@ public class Inventory : MonoBehaviour
     public InventoryType type;
     public List<InventorySlot> slots = new List<InventorySlot>();
 
+    public event Action OnInventoryChanged;
+
     private void OnEnable()
     {
         TimeManager.Instance.onDayEvent += OnDayPassed;
@@ -31,6 +34,11 @@ public class Inventory : MonoBehaviour
     private void OnDisable()
     {
         TimeManager.Instance.onDayEvent -= OnDayPassed;
+    }
+
+    public void InvokeChange()
+    {
+        OnInventoryChanged?.Invoke();
     }
 
     public void Initialize(int slotCount)
@@ -107,11 +115,19 @@ public class Inventory : MonoBehaviour
             remaining -= add;
 
             if (remaining <= 0)
+            {
+                InvokeChange();
                 return amount;
+            }
         }
 
         // 못 넣은 양 반환
-        return amount - remaining;
+        int added = amount - remaining;
+
+        if (added > 0)
+            InvokeChange();
+
+        return added;
     }
 
     public int RemoveItem(int itemID, int amount)
@@ -136,7 +152,12 @@ public class Inventory : MonoBehaviour
                 break;
         }
 
-        return amount - remaining;
+        int removed = amount - remaining;
+
+        if (removed > 0)
+            InvokeChange();
+
+        return removed;
     }
 
     public int TakeUpTo(int itemID, int amount)
@@ -163,6 +184,9 @@ public class Inventory : MonoBehaviour
             if (remaining <= 0)
                 break;
         }
+
+        if (taken > 0)
+            InvokeChange();
 
         return taken;
     }
@@ -206,6 +230,8 @@ public class Inventory : MonoBehaviour
     #region Expiry
     void OnDayPassed()
     {
+        bool changed = false;
+
         if (type != InventoryType.Unified &&
             type != InventoryType.Main)
             return;
@@ -222,9 +248,16 @@ public class Inventory : MonoBehaviour
                 continue;
 
             slot.remainingStoragePeriod--;
+            changed = true;
 
             if (slot.remainingStoragePeriod <= 0)
-                slots.RemoveAt(i);
+            {
+                slot.Clear();
+                changed = true;
+            }
+
+            if (changed)
+                InvokeChange();
         }
     }
     #endregion
@@ -245,6 +278,8 @@ public class Inventory : MonoBehaviour
                     .ToList();
                 break;
         }
+
+        InvokeChange();
     }
 
     private int GetExpiryPriority(InventorySlot slot)
@@ -298,6 +333,8 @@ public class Inventory : MonoBehaviour
                 remainingStoragePeriod = s.remainingDays
             });
         }
+
+        InvokeChange();
     }
     #endregion
 }

@@ -5,13 +5,33 @@ public class StorageBuilding : BuildingBase
 {
     public Inventory unified;
 
-
-    void Start()
+    protected override void Awake()
     {
+        base.Awake();
+
         type = BuildingType.Storage;
 
+    }
+
+    private void Start()
+    {
+        InitializeInventories();
+
+        Debug.Log(id);
+    }
+
+    private void InitializeInventories()
+    {
+        Debug.Log($"{id} µî·Ï");
+
         unified = GetComponent<Inventory>();
+        unified.id = id;
         unified.type = InventoryType.Unified;
+
+        if (unified.slots.Count == 0)
+            unified.Initialize(30);
+
+        DataManager.Instance.InventoryManager.Register(unified);
     }
 
     public override string GetJsonData()
@@ -26,6 +46,7 @@ public class StorageBuilding : BuildingBase
 
     public override void OnInteract()
     {
-        throw new System.NotImplementedException();
+        UIStorageManagement.Instance.TargetBuilding(id);
+        UIStorageManagement.Instance.BuildingInv();
     }
 }

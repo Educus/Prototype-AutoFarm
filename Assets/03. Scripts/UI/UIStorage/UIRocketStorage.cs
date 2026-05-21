@@ -9,23 +9,54 @@ public class UIRocketStorage : MonoBehaviour
     // 판매할 물품 적재 or 구매한 물품 적재
     [SerializeField] private TMP_Text slotCount;
     [SerializeField] private TMP_Text totalGold;
-    [SerializeField] private List<UIInvenSlot> itemSlots;
+    [SerializeField] private Transform slotParent;
 
+    private List<UIInvenSlot> itemSlots = new();
     private Inventory rocketInv;
+    private int sort = 0;
+
+    private void Awake()
+    {
+        itemSlots = new List<UIInvenSlot>(
+            slotParent.GetComponentsInChildren<UIInvenSlot>(true));
+    }
 
     private void Start()
     {
-        rocketInv = DataManager.Instance.InventoryManager.inventories["Rocket"];
+        if (!DataManager.Instance.InventoryManager.inventories.TryGetValue("Rocket", out rocketInv))
+        {
+            Debug.LogError("Rocket inventory not found.");
+            return;
+        }
 
-        for(int i = 0; i < itemSlots.Count; i++)
+        if (rocketInv == null)
+        {
+            Debug.LogError("Rocket inventory is null.");
+            return;
+        }
+
+        rocketInv.OnInventoryChanged += RefreshUI;
+
+        RefreshUI();
+
+        for (int i = 0; i < itemSlots.Count; i++)
         {
             int index = i;
 
-            itemSlots[index].GetComponent<Button>().onClick.AddListener(() => MoveItemButton(i));
+            if (itemSlots[index] == null)
+            {
+                Debug.LogError($"Item Slot {index} is null.");
+                continue;
+            }
+
+            itemSlots[index]
+                .GetComponent<Button>()
+                .onClick
+                .AddListener(() => MoveItemButton(index));
         }
     }
 
-    private void Update()
+    private void RefreshUI()
     {
         // 로켓이 열렸을 때 UI 표시
         ViewItems();
@@ -39,7 +70,7 @@ public class UIRocketStorage : MonoBehaviour
 
         foreach (var slot in rocketInv.slots)
         {
-            if (slot.itemID == 0 || slot.count <= 0) return;
+            if (slot.itemID == 0 || slot.count <= 0) continue;
 
             count ++;
             gold += DataManager.Instance.productClosingData[slot.itemID].productsClosingPrice[0] * slot.count;
@@ -50,8 +81,19 @@ public class UIRocketStorage : MonoBehaviour
     // 로켓에 적재된 아이템 표시
     private void ViewItems()
     {
-        for (int i = 0; i < rocketInv.slots.Count; i++)
+        if (rocketInv == null)
+            return;
+
+        int count = Mathf.Min(itemSlots.Count, rocketInv.slots.Count);
+
+        for (int i = 0; i < count; i++)
         {
+            if (itemSlots[i] == null)
+            {
+                Debug.LogWarning($"itemSlots[{i}] is null");
+                continue;
+            }
+
             itemSlots[i].SetSlot(rocketInv.slots[i]);
         }
     }
@@ -101,5 +143,92 @@ public class UIRocketStorage : MonoBehaviour
     {
         // 용도??
         // 이후 수정
+    }
+
+    // 정렬
+    // 유통기한 순, 갯수 순
+    public void SortingButton(int value)
+    {
+        if (sort == value) value += 1;
+        sort = value;
+
+        switch (value)
+        {
+            case 0:
+            case 1:
+                SortPeriodInv(false);
+                break;
+            case 2:
+                SortPeriodInv(true);
+                break;
+            case 3:
+                SortNumInv(false);
+                break;
+            case 4:
+                SortNumInv(true);
+                break;
+            default:
+                SortPeriodInv(false);
+                break;
+        }
+    }
+
+    // 유통기한 순
+    private void SortPeriodInv(bool descending)
+    {
+        rocketInv.slots.Sort((a, b) =>
+        {
+            // 빈 슬롯은 아래로
+            bool aEmpty = a.IsEmpty();
+            bool bEmpty = b.IsEmpty();
+
+            if (aEmpty && bEmpty) return 0;
+            if (aEmpty) return 1;
+            if (bEmpty) return -1;
+
+            // 유통기한 비교
+            int compare = a.remainingStoragePeriod.CompareTo(b.remainingStoragePeriod);
+
+            return descending ? -compare : compare;
+        });
+
+        ViewItems();
+    }
+
+    // 갯수 순
+    private void SortNumInv(bool descending)
+    {
+        // itemID별 총 수량 계산
+        Dictionary<int, int> totalCounts = new Dictionary<int, int>();
+
+        foreach (var slot in rocketInv.slots)
+        {
+            if (slot.IsEmpty())
+                continue;
+
+            if (!totalCounts.ContainsKey(slot.itemID))
+                totalCounts[slot.itemID] = 0;
+
+            totalCounts[slot.itemID] += slot.count;
+        }
+
+        rocketInv.slots.Sort((a, b) =>
+        {
+            bool aEmpty = a.IsEmpty();
+            bool bEmpty = b.IsEmpty();
+
+            if (aEmpty && bEmpty) return 0;
+            if (aEmpty) return 1;
+            if (bEmpty) return -1;
+
+            int aTotal = totalCounts[a.itemID];
+            int bTotal = totalCounts[b.itemID];
+
+            int compare = aTotal.CompareTo(bTotal);
+
+            return descending ? -compare : compare;
+        });
+
+        ViewItems();
     }
 }

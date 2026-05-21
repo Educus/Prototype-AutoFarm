@@ -144,6 +144,6 @@ public class FarmBuilding : BuildingBase
 
     public override void OnInteract()
     {
-        throw new System.NotImplementedException();
+        
     }
 }

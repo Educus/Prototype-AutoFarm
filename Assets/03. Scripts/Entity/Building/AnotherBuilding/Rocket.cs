@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Rocket : BuildingBase
@@ -16,6 +17,8 @@ public class Rocket : BuildingBase
 
     private void Start()
     {
+        isClone = true;
+
         uiStorageManagement = UIStorageManagement.Instance;
 
         inventory = GetComponent<Inventory>();
@@ -159,7 +162,7 @@ public class Rocket : BuildingBase
     // 상호작용
     public override void OnInteract()
     {
+        uiStorageManagement.TargetBuilding(id);
         uiStorageManagement.RocketInv();
-        Debug.Log("dd");
     }
 }
