@@ -29,6 +29,7 @@ public class UIStorageManagement : MonoBehaviour
         rocketStorage.SetActive(true);
         buildingStorage.SetActive(true);
 
+        npcInterface.gameObject.SetActive(true);
         npcInterface.ShowStaff();
     }
 
@@ -65,6 +66,7 @@ public class UIStorageManagement : MonoBehaviour
     {
         rocketStorage.SetActive(false);
         buildingStorage.SetActive(false);
+        npcInterface.gameObject.SetActive(false);
 
         CheckPopupState();
     }

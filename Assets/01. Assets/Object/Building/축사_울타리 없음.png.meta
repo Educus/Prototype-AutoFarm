@@ -129,7 +129,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\uCD95\uC0AC_\uC6B8\uD0C0\uB9AC \uC5C6\uC74C_0"
+      name: 9021
       rect:
         serializedVersion: 2
         x: 94
@@ -166,7 +166,7 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      "\uCD95\uC0AC_\uC6B8\uD0C0\uB9AC \uC5C6\uC74C_0": 2733126570010285282
+      9021: 2733126570010285282
       "\uCD95\uC0AC_\uC6B8\uD0C0\uB9AC \uC5C6\uC74C_1": -5354406575071762411
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
