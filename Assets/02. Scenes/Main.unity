@@ -12870,7 +12870,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &646003399
 RectTransform:
   m_ObjectHideFlags: 0
@@ -132836,9 +132836,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingModUI
   gameManager: {fileID: 1570929483}
-  invenMode: {fileID: 0}
-  buildingMode: {fileID: 0}
-  buildCancel: {fileID: 0}
+  invenMode: {fileID: 1289469055}
+  buildingMode: {fileID: 323183988}
+  buildCancel: {fileID: 206535313}
   otherButton: {fileID: 2043629075}
 --- !u!1 &1751103714
 GameObject:
@@ -134290,7 +134290,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1826260566
 RectTransform:
   m_ObjectHideFlags: 0
