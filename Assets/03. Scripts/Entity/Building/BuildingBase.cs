@@ -63,19 +63,17 @@ public abstract class BuildingBase : MonoBehaviour, IInteractable
 
     public void UpdateHighlight()
     {
-        var gm = GameManager.Instance;
+        GameManager gm = GameManager.Instance;
 
         // WorkMode 아니면 기본색
-        if (!gm.isWorkMode)
+        if (!gm.IsMode(GameMode.Work))
         {
             SetColor(defaultColor);
             return;
         }
 
         // 할당 불가능 건물
-        if (type == BuildingType.None ||
-            type == BuildingType.Rocket ||
-            type == BuildingType.Storage)
+        if (!CanAssignWork())
         {
             SetColor(Color.gray);
             return;
@@ -107,6 +105,12 @@ public abstract class BuildingBase : MonoBehaviour, IInteractable
 
         // 기본색
         SetColor(defaultColor);
+    }
+    protected virtual bool CanAssignWork()
+    {
+        return type != BuildingType.None &&
+               type != BuildingType.Rocket &&
+               type != BuildingType.Storage;
     }
 
     private void SetColor(Color color)

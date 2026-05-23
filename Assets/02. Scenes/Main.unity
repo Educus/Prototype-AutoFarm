@@ -8413,6 +8413,8 @@ MonoBehaviour:
   uiManager: {fileID: 1127960351}
   gridManager: {fileID: 494453411}
   pathfinder: {fileID: 494453412}
+  buildModeUI: {fileID: 0}
+  uiManagement: {fileID: 0}
   player: {fileID: 292274686}
 --- !u!4 &405290353
 Transform:
@@ -8862,7 +8864,7 @@ GameObject:
   - component: {fileID: 454708230}
   - component: {fileID: 454708229}
   m_Layer: 5
-  m_Name: BuildingStorage
+  m_Name: BuildingStorage?
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12668,12 +12670,12 @@ GameObject:
   - component: {fileID: 627259369}
   - component: {fileID: 627259371}
   m_Layer: 5
-  m_Name: Rocket
+  m_Name: RocketStorage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &627259368
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12681,7 +12683,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 627259367}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -12690,7 +12692,7 @@ RectTransform:
   - {fileID: 709791920}
   - {fileID: 1917505912}
   - {fileID: 259177713}
-  m_Father: {fileID: 2007887141}
+  m_Father: {fileID: 920910970}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -117805,7 +117807,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2007887141}
+  - {fileID: 1042203825}
+  - {fileID: 627259368}
   - {fileID: 1423660372}
   - {fileID: 454708228}
   - {fileID: 1970127211}
@@ -117836,10 +117839,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad943e5cabdc5d648bdb1d85b442d127, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIStorageManagement
-  rocketStorage: {fileID: 2007887140}
+  rocketStorage: {fileID: 627259367}
   npcInterface: {fileID: 1623559936}
   htdroStorage: {fileID: 1423660371}
-  buildingStorage: {fileID: 454708227}
+  buildingStorage: {fileID: 1042203824}
   npcStorage: {fileID: 1970127210}
 --- !u!1 &931212995
 GameObject:
@@ -118982,12 +118985,12 @@ GameObject:
   - component: {fileID: 1042203826}
   - component: {fileID: 1042203828}
   m_Layer: 5
-  m_Name: Storage
+  m_Name: BuildingStorage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1042203825
 RectTransform:
   m_ObjectHideFlags: 0
@@ -118995,7 +118998,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1042203824}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -119003,7 +119006,7 @@ RectTransform:
   - {fileID: 225735871}
   - {fileID: 375195589}
   - {fileID: 28623941}
-  m_Father: {fileID: 2007887141}
+  m_Father: {fileID: 920910970}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -121104,57 +121107,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1152628414}
   m_CullTransparentMesh: 1
---- !u!1 &1154891272 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4513371315909722367, guid: 252a0707f4c9b6348a092c592730cb20, type: 3}
-  m_PrefabInstance: {fileID: 5626427618260555056}
-  m_PrefabAsset: {fileID: 0}
---- !u!61 &1154891275
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1154891272}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.8142858, y: 5.242857}
-    newSize: {x: 1.97, y: 3.67}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 2.8142858, y: 5.242857}
-  m_EdgeRadius: 0
 --- !u!1 &1155439329
 GameObject:
   m_ObjectHideFlags: 0
@@ -129143,9 +129095,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce857ba6009212249894a4050404117b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  isPopUpMode: 0
-  isBuildMode: 0
-  isWorkMode: 0
   selectedNPC: {fileID: 0}
   isPlay: 0
   targetLock: {fileID: 0}
@@ -132887,9 +132836,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingModUI
   gameManager: {fileID: 1570929483}
-  invenMod: {fileID: 1289469055}
-  buildingMod: {fileID: 323183988}
-  buildCancle: {fileID: 206535313}
+  invenMode: {fileID: 0}
+  buildingMode: {fileID: 0}
+  buildCancel: {fileID: 0}
   otherButton: {fileID: 2043629075}
 --- !u!1 &1751103714
 GameObject:
@@ -137368,43 +137317,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2006877544}
   m_CullTransparentMesh: 1
---- !u!1 &2007887140
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2007887141}
-  m_Layer: 5
-  m_Name: RocketStorage
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &2007887141
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2007887140}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1042203825}
-  - {fileID: 627259368}
-  m_Father: {fileID: 920910970}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2007940336
 GameObject:
   m_ObjectHideFlags: 0
@@ -141027,10 +140939,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaterTank
       objectReference: {fileID: 0}
-    - target: {fileID: 4513371315909722367, guid: 252a0707f4c9b6348a092c592730cb20, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 7998386537814033751, guid: 252a0707f4c9b6348a092c592730cb20, type: 3}
       propertyPath: m_LocalPosition.x
       value: 18.99
@@ -141074,10 +140982,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4513371315909722367, guid: 252a0707f4c9b6348a092c592730cb20, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1154891275}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 252a0707f4c9b6348a092c592730cb20, type: 3}
 --- !u!1001 &5733299886470525291
 PrefabInstance:

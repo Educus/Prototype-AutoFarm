@@ -1,52 +1,108 @@
 using System;
 using UnityEngine;
 
+public enum GameMode
+{
+    None,
+    Popup,
+    Build,
+    Work
+}
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
     // 시스템, 이벤트 호출 담당
 
     // 게임 모드 관리
-    public bool isPopUpMode = false;
-    public bool isBuildMode = false;
-    public bool isWorkMode = false;
+    [Header("Mode")]
+    public GameMode CurrentMode { get; private set; } = GameMode.None;
+
+    [Header("Work")]
     public NPC selectedNPC;
 
     // 일시정지
+    [Header("Game")]
     public bool isPlay = false;
 
     // 카메라 타겟
+    [Header("Camera")]
     public GameObject targetLock;
 
-    public static GameManager Instance;
+    // 모드 변경 시 호출
+    public event Action<GameMode> onModeChanged;
 
     // Save/Load
     public event Action save;
     public event Action load;
 
+    #region Unity
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null) 
+            Instance = this;
+        else 
+            Destroy(gameObject);
     }
-    private void Start()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            isPlay = !isPlay;
+    #endregion
 
-            Debug.Log(isPlay ? "게임 시작" : "게임 일시정지");
-        }
-    }
-    private void Update()
+    #region Mode
+    // None 상태일 때만 진입 가능
+    public bool EnterMode(GameMode mode)
     {
-        // 작업 할당 시 건물 색깔 표시
+        if (CurrentMode != GameMode.None)
+        {
+            Debug.Log($"이미 다른 모드 진행중 : {CurrentMode}");
+
+            return false;
+        }
+
+        CurrentMode = mode;
+
+        Debug.Log($"모드 진입 : {mode}");
+
         RefreshHighlights();
+
+        onModeChanged?.Invoke(CurrentMode);
+
+        return true;
     }
+    public void ExitMode()
+    {
+        CurrentMode = GameMode.None;
+
+        selectedNPC = null;
+
+        Debug.Log("모드 종료");
+
+        RefreshHighlights();
+
+        onModeChanged?.Invoke(CurrentMode);
+    }
+
+    public bool IsMode(GameMode mode)
+    {
+        return CurrentMode == mode;
+    }
+
+    public bool IsBusy()
+    {
+        return CurrentMode != GameMode.None;
+    }
+    #endregion
+
+    #region Highlight
     public void RefreshHighlights()
     {
-        foreach (var b in DataManager.Instance.BuildingManager.GetAll())
+        if (DataManager.Instance == null)
+            return;
+
+        if (DataManager.Instance.BuildingManager == null)
+            return;
+
+        foreach (var building in DataManager.Instance.BuildingManager.GetAll())
         {
-            b.UpdateHighlight();
+            building.UpdateHighlight();
         }
     }
+    #endregion
 }

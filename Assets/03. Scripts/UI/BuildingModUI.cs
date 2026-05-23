@@ -4,18 +4,33 @@ public class BuildingModUI : MonoBehaviour
 {
     [SerializeField] private GameManager gameManager;
 
-    [SerializeField] private GameObject invenMod;
-    [SerializeField] private GameObject buildingMod;
+    [SerializeField] private GameObject invenMode;
+    [SerializeField] private GameObject buildingMode;
 
-    [SerializeField] private GameObject buildCancle;
+    [SerializeField] private GameObject buildCancel;
     [SerializeField] private GameObject otherButton;
 
-    private void Update()
+    private void Start()
     {
-        invenMod.SetActive(!gameManager.isBuildMode);
-        buildingMod.SetActive(gameManager.isBuildMode);
+        RefreshUI(gameManager.CurrentMode);
 
-        buildCancle.SetActive(gameManager.isBuildMode);
-        otherButton.SetActive(!gameManager.isBuildMode);
+        gameManager.onModeChanged += RefreshUI;
+    }
+
+    private void OnDestroy()
+    {
+        gameManager.onModeChanged -= RefreshUI;
+    }
+
+    public void RefreshUI(GameMode mode)
+    {
+        bool isBuildMode =
+            mode == GameMode.Build;
+
+        invenMode.SetActive(!isBuildMode);
+        buildingMode.SetActive(isBuildMode);
+
+        buildCancel.SetActive(isBuildMode);
+        otherButton.SetActive(!isBuildMode);
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+
 public enum BuildingType
 {
     None,
@@ -59,10 +60,15 @@ public class BuildingManager : MonoBehaviour
 
     private void Update()
     {
-        if (!GameManager.Instance.isBuildMode)
+        // BuildMode 아닐 경우 종료
+        if (GameManager.Instance.CurrentMode != GameMode.Build)
             return;
 
+        // 설치 상태가 아니면 종료
         if (!isPlacing)
+            return;
+
+        if (previewObj == null)
             return;
 
         Vector2 mousePos =
@@ -79,17 +85,25 @@ public class BuildingManager : MonoBehaviour
 
         UpdatePreview(gridPos);
 
-        if (Input.GetMouseButtonDown(0) &&
-            !EventSystem.current.IsPointerOverGameObject())
+        // UI 클릭 중이면 설치 금지
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        // 좌클릭 설치
+        if (Input.GetMouseButtonDown(0))
         {
             TryPlace(gridPos);
         }
-    }
 
+        // 우클릭 설치 취소
+        if (Input.GetMouseButtonDown(1))
+        {
+            CancelPlacement();
+        }
+    }
     #endregion
 
     #region Register
-
     public void Register(BuildingBase building)
     {
         if (!buildings.ContainsKey(building.id))
@@ -97,11 +111,9 @@ public class BuildingManager : MonoBehaviour
             buildings.Add(building.id, building);
         }
     }
-
     #endregion
 
     #region Default Building
-
     private void CreateDefaultBuildings()
     {
         foreach (var data in defaultBuildings)
@@ -111,13 +123,22 @@ public class BuildingManager : MonoBehaviour
                 data.gridPosition);
         }
     }
-
     #endregion
 
     #region Placement
-
+    // 건설 모드 시작
     public void StartPlacement(int itemID)
     {
+        // BuildMode가 아닐 때만 진입 시도
+        if (!GameManager.Instance.IsMode(GameMode.Build))
+        {
+            if (!GameManager.Instance.EnterMode(GameMode.Build))
+            {
+                Debug.Log("다른 모드 진행 중");
+                return;
+            }
+        }
+
         CancelPlacement();
 
         currentPrefab = Array.Find(
@@ -127,7 +148,16 @@ public class BuildingManager : MonoBehaviour
         if (currentPrefab == null)
         {
             Debug.LogError($"Prefab Missing : {itemID}");
+
+            GameManager.Instance.ExitMode();
+
             return;
+        }
+
+        // 기존 프리뷰 제거
+        if (previewObj != null)
+        {
+            Destroy(previewObj);
         }
 
         previewObj = Instantiate(currentPrefab);
@@ -164,17 +194,18 @@ public class BuildingManager : MonoBehaviour
 
         color.a = 0.5f;
 
-        previewObj
-            .GetComponent<SpriteRenderer>()
-            .color = color;
+        SpriteRenderer sr =
+           previewObj.GetComponent<SpriteRenderer>();
+
+        if (sr != null)
+        {
+            sr.color = color;
+        }
     }
 
-    private void SetPreviewAlpha(
-        GameObject obj,
-        float alpha)
+    private void SetPreviewAlpha(GameObject obj, float alpha)
     {
-        SpriteRenderer sr =
-            obj.GetComponent<SpriteRenderer>();
+        SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
 
         if (sr == null)
             return;
@@ -202,6 +233,7 @@ public class BuildingManager : MonoBehaviour
                     return false;
                 }
 
+                // true면 비어있는 타일
                 if (currentData.patternFlat[index])
                     continue;
 
@@ -248,29 +280,30 @@ public class BuildingManager : MonoBehaviour
         }
 
         CreateBuilding(CurrentItemID, pos);
+
+        // 1회성 설치 방식(설치 후 모드 종료)
+        // CancelPlacement();
+        // 
+        // GameManager.Instance.ExitMode();
     }
 
-    public BuildingBase CreateBuilding(
-        int itemID,
-        Vector2Int pos)
+    public BuildingBase CreateBuilding(int itemID, Vector2Int pos)
     {
-        GameObject prefab = Array.Find(
-            buildingPrefabs,
-            p => p.name == itemID.ToString());
+        // 프리팹 정보 가져오기
+        BuildingBase prefabBuilding =
+            GetBuilding(itemID);
 
-        if (prefab == null)
+        if (prefabBuilding == null)
         {
-            Debug.LogError($"Prefab Missing : {itemID}");
+            Debug.LogError($"CreateBuilding Failed : {itemID}");
+
             return null;
         }
-
-        BuildingBase prefabBuilding =
-            prefab.GetComponent<BuildingBase>();
-
+       
         BuildingData data =
             prefabBuilding.data;
 
-        GameObject obj = Instantiate(prefab);
+        GameObject obj = Instantiate(prefabBuilding.gameObject);
 
         obj.name =
             $"Building_{itemID}_{buildingIndex++}";
@@ -286,19 +319,20 @@ public class BuildingManager : MonoBehaviour
 
         obj.transform.position = center;
 
+        // BuildingBase 가져오기
         BuildingBase building =
             obj.GetComponent<BuildingBase>();
 
+        // 초기화
         building.Initialize();
 
+        // Grid 적용
         ApplyToGrid(pos, data);
 
         return building;
     }
 
-    private void ApplyToGrid(
-        Vector2Int pos,
-        BuildingData data)
+    private void ApplyToGrid(Vector2Int pos, BuildingData data)
     {
         for (int x = 0; x < data.width; x++)
         {
@@ -328,22 +362,38 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
+    public void ExitBuildMode()
+    {
+        ClearPlacement();
+
+        // 게임 모드 종료
+        GameManager.Instance.ExitMode();
+    }
+
+    // 건설 종료
     public void CancelPlacement()
     {
+        ClearPlacement();
+    }
+
+    private void ClearPlacement()
+    {
+        // 프리뷰 제거
         if (previewObj != null)
         {
             Destroy(previewObj);
         }
 
+        previewObj = null;
+
+        // 설치 상태 초기화
         isPlacing = false;
 
         CurrentItemID = -1;
     }
-
     #endregion
 
     #region Find
-
     public BuildingBase GetBuilding(int itemID)
     {
         GameObject prefab = Array.Find(
@@ -351,13 +401,15 @@ public class BuildingManager : MonoBehaviour
             p => p.name == itemID.ToString());
 
         if (prefab == null)
+        {
+            Debug.LogError($"Building Prefab Missing : {itemID}");
             return null;
+        }
 
         return prefab.GetComponent<BuildingBase>();
     }
 
-    public T Get<T>(string id)
-        where T : BuildingBase
+    public T Get<T>(string id) where T : BuildingBase
     {
         if (buildings.TryGetValue(id, out BuildingBase building))
         {
@@ -386,11 +438,9 @@ public class BuildingManager : MonoBehaviour
 
         return Vector2Int.zero;
     }
-
     #endregion
 
     #region Save / Load
-
     public List<BuildingSaveData> GetSaveData()
     {
         List<BuildingSaveData> list =
@@ -473,6 +523,5 @@ public class BuildingManager : MonoBehaviour
 
         buildingIndex = maxIndex + 1;
     }
-
     #endregion
 }

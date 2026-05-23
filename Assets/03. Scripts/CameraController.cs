@@ -16,21 +16,26 @@ public class CameraController : MonoBehaviour
     public Vector2 minBounds;
     public Vector2 maxBounds;
 
-    private Camera camera;
+    private Camera mainCamera;
 
     void Start()
     {
-        camera = Camera.main;
+        mainCamera = Camera.main;
+
+        if (mainCamera == null)
+        {
+            Debug.LogError("Main Camera Missing");
+        }
     }
 
     void Update()
     {
         if (GameManager.Instance.targetLock != null)
         {
-            FolloewTarget();
+            FollowTarget();
         }
 
-        if (!GameManager.Instance.isPopUpMode)
+        if (!GameManager.Instance.IsMode(GameMode.Popup))
         {
             HandleZoom();
             HandleMovement();
@@ -44,16 +49,22 @@ public class CameraController : MonoBehaviour
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
-        if (scroll != 0 && !EventSystem.current.IsPointerOverGameObject())
+        if (scroll != 0 && 
+            (EventSystem.current == null || !EventSystem.current.IsPointerOverGameObject()))
         {
-            camera.orthographicSize -= scroll * zoomSpeed;
-            camera.orthographicSize = Mathf.Clamp(camera.orthographicSize, minZoom, maxZoom);
+            mainCamera.orthographicSize -= scroll * zoomSpeed;
+            mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, minZoom, maxZoom);
         }
     }
 
     // 카메라 이동
     void HandleMovement()
     {
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         Vector3 pos = transform.position;
         bool isMoving = false;
 
@@ -87,7 +98,7 @@ public class CameraController : MonoBehaviour
         transform.position = pos;
     }
 
-    void FolloewTarget()
+    void FollowTarget()
     {
         Vector3 targetPos = GameManager.Instance.targetLock.transform.position;
         targetPos.z = transform.position.z;
@@ -98,7 +109,7 @@ public class CameraController : MonoBehaviour
     // 카메라 최대값
     void ClampCamera()
     {
-        float camHeight = camera.orthographicSize;
+        float camHeight = mainCamera.orthographicSize;
         float camWidth = camHeight * Screen.width / Screen.height;
 
         Vector3 pos = transform.position;

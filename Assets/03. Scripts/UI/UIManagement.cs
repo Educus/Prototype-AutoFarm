@@ -58,18 +58,23 @@ public class UIManagement : MonoBehaviour
 
         ChangeIcon(0);
     }
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-            OpenManagement();
-        }
-    }
 
     public void OpenManagement()
     {
-        management.SetActive(!management.activeSelf);
-        GameManager.Instance.isPopUpMode = true;
+        // 이미 열려있으면 닫기
+        if (management.activeSelf)
+        {
+            ExitButton();
+            return;
+        }
+
+        // 다른 모드 중이면 열지 않음
+        if (!GameManager.Instance.EnterMode(GameMode.Popup))
+        {
+            return;
+        }
+
+        management.SetActive(true);
     }
 
     public void ChangeChip(int value)
@@ -147,7 +152,8 @@ public class UIManagement : MonoBehaviour
 
     public void ExitButton()
     {
-        GameManager.Instance.isPopUpMode = false;
         management.SetActive(false);
+
+        GameManager.Instance.ExitMode();
     }
 }

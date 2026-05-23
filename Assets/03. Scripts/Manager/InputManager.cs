@@ -11,6 +11,9 @@ public class InputManager : MonoBehaviour
     [SerializeField] private InteractionUIManager uiManager;
     [SerializeField] private GridManager gridManager;
     [SerializeField] private Pathfinder pathfinder;
+    
+    [SerializeField] private BuildUIManager buildModeUI;
+    [SerializeField] private UIManagement uiManagement;
 
     [SerializeField] public Player player;
 
@@ -27,6 +30,40 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
+        // 테스트용 ESC
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (GameManager.Instance.IsMode(GameMode.Build))
+            {
+                DataManager.Instance.BuildingManager.ExitBuildMode();
+
+                buildModeUI.BuildMode(false);
+            }
+            else if (GameManager.Instance.IsMode(GameMode.Popup))
+            {
+                uiManagement.ExitButton();
+            }
+            else
+            {
+                GameManager.Instance.ExitMode();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GameManager.Instance.isPlay = !GameManager.Instance.isPlay;
+
+            Debug.Log(
+                GameManager.Instance.isPlay
+                ? "게임 시작"
+                : "게임 일시정지");
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            uiManagement.OpenManagement();
+        }
+
         // 좌클릭, 우클릭
         if (Input.GetMouseButtonDown(0))
         {
@@ -53,6 +90,14 @@ public class InputManager : MonoBehaviour
 
     void LeftClick()
     {
+        if (UnityEngine.EventSystems.EventSystem.current
+        .IsPointerOverGameObject())
+            return;
+
+        // Build 모드 중엔 차단
+        if (GameManager.Instance.IsMode(GameMode.Build))
+            return;
+
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         Collider2D hit = Physics2D.OverlapPoint(mousePos, layerMask);

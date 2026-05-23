@@ -15,13 +15,27 @@ public class BuildModeManager : MonoBehaviour
 
     public void ToggleBuildMode()
     {
-        gameManager.isBuildMode = !gameManager.isBuildMode;
-
-        buildModeUI.BuildMode(gameManager.isBuildMode);
-
-        if (!gameManager.isBuildMode)
+        // 이미 BuildMode면 종료
+        if (gameManager.IsMode(GameMode.Build))
         {
-            buildingManager.CancelPlacement();
+            buildingManager.ExitBuildMode();
+
+            buildModeUI.BuildMode(false);
+
+            return;
+        }
+
+        // 다른 모드 중이면 무시
+        if (gameManager.IsBusy())
+        {
+            Debug.Log("다른 모드 진행 중");
+            return;
+        }
+
+        // BuildMode 진입
+        if (gameManager.EnterMode(GameMode.Build))
+        {
+            buildModeUI.BuildMode(true);
         }
     }
 }

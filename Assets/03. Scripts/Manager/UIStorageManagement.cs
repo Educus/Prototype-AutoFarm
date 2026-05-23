@@ -13,48 +13,109 @@ public class UIStorageManagement : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null) 
+            Instance = this;
+        else 
+            Destroy(gameObject);
     }
+
+    #region Open
 
     public void RocketInv()
     {
-        rocketStorage.SetActive(!rocketStorage.activeSelf);
-        npcInterface.ShowStaff();
+        if (!OpenPopup())
+            return;
 
-        PopUpMode(rocketStorage);
+        rocketStorage.SetActive(true);
+        buildingStorage.SetActive(true);
+
+        npcInterface.ShowStaff();
     }
+
     public void HtdroInv()
     {
-        htdroStorage.SetActive(!htdroStorage.activeSelf);
+        if (!OpenPopup())
+            return;
 
-        PopUpMode(htdroStorage);
+        htdroStorage.SetActive(true);
     }
+
     public void BuildingInv()
     {
-        RocketInv();
+        if (!OpenPopup())
+            return;
 
-        return;
-        buildingStorage.SetActive(!buildingStorage.activeSelf);
-
-        PopUpMode(buildingStorage);
+        rocketStorage.SetActive(false);
+        buildingStorage.SetActive(true);
     }
+
+    public void NPCInv()
+    {
+        if (!OpenPopup())
+            return;
+
+        npcStorage.SetActive(true);
+    }
+
+    #endregion
+
+    #region Close
+
+    public void CloseRocketInv()
+    {
+        rocketStorage.SetActive(false);
+        buildingStorage.SetActive(false);
+
+        CheckPopupState();
+    }
+
+    public void CloseHtdroInv()
+    {
+        htdroStorage.SetActive(false);
+
+        CheckPopupState();
+    }
+
+    public void CloseNPCInv()
+    {
+        npcStorage.SetActive(false);
+
+        CheckPopupState();
+    }
+
+    #endregion
+
+    #region Popup
+
+    private bool OpenPopup()
+    {
+        // 이미 Popup 모드면 허용
+        if (GameManager.Instance.IsMode(GameMode.Popup))
+        {
+            return true;
+        }
+
+        return GameManager.Instance.EnterMode(GameMode.Popup);
+    }
+
+    private void CheckPopupState()
+    {
+        bool hasPopup =
+            rocketStorage.activeSelf ||
+            htdroStorage.activeSelf ||
+            buildingStorage.activeSelf ||
+            npcStorage.activeSelf;
+
+        if (!hasPopup)
+        {
+            GameManager.Instance.ExitMode();
+        }
+    }
+
+    #endregion
 
     public void TargetBuilding(string buildingName)
     {
         targetBuilding = buildingName;
     }
-
-    public void NPCInv()
-    {
-        npcStorage.SetActive(!npcStorage.activeSelf);
-
-        PopUpMode(npcStorage);
-    }
-
-    private void PopUpMode(GameObject obj)
-    {
-        GameManager.Instance.isPopUpMode = obj.activeSelf;
-    }
-
 }
