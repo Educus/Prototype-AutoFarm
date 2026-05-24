@@ -48,6 +48,11 @@ public class UIChart : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        uiChart.gameObject.SetActive(false);
+    }
+
     public void OnClickChartButton(int itemID)
     {
         uiChart.gameObject.SetActive(true);

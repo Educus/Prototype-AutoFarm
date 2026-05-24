@@ -151,7 +151,7 @@ public class UINPCStorage : MonoBehaviour
 
         float current = slot.remainingStoragePeriod;
 
-        float max = DataManager.Instance.productsData[slot.itemID].storagePeriod;
+        float max = DataManager.Instance.itemsData[slot.itemID].storagePeriod;
 
         float value = current / max;
 

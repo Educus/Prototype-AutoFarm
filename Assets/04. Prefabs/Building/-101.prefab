@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5105776768518827776}
   - component: {fileID: 5558821042516914415}
   - component: {fileID: 4548180455539467828}
-  - component: {fileID: 927670861473791208}
   m_Layer: 7
   m_Name: -101
   m_TagString: Untagged
@@ -176,19 +175,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
   id: 
   type: 0
-  slots: []
---- !u!114 &927670861473791208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2910352329712064740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd14f1a20e119b947913733fcbb0bbb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Inventory
-  id: 
-  type: 1
   slots: []

@@ -34,6 +34,8 @@ public class UIChartIcon : MonoBehaviour
         SetInfo();
         SetData();
         SetBookMark();
+
+        Debug.Log($"UIChartIcon GetInfo: {itemID}");
     }
     // 최초 정보 설정
     private void SetInfo()

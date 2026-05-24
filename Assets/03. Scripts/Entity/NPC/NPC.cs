@@ -45,7 +45,7 @@ public class NPC : StatusBase
     // 상호작용
     public override void OnInteract()
     {
-        Debug.Log($"{entityName} 상호작용");
+        UIStorageManagement.Instance.NPCInv();
     }
 
     // NPC 기본 세팅

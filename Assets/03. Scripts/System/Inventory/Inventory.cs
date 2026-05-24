@@ -239,12 +239,13 @@ public class Inventory : MonoBehaviour
         for (int i = slots.Count - 1; i >= 0; i--)
         {
             var slot = slots[i];
+
+            if (slot.remainingStoragePeriod < 0)
+                continue;
+
             var data = DataManager.Instance.itemsData[slot.itemID];
 
             if (data.itemType != ItemType.Product)
-                continue;
-
-            if (slot.remainingStoragePeriod < 0)
                 continue;
 
             slot.remainingStoragePeriod--;

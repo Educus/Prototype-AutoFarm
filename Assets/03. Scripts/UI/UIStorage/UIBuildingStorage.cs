@@ -13,6 +13,8 @@ public class UIBuildingStorage : MonoBehaviour
     // 지금 보여주는 창고 인벤토리
     private List<Inventory> subscribedInventories = new List<Inventory>();
 
+    private string rocketID = "Building_-101_0";
+
     private void OnEnable()
     {
         SubscribeInventories();
@@ -36,7 +38,7 @@ public class UIBuildingStorage : MonoBehaviour
         string target = UIStorageManagement.Instance.targetBuilding;
 
         Debug.Log($"target : {target}");
-        Debug.Log($"IsTarget: {target == "Rocket"}");
+        Debug.Log($"IsTarget: {target == rocketID}");
 
         // null 또는 빈 문자열 방어
         if (string.IsNullOrEmpty(target))
@@ -46,7 +48,7 @@ public class UIBuildingStorage : MonoBehaviour
         }
 
         // 로켓이면 전체 창고 구독
-        if (target == "Rocket")
+        if (target == rocketID)
         {
             Dictionary<string, Inventory> storages =
                 DataManager.Instance.InventoryManager.GetInvType(InventoryType.Unified);
@@ -102,6 +104,12 @@ public class UIBuildingStorage : MonoBehaviour
 
         EnsureSlotCount(requiredSlotCount);
 
+        // 모든 슬롯 초기화
+        foreach (var slot in slotList)
+        {
+            slot.ClearSlot();
+        }
+
         ActiveSlot(requiredSlotCount);
 
         ViewItems();
@@ -111,7 +119,7 @@ public class UIBuildingStorage : MonoBehaviour
     private int GetRequiredSlotCount()
     {
         // 모든 창고 표시
-        if (UIStorageManagement.Instance.targetBuilding == "Rocket")
+        if (UIStorageManagement.Instance.targetBuilding == rocketID)
         {
             Dictionary<string, Inventory> storages =
                 DataManager.Instance.InventoryManager.GetInvType(InventoryType.Unified);
@@ -161,7 +169,15 @@ public class UIBuildingStorage : MonoBehaviour
     {
         for (int i = 0; i < slotList.Count; i++)
         {
-            slotList[i].gameObject.SetActive(i < activeCount);
+            bool active = i < activeCount;
+
+            slotList[i].gameObject.SetActive(active);
+
+            // 사용하지 않는 슬롯 데이터 초기화
+            if (!active)
+            {
+                slotList[i].ClearSlot();
+            }
         }
     }
 
@@ -172,7 +188,7 @@ public class UIBuildingStorage : MonoBehaviour
     private void ViewItems()
     {
         // 모든 창고 표시
-        if (UIStorageManagement.Instance.targetBuilding == "Rocket")
+        if (UIStorageManagement.Instance.targetBuilding == rocketID)
         {
             ViewAllStorages();
         }

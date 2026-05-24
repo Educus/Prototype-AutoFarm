@@ -8,16 +8,34 @@ using Newtonsoft.Json;
 [Serializable]
 public class Product
 {
-    [SerializeField] public int itemID;
-    [SerializeField] public string itemName;
-    [SerializeField] public ItemType itemType;
-    [SerializeField] public float priceStdDev;
-    [SerializeField] public int basicCost;
-    [SerializeField] public int growthTime;
-    [SerializeField] public int maximumYield;
-    [SerializeField] public int waterConsumption;
-    [SerializeField] public int storagePeriod;
+    [JsonProperty("ItemID")]
+    public int itemID;
+
+    [JsonProperty("ItemName")]
+    public string itemName;
+
+    [JsonProperty("ItemType")]
+    public ItemType itemType;
+
+    [JsonProperty("PriceStdDev")]
+    public float priceStdDev;
+
+    [JsonProperty("BasicPrice")]
+    public int basicCost;
+
+    [JsonProperty("GrowthTime")]
+    public int growthTime;
+
+    [JsonProperty("MaxYield")]
+    public int maximumYield;
+
+    [JsonProperty("MinYield")]
+    public int minimumYield;
+
+    [JsonProperty("WaterConsumption")]
+    public int waterConsumption;
 }
+
 public class ProductClosing
 {
     // 종가 7일치 저장
@@ -54,10 +72,22 @@ public class ProductDataManager : MonoBehaviour
     {
         // 게임 실행 시 ProductDataTable 불러오기
         LoadProductDataTable();
-
-        // PrintAll();
     }
 
+    private void Start()
+    {
+        // 테스트용: 모든 제품 데이터 출력
+        PrintAll();
+    }
+
+    private void PrintAll()
+    {
+        foreach (var kvp in productClosingData)
+        {
+            int itemID = kvp.Key;
+            ProductClosing productClosing = kvp.Value;
+        }
+    }
     private void LoadProductDataTable()
     {
         jsonFile = Resources.Load<TextAsset>("Json/ProductDataTable");

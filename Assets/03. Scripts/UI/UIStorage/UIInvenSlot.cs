@@ -12,19 +12,32 @@ public class UIInvenSlot : MonoBehaviour
     {
         bool isEmpty = slot.itemID == 0 || slot.count <= 0;
 
-        itemImage.gameObject.SetActive(!isEmpty);
-        countText.text = isEmpty ? "" : slot.count.ToString();
-
         if (isEmpty)
         {
-            timerImage.gameObject.SetActive(false);
+            ClearSlot();
             return;
         }
+
+        itemImage.gameObject.SetActive(true);
 
         itemImage.sprite =
             DataManager.Instance.GetItemImage(slot.itemID);
 
+        countText.text = slot.count.ToString();
+
         RefreshTimer(slot);
+    }
+
+    public void ClearSlot()
+    {
+        itemImage.sprite = null;
+        itemImage.gameObject.SetActive(false);
+
+        countText.text = "";
+
+        timerImage.fillAmount = 0f;
+        timerImage.color = Color.white;
+        timerImage.gameObject.SetActive(false);
     }
 
     private void RefreshTimer(InventorySlot slot)
@@ -34,12 +47,15 @@ public class UIInvenSlot : MonoBehaviour
         timerImage.gameObject.SetActive(hasTimer);
 
         if (!hasTimer)
+        {
+            timerImage.fillAmount = 0f;
             return;
+        }
 
         float current = slot.remainingStoragePeriod;
 
         float max =
-            DataManager.Instance.productsData[slot.itemID].storagePeriod;
+            DataManager.Instance.itemsData[slot.itemID].storagePeriod;
 
         float value = current / max;
 

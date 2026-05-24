@@ -56,6 +56,14 @@ public class UIRocketStorage : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        if (rocketInv != null)
+        {
+            RefreshUI();
+        }
+    }
+
     private void RefreshUI()
     {
         // 로켓이 열렸을 때 UI 표시

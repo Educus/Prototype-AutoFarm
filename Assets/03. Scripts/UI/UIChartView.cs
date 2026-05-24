@@ -15,12 +15,16 @@ public class UIChartView : MonoBehaviour
 
     public void DrawChart(int itemID)
     {
-
         // 7일치 종가 데이터 가져오기 
         List<int> pointData = dataManager.productClosingData[itemID].productsClosingPrice;
         int countValue = pointData.Count;
 
-        if (countValue == 0) return;        // 데이터가 없는 경우 종료
+        // 데이터가 없는 경우 종료
+        if (countValue == 0)
+        {
+            Debug.LogWarning($"No data available for itemID: {itemID}");
+            return;        
+        }
 
         float widthArea = chartArea.rect.width;
         float heightArea = chartArea.rect.height;
@@ -133,7 +137,7 @@ public class UIChartView : MonoBehaviour
         var priceText = priceColor == Color.red ? "▲" : priceColor == Color.blue ? "▼" : "■";
 
         // 아이템 이미지
-        // itemImage.sprite = // 으... 아이템 이미지... 데이터 테이블...
+        itemImage.sprite = dataManager.GetItemImage(itemID);
 
         // 아이템 텍스트
         itemDescription.text =

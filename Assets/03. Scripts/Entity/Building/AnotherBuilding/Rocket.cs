@@ -187,7 +187,7 @@ public class Rocket : BuildingBase
                     break;
 
                 int added =
-                    storage.AddItem(itemID, remaining, -1);
+                    storage.AddItem(itemID, remaining, DataManager.Instance.itemsData[itemID].storagePeriod);
 
                 if (added > 0)
                 {
@@ -225,7 +225,7 @@ public class Rocket : BuildingBase
                 inventory.AddItem(
                     buyItem.Key,
                     buyItem.Value,
-                    -1);
+                    DataManager.Instance.itemsData[buyItem.Key].storagePeriod);
             }
 
             inventory.InvokeChange();
