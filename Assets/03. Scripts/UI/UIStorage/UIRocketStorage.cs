@@ -1,3 +1,4 @@
+using NUnit.Framework.Interfaces;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -78,11 +79,30 @@ public class UIRocketStorage : MonoBehaviour
 
         foreach (var slot in rocketInv.slots)
         {
-            if (slot.itemID == 0 || slot.count <= 0) continue;
+            if (slot.itemID == 0 || slot.count <= 0)
+                continue;
 
-            count ++;
-            gold += DataManager.Instance.productClosingData[slot.itemID].productsClosingPrice[0] * slot.count;
+            count++;
+
+            var itemData =
+                DataManager.Instance.itemsData[slot.itemID];
+
+            // Product만 판매 가격 계산
+            if (itemData.itemType == ItemType.Product)
+            {
+                if (DataManager.Instance.productClosingData
+                    .TryGetValue(slot.itemID, out var closingData))
+                {
+                    if (closingData.productsClosingPrice.Count > 0)
+                    {
+                        gold +=
+                            closingData.productsClosingPrice[0]
+                            * slot.count;
+                    }
+                }
+            }
         }
+
         slotCount.text = $"{count}/16";
         totalGold.text = gold.ToString();
     }
@@ -143,7 +163,7 @@ public class UIRocketStorage : MonoBehaviour
             rocketSlot.Clear();
         }
 
-        ViewItems();
+        RefreshUI();
     }
 
     // 준비 완료 버튼

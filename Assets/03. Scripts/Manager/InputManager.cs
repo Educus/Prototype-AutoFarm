@@ -94,8 +94,8 @@ public class InputManager : MonoBehaviour
         .IsPointerOverGameObject())
             return;
 
-        // Build 모드 중엔 차단
-        if (GameManager.Instance.IsMode(GameMode.Build))
+        // 모드 중엔 입력 차단
+        if (!GameManager.Instance.IsMode(GameMode.None))
             return;
 
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

@@ -10,6 +10,7 @@ public class UIStorageManagement : MonoBehaviour
 
     public static UIStorageManagement Instance;
     public string targetBuilding { get; private set; }
+    public GameObject RocketStorage => rocketStorage;
 
     private void Awake()
     {

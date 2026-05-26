@@ -98,7 +98,10 @@ public class Inventory : MonoBehaviour
                 remaining -= add;
 
                 if (remaining <= 0)
+                {
+                    InvokeChange();
                     return amount;
+                }
             }
         }
 
@@ -202,6 +205,9 @@ public class Inventory : MonoBehaviour
             case InventoryType.Unified:
                 return true;
 
+            case InventoryType.Rocket:
+                return true;
+
             case InventoryType.Main:
                 return data.itemType != ItemType.Seed && 
                        data.itemType != ItemType.UpgPerk;
@@ -211,6 +217,7 @@ public class Inventory : MonoBehaviour
 
             case InventoryType.Upgrade:
                 return data.itemType == ItemType.UpgPerk && !ContainsItem(itemID);;
+
         }
 
         return false;
@@ -264,6 +271,7 @@ public class Inventory : MonoBehaviour
     #endregion
 
     #region Sort
+    // 기본 정렬
     public void Sort(SortType sortType)
     {
         switch (sortType)
@@ -283,15 +291,55 @@ public class Inventory : MonoBehaviour
         InvokeChange();
     }
 
+    // 역순
+    public void SortExpiry(bool descending)
+    {
+        var validSlots = slots
+            .Where(s => !s.IsEmpty() &&
+                   s.remainingStoragePeriod >= 0)
+            .ToList();
+
+        var invalidSlots = slots
+            .Where(s => s.IsEmpty() ||
+                   s.remainingStoragePeriod < 0)
+            .ToList();
+
+        if (descending)
+        {
+            validSlots = validSlots
+                .OrderByDescending(s => s.remainingStoragePeriod)
+                .ToList();
+        }
+        else
+        {
+            validSlots = validSlots
+                .OrderBy(s => s.remainingStoragePeriod)
+                .ToList();
+        }
+
+        slots = validSlots
+            .Concat(invalidSlots)
+            .ToList();
+
+        InvokeChange();
+    }
+
     private int GetExpiryPriority(InventorySlot slot)
     {
-        var data = DataManager.Instance.itemsData[slot.itemID];
-
-        if (data.itemType != ItemType.Product)
+        // 빈 슬롯은 항상 맨 아래
+        if (slot.IsEmpty())
             return int.MaxValue;
 
-        if (slot.remainingStoragePeriod < 0)
+        var data =
+            DataManager.Instance.itemsData[slot.itemID];
+
+        // Product가 아닌 경우 맨 아래
+        if (data.itemType != ItemType.Product)
             return int.MaxValue - 1;
+
+        // 유통기한 없는 경우 맨 아래
+        if (slot.remainingStoragePeriod < 0)
+            return int.MaxValue - 2;
 
         return slot.remainingStoragePeriod;
     }

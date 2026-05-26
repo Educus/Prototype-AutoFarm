@@ -58,6 +58,7 @@ public class UIShop : MonoBehaviour
                 break;
             case 3:
                 types.Add(ItemType.BuildingKit);
+                types.Add(ItemType.Developer);
                 break;
 
             default:
