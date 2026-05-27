@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(NPCJobController))]
-public class NPC : StatusBase
+public class NPC : MonoBehaviour, IInteractable
 {
     // NPC
     public string id;
+    public string entityName;
 
     [Header("Water")]
     public int water;
@@ -27,28 +28,44 @@ public class NPC : StatusBase
     private Coroutine moveCoroutine;
     private Vector2Int currentGridPos;
 
-    public bool isMoving {  get; private set; }
+    public bool isMoving { get; private set; }
     public float moveSpeed = 3f;
 
-    private void Start()
-    {
-        gridManager = GridManager.Instance;
-        pathfinder = gridManager.Pathfinder;
-
-        DataManager.Instance.NPCManager.Register(this);
-
-        InitializeInventories();
-
-        currentGridPos = gridManager.WorldToGrid(transform.position);
-    }
-
     // 상호작용
-    public override void OnInteract()
+    public void OnInteract()
     {
-        UIStorageManagement.Instance.NPCInv();
+        if (GameManager.Instance.selectedNPC == this)
+        {
+            UIStorageManagement.Instance.NPCInv();
+        }
+        else
+        {
+            GameManager.Instance.selectedNPC = this;
+            GameManager.Instance.targetLock = this.gameObject;
+        }
     }
 
     // NPC 기본 세팅
+    public void Initialize(string npcID)
+    {
+        id = npcID;
+
+        gameObject.name = npcID;
+
+        entityName = $"Prototype {DataManager.Instance.NPCManager.npcs.Count}";
+
+        gridManager = GridManager.Instance;
+        pathfinder = gridManager.Pathfinder;
+
+        InitializeInventories();
+
+        // NPC 등록
+        DataManager.Instance.NPCManager.Register(this);
+
+        currentGridPos =
+            gridManager.WorldToGrid(transform.position);
+    }
+
     private void InitializeInventories()
     {
         // ID는 반드시 고유해야 함 (Save/Load 기준)
@@ -69,6 +86,23 @@ public class NPC : StatusBase
 
         if (upgradeInventory.slots.Count == 0)
             upgradeInventory.Initialize(5);
+
+        // InventoryManager 등록
+        InventoryManager invManager =
+            DataManager.Instance.InventoryManager;
+
+        invManager.Register(mainInventory);
+        invManager.Register(subInventory);
+        invManager.Register(upgradeInventory);
+    }
+
+    public void SetName(string name)
+    {
+        entityName = name;
+    }
+    public string GetName()
+    {
+        return entityName;
     }
 
     #region 업그레이드 관리

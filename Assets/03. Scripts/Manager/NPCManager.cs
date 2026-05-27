@@ -5,6 +5,18 @@ public class NPCManager : MonoBehaviour
 {
     public Dictionary<string, NPC> npcs = new Dictionary<string, NPC>();
 
+    // Inspector 확인용
+    [System.Serializable]
+    public class NPCDebugData
+    {
+        public string id;
+        public NPC npc;
+    }
+
+    [SerializeField]
+    private List<NPCDebugData> debugNPCs =
+        new List<NPCDebugData>();
+
     public void Register(NPC npc)
     {
         if (!npcs.ContainsKey(npc.id))
@@ -13,7 +25,20 @@ public class NPCManager : MonoBehaviour
 
     public NPC Get(string id)
     {
-        return npcs[id];
+        if (string.IsNullOrEmpty(id))
+        {
+            Debug.LogWarning("NPC ID is null or empty.");
+            return null;
+        }
+
+        if (npcs.TryGetValue(id, out NPC npc))
+        {
+            return npc;
+        }
+
+        Debug.LogWarning($"NPC not found: {id}");
+
+        return null;
     }
 
     public bool IsBuildingAssigned(string buildingID)
@@ -23,6 +48,30 @@ public class NPCManager : MonoBehaviour
             if (npc.job.buildingIDs.Contains(buildingID))
                 return true;
         }
+
         return false;
     }
+
+    // Dictionary -> List 변환
+    private void RefreshDebugList()
+    {
+        debugNPCs.Clear();
+
+        foreach (var pair in npcs)
+        {
+            debugNPCs.Add(new NPCDebugData
+            {
+                id = pair.Key,
+                npc = pair.Value
+            });
+        }
+    }
+
+#if UNITY_EDITOR
+    // Inspector 실시간 갱신
+    private void Update()
+    {
+        RefreshDebugList();
+    }
+#endif
 }

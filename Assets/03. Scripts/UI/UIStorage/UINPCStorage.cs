@@ -1,3 +1,4 @@
+using NUnit.Framework.Internal.Execution;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,18 +8,48 @@ public class UINPCStorage : MonoBehaviour
 {
     // NPC 클릭 상호작용시 표시되는 UI
 
+    [Header("NPC Info")]
     [SerializeField] private TMP_Text npcName;
-    [SerializeField] private Image[] workSlots;
-    [SerializeField] private Image workItems;
-    [SerializeField] private GameObject[] upgInv;
-    [SerializeField] private GameObject[] mainInv;
-    [SerializeField] private GameObject[] subInv;
+    [SerializeField] private TMP_InputField nameInputField;
 
+    [Header("Work")]
+    [SerializeField] private Transform workSlotParent;
+    [SerializeField] private Image workItem;
+
+    [Header("Inventory Parents")]
+    [SerializeField] private Transform upgInvParent;
+    [SerializeField] private Transform mainInvParent;
+    [SerializeField] private Transform subInvParent;
+
+    [Header("Work Sprites")]
     [SerializeField] private Sprite noneSprite;
     [SerializeField] private Sprite farmSprite;
     [SerializeField] private Sprite ranchSprite;
 
     private NPC target;
+
+    private List<UIInvenSlot> workSlots = new();
+
+    private List<UIInvenSlot> upgInvSlots = new();
+    private List<UIInvenSlot> mainInvSlots = new();
+    private List<UIInvenSlot> subInvSlots = new();
+
+    private bool isRenaming;
+
+    private void Awake()
+    {
+        workSlots = GetSlotList(workSlotParent);
+
+        upgInvSlots = GetSlotList(upgInvParent);
+        mainInvSlots = GetSlotList(mainInvParent);
+        subInvSlots = GetSlotList(subInvParent);
+
+        InitializeWorkSlots();
+
+        BindButtons();
+
+        nameInputField.gameObject.SetActive(false);
+    }
 
     private void Update()
     {
@@ -26,48 +57,189 @@ public class UINPCStorage : MonoBehaviour
 
         if (target == null) return;
 
-        Refresh();
+        if (!isRenaming)
+        {
+            Refresh();
+        }
+
+        HandleRenameInput();
+    }
+
+    private List<UIInvenSlot> GetSlotList(Transform parent)
+    {
+        List<UIInvenSlot> list = new();
+
+        foreach (Transform child in parent)
+        {
+            UIInvenSlot slot =
+                child.GetComponent<UIInvenSlot>();
+
+            if (slot != null)
+            {
+                list.Add(slot);
+            }
+        }
+
+        return list;
+    }
+
+    // Work 슬롯 초기화
+    // timerImage 비활성화
+    private void InitializeWorkSlots()
+    {
+        foreach (var slot in workSlots)
+        {
+            slot.ClearSlot();
+        }
+    }
+
+    private void BindButtons()
+    {
+        // Main
+        for (int i = 0; i < mainInvSlots.Count; i++)
+        {
+            int index = i;
+
+            Button button =
+                mainInvSlots[i].GetComponent<Button>();
+
+            if (button != null)
+            {
+                button.onClick.AddListener(
+                    () => OnClickMainSlot(index));
+            }
+        }
+
+        // Sub
+        for (int i = 0; i < subInvSlots.Count; i++)
+        {
+            int index = i;
+
+            Button button =
+                subInvSlots[i].GetComponent<Button>();
+
+            if (button != null)
+            {
+                button.onClick.AddListener(
+                    () => OnClickSubSlot(index));
+            }
+        }
+
+        // Upgrade
+        for (int i = 0; i < upgInvSlots.Count; i++)
+        {
+            int index = i;
+
+            Button button =
+                upgInvSlots[i].GetComponent<Button>();
+
+            if (button != null)
+            {
+                button.onClick.AddListener(
+                    () => OnClickUpgradeSlot(index));
+            }
+        }
     }
 
     private void Refresh()
     {
-        RefresName();
-        RefresWorkSlot();
-        RefresWork();
-        RefresInv();
+        RefreshName();
+        RefreshWorkSlots();
+        RefreshWorkItem();
+        RefreshInventories();
     }
-    private void RefresName()
+
+    #region Name
+    private void RefreshName()
     {
         //// npc name
         npcName.text = target.GetName();
     }
-    private void RefresWorkSlot()
+
+    private void HandleRenameInput()
     {
-        //// workSlot & workitem
+        if (!nameInputField.gameObject.activeSelf)
+            return;
+
+        // Enter
+        if (Input.GetKeyDown(KeyCode.Return) ||
+            Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            string newName =
+                nameInputField.text.Trim();
+
+            if (!string.IsNullOrEmpty(newName))
+            {
+                target.SetName(newName);
+            }
+
+            RefreshName();
+
+            EndRename();
+        }
+
+        // 좌클릭 탈출
+        if (Input.GetMouseButtonDown(0))
+        {
+            EndRename();
+        }
+    }
+    #endregion
+
+    #region Work
+    private void RefreshWorkSlots()
+    {
         Sprite sprite = GetWorkSprite();
 
-        int count = target.job.buildingIDs.Count;
+        int count =
+            target.job.buildingIDs.Count;
 
-        for (int i = 0; i < workSlots.Length; i++)
+        for (int i = 0; i < workSlots.Count; i++)
         {
             bool active = i < count;
 
-            if (active)
+            if (!active)
             {
-                workSlots[i].sprite = sprite;
+                workSlots[i].ClearSlot();
+                continue;
             }
+
+            // Work 슬롯은 아이템처럼 사용
+            InventorySlot tempSlot =
+                new InventorySlot
+                {
+                    itemID = -1,
+                    count = 1,
+                    remainingStoragePeriod = -1
+                };
+
+            workSlots[i].SetSlot(tempSlot);
+
+            Image icon =
+                workSlots[i]
+                .transform.GetChild(1)
+                .GetComponent<Image>();
+
+            icon.sprite = sprite;
         }
     }
-    private void RefresWork()
+
+    private void RefreshWorkItem()
     {
-        Sprite sprite = DataManager.Instance.GetItemImage(target.job.productItemID);
+        Sprite sprite =
+            DataManager.Instance.GetItemImage(
+                target.job.productItemID);
 
         bool hasItem = sprite != null;
 
-        workItems.gameObject.SetActive(hasItem);
+        workItem.gameObject.SetActive(hasItem);
 
-        if (hasItem) workItems.sprite = sprite;
+        if (hasItem)
+        {
+            workItem.sprite = sprite;
+        }
     }
+
     private Sprite GetWorkSprite()
     {
         switch (target.job.jobType)
@@ -82,191 +254,110 @@ public class UINPCStorage : MonoBehaviour
                 return noneSprite;
         }
     }
-    private void RefresInv()
+    #endregion
+
+    #region Inventory
+    private void RefreshInventories()
     {
-        RefreshInventory(mainInv, target.mainInventory.slots);
-        RefreshInventory(subInv, target.subInventory.slots);
-        RefreshInventory(upgInv, target.upgradeInventory.slots);
+        RefreshInventory(
+            mainInvSlots,
+            target.mainInventory.slots);
+
+        RefreshInventory(
+            subInvSlots,
+            target.subInventory.slots);
+
+        RefreshInventory(
+            upgInvSlots,
+            target.upgradeInventory.slots);
     }
 
-    private void RefreshInventory(GameObject[] uiSlots, List<InventorySlot> dataSlots)
+    private void RefreshInventory(List<UIInvenSlot> uiSlots, List<InventorySlot> dataSlots)
     {
-        int count = Mathf.Min(uiSlots.Length, dataSlots.Count);
+        int count =
+            Mathf.Min(
+                uiSlots.Count,
+                dataSlots.Count);
 
+        // 슬롯 갱신
         for (int i = 0; i < count; i++)
         {
-            RefreshSlot(uiSlots[i], dataSlots[i]);
+            uiSlots[i].SetSlot(dataSlots[i]);
         }
 
-        for (int i = count; i < uiSlots.Length; i++)
+        // 남는 슬롯 초기화
+        for (int i = count; i < uiSlots.Count; i++)
         {
-            ClearSlot(uiSlots[i]);
+            uiSlots[i].ClearSlot();
         }
     }
 
-    private void RefreshSlot(GameObject slotObj, InventorySlot slot)
+    #endregion
+
+    #region Buttons
+
+    // 이름 변경
+    public void StartRename()
     {
-        Image timer = GetTimer(slotObj);
-        Image icon = GetIcon(slotObj);
-        TMP_Text count = GetCount(slotObj);
+        if (target == null) return;
 
-        bool hasItem = slot.itemID > 0;
+        isRenaming = true;
 
-        icon.gameObject.SetActive(hasItem);
+        npcName.gameObject.SetActive(false);
 
-        if (!hasItem)
-        {
-            ClearSlot(slotObj);
-            return;
-        }
+        nameInputField.gameObject.SetActive(true);
 
-        // 아이템 이미지
-        icon.sprite = DataManager.Instance.GetItemImage(slot.itemID);
+        nameInputField.SetTextWithoutNotify("");
 
-        // 아이템 수량
-        count.text = slot.count.ToString();
+        nameInputField.Select();
+        nameInputField.ActivateInputField();
+    }
+    private void EndRename()
+    {
+        isRenaming = false;
 
-        // 타이머
-        RefreshTimer(timer, slot);
+        nameInputField.gameObject.SetActive(false);
+
+        npcName.gameObject.SetActive(true);
+
+        RefreshName();
     }
 
-    private void ClearSlot(GameObject slotObj)
+    // 메인 인벤토리 슬롯 버튼 연결
+    public void OnClickMainSlot(int index)
     {
-        GetIcon(slotObj).gameObject.SetActive(false);
-        GetIcon(slotObj).sprite = null;
+        if (target == null) return;
+        if (index < 0 || index >= target.mainInventory.slots.Count) return;
 
-        GetCount(slotObj).text = "";
+        InventorySlot slot =
+            target.mainInventory.slots[index];
 
-        GetTimer(slotObj).gameObject.SetActive(false);
+        Debug.Log($"Main Slot Click : {index}");
     }
 
-    private void RefreshTimer(Image timer, InventorySlot slot)
+    // 서브 인벤토리 슬롯 버튼 연결
+    public void OnClickSubSlot(int index)
     {
-        bool hasTimer = slot.remainingStoragePeriod != -1;
+        if (target == null) return;
+        if (index < 0 || index >= target.subInventory.slots.Count) return;
 
-        timer.gameObject.SetActive(hasTimer);
+        InventorySlot slot =
+            target.subInventory.slots[index];
 
-        if (!hasTimer) return;
-
-        float current = slot.remainingStoragePeriod;
-
-        float max = DataManager.Instance.itemsData[slot.itemID].storagePeriod;
-
-        float value = current / max;
-
-        timer.fillAmount = value;
-
-        if (value >= 0.6f)
-            timer.color = Color.green;
-        else if (value >= 0.3f)
-            timer.color = new Color(1f, 0.75f, 0f);
-        else
-            timer.color = Color.red;
+        Debug.Log($"Sub Slot Click : {index}");
     }
 
-    private Image GetTimer(GameObject slotObj)
+    // 업그레이드 인벤토리 슬롯 버튼 연결
+    public void OnClickUpgradeSlot(int index)
     {
-        return slotObj.transform.GetChild(0).GetComponent<Image>();
+        if (target == null) return;
+        if (index < 0 || index >= target.upgradeInventory.slots.Count) return;
+
+        InventorySlot slot =
+            target.upgradeInventory.slots[index];
+
+        Debug.Log($"Upgrade Slot Click : {index}");
     }
 
-    private Image GetIcon(GameObject slotObj)
-    {
-        return slotObj.transform.GetChild(1).GetComponent<Image>();
-    }
-
-    private TMP_Text GetCount(GameObject slotObj)
-    {
-        return slotObj.transform.GetChild(2).GetComponent<TMP_Text>();
-    }
-
-    /*
-    private void RefresInv()
-    {
-        //// Inv
-        int i = 0;
-
-        // Main
-        foreach (var item in MainInv)
-        {
-            InventorySlot slots = target.mainInventory.slots[i];
-
-            SetSlots(item, slots);
-                        
-            i++;
-        }
-        i = 0;
-        // Sub
-        foreach (var item in SubInv)
-        {
-            InventorySlot slots = target.subInventory.slots[i];
-            
-            SetSlots(item, slots);
-
-            i++;
-        }
-        i = 0;
-        foreach (var item in UpgInv)
-        {
-            InventorySlot slots = target.upgradeInventory.slots[i];
-            
-            SetSlots(item, slots);
-
-            i++;
-        }
-    }
-
-    private void SetSlots(GameObject item, InventorySlot slot)
-    {
-        InventorySlot slots = slot;
-        Image itemTimer = item.transform.GetChild(0).GetComponent<Image>();
-        Image itemImage = item.transform.GetChild(1).GetComponent<Image>();
-        TMP_Text itemCount = item.transform.GetChild(2).GetComponent<TMP_Text>();
-
-        // 아이템 목록 & 숫자
-        if (slots.itemID <= 0)
-        {
-            itemImage.gameObject.SetActive(false);
-            itemImage.sprite = null;
-
-            itemCount.text = "";
-        }
-        else
-        {
-            itemImage.gameObject.SetActive(true);
-            itemImage.sprite = DataManager.Instance.GetItemImage(slots.itemID);
-
-            itemCount.text = slots.count.ToString();
-        }
-
-        // 아이템 남은 시간
-        if (slots.itemID <= 0 || slots.remainingStoragePeriodl == -1)
-        {
-            itemTimer.gameObject.SetActive(false);
-        }
-        else
-        {
-            itemTimer.gameObject.SetActive(true);
-            float timePercent = slots.remainingStoragePeriodl;
-            float maxTimePercent = DataManager.Instance.productsData[slots.itemID].storagePeriod;
-
-            ItemTimer(itemTimer, timePercent, maxTimePercent);
-        }
-    }
-
-    private void ItemTimer(Image image, float time, float maxTime)
-    {
-        float value = time / maxTime;
-        
-        Color color;
-        if (value >= 0.6f)
-            color = Color.green;
-        else if (value >= 0.3f)
-            color = Color.yellow;
-        else
-            color = Color.red;
-
-        image.color = color;
-        image.fillAmount = value;
-    }
-    */
+    #endregion
 }
