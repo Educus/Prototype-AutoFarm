@@ -53,16 +53,31 @@ public class UINPCStorage : MonoBehaviour
 
     private void Update()
     {
+        //HandleRenameInput();
+    }
+
+    private void OnEnable()
+    {
         target = GameManager.Instance.selectedNPC;
 
-        if (target == null) return;
+        if (target == null)
+            return;
 
-        if (!isRenaming)
-        {
-            Refresh();
-        }
+        target.mainInventory.OnInventoryChanged += RefreshInventoriesMain;
+        target.subInventory.OnInventoryChanged += RefreshInventoriesSub;
+        target.upgradeInventory.OnInventoryChanged += RefreshInventoriesUpg;
 
-        HandleRenameInput();
+        Refresh();
+    }
+
+    private void OnDisable()
+    {
+        if (target == null)
+            return;
+
+        target.mainInventory.OnInventoryChanged -= RefreshInventoriesMain;
+        target.subInventory.OnInventoryChanged -= RefreshInventoriesSub;
+        target.upgradeInventory.OnInventoryChanged -= RefreshInventoriesUpg;
     }
 
     private List<UIInvenSlot> GetSlotList(Transform parent)
@@ -146,7 +161,9 @@ public class UINPCStorage : MonoBehaviour
         RefreshName();
         RefreshWorkSlots();
         RefreshWorkItem();
-        RefreshInventories();
+        RefreshInventoriesMain();
+        RefreshInventoriesSub();
+        RefreshInventoriesUpg();
     }
 
     #region Name
@@ -257,20 +274,26 @@ public class UINPCStorage : MonoBehaviour
     #endregion
 
     #region Inventory
-    private void RefreshInventories()
+    private void RefreshInventoriesMain()
     {
         RefreshInventory(
             mainInvSlots,
             target.mainInventory.slots);
-
+    }
+    private void RefreshInventoriesSub()
+    {
         RefreshInventory(
             subInvSlots,
             target.subInventory.slots);
+    }
 
+    private void RefreshInventoriesUpg()
+    {
         RefreshInventory(
             upgInvSlots,
             target.upgradeInventory.slots);
     }
+
 
     private void RefreshInventory(List<UIInvenSlot> uiSlots, List<InventorySlot> dataSlots)
     {

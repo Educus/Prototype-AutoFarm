@@ -155,5 +155,7 @@ public class UIManagement : MonoBehaviour
         management.SetActive(false);
 
         GameManager.Instance.ExitMode();
+
+        ChangeIcon(0);
     }
 }

@@ -42,6 +42,10 @@ public class InputManager : MonoBehaviour
             else if (GameManager.Instance.IsMode(GameMode.Popup))
             {
                 uiManagement.ExitButton();
+
+                UIStorageManagement.Instance.CloseStorageManagement();
+
+                GameManager.Instance.ExitMode();
             }
             else
             {

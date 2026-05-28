@@ -227,7 +227,7 @@ public class Inventory : MonoBehaviour
     {
         foreach (var slot in slots)
         {
-            if (slot.itemID == itemID)
+            if (!slot.IsEmpty() && slot.itemID == itemID)
                 return true;
         }
         return false;
@@ -263,10 +263,10 @@ public class Inventory : MonoBehaviour
                 slot.Clear();
                 changed = true;
             }
-
-            if (changed)
-                InvokeChange();
         }
+
+        if (changed)
+            InvokeChange();
     }
     #endregion
 
@@ -277,7 +277,7 @@ public class Inventory : MonoBehaviour
         switch (sortType)
         {
             case SortType.ItemID:
-                slots = slots.OrderBy(s => s.itemID).ToList();
+                slots = slots.OrderBy(s => s.itemID).ThenBy(s => s.itemID).ToList();
                 break;
 
             case SortType.ExpiryDate:

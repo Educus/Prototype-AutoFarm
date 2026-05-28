@@ -76,8 +76,6 @@ public class GameManager : MonoBehaviour
 
         RefreshHighlights();
 
-        ModeStop();
-
         onModeChanged?.Invoke(CurrentMode);
     }
 
@@ -91,14 +89,6 @@ public class GameManager : MonoBehaviour
         return CurrentMode != GameMode.None;
     }
 
-    private void ModeStop()
-    {
-        UIStorageManagement uiMode = UIStorageManagement.Instance;
-
-        uiMode.CloseHtdroInv();
-        uiMode.CloseNPCInv();
-        uiMode.CloseRocketInv();
-    }
     #endregion
 
     #region Highlight

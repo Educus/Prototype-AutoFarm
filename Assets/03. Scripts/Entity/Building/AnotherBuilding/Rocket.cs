@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Inventory))]
@@ -10,14 +12,20 @@ public class Rocket : BuildingBase
     [Header("Rocket")]
     [SerializeField] private int defaultSlotCount = 16;
 
-    // 구매 예약 아이템
-    public Dictionary<int, int> buyItems = new();
-
+    // 판매 금액
     private int money = 0;
 
-    // true = 로켓 비어있음
-    // false = 구매 아이템 남아있음
-    private bool isInvenClear = true;
+    // 구매 아이템 배송 대기 여부
+    private bool hasPendingBuyDelivery = false;
+
+    // 날짜 확인용
+    private int lastCalculateDay = -1;
+    private int lastSellDay = -1;
+
+    // 23:30 출발 시 확정된 구매 목록
+    private Dictionary<int, int> reservedBuyItems = new();
+
+    private Collider2D collider;
 
     #region Unity
 
@@ -26,10 +34,8 @@ public class Rocket : BuildingBase
         base.Awake();
 
         type = BuildingType.Rocket;
-    }
+        collider = GetComponent<Collider2D>();
 
-    private void Start()
-    {
         uiStorageManagement = UIStorageManagement.Instance;
     }
 
@@ -37,17 +43,28 @@ public class Rocket : BuildingBase
     {
         int hour = TimeManager.Instance.currentHour;
         int minute = TimeManager.Instance.currentMinute;
+        int day = TimeManager.Instance.currentDay;
 
-        // 00:30 정산
+        // 00:30 판매 정산 및 아이템 적재
         if (hour == 0 && minute == 30)
         {
-            Calculate();
+            if (lastCalculateDay != day)
+            {
+                lastCalculateDay = day;
+
+                Calculate();
+            }
         }
 
         // 23:30 판매
         if (hour == 23 && minute == 30)
         {
-            SellInv();
+            if (lastSellDay != day)
+            {
+                lastSellDay = day;
+
+                LaunchRocket();
+            }
         }
     }
 
@@ -55,7 +72,7 @@ public class Rocket : BuildingBase
     {
         if (inventory != null)
         {
-            inventory.OnInventoryChanged -= CheckInvenClear;
+            inventory.OnInventoryChanged -= CheckRocketAvailable;
         }
     }
 
@@ -89,40 +106,91 @@ public class Rocket : BuildingBase
         DataManager.Instance.InventoryManager.Register(inventory);
 
         // 변경 이벤트 연결
-        inventory.OnInventoryChanged += CheckInvenClear;
+        inventory.OnInventoryChanged -= CheckRocketAvailable;
+        inventory.OnInventoryChanged += CheckRocketAvailable;
 
         // 초기 상태 체크
-        CheckInvenClear();
+        CheckRocketAvailable();
     }
 
     #endregion
 
     #region Inventory State
 
-    private void CheckInvenClear()
+    // 구매 배송 아이템을 모두 꺼냈는지 검사
+    private void CheckRocketAvailable()
+    {
+        // 이미 비어있는 상태면 검사 안 함
+        if (!hasPendingBuyDelivery)
+            return;
+
+        foreach (var slot in inventory.slots)
+        {
+            if (!slot.IsEmpty())
+            {
+                return;
+            }
+        }
+
+        // 전부 비었음
+        hasPendingBuyDelivery = false;
+
+        Debug.Log("구매 배송 아이템 회수 완료");
+    }
+
+    private bool HasSellItems()
     {
         foreach (var slot in inventory.slots)
         {
             if (!slot.IsEmpty())
             {
-                isInvenClear = false;
-                return;
+                return true;
             }
         }
 
-        isInvenClear = true;
+        return false;
     }
-
     #endregion
 
-    #region Sell
-
-    private void SellInv()
+    #region Launch
+    private void LaunchRocket()
     {
-        // 구매 아이템 남아있으면 판매 불가
-        if (!isInvenClear)
-            return;
+        // 이전 구매 아이템 남아있음
+        if (hasPendingBuyDelivery)
+        {
+            Debug.Log("구매 아이템이 남아있어 로켓 출발 불가");
 
+            return;
+        }
+
+        bool hasSellItems = HasSellItems();
+
+        bool hasBuyItems = uiStorageManagement.buyItems.Count > 0;
+        
+        // 아무것도 없음
+        if (!hasSellItems && !hasBuyItems)
+        {
+            return;
+        }
+
+        Debug.Log("로켓 출발");
+
+        // 판매 처리
+        SellItems();
+
+        // 구매 목록 확정
+        reservedBuyItems = new Dictionary<int, int>(uiStorageManagement.buyItems);
+
+        // UI 구매 목록 초기화
+        uiStorageManagement.buyItems.Clear();
+
+        // TODO:
+        // 로켓 비활성화 / 이동 연출
+        collider.enabled = false;
+    }
+
+    private void SellItems()
+    {
         Dictionary<int, ProductClosing> productData =
             DataManager.Instance.productClosingData;
 
@@ -131,8 +199,23 @@ public class Rocket : BuildingBase
             if (slot.IsEmpty())
                 continue;
 
-            money += productData[slot.itemID]
-                .productsClosingPrice[0] * slot.count;
+            if (!productData.ContainsKey(slot.itemID))
+            {
+                Debug.LogWarning($"판매 데이터 없음 : {slot.itemID}");
+
+                continue;
+            }
+
+            var prices = productData[slot.itemID].productsClosingPrice;
+
+            if (prices == null || prices.Count == 0)
+            {
+                Debug.LogWarning($"판매 가격 데이터 없음 : {slot.itemID}");
+
+                continue;
+            }
+
+            money += prices[0] * slot.count;
 
             slot.Clear();
         }
@@ -142,43 +225,40 @@ public class Rocket : BuildingBase
 
     #endregion
 
-    #region Buy
-
-    // 상점 구매 예약
-    public void BuyInv(int itemID, int amount)
-    {
-        if (buyItems.ContainsKey(itemID))
-        {
-            buyItems[itemID] += amount;
-        }
-        else
-        {
-            buyItems[itemID] = amount;
-        }
-    }
-
-    #endregion
-
     #region Calculate
-
+    // 00:30 도착 처리
     private void Calculate()
     {
-        // 돈 지급
-        DataManager.Instance.CurrencyManager.AddMoney(money);
+        Debug.Log("로켓 도착");
 
-        money = 0;
+        // 돈 지급
+        if (money > 0)
+        {
+            DataManager.Instance.CurrencyManager.AddMoney(money);
+
+            money = 0;
+        }
+
+        // 구매 목록 없음
+        if (reservedBuyItems.Count <= 0)
+        {
+            return;
+        }
 
         // 모든 창고
         Dictionary<string, Inventory> storages =
             DataManager.Instance.InventoryManager
             .GetInvType(InventoryType.Unified);
 
-        List<int> removeKeys = new();
+        Dictionary<int, int> remainItems = new();
 
-        foreach (var buyItem in buyItems)
+        foreach (var buyItem in reservedBuyItems)
         {
             int itemID = buyItem.Key;
             int remaining = buyItem.Value;
+
+            ItemData itemData =
+              DataManager.Instance.itemsData[itemID];
 
             // 창고에 먼저 저장
             foreach (var storage in storages.Values)
@@ -187,49 +267,52 @@ public class Rocket : BuildingBase
                     break;
 
                 int added =
-                    storage.AddItem(itemID, remaining, DataManager.Instance.itemsData[itemID].storagePeriod);
-
-                if (added > 0)
-                {
-                    storage.InvokeChange();
-                }
+                    storage.AddItem(itemID, remaining, itemData.storagePeriod);
 
                 remaining -= added;
             }
 
-            // 전부 저장 성공
-            if (remaining <= 0)
+            // 남은 아이템 기록
+            if (remaining > 0)
             {
-                removeKeys.Add(itemID);
-            }
-            else
-            {
-                // 남은 수량 유지
-                buyItems[itemID] = remaining;
+                remainItems[itemID] = remaining;
             }
         }
 
-        // 제거
-        foreach (var key in removeKeys)
+        // 남은 아이템 로켓에 적재
+        foreach (var remainItem in remainItems)
         {
-            buyItems.Remove(key);
-        }
-
-        // 남은 아이템 로켓 보관
-        if (buyItems.Count > 0)
-        {
-            isInvenClear = false;
-
-            foreach (var buyItem in buyItems)
-            {
+            int added =
                 inventory.AddItem(
-                    buyItem.Key,
-                    buyItem.Value,
-                    DataManager.Instance.itemsData[buyItem.Key].storagePeriod);
-            }
+                    remainItem.Key,
+                    remainItem.Value,
+                    DataManager.Instance
+                    .itemsData[remainItem.Key]
+                    .storagePeriod);
 
-            inventory.InvokeChange();
+            // 적재 실패
+            if (added < remainItem.Value)
+            {
+                Debug.LogWarning(
+                    $"로켓 적재 실패 : " +
+                    $"ItemID={remainItem.Key}, " +
+                    $"요청={remainItem.Value}, " +
+                    $"적재={added}");
+            }
         }
+
+        inventory.InvokeChange();
+
+        // 남은 구매 아이템 존재
+        hasPendingBuyDelivery =
+            remainItems.Count > 0;
+
+        // 구매 목록 초기화
+        reservedBuyItems.Clear();
+
+        // TODO:
+        // 로켓 활성화 / 도착 연출
+        collider.enabled = true;
     }
 
     #endregion
