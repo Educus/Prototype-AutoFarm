@@ -35,6 +35,9 @@ public class SaveLoadManager : MonoBehaviour
         // Animal
 
 
+        // Key Codes
+        data.keyCodes = KeyCodeDataManager.Instance.GetSaveData();
+
         string json = JsonUtility.ToJson(data, true);
         System.IO.File.WriteAllText(GetPath(), json);
     }
@@ -68,6 +71,9 @@ public class SaveLoadManager : MonoBehaviour
 
         // Animal
 
+
+        // Key Codes
+        KeyCodeDataManager.Instance.Load(data.keyCodes);
     }
 
     private string GetPath()

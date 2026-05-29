@@ -7,6 +7,7 @@ public class InputManager : MonoBehaviour
     // 좌클릭 시 UI매니저를 통한 UI 오픈
     // 우클릭 시 플레이어 이동 및 해당 위치에 상호작용 대상이 있을 경우 상호작용
     // 창고, NPC의 경우 UI오픈 // 물탱크, 마른밭의 경우 행동 상호작용
+
     [SerializeField] private MovingManager movingManager;
     [SerializeField] private InteractionUIManager uiManager;
     [SerializeField] private GridManager gridManager;
@@ -15,25 +16,48 @@ public class InputManager : MonoBehaviour
     [SerializeField] private BuildUIManager buildModeUI;
     [SerializeField] private UIManagement uiManagement;
 
-    [SerializeField] public Player player;
+    private Player player;
+    private PlayerController playerController;
 
-    private Camera camera;
+
+    private Camera mainCamera;
 
     int layerMask;
     Coroutine moveCoroutine;
+
     private void Start()
     {
-        camera = Camera.main;
+        player = GameManager.Instance.player;
+        playerController = player.GetComponent<PlayerController>();
+
+        mainCamera = Camera.main;
 
         layerMask = LayerMask.GetMask("NPC", "Structure");
     }
 
     void Update()
     {
+        HandleSystemInput();
+
+        HandleUIInput();
+
+        HandleSelectSlot();
+
+        HandleMouseInput();
+    }
+
+    void HandleSystemInput()
+    {
         // 테스트용 ESC
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Setting"))
         {
-            if (GameManager.Instance.IsMode(GameMode.Build))
+            if (GameManager.Instance.IsMode(GameMode.None))
+            {
+                // 설정 열기
+
+                Debug.Log("설정 열기");
+            } 
+            else if (GameManager.Instance.IsMode(GameMode.Build))
             {
                 DataManager.Instance.BuildingManager.ExitBuildMode();
 
@@ -44,8 +68,6 @@ public class InputManager : MonoBehaviour
                 uiManagement.ExitButton();
 
                 UIStorageManagement.Instance.CloseStorageManagement();
-
-                GameManager.Instance.ExitMode();
             }
             else
             {
@@ -62,49 +84,84 @@ public class InputManager : MonoBehaviour
                 ? "게임 시작"
                 : "게임 일시정지");
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.P))
+    void HandleUIInput()
+    {
+        if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Chart"))
+        {
+
+        }
+
+        if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Shop"))
+        {
+
+        }
+
+        if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Robot"))
         {
             uiManagement.OpenManagement();
         }
 
-        // 좌클릭, 우클릭
-        if (Input.GetMouseButtonDown(0))
+        if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Storage"))
+        {
+
+        }
+
+        if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Hydro"))
+        {
+
+        }
+    }
+
+    void HandleSelectSlot()
+    {
+        if (KeyCodeDataManager.Instance.GetKeyDown("Select_Slot1"))
+        {
+
+        }
+
+        if (KeyCodeDataManager.Instance.GetKeyDown("Select_Slot2"))
+        {
+
+        }
+
+        if (KeyCodeDataManager.Instance.GetKeyDown("Select_Slot3"))
+        {
+
+        }
+    }
+
+    void HandleMouseInput()
+    {
+        // 좌클릭
+        if (KeyCodeDataManager.Instance.GetKeyDown("PC_Movement"))
         {
             LeftClick();
         }
 
-        // if (Input.GetMouseButtonDown(1))
-        // {
-        //     Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //     Vector2Int gridPos = gridManager.WorldToGrid(mousePos);
-        // 
-        //     Vector2Int currentPos = gridManager.WorldToGrid(player.transform.position);
-        //     List<Node> path = pathfinder.FindPath(currentPos, gridPos);
-        // 
-        //     if (path != null && path.Count > 0)
-        //     {
-        //         Move(path);
-        //     }
-        // 
-        //     return;
-        //     RightClick();
-        // }
+        // 우클릭
+        if (KeyCodeDataManager.Instance.GetKeyDown("PC_Interaction"))
+        {
+            RightClick();
+        }
     }
 
     void LeftClick()
     {
         if (UnityEngine.EventSystems.EventSystem.current
-        .IsPointerOverGameObject())
+            .IsPointerOverGameObject())
             return;
 
         // 모드 중엔 입력 차단
         if (!GameManager.Instance.IsMode(GameMode.None))
             return;
 
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mousePos =
+            Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        Collider2D hit = Physics2D.OverlapPoint(mousePos, layerMask);
+        Collider2D hit =
+            Physics2D.OverlapPoint(mousePos, layerMask);
 
         Debug.Log($"좌클:{hit}");
 
@@ -112,7 +169,8 @@ public class InputManager : MonoBehaviour
 
         if (hit != null)
         {
-            interactable = hit.GetComponentInParent<IInteractable>();
+            interactable =
+                hit.GetComponentInParent<IInteractable>();
         }
 
         if (interactable != null)
@@ -123,32 +181,67 @@ public class InputManager : MonoBehaviour
 
     void RightClick()
     {
-        Vector2 mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
+        if (UnityEngine.EventSystems.EventSystem.current
+        .IsPointerOverGameObject())
+            return;
 
-        Collider2D hit = Physics2D.OverlapPoint(mousePos, layerMask);
+        // 모드 중엔 입력 차단
+        if (!GameManager.Instance.IsMode(GameMode.None))
+            return;
+
+        Vector2 mousePos =
+            mainCamera.ScreenToWorldPoint(Input.mousePosition);
+
+        Collider2D hit =
+            Physics2D.OverlapPoint(mousePos, layerMask);
 
         IInteractable interactable = null;
 
         if (hit != null)
         {
-            interactable = hit.GetComponentInParent<IInteractable>();
+            interactable =
+                hit.GetComponentInParent<IInteractable>();
         }
 
-        // 가까울 경우 바로 상호작용
-        if (Vector2.Distance(player.transform.position, mousePos) <= 1f)
+        // 가까우면 즉시 상호작용
+        if (interactable != null)
         {
-            if (interactable != null) interactable.OnInteract();
-            return;
+            float distance =
+                Vector2.Distance(
+                    player.transform.position,
+                    hit.transform.position
+                );
+
+            if (distance <= 1f)
+            {
+                interactable.OnInteract();
+                return;
+            }
         }
 
-        // 멀 경우 이동 후 상호작용
-        movingManager.Moving
-            (
-                player.transform,
-                mousePos,
-                player.moveSpeed,
-                () => { if (interactable != null) { interactable.OnInteract(); } }
-            );
+        // 이동 처리
+        Vector2Int currentPos =
+            gridManager.WorldToGrid(player.transform.position);
+
+        Vector2Int targetPos =
+            gridManager.WorldToGrid(mousePos);
+
+        List<Node> path =
+            pathfinder.FindPath(currentPos, targetPos);
+
+        if (path == null || path.Count == 0)
+            return;
+
+        // 이동 후 상호작용
+        playerController.Move(
+            path,
+            () =>
+            {
+                if (interactable != null)
+                {
+                    interactable.OnInteract();
+                }
+            });
     }
 
     public void Move(List<Node> path)
@@ -156,21 +249,27 @@ public class InputManager : MonoBehaviour
         if (moveCoroutine != null)
             StopCoroutine(moveCoroutine);
 
-        moveCoroutine = StartCoroutine(MoveAlongPath(path, 1f));
+        moveCoroutine =
+            StartCoroutine(MoveAlongPath(path, 1f));
     }
+
     IEnumerator MoveAlongPath(List<Node> path, float speed)
     {
         foreach (Node node in path)
         {
-            Vector3 targetPos = new Vector3(node.x, node.y, 0);
+            Vector3 targetPos =
+                new Vector3(node.x, node.y, 0);
 
-            while (Vector3.Distance(transform.position, targetPos) > 0.05f)
+            while (Vector3.Distance(
+                transform.position,
+                targetPos) > 0.05f)
             {
-                transform.position = Vector3.MoveTowards(
-                    transform.position,
-                    targetPos,
-                    speed * Time.deltaTime
-                );
+                transform.position =
+                    Vector3.MoveTowards(
+                        transform.position,
+                        targetPos,
+                        speed * Time.deltaTime
+                    );
 
                 yield return null;
             }

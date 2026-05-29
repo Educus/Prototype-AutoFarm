@@ -1,112 +1,112 @@
 [
-    {
-        "KeyID":11,
-        "ActionName":"PC_Movement",
-        "ActionType":"Interaction",
-        "DefaultKeyCode":"Mouse0",
-        "Modifier1":null,
-        "Modifier2":null,
-        "IsRebindable":0,
-        "Description_KR":"ÏÉÅÌò∏ÏûëÏö©"
-    },
-    {
-        "KeyID":12,
-        "ActionName":"PC_Interaction",
-        "ActionType":"Movement",
-        "DefaultKeyCode":"Mouse1",
-        "Modifier1":null,
-        "Modifier2":null,
-        "IsRebindable":0,
-        "Description_KR":"Ïù¥Îèô"
-    },
-    {
-        "KeyID":21,
-        "ActionName":"PopUp_Chart",
-        "ActionType":"UI",
-        "DefaultKeyCode":"C",
-        "Modifier1":null,
-        "Modifier2":null,
-        "IsRebindable":1,
-        "Description_KR":"Ï∞®Ìä∏"
-    },
-    {
-        "KeyID":22,
-        "ActionName":"PopUp_Shop",
-        "ActionType":"UI",
-        "DefaultKeyCode":"S",
-        "Modifier1":null,
-        "Modifier2":null,
-        "IsRebindable":1,
-        "Description_KR":"ÏÉÅÏ†ê"
-    },
-    {
-        "KeyID":23,
-        "ActionName":"PopUp_Robot",
-        "ActionType":"UI",
-        "DefaultKeyCode":"R",
-        "Modifier1":null,
-        "Modifier2":null,
-        "IsRebindable":1,
-        "Description_KR":"Î°úÎ¥á Í¥ÄÎ¶¨"
-    },
-    {
-        "KeyID":24,
-        "ActionName":"PopUp_Storage",
-        "ActionType":"UI",
-        "DefaultKeyCode":"E",
-        "Modifier1":null,
-        "Modifier2":null,
-        "IsRebindable":1,
-        "Description_KR":"Ï∞ΩÍ≥†"
-    },
-    {
-        "KeyID":25,
-        "ActionName":"PopUp_Hydro",
-        "ActionType":"UI",
-        "DefaultKeyCode":"H",
-        "Modifier1":null,
-        "Modifier2":null,
-        "IsRebindable":1,
-        "Description_KR":"ÌïòÏù¥ÎìúÎ°ú Î¶¨ÏóëÌÑ∞"
-    },
-    {
-        "KeyID":29,
-        "ActionName":"PopUp_Setting",
-        "ActionType":"UI",
-        "DefaultKeyCode":"Escape",
-        "Modifier1":null,
-        "Modifier2":null,
-        "IsRebindable":0,
-        "Description_KR":"ÏÑ§Ï†ï"
-    },
-    {
-        "KeyID":41,
-        "ActionName":"Select_Slot1",
-        "ActionType":"Selection",
-        "DefaultKeyCode":1,
-        "Modifier1":null,
-        "Modifier2":null,
-        "IsRebindable":1,
-        "Description_KR":"1Î≤à Ïä¨Î°Ø"
-    },
-    {
-        "KeyID":42,
-        "ActionName":"Select_Slot2",
-        "ActionType":"Selection",
-        "DefaultKeyCode":2,
-        "Modifier1":null,
-        "Modifier2":null,
-        "IsRebindable":1,
-        "Description_KR":"2Î≤à Ïä¨Î°Ø"
-    },
-    {
-        "KeyID":43,
-        "ActionName":"Select_Slot3",
-        "ActionType":"Selection",
-        "DefaultKeyCode":3,
-        "Modifier1":null,
-        "Modifier2":null,
-        "IsRebindable":1,
-        "Description_KR":"3Î≤à Ïä¨Î°Ø"
-    }
+  {
+    "KeyID": 11,
+    "ActionName": "PC_Movement",
+    "ActionType": "Interaction",
+    "DefaultKeyCode": "Mouse0",
+    "Modifier1": null,
+    "Modifier2": null,
+    "IsRebindable": 0,
+    "Description_KR": "ªÛ»£¿€øÎ"
+  },
+  {
+    "KeyID": 12,
+    "ActionName": "PC_Interaction",
+    "ActionType": "Movement",
+    "DefaultKeyCode": "Mouse1",
+    "Modifier1": null,
+    "Modifier2": null,
+    "IsRebindable": 0,
+    "Description_KR": "¿Ãµø"
+  },
+  {
+    "KeyID": 21,
+    "ActionName": "PopUp_Chart",
+    "ActionType": "UI",
+    "DefaultKeyCode": "C",
+    "Modifier1": null,
+    "Modifier2": null,
+    "IsRebindable": 1,
+    "Description_KR": "¬˜∆Æ"
+  },
+  {
+    "KeyID": 22,
+    "ActionName": "PopUp_Shop",
+    "ActionType": "UI",
+    "DefaultKeyCode": "S",
+    "Modifier1": null,
+    "Modifier2": null,
+    "IsRebindable": 1,
+    "Description_KR": "ªÛ¡°"
+  },
+  {
+    "KeyID": 23,
+    "ActionName": "PopUp_Robot",
+    "ActionType": "UI",
+    "DefaultKeyCode": "R",
+    "Modifier1": null,
+    "Modifier2": null,
+    "IsRebindable": 1,
+    "Description_KR": "∑Œ∫ø ∞¸∏Æ"
+  },
+  {
+    "KeyID": 24,
+    "ActionName": "PopUp_Storage",
+    "ActionType": "UI",
+    "DefaultKeyCode": "E",
+    "Modifier1": null,
+    "Modifier2": null,
+    "IsRebindable": 1,
+    "Description_KR": "√¢∞Ì"
+  },
+  {
+    "KeyID": 25,
+    "ActionName": "PopUp_Hydro",
+    "ActionType": "UI",
+    "DefaultKeyCode": "H",
+    "Modifier1": null,
+    "Modifier2": null,
+    "IsRebindable": 1,
+    "Description_KR": "«œ¿ÃµÂ∑Œ ∏Æø¢≈Õ"
+  },
+  {
+    "KeyID": 29,
+    "ActionName": "PopUp_Setting",
+    "ActionType": "UI",
+    "DefaultKeyCode": "Escape",
+    "Modifier1": null,
+    "Modifier2": null,
+    "IsRebindable": 0,
+    "Description_KR": "º≥¡§"
+  },
+  {
+    "KeyID": 41,
+    "ActionName": "Select_Slot1",
+    "ActionType": "Selection",
+    "DefaultKeyCode": "Alpha1",
+    "Modifier1": null,
+    "Modifier2": null,
+    "IsRebindable": 1,
+    "Description_KR": "1π¯ ΩΩ∑‘"
+  },
+  {
+    "KeyID": 42,
+    "ActionName": "Select_Slot2",
+    "ActionType": "Selection",
+    "DefaultKeyCode": "Alpha2",
+    "Modifier1": null,
+    "Modifier2": null,
+    "IsRebindable": 1,
+    "Description_KR": "2π¯ ΩΩ∑‘"
+  },
+  {
+    "KeyID": 43,
+    "ActionName": "Select_Slot3",
+    "ActionType": "Selection",
+    "DefaultKeyCode": "Alpha3",
+    "Modifier1": null,
+    "Modifier2": null,
+    "IsRebindable": 1,
+    "Description_KR": "3π¯ ΩΩ∑‘"
+  }
 ]

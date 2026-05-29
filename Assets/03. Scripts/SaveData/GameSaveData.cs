@@ -7,5 +7,8 @@ public class GameSaveData
     public List<InventorySaveData> inventories;
     public List<NPCSaveData> npcs;
     public List<BuildingSaveData> buildings;
+
     public CurrencySaveData currency;
+
+    public List<KeyCodeSaveData> keyCodes;
 }

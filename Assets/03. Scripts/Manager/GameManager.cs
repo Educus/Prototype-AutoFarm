@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
     [Header("Mode")]
     public GameMode CurrentMode { get; private set; } = GameMode.None;
 
+    [Header("Player")]
+    public Player player;
+
     [Header("Work")]
     public NPC selectedNPC;
 

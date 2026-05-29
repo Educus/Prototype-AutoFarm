@@ -68,9 +68,17 @@ public class UIStorageManagement : MonoBehaviour
     #region Close
     public void CloseStorageManagement()
     {
-        CloseRocketInv();
-        CloseHtdroInv();
-        CloseNPCInv();
+        rocketStorage.SetActive(false);
+        buildingStorage.SetActive(false);
+        npcInterface.gameObject.SetActive(false);
+
+        htdroStorage.SetActive(false);
+
+        npcStorage.SetActive(false);
+
+        CheckPopupState();
+
+        GameManager.Instance.ExitMode();
     }
 
     public void CloseRocketInv()
@@ -80,6 +88,8 @@ public class UIStorageManagement : MonoBehaviour
         npcInterface.gameObject.SetActive(false);
 
         CheckPopupState();
+
+        GameManager.Instance.ExitMode();
     }
 
     public void CloseHtdroInv()
@@ -87,6 +97,8 @@ public class UIStorageManagement : MonoBehaviour
         htdroStorage.SetActive(false);
 
         CheckPopupState();
+
+        GameManager.Instance.ExitMode();
     }
 
     public void CloseNPCInv()
@@ -94,6 +106,8 @@ public class UIStorageManagement : MonoBehaviour
         npcStorage.SetActive(false);
 
         CheckPopupState();
+
+        GameManager.Instance.ExitMode();
     }
 
     #endregion

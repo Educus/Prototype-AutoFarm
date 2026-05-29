@@ -13,6 +13,8 @@ public class Player : StatusBase
 
     void Start()
     {
+        GameManager.Instance.player = this;
+
         mainInventory.Initialize(5);
         subInventory.Initialize(3);
     }
