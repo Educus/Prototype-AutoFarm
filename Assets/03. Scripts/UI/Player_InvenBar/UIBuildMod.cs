@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BuildUIManager : MonoBehaviour
+public class UIBuildMod : MonoBehaviour
 {
     // 건설 모드 중 건물 선택 시 UI 관리(버튼 관리)
     [SerializeField] private BuildingManager buildingManager;

@@ -13,8 +13,9 @@ public class InputManager : MonoBehaviour
     [SerializeField] private GridManager gridManager;
     [SerializeField] private Pathfinder pathfinder;
     
-    [SerializeField] private BuildUIManager buildModeUI;
+    [SerializeField] private UIBuildMod buildModeUI;
     [SerializeField] private UIManagement uiManagement;
+    [SerializeField] private InvenMod invenMod;
 
     private Player player;
     private PlayerController playerController;
@@ -118,17 +119,17 @@ public class InputManager : MonoBehaviour
     {
         if (KeyCodeDataManager.Instance.GetKeyDown("Select_Slot1"))
         {
-
+            invenMod.SelectSubSlot(0);
         }
 
         if (KeyCodeDataManager.Instance.GetKeyDown("Select_Slot2"))
         {
-
+            invenMod.SelectSubSlot(1);
         }
 
         if (KeyCodeDataManager.Instance.GetKeyDown("Select_Slot3"))
         {
-
+            invenMod.SelectSubSlot(2);
         }
     }
 

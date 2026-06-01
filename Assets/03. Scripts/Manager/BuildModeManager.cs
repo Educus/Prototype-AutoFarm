@@ -6,7 +6,7 @@ public class BuildModeManager : MonoBehaviour
 
     [SerializeField] private GameManager gameManager;
     [SerializeField] private BuildingManager buildingManager;
-    [SerializeField] private BuildUIManager buildModeUI;
+    [SerializeField] private UIBuildMod buildModeUI;
 
     private void Start()
     {

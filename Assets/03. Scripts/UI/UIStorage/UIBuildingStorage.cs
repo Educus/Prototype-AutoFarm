@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+// UI에 표시할 슬롯 정보
+// 실제 슬롯과 어느 인벤토리에 속하는지 저장
 public class DisplaySlotData
 {
     public Inventory inventory;
@@ -11,192 +13,213 @@ public class DisplaySlotData
 
 public class UIBuildingStorage : MonoBehaviour
 {
-    // 로켓 판매 부분
-    // 모든 창고를 한번에 보여주고 상호작용
-    [SerializeField] GameObject slotPrefab;
-    [SerializeField] ScrollRect scrollRect;
-    [SerializeField] Transform content;
+    // 슬롯 프리팹
+    [SerializeField] private GameObject slotPrefab;
 
-    private List<UIInvenSlot> slotList = new List<UIInvenSlot>();
+    // 스크롤 위치 초기화용
+    [SerializeField] private ScrollRect scrollRect;
+
+    // 슬롯이 생성될 부모 오브젝트
+    [SerializeField] private Transform content;
+
+    // 생성된 UI 슬롯 목록
+    private readonly List<UIInvenSlot> slotList =
+        new List<UIInvenSlot>();
+
+    // 현재 구독중인 인벤토리 목록
+    // UI 닫을 때 이벤트 해제용
+    private readonly List<Inventory> subscribedInventories =
+        new List<Inventory>();
+
+    // 화면에 표시중인 슬롯 데이터
+    // 단일창고 / 전체창고 모두 동일하게 처리
+    private readonly List<DisplaySlotData> displaySlots =
+        new List<DisplaySlotData>();
+
+    // 로켓 창고 인벤토리
     private Inventory rocketInv;
 
-    // 지금 보여주는 창고 인벤토리
-    private List<Inventory> subscribedInventories = new List<Inventory>();
-    private List<DisplaySlotData> displaySlots = new List<DisplaySlotData>();
+    // 기본 생성 슬롯 수
+    private const int DEFAULT_SLOT_COUNT = 30;
 
-    private string rocketID = "Building_-101_0";
+    // 로켓 창고 ID
+    private const string rocketID =
+        "Building_-101_0";
 
     private void Awake()
     {
-        if (!DataManager.Instance.InventoryManager.inventories
-            .TryGetValue(rocketID, out rocketInv))
-        {
-            Debug.LogError("Rocket inventory not found.");
-        }
+        // 로켓 창고 찾기
+        DataManager.Instance.InventoryManager
+            .inventories
+            .TryGetValue(rocketID, out rocketInv);
+
+        // 최초 슬롯 30개 생성
+        CreateDefaultSlots();
     }
 
     private void OnEnable()
     {
+        // 스크롤 맨 위로 이동
         scrollRect.verticalNormalizedPosition = 1f;
 
+        // 현재 창고 이벤트 등록
         SubscribeInventories();
 
-        if (subscribedInventories.Count > 0)
-        {
-            RefreshUI();
-        }
+        // UI 갱신
+        RefreshUI();
     }
 
     private void OnDisable()
     {
+        // 이벤트 해제
         UnsubscribeInventories();
     }
 
+    #region Slot Create
+
+    // 최초 슬롯 생성
+    private void CreateDefaultSlots()
+    {
+        for (int i = 0; i < DEFAULT_SLOT_COUNT; i++)
+        {
+            CreateSlot();
+        }
+    }
+
+    // 슬롯 하나 생성
+    private void CreateSlot()
+    {
+        GameObject obj =
+            Instantiate(slotPrefab, content);
+
+        UIInvenSlot slot =
+            obj.GetComponent<UIInvenSlot>();
+
+        slotList.Add(slot);
+
+        // 슬롯 인덱스 저장
+        int index = slotList.Count - 1;
+
+        Button button =
+            obj.GetComponent<Button>();
+
+        // 버튼 클릭 등록
+        if (button != null)
+        {
+            button.onClick.AddListener(() =>
+            {
+                OnSlotClicked(index);
+            });
+        }
+    }
+
+    // 필요한 슬롯 수 만큼 생성
+    // 전체 창고 표시 시 사용
+    private void EnsureSlotCount(int requiredCount)
+    {
+        while (slotList.Count < requiredCount)
+        {
+            CreateSlot();
+        }
+    }
+
+    #endregion
+
     #region Subscribe
+
+    // 현재 열려있는 창고 이벤트 등록
     private void SubscribeInventories()
     {
         UnsubscribeInventories();
 
-        string target = UIStorageManagement.Instance.targetBuilding;
+        string target =
+            UIStorageManagement.Instance.targetBuilding;
 
-        Debug.Log($"target : {target}");
-        Debug.Log($"IsTarget: {target == rocketID}");
-
-        // null 또는 빈 문자열 방어
         if (string.IsNullOrEmpty(target))
-        {
-            Debug.LogWarning("Target building is null or empty.");
             return;
-        }
 
-        // 로켓이면 전체 창고 구독
+        // 로켓 창고
+        // 전체 창고 표시
         if (target == rocketID)
         {
             Dictionary<string, Inventory> storages =
-                DataManager.Instance.InventoryManager.GetInvType(InventoryType.Unified);
+                DataManager.Instance.InventoryManager
+                .GetInvType(InventoryType.Unified);
 
-            Debug.Log($"Storages count: {storages.Count}");
-
-            foreach (var inventory in storages.Values)
+            foreach (Inventory inventory in storages.Values)
             {
-                if (inventory == null)
-                    continue;
-
                 inventory.OnInventoryChanged += RefreshUI;
+
                 subscribedInventories.Add(inventory);
             }
         }
-        // 특정 창고 구독
+        // 일반 창고
         else
         {
             Inventory inventory =
-                DataManager.Instance.InventoryManager.Get(target);
+                DataManager.Instance.InventoryManager
+                .Get(target);
 
-            Debug.Log($"Storages count: {inventory.slots.Count}");
-
-            // inventory 못 찾았을 때 방어
             if (inventory == null)
-            {
-                Debug.LogWarning($"Inventory not found: {target}");
                 return;
-            }
 
             inventory.OnInventoryChanged += RefreshUI;
+
             subscribedInventories.Add(inventory);
         }
     }
 
+    // 이벤트 해제
     private void UnsubscribeInventories()
     {
-        foreach (var inven in subscribedInventories)
+        foreach (Inventory inventory in subscribedInventories)
         {
-            if (inven != null)
-                inven.OnInventoryChanged -= RefreshUI;
+            if (inventory != null)
+            {
+                inventory.OnInventoryChanged -= RefreshUI;
+            }
         }
 
         subscribedInventories.Clear();
     }
+
     #endregion
 
     #region Refresh UI
 
+    // UI 전체 갱신
     private void RefreshUI()
     {
+        // 표시할 슬롯 목록 생성
         BuildDisplaySlots();
 
-        int requiredSlotCount = displaySlots.Count;
+        // 슬롯이 부족하면 생성
+        EnsureSlotCount(displaySlots.Count);
 
-        EnsureSlotCount(requiredSlotCount);
+        // 기존 슬롯 초기화
+        ClearAllSlots();
 
-        foreach (var slot in slotList)
+        // 필요한 슬롯만 활성화
+        ActiveSlots(displaySlots.Count);
+
+        // 슬롯 정보 표시
+        for (int i = 0; i < displaySlots.Count; i++)
+        {
+            slotList[i].SetSlot(displaySlots[i].slot);
+        }
+    }
+
+    // 모든 슬롯 비우기
+    private void ClearAllSlots()
+    {
+        foreach (UIInvenSlot slot in slotList)
         {
             slot.ClearSlot();
-        }
-
-        ActiveSlot(requiredSlotCount);
-
-        ViewItems();
-    }
-
-    // 현재 필요한 슬롯 개수 계산
-    private int GetRequiredSlotCount()
-    {
-        // 모든 창고 표시
-        if (UIStorageManagement.Instance.targetBuilding == rocketID)
-        {
-            Dictionary<string, Inventory> storages =
-                DataManager.Instance.InventoryManager.GetInvType(InventoryType.Unified);
-
-            int total = 0;
-
-            foreach (var inventory in storages.Values)
-            {
-                total += inventory.slots.Count;
-            }
-
-            Debug.Log($"total : {total}");
-            return total;
-        }
-
-        // 특정 창고
-        Inventory storage =
-            DataManager.Instance.InventoryManager.Get(
-                UIStorageManagement.Instance.targetBuilding);
-
-        Debug.Log($"storage slots : {storage.slots.Count}");
-        return storage.slots.Count;
-    }
-
-    // 슬롯 부족하면 생성
-    private void EnsureSlotCount(int requiredCount)
-    {
-        int currentCount = slotList.Count;
-
-        if (currentCount >= requiredCount)
-            return;
-
-        int createCount = requiredCount - currentCount;
-
-        for (int i = 0; i < createCount; i++)
-        {
-            GameObject slotObj =
-                Instantiate(slotPrefab, content);
-
-            UIInvenSlot slot =
-                slotObj.GetComponent<UIInvenSlot>();
-
-            slotList.Add(slot);
-
-            int index = slotList.Count - 1;
-
-            slotObj.GetComponent<Button>()
-                .onClick
-                .AddListener(() => MoveItemToRocket(index));
         }
     }
 
     // 필요한 슬롯만 활성화
-    private void ActiveSlot(int activeCount)
+    private void ActiveSlots(int activeCount)
     {
         for (int i = 0; i < slotList.Count; i++)
         {
@@ -204,7 +227,6 @@ public class UIBuildingStorage : MonoBehaviour
 
             slotList[i].gameObject.SetActive(active);
 
-            // 사용하지 않는 슬롯 데이터 초기화
             if (!active)
             {
                 slotList[i].ClearSlot();
@@ -212,92 +234,168 @@ public class UIBuildingStorage : MonoBehaviour
         }
     }
 
-    #endregion
-
-    #region View Items
-
-    private void ViewItems()
+    // 현재 화면에 표시할 슬롯 구성
+    private void BuildDisplaySlots()
     {
-        for (int i = 0; i < displaySlots.Count; i++)
-        {
-            slotList[i].SetSlot(displaySlots[i].slot);
-        }
+        displaySlots.Clear();
 
-        return;
-        // 모든 창고 표시
-        if (UIStorageManagement.Instance.targetBuilding == rocketID)
+        string target =
+            UIStorageManagement.Instance.targetBuilding;
+
+        // 전체 창고 표시
+        if (target == rocketID)
         {
-            ViewAllStorages();
+            Dictionary<string, Inventory> storages =
+                DataManager.Instance.InventoryManager
+                .GetInvType(InventoryType.Unified);
+
+            foreach (Inventory storage in storages.Values)
+            {
+                foreach (InventorySlot slot in storage.slots)
+                {
+                    displaySlots.Add(
+                        new DisplaySlotData
+                        {
+                            inventory = storage,
+                            slot = slot
+                        });
+                }
+            }
         }
-        // 특정 창고 표시
+        // 단일 창고 표시
         else
         {
             Inventory storage =
-                DataManager.Instance.InventoryManager.Get(
-                    UIStorageManagement.Instance.targetBuilding);
+                DataManager.Instance.InventoryManager
+                .Get(target);
 
-            ViewSingleStorage(storage);
-        }
-    }
+            if (storage == null)
+                return;
 
-    // 모든 창고 표시
-    private void ViewAllStorages()
-    {
-        Dictionary<string, Inventory> storages =
-            DataManager.Instance.InventoryManager.GetInvType(InventoryType.Unified);
-
-        int slotIndex = 0;
-
-        foreach (var storage in storages.Values)
-        {
-            for (int i = 0; i < storage.slots.Count; i++)
+            foreach (InventorySlot slot in storage.slots)
             {
-                slotList[slotIndex].SetSlot(storage.slots[i]);
-
-                slotIndex++;
+                displaySlots.Add(
+                    new DisplaySlotData
+                    {
+                        inventory = storage,
+                        slot = slot
+                    });
             }
         }
     }
 
-    // 특정 창고 표시
-    private void ViewSingleStorage(Inventory storage)
-    {
-        for (int i = 0; i < storage.slots.Count; i++)
-        {
-            slotList[i].SetSlot(storage.slots[i]);
-        }
-    }
     #endregion
 
-    // 로켓으로 아이템 이동
-    private void MoveItemToRocket(int slotIndex)
-    {
-        if (!UIStorageManagement.Instance
-       .RocketStorage
-       .activeInHierarchy)
-        {
-            return;
-        }
+    #region Slot Click
 
-        if (slotIndex < 0 ||
-            slotIndex >= displaySlots.Count)
-        {
+    // 슬롯 클릭
+    private void OnSlotClicked(int slotIndex)
+    {
+        if (slotIndex >= displaySlots.Count)
             return;
+
+        // 로켓 창고 UI
+        // 클릭 시 로켓으로 이동
+        if (UIStorageManagement.Instance.targetBuilding
+            == rocketID)
+        {
+            MoveItemToRocket(slotIndex);
         }
+        // 일반 창고 UI
+        // 클릭 시 플레이어로 이동
+        else
+        {
+            MoveItemToPlayer(slotIndex);
+        }
+    }
+
+    #endregion
+
+    #region Move Item
+
+    // 창고 → 플레이어 인벤토리
+    private void MoveItemToPlayer(int slotIndex)
+    {
+        DisplaySlotData data =
+            displaySlots[slotIndex];
 
         Inventory sourceInventory =
-            displaySlots[slotIndex].inventory;
+            data.inventory;
 
         InventorySlot sourceSlot =
-            displaySlots[slotIndex].slot;
+            data.slot;
 
-        if (sourceSlot == null || sourceSlot.IsEmpty())
+        if (sourceSlot == null ||
+            sourceSlot.IsEmpty())
+        {
+            return;
+        }
+
+        Player player =
+            GameManager.Instance.player;
+
+        if (player == null)
             return;
 
+        ItemData itemData =
+            DataManager.Instance.itemsData[sourceSlot.itemID];
+
+        Inventory targetInventory;
+
+        // 씨앗은 서브 인벤
+        if (itemData.itemType == ItemType.Seed)
+        {
+            targetInventory =
+                player.subInventory;
+        }
+        else
+        {
+            targetInventory =
+                player.mainInventory;
+        }
+
+        int added =
+            targetInventory.AddItem(
+                sourceSlot.itemID,
+                sourceSlot.count,
+                sourceSlot.remainingStoragePeriod);
+
+        if (added <= 0)
+            return;
+
+        sourceSlot.count -= added;
+
+        if (sourceSlot.count <= 0)
+        {
+            sourceSlot.Clear();
+        }
+
+        sourceInventory.InvokeChange();
+        targetInventory.InvokeChange();
+    }
+
+    // 창고 → 로켓 창고
+    private void MoveItemToRocket(int slotIndex)
+    {
+        DisplaySlotData data =
+            displaySlots[slotIndex];
+
+        Inventory sourceInventory =
+            data.inventory;
+
+        InventorySlot sourceSlot =
+            data.slot;
+
+        if (sourceSlot == null ||
+            sourceSlot.IsEmpty())
+        {
+            return;
+        }
+
+        // Product 타입만 이동 가능
         if (DataManager.Instance.itemsData[sourceSlot.itemID]
             .itemType != ItemType.Product)
         {
-            Debug.Log("Product 타입만 이동 가능");
             return;
         }
 
@@ -307,221 +405,114 @@ public class UIBuildingStorage : MonoBehaviour
                 sourceSlot.count,
                 sourceSlot.remainingStoragePeriod);
 
-        if (added > 0)
+        if (added <= 0)
+            return;
+
+        sourceSlot.count -= added;
+
+        if (sourceSlot.count <= 0)
         {
-            sourceSlot.count -= added;
-
-            if (sourceSlot.count <= 0)
-            {
-                sourceSlot.Clear();
-            }
-
-            sourceInventory.InvokeChange();
-            rocketInv.InvokeChange();
+            sourceSlot.Clear();
         }
+
+        sourceInventory.InvokeChange();
+        rocketInv.InvokeChange();
     }
 
-    // 전체 창고를 가져왔을 때
-    // 어느 창고의 몇번째 슬롯인지 확인
-    private bool TryGetStorageSlot(int globalIndex, out Inventory inventory, out InventorySlot slot)
+    #endregion
+}
+
+// 생성 혹은 액티브True로 변경
+#region 창고 슬롯 생성 및 활성화(이전)
+/*
+private void RefreshUI()
+{
+    CreateSlot();
+}
+private void CreateSlot()
+{
+    int soltCount = slotList.Count;
+
+    if (UIStorageManagement.Instance.targetBuilding == "Rocket")
     {
-        inventory = null;
-        slot = null;
+        // 모든 창고
+        Dictionary<string, Inventory> totalStorage = DataManager.Instance.InventoryManager.GetInvType(InventoryType.Unified);
 
-        Dictionary<string, Inventory> storages =
-            DataManager.Instance.InventoryManager
-            .GetInvType(InventoryType.Unified);
+        int totalStorageCount = totalStorage.Count * 30;
 
-        int current = 0;
-
-        foreach (var storage in storages.Values)
+        if (totalStorageCount > soltCount)
         {
-            if (globalIndex < current + storage.slots.Count)
-            {
-                int localIndex = globalIndex - current;
-
-                inventory = storage;
-                slot = storage.slots[localIndex];
-
-                return true;
-            }
-
-            current += storage.slots.Count;
+            int createCount = totalStorageCount - soltCount;
+            CreateSlot(createCount);
+        }
+        else
+        {
+            ActiveSlot(totalStorageCount);
         }
 
-        return false;
+
+        // 
+        ViewItemInfo(totalStorage);
     }
-
-    private void BuildDisplaySlots()
+    else
     {
-        displaySlots.Clear();
-
-        // 전체 창고
-        if (UIStorageManagement.Instance.targetBuilding
-            == rocketID)
-        {
-            Dictionary<string, Inventory> storages =
-                DataManager.Instance.InventoryManager
-                .GetInvType(InventoryType.Unified);
-
-            foreach (var storage in storages.Values)
-            {
-                foreach (var slot in storage.slots)
-                {
-                    displaySlots.Add(new DisplaySlotData
-                    {
-                        inventory = storage,
-                        slot = slot
-                    });
-                }
-            }
-        }
         // 특정 창고
-        else
-        {
-            Inventory storage =
-                DataManager.Instance.InventoryManager.Get(
-                    UIStorageManagement.Instance.targetBuilding);
+        ActiveSlot(30); // 기본 창고 30칸
 
-            foreach (var slot in storage.slots)
-            {
-                displaySlots.Add(new DisplaySlotData
-                {
-                    inventory = storage,
-                    slot = slot
-                });
-            }
-        }
+        ViewItemInfo(DataManager.Instance.InventoryManager.Get(UIStorageManagement.Instance.targetBuilding));
     }
-
-    public void SortExpiryButton(bool descending)
+}
+private void CreateSlot(int value)
+{
+    for (int i = 0; i < value; i++)
     {
-        var validSlots = displaySlots
-            .Where(s =>
-                !s.slot.IsEmpty() &&
-                s.slot.remainingStoragePeriod >= 0)
-            .ToList();
+        GameObject slotObj = Instantiate(slotPrefab, content);
 
-        var invalidSlots = displaySlots
-            .Where(s =>
-                s.slot.IsEmpty() ||
-                s.slot.remainingStoragePeriod < 0)
-            .ToList();
+        UIInvenSlot slot = slotObj.GetComponent<UIInvenSlot>();
 
-        if (descending)
-        {
-            validSlots = validSlots
-                .OrderByDescending(
-                    s => s.slot.remainingStoragePeriod)
-                .ToList();
-        }
-        else
-        {
-            validSlots = validSlots
-                .OrderBy(
-                    s => s.slot.remainingStoragePeriod)
-                .ToList();
-        }
-
-        displaySlots = validSlots
-            .Concat(invalidSlots)
-            .ToList();
-
-        ViewItems();
+        slotList.Add(slot);
     }
 }
 
-    // 생성 혹은 액티브True로 변경
-    #region 창고 슬롯 생성 및 활성화(이전)
-    /*
-    private void RefreshUI()
+private void ActiveSlot(int value)
+{
+    // 창고에 맞는 슬롯 활성화
+    for (int i = 0; i < slotList.Count; i++)
     {
-        CreateSlot();
-    }
-    private void CreateSlot()
-    {
-        int soltCount = slotList.Count;
-
-        if (UIStorageManagement.Instance.targetBuilding == "Rocket")
+        if (i < value)
         {
-            // 모든 창고
-            Dictionary<string, Inventory> totalStorage = DataManager.Instance.InventoryManager.GetInvType(InventoryType.Unified);
-
-            int totalStorageCount = totalStorage.Count * 30;
-
-            if (totalStorageCount > soltCount)
-            {
-                int createCount = totalStorageCount - soltCount;
-                CreateSlot(createCount);
-            }
-            else
-            {
-                ActiveSlot(totalStorageCount);
-            }
-
-
-            // 
-            ViewItemInfo(totalStorage);
+            slotList[i].gameObject.SetActive(true);
         }
         else
         {
-            // 특정 창고
-            ActiveSlot(30); // 기본 창고 30칸
-
-            ViewItemInfo(DataManager.Instance.InventoryManager.Get(UIStorageManagement.Instance.targetBuilding));
+            slotList[i].gameObject.SetActive(false);
         }
     }
-    private void CreateSlot(int value)
+}
+
+private void ViewItemInfo(Dictionary<string, Inventory> totalStorage)
+{
+    // 모든 창고 보여주기
+    int slotIndex = 0;
+
+    foreach (var storage in totalStorage.Values)
     {
-        for (int i = 0; i < value; i++)
-        {
-            GameObject slotObj = Instantiate(slotPrefab, content);
-
-            UIInvenSlot slot = slotObj.GetComponent<UIInvenSlot>();
-
-            slotList.Add(slot);
-        }
-    }
-
-    private void ActiveSlot(int value)
-    {
-        // 창고에 맞는 슬롯 활성화
-        for (int i = 0; i < slotList.Count; i++)
-        {
-            if (i < value)
-            {
-                slotList[i].gameObject.SetActive(true);
-            }
-            else
-            {
-                slotList[i].gameObject.SetActive(false);
-            }
-        }
-    }
-
-    private void ViewItemInfo(Dictionary<string, Inventory> totalStorage)
-    {
-        // 모든 창고 보여주기
-        int slotIndex = 0;
-
-        foreach (var storage in totalStorage.Values)
-        {
-            for (int i = 0; i < storage.slots.Count; i++)
-            {
-                slotList[slotIndex].SetSlot(storage.slots[i]);
-
-                slotIndex++;
-            }
-        }
-    }
-
-    private void ViewItemInfo(Inventory storage)
-    {
-        // 특정 창고 보여주기
         for (int i = 0; i < storage.slots.Count; i++)
         {
-            slotList[i].SetSlot(storage.slots[i]);
+            slotList[slotIndex].SetSlot(storage.slots[i]);
+
+            slotIndex++;
         }
     }
-    */
-    #endregion
+}
+
+private void ViewItemInfo(Inventory storage)
+{
+    // 특정 창고 보여주기
+    for (int i = 0; i < storage.slots.Count; i++)
+    {
+        slotList[i].SetSlot(storage.slots[i]);
+    }
+}
+*/
+#endregion

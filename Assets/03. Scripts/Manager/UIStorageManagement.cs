@@ -78,6 +78,7 @@ public class UIStorageManagement : MonoBehaviour
 
         CheckPopupState();
 
+        targetBuilding = null;
         GameManager.Instance.ExitMode();
     }
 
@@ -89,6 +90,7 @@ public class UIStorageManagement : MonoBehaviour
 
         CheckPopupState();
 
+        targetBuilding = null;
         GameManager.Instance.ExitMode();
     }
 

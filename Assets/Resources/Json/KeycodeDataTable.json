@@ -7,7 +7,7 @@
     "Modifier1": null,
     "Modifier2": null,
     "IsRebindable": 0,
-    "Description_KR": "ªÛ»£¿€øÎ"
+    "Description_KR": "ÏÉÅÌò∏ÏûëÏö©"
   },
   {
     "KeyID": 12,
@@ -17,7 +17,7 @@
     "Modifier1": null,
     "Modifier2": null,
     "IsRebindable": 0,
-    "Description_KR": "¿Ãµø"
+    "Description_KR": "Ïù¥Îèô"
   },
   {
     "KeyID": 21,
@@ -27,7 +27,7 @@
     "Modifier1": null,
     "Modifier2": null,
     "IsRebindable": 1,
-    "Description_KR": "¬˜∆Æ"
+    "Description_KR": "Ï∞®Ìä∏"
   },
   {
     "KeyID": 22,
@@ -37,7 +37,7 @@
     "Modifier1": null,
     "Modifier2": null,
     "IsRebindable": 1,
-    "Description_KR": "ªÛ¡°"
+    "Description_KR": "ÏÉÅÏ†ê"
   },
   {
     "KeyID": 23,
@@ -47,7 +47,7 @@
     "Modifier1": null,
     "Modifier2": null,
     "IsRebindable": 1,
-    "Description_KR": "∑Œ∫ø ∞¸∏Æ"
+    "Description_KR": "Î°úÎ¥á Í¥ÄÎ¶¨"
   },
   {
     "KeyID": 24,
@@ -57,7 +57,7 @@
     "Modifier1": null,
     "Modifier2": null,
     "IsRebindable": 1,
-    "Description_KR": "√¢∞Ì"
+    "Description_KR": "Ï∞ΩÍ≥†"
   },
   {
     "KeyID": 25,
@@ -67,7 +67,7 @@
     "Modifier1": null,
     "Modifier2": null,
     "IsRebindable": 1,
-    "Description_KR": "«œ¿ÃµÂ∑Œ ∏Æø¢≈Õ"
+    "Description_KR": "ÌïòÏù¥ÎìúÎ°ú Î¶¨ÏóëÌÑ∞"
   },
   {
     "KeyID": 29,
@@ -77,7 +77,7 @@
     "Modifier1": null,
     "Modifier2": null,
     "IsRebindable": 0,
-    "Description_KR": "º≥¡§"
+    "Description_KR": "ÏÑ§Ï†ï"
   },
   {
     "KeyID": 41,
@@ -87,7 +87,7 @@
     "Modifier1": null,
     "Modifier2": null,
     "IsRebindable": 1,
-    "Description_KR": "1π¯ ΩΩ∑‘"
+    "Description_KR": "1Î≤à Ïä¨Î°Ø"
   },
   {
     "KeyID": 42,
@@ -97,7 +97,7 @@
     "Modifier1": null,
     "Modifier2": null,
     "IsRebindable": 1,
-    "Description_KR": "2π¯ ΩΩ∑‘"
+    "Description_KR": "2Î≤à Ïä¨Î°Ø"
   },
   {
     "KeyID": 43,
@@ -107,6 +107,6 @@
     "Modifier1": null,
     "Modifier2": null,
     "IsRebindable": 1,
-    "Description_KR": "3π¯ ΩΩ∑‘"
+    "Description_KR": "3Î≤à Ïä¨Î°Ø"
   }
 ]
