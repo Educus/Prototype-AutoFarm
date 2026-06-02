@@ -154,6 +154,21 @@ public class UINPCStorage : MonoBehaviour
                     () => OnClickUpgradeSlot(index));
             }
         }
+
+        // Work
+        for (int i = 0; i < workSlots.Count; i++)
+        {
+            int index = i;
+
+            Button button =
+                workSlots[i].GetComponent<Button>();
+
+            if (button != null)
+            {
+                button.onClick.AddListener(
+                    () => OnClickWorkSlot(index));
+            }
+        }
     }
 
     private void Refresh()
@@ -237,6 +252,8 @@ public class UINPCStorage : MonoBehaviour
                 .transform.GetChild(1)
                 .GetComponent<Image>();
 
+            Debug.Log(target.job.jobType);
+            Debug.Log(sprite.name);
             icon.sprite = sprite;
         }
     }
@@ -268,6 +285,7 @@ public class UINPCStorage : MonoBehaviour
                 return ranchSprite;
 
             default:
+                Debug.LogWarning($"Unknown JobType: {target.job.jobType}");
                 return noneSprite;
         }
     }
@@ -382,5 +400,17 @@ public class UINPCStorage : MonoBehaviour
         Debug.Log($"Upgrade Slot Click : {index}");
     }
 
+    // 작업 슬롯 버튼 연결
+    public void OnClickWorkSlot(int index)
+    {
+        if (target == null)
+            return;
+
+        GameManager.Instance.selectedNPC = target;
+
+        gameObject.SetActive(false);
+
+        GameManager.Instance.EnterWorkMode();
+    }
     #endregion
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class InputManager : MonoBehaviour
 {
@@ -70,9 +71,12 @@ public class InputManager : MonoBehaviour
 
                 UIStorageManagement.Instance.CloseStorageManagement();
             }
-            else
+            else if (GameManager.Instance.IsMode(GameMode.Work))
             {
-                GameManager.Instance.ExitMode();
+                Debug.Log("작업 모드 종료");
+                GameManager.Instance.ExitWorkMode();
+
+                UIStorageManagement.Instance.NPCInv();
             }
         }
 
@@ -151,33 +155,45 @@ public class InputManager : MonoBehaviour
     void LeftClick()
     {
         if (UnityEngine.EventSystems.EventSystem.current
-            .IsPointerOverGameObject())
+        .IsPointerOverGameObject())
             return;
 
-        // 모드 중엔 입력 차단
-        if (!GameManager.Instance.IsMode(GameMode.None))
+        // Popup, Build 모드는 차단
+        if (GameManager.Instance.IsMode(GameMode.Popup) ||
+            GameManager.Instance.IsMode(GameMode.Build))
             return;
 
         Vector2 mousePos =
-            Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Camera.main.ScreenToWorldPoint(
+                Input.mousePosition);
 
         Collider2D hit =
-            Physics2D.OverlapPoint(mousePos, layerMask);
+            Physics2D.OverlapPoint(
+                mousePos,
+                layerMask);
 
-        Debug.Log($"좌클:{hit}");
+        if (hit == null)
+            return;
 
-        IInteractable interactable = null;
-
-        if (hit != null)
+        // WorkMode
+        if (GameManager.Instance.IsMode(GameMode.Work))
         {
-            interactable =
-                hit.GetComponentInParent<IInteractable>();
+            BuildingBase building =
+                hit.GetComponentInParent<BuildingBase>();
+
+            if (building != null)
+            {
+                building.OnWorkInteract();
+
+                return;
+            }
         }
 
-        if (interactable != null)
-        {
-            interactable.OnInteract();
-        }
+        // 일반 상호작용
+        IInteractable interactable =
+            hit.GetComponentInParent<IInteractable>();
+
+        interactable?.OnInteract();
     }
 
     void RightClick()

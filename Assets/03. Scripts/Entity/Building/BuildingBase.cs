@@ -60,7 +60,6 @@ public abstract class BuildingBase : MonoBehaviour, IInteractable
     #endregion
 
     #region Highlight
-
     public void UpdateHighlight()
     {
         GameManager gm = GameManager.Instance;
@@ -113,6 +112,11 @@ public abstract class BuildingBase : MonoBehaviour, IInteractable
                type != BuildingType.Storage;
     }
 
+    public virtual int GetWorkSlotCost()
+    {
+        return data?.workSlotCost ?? 0;
+    }
+
     private void SetColor(Color color)
     {
         if (cachedRenderer == null)
@@ -121,6 +125,75 @@ public abstract class BuildingBase : MonoBehaviour, IInteractable
         cachedRenderer.material.color = color;
     }
 
+    public virtual void OnWorkInteract()
+    {
+        NPC selectedNPC =
+            GameManager.Instance.selectedNPC;
+
+        if (selectedNPC == null)
+            return;
+
+        // 작업 불가능 건물
+        if (!CanAssignWork())
+            return;
+
+        // 이미 등록된 건물
+        if (selectedNPC.job.buildingIDs.Contains(id))
+        {
+            selectedNPC.job.buildingIDs.Remove(id);
+
+            // 마지막 건물 제거 시 직업 초기화
+            if (selectedNPC.job.buildingIDs.Count == 0)
+            {
+                selectedNPC.job.jobType = JobType.None;
+            }
+
+            GameManager.Instance.RefreshHighlights();
+
+            return;
+        }
+
+        // 다른 NPC가 사용중
+        if (DataManager.Instance
+            .NPCManager
+            .IsBuildingAssigned(id))
+        {
+            return;
+        }
+
+        // 직업 미설정
+        if (selectedNPC.job.jobType == JobType.None)
+        {
+            Debug.Log($"Building : {name}, JobType : {data.jobType}");
+
+            selectedNPC.job.jobType =
+                data.jobType;
+        }
+
+        // 다른 종류 작업 불가
+        if (selectedNPC.job.jobType != data.jobType)
+        {
+            return;
+        }
+
+        int usedSlots =
+            selectedNPC.job.GetUsedSlots();
+
+        int cost =
+            data.workSlotCost;
+
+        if (usedSlots + cost >
+            selectedNPC.job.maxWorkSlots)
+        {
+            Debug.Log("작업 슬롯 부족");
+
+            return;
+        }
+
+        selectedNPC.job.buildingIDs.Add(id);
+
+        GameManager.Instance.RefreshHighlights();
+    }
     #endregion
 
     #region Abstract

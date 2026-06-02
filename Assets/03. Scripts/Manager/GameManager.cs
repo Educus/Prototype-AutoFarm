@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     // 게임 모드 관리
     [Header("Mode")]
     public GameMode CurrentMode { get; private set; } = GameMode.None;
+    private GameMode previousMode = GameMode.None;
 
     [Header("Player")]
     public Player player;
@@ -92,6 +93,37 @@ public class GameManager : MonoBehaviour
         return CurrentMode != GameMode.None;
     }
 
+    // work 모드 전환
+    public bool EnterWorkMode()
+    {
+        // Popup 상태에서만 가능
+        if (CurrentMode != GameMode.Popup)
+            return false;
+
+        previousMode = CurrentMode;
+
+        CurrentMode = GameMode.Work;
+
+        RefreshHighlights();
+
+        onModeChanged?.Invoke(CurrentMode);
+
+        return true;
+    }
+
+    public void ExitWorkMode()
+    {
+        if (CurrentMode != GameMode.Work)
+            return;
+
+        CurrentMode = previousMode;
+
+        previousMode = GameMode.None;
+
+        RefreshHighlights();
+
+        onModeChanged?.Invoke(CurrentMode);
+    }
     #endregion
 
     #region Highlight

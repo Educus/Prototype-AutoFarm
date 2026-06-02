@@ -12,6 +12,8 @@ public class Player : StatusBase
     public Inventory mainInventory;
     public Inventory subInventory;
 
+    public int selectedSubSlotIndex { get; private set; } = -1;
+
     public static event Action OnInitialized;
 
     void Start()
@@ -53,6 +55,11 @@ public class Player : StatusBase
         invManager.Register(subInventory);
 
         OnInitialized?.Invoke();
+    }
+
+    public void SelectSubSlot(int index)
+    {
+        selectedSubSlotIndex = index;
     }
 
     public override void OnInteract()

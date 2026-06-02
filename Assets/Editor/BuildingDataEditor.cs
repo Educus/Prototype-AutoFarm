@@ -8,41 +8,80 @@ public class BuildingDataEditor : Editor
     {
         BuildingData data = (BuildingData)target;
 
-        // 기본 필드 먼저 출력
-        data.width = EditorGUILayout.IntField("Width", data.width);
-        data.height = EditorGUILayout.IntField("Height", data.height);
+        // =========================
+        // Size
+        // =========================
 
-        // 배열 크기 맞추기
+        data.width =
+            EditorGUILayout.IntField(
+                "Width",
+                data.width);
+
+        data.height =
+            EditorGUILayout.IntField(
+                "Height",
+                data.height);
+
+        EditorGUILayout.Space();
+
+        // =========================
+        // Work
+        // =========================
+
+        EditorGUILayout.LabelField(
+            "Work",
+            EditorStyles.boldLabel);
+
+        data.jobType =
+            (JobType)EditorGUILayout.EnumPopup(
+                "Job Type",
+                data.jobType);
+
+        data.workSlotCost =
+            EditorGUILayout.IntField(
+                "Work Slot Cost",
+                data.workSlotCost);
+
+        data.workSlotCost =
+            Mathf.Max(1, data.workSlotCost);
+
+        EditorGUILayout.Space();
+
+        // =========================
+        // Pattern Grid
+        // =========================
+
         int size = data.width * data.height;
-        if (data.patternFlat == null || data.patternFlat.Length != size)
+
+        if (data.patternFlat == null ||
+            data.patternFlat.Length != size)
         {
             data.patternFlat = new bool[size];
         }
 
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Pattern (2D Grid)");
+        EditorGUILayout.LabelField(
+            "Pattern (2D Grid)",
+            EditorStyles.boldLabel);
 
-        // 2D 형태로 출력
         for (int y = data.height - 1; y >= 0; y--)
         {
             EditorGUILayout.BeginHorizontal();
 
             for (int x = 0; x < data.width; x++)
             {
-                int index = y * data.width + x;
+                int index =
+                    y * data.width + x;
 
-                data.patternFlat[index] = GUILayout.Toggle(
-                    data.patternFlat[index],
-                    "",
-                    GUILayout.Width(20),
-                    GUILayout.Height(20)
-                );
+                data.patternFlat[index] =
+                    GUILayout.Toggle(
+                        data.patternFlat[index],
+                        "",
+                        GUILayout.Width(20),
+                        GUILayout.Height(20));
             }
 
             EditorGUILayout.EndHorizontal();
         }
-
-        EditorGUILayout.Space();
 
         if (GUI.changed)
         {

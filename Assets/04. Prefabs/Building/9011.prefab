@@ -152,13 +152,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc1ed5d3f0be7e4468ec7221a6900599, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StorageBuilding
-  type: 0
+  type: 1
   itemID: 9011
   id: 
-  isClone: 0
   data: {fileID: 11400000, guid: 6f922cf0b5c7e5446b99980de8154da1, type: 2}
   icon: {fileID: 3939487092822842150, guid: 289cd23b8dae36c44abfa637db8bd54c, type: 3}
-  renderer: {fileID: 0}
+  inventory: {fileID: 0}
+  cachedRenderer: {fileID: 0}
   unified: {fileID: 8591489731997793235}
 --- !u!114 &8591489731997793235
 MonoBehaviour:

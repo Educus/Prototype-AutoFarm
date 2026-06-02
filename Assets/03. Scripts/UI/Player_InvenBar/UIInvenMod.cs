@@ -88,6 +88,8 @@ public class InvenMod : MonoBehaviour
         RefreshMainUI();
         RefreshSubUI();
 
+        yield return null;
+
         SelectSubSlot(0);
     }
 
@@ -127,6 +129,7 @@ public class InvenMod : MonoBehaviour
             return;
 
         selectedSubSlotIndex = index;
+        GameManager.Instance.player.SelectSubSlot(index);
 
         MoveSelectImage();
     }

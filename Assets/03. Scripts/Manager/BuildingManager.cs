@@ -419,6 +419,16 @@ public class BuildingManager : MonoBehaviour
         return null;
     }
 
+    public BuildingBase Get(string id)
+    {
+        if (buildings.TryGetValue(id, out BuildingBase building))
+        { 
+            return building;
+        }
+        
+        return null;
+    }
+
     public IEnumerable<BuildingBase> GetAll()
     {
         return buildings.Values;

@@ -284,7 +284,6 @@ GameObject:
   - component: {fileID: 1297813649286666204}
   - component: {fileID: 1831528942270404525}
   - component: {fileID: 8884499459217203693}
-  - component: {fileID: 8052686957381362933}
   - component: {fileID: 8457093190588871676}
   m_Layer: 7
   m_Name: 9001
@@ -395,10 +394,10 @@ MonoBehaviour:
   type: 1
   itemID: 9001
   id: 
-  isClone: 0
   data: {fileID: 11400000, guid: ab17697ff2bca084cb2780d4fd168a7f, type: 2}
   icon: {fileID: 6048821170717042914, guid: 84a91d1605cd9e24eb7cf0d35c007d33, type: 3}
-  renderer: {fileID: 0}
+  inventory: {fileID: 0}
+  cachedRenderer: {fileID: 0}
   tiles: []
   tileViews:
   - {fileID: 4818391557947352809}
@@ -410,19 +409,6 @@ MonoBehaviour:
   - {fileID: 108886352180731158}
   - {fileID: 7894836200669635598}
   - {fileID: 6348010030756169748}
---- !u!114 &8052686957381362933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1511086224809788092}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 314202446bce9d94598395a386ff0778, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BuildingInteraction
-  entityName: 
 --- !u!61 &8457093190588871676
 BoxCollider2D:
   m_ObjectHideFlags: 0
