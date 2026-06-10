@@ -16,6 +16,9 @@ public class UINPCStorage : MonoBehaviour
     [SerializeField] private Transform workSlotParent;
     [SerializeField] private Image workItem;
 
+    [Header("WorkMenu")]
+    [SerializeField] private Transform workMenuParent;
+
     [Header("Inventory Parents")]
     [SerializeField] private Transform upgInvParent;
     [SerializeField] private Transform mainInvParent;
@@ -29,6 +32,7 @@ public class UINPCStorage : MonoBehaviour
     private NPC target;
 
     private List<UIInvenSlot> workSlots = new();
+    private List<UIInvenSlot> workMenuSlots = new();
 
     private List<UIInvenSlot> upgInvSlots = new();
     private List<UIInvenSlot> mainInvSlots = new();
@@ -39,6 +43,7 @@ public class UINPCStorage : MonoBehaviour
     private void Awake()
     {
         workSlots = GetSlotList(workSlotParent);
+        workMenuSlots = GetSlotList(workMenuParent);
 
         upgInvSlots = GetSlotList(upgInvParent);
         mainInvSlots = GetSlotList(mainInvParent);
@@ -49,6 +54,7 @@ public class UINPCStorage : MonoBehaviour
         BindButtons();
 
         nameInputField.gameObject.SetActive(false);
+        workMenuParent.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -66,6 +72,8 @@ public class UINPCStorage : MonoBehaviour
         target.mainInventory.OnInventoryChanged += RefreshInventoriesMain;
         target.subInventory.OnInventoryChanged += RefreshInventoriesSub;
         target.upgradeInventory.OnInventoryChanged += RefreshInventoriesUpg;
+
+        workMenuParent.gameObject.SetActive(false);
 
         Refresh();
     }
@@ -174,8 +182,12 @@ public class UINPCStorage : MonoBehaviour
     private void Refresh()
     {
         RefreshName();
+
         RefreshWorkSlots();
         RefreshWorkItem();
+
+        RefreshWorkMenu();
+
         RefreshInventoriesMain();
         RefreshInventoriesSub();
         RefreshInventoriesUpg();
@@ -287,6 +299,156 @@ public class UINPCStorage : MonoBehaviour
             default:
                 Debug.LogWarning($"Unknown JobType: {target.job.jobType}");
                 return noneSprite;
+        }
+    }
+    #endregion
+
+    #region WorkMenu
+    private void RefreshWorkMenu()
+    {
+        // NPC의 작업장, 인벤토리에 따라 작업 메뉴 갱신
+
+        // 작업 메뉴 활성화 상태에서만 갱신
+        if (!workMenuParent.gameObject.activeSelf)
+            return;
+
+        switch (target.job.jobType)
+        {
+            case JobType.None:
+                // 작업 메뉴 비활성화
+                ClearWorkMenu();
+                break;
+            case JobType.Farm:
+                // 농장 작업 메뉴 갱신
+                RefreshFarmWorkMenu();
+                break;
+            case JobType.Ranch:
+                // 목장 작업 메뉴 갱신
+                RefreshRanchWorkMenu();
+                break;
+            default:
+                Debug.LogWarning($"Unknown JobType: {target.job.jobType}");
+                break;
+        }
+    }
+
+    private void ClearWorkMenu()
+    {
+        foreach (var slot in workMenuSlots)
+        {
+            slot.ClearSlot();
+        }
+    }
+    private void RefreshFarmWorkMenu()
+    {
+        // 창고와 현 로봇의 Sub인벤토리를 검사하여 농장 작업 메뉴에 필요한 씨앗 아이템 ID 목록 생성
+        List<int> seedIDs = new();
+
+        // Seed 아이템은 완제품 ID가 +1 규칙을 사용
+        // UI에는 씨앗이 아닌 실제 생산품을 표시
+
+        // 창고 검사
+        foreach (var building in DataManager.Instance.BuildingManager.GetAll())
+        {
+            if (building.type != BuildingType.Storage)
+                continue;
+
+            if (building.inventory == null)
+                continue;
+
+            foreach (var slot in building.inventory.slots)
+            {
+                if (slot.itemID <= 0)
+                    continue;
+
+                ItemData item =
+                    DataManager.Instance.itemsData[slot.itemID];
+
+                if (item == null)
+                    continue;
+
+                if (item.itemType != ItemType.Seed)
+                    continue;
+
+                if (!seedIDs.Contains(slot.itemID + 1))
+                {
+                    seedIDs.Add(slot.itemID + 1);
+                }
+            }
+        }
+
+        // 선택된 NPC의 Sub인벤토리 검사
+        if (target != null && target.subInventory != null)
+        {
+            foreach (var slot in target.subInventory.slots)
+            {
+                if (slot.itemID <= 0)
+                    continue;
+
+                ItemData item =
+                    DataManager.Instance.itemsData[slot.itemID];
+
+                if (item == null)
+                    continue;
+
+                if (item.itemType != ItemType.Seed)
+                    continue;
+
+                if (!seedIDs.Contains(slot.itemID))
+                {
+                    seedIDs.Add(slot.itemID);
+                }
+            }
+        }
+
+        SetWorkMenuItems(seedIDs);
+    }
+    private void RefreshRanchWorkMenu()
+    {
+        List<int> productIDs = new();
+
+        foreach (string buildingID in target.job.buildingIDs)
+        {
+            RanchBuilding ranch =
+                DataManager.Instance
+                .BuildingManager
+                .Get<RanchBuilding>(buildingID);
+
+            if (ranch == null)
+                continue;
+
+            if (ranch.animals == null)
+                continue;
+
+            int productID =
+                ranch.animals[0].productItemID;
+
+            if (!productIDs.Contains(productID))
+            {
+                productIDs.Add(productID);
+            }
+        }
+
+        SetWorkMenuItems(productIDs);
+    }
+    private void SetWorkMenuItems(List<int> itemIDs)
+    {
+        for (int i = 0; i < workMenuSlots.Count; i++)
+        {
+            if (i >= itemIDs.Count)
+            {
+                workMenuSlots[i].ClearSlot();
+                continue;
+            }
+
+            InventorySlot tempSlot = new InventorySlot
+            {
+                itemID = itemIDs[i],
+                count = 1,
+                remainingStoragePeriod = -1
+            };
+
+            workMenuSlots[i].SetSlot(tempSlot);
         }
     }
     #endregion

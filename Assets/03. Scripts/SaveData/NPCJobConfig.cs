@@ -11,11 +11,22 @@ public enum JobType
 public enum JobStep
 {
     Idle,
+
     MoveToStorage,
     TakeResource,
-    MoveToBuilding,
-    Work,
-    Waiting
+
+    FindFarmTile,
+    MoveToFarmTile,
+    WorkFarmTile,
+
+    FindAnimal,
+    MoveToAnimal,
+    InteractAnimal,
+
+    ReturnToStorage,
+    DepositItems,
+
+    Rest
 }
 
 [Serializable]

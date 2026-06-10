@@ -105,8 +105,8 @@ public class FarmBuilding : BuildingBase
     {
         foreach (var tileView in tileViews)
         {
-            int value = tiles[tileView.index].watered ? 1 : 0;
-            Sprite image = DataManager.Instance.GetCropImage(tiles[tileView.index].cropID, tiles[tileView.index].growth);
+            int value = tiles[tileView.index - 1].watered ? 1 : 0;
+            Sprite image = DataManager.Instance.GetCropImage(tiles[tileView.index - 1].cropID, tiles[tileView.index - 1].growth);
 
             tileView.UpdateView(value,image);
         }

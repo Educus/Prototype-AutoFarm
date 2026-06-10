@@ -21,6 +21,7 @@ public class NPC : MonoBehaviour, IInteractable
 
     [Header("Job")]
     public NPCJobConfig job = new NPCJobConfig();
+    public AnimalBase targetAnimal;
 
     private GridManager gridManager;
     private Pathfinder pathfinder;
@@ -200,17 +201,47 @@ public class NPC : MonoBehaviour, IInteractable
 
     public int AddItemToInventory(int itemID, int amount)
     {
-        int added = mainInventory.AddItem(itemID, amount, -1);
+        int remainingStoragePeriod = -1;
+
+        if (DataManager.Instance.itemsData.ContainsKey(itemID))
+        {
+            remainingStoragePeriod =
+                DataManager.Instance.itemsData[itemID].storagePeriod;
+        }
+
+        int added = mainInventory.AddItem(
+            itemID,
+            amount,
+            remainingStoragePeriod);
 
         if (added < amount)
         {
-            added += subInventory.AddItem(itemID, amount - added, -1);
+            added += subInventory.AddItem(
+                itemID,
+                amount - added,
+                remainingStoragePeriod);
         }
 
         return added;
-
     }
     #endregion
+
+    public void DepositInventoryToStorage()
+    {
+        Inventory storage =
+            DataManager.Instance.InventoryManager
+            .Get("storage");
+
+        foreach (var slot in mainInventory.slots)
+        {
+            if (slot.itemID <= 0)
+                continue;
+
+            storage.AddItem(slot.itemID, slot.count, slot.remainingStoragePeriod);
+
+            slot.Clear();
+        }
+    }
 
     #region Save / Load
     public NPCSaveData GetSaveData()

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public abstract class AnimalBase : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public abstract class AnimalBase : MonoBehaviour
     public string id;
     public string animalName;
     public Vector3 position;
+    public int productItemID;
 
     private int workStack;
     public int isStack;
@@ -42,19 +44,28 @@ public abstract class AnimalBase : MonoBehaviour
     {
         if (!isReady) return -1;
 
+        int itemID = -1;
+
         switch (type)
         {
             case AnimalType.COW:
-                return 4012;
+                itemID = 4012;
+                break;
 
             case AnimalType.CHICKEN:
-                return -1;
+                itemID = -1;
+                break;
 
             case AnimalType.NONE:
             default:
                 return -1;
         }
 
+        // 수확 완료 처리
+        isReady = false;
+        isStack = 0;
+
+        return itemID;
     }
 
     #region Save/Load

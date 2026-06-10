@@ -193,6 +193,47 @@ public class Inventory : MonoBehaviour
 
         return taken;
     }
+
+    public int GetAddableAmount(int itemID)
+    {
+        var data = DataManager.Instance.itemsData[itemID];
+
+        if (!CanAddItem(itemID))
+            return 0;
+
+        int amount = 0;
+
+        foreach (var slot in slots)
+        {
+            if (slot.IsEmpty())
+            {
+                amount += data.stack;
+            }
+            else if (slot.itemID == itemID)
+            {
+                amount += data.stack - slot.count;
+            }
+        }
+
+        return amount;
+    }
+
+    public bool IsFull()
+    {
+        foreach (var slot in slots)
+        {
+            if (slot.IsEmpty())
+                return false;
+
+            ItemData data =
+                DataManager.Instance.itemsData[slot.itemID];
+
+            if (slot.count < data.stack)
+                return false;
+        }
+
+        return true;
+    }
     #endregion
 
     #region Filter
