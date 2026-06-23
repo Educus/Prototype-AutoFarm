@@ -223,8 +223,6 @@ public class NPCJobController : MonoBehaviour
                 if (npc.isMoving)
                     return;
 
-                farmAction = FarmAction.Harvest;
-
                 npc.job.step = JobStep.WorkFarmTile;
 
                 break;
@@ -309,6 +307,51 @@ public class NPCJobController : MonoBehaviour
                 currentTileView =
                     currentFarm.tileViews[currentTileIndex];
 
+                // ------------------
+                // 작업 필요 여부 판단
+                // ------------------
+
+                bool needHarvest =
+                    currentTile.IsReady();
+
+                bool needPlant =
+                    currentTile.CanPlant() &&
+                    !noMoreSeedsToday;
+
+                bool needWater =
+                    currentTile.hasCrop &&
+                    !currentTile.watered;
+
+                // 아무 작업도 필요 없으면 다음 타일
+                if (!needHarvest &&
+                    !needPlant &&
+                    !needWater)
+                {
+                    currentTileIndex++;
+                    continue;
+                }
+
+                // ------------------
+                // 어떤 작업부터 할지 결정
+                // ------------------
+
+                if (needHarvest)
+                {
+                    farmAction = FarmAction.Harvest;
+                }
+                else if (needPlant)
+                {
+                    farmAction = FarmAction.Plant;
+                }
+                else
+                {
+                    farmAction = FarmAction.Water;
+                }
+
+                // ------------------
+                // 이동
+                // ------------------
+
                 Vector2Int target =
                     GridManager.Instance.WorldToGrid(
                         currentTileView.transform.position);
@@ -321,6 +364,7 @@ public class NPCJobController : MonoBehaviour
                 return true;
             }
 
+            // 다음 농장
             currentFarmIndex++;
             currentTileIndex = 0;
         }
@@ -368,6 +412,14 @@ public class NPCJobController : MonoBehaviour
                             currentFarm.TryPlant(
                                 currentTile,
                                 npc.job.productItemID);
+
+                            // 마지막 씨앗 사용 여부 확인
+                            if (!npc.subInventory.ContainsItem(
+                                    npc.job.productItemID))
+                            {
+                                npc.job.step = JobStep.MoveToStorage;
+                                return;
+                            }
                         }
                         else
                         {
@@ -402,6 +454,26 @@ public class NPCJobController : MonoBehaviour
 
     private StorageBuilding FindNearestStorageWithSeed()
     {
+        Debug.Log($"찾는 아이템 : {npc.job.productItemID}");
+
+        foreach (BuildingBase building in
+         DataManager.Instance.BuildingManager.GetAll())
+        {
+            StorageBuilding storage =
+                building as StorageBuilding;
+
+            if (storage == null)
+                continue;
+
+            Debug.Log($"창고 발견 : {storage.id}");
+
+            foreach (var slot in storage.inventory.slots)
+            {
+                Debug.Log(
+                    $"item={slot.itemID} count={slot.count}");
+            }
+        }
+
         StorageBuilding result = null;
 
         float bestDistance = float.MaxValue;
@@ -412,12 +484,19 @@ public class NPCJobController : MonoBehaviour
             StorageBuilding storage =
                 building as StorageBuilding;
 
+            Debug.Log($"building = {building.name}");
+            Debug.Log($"storage = {storage}");
+
             if (storage == null)
                 continue;
 
             int seedCount = storage.inventory.slots
                 .Where(s => s.itemID == npc.job.productItemID)
                 .Sum(s => s.count);
+
+            Debug.Log($"storage = {storage.id}");
+            Debug.Log($"seed = {npc.job.productItemID}");
+            Debug.Log($"count = {seedCount}");
 
             if (seedCount <= 0)
                 continue;

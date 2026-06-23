@@ -1,6 +1,7 @@
 using NUnit.Framework.Internal.Execution;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,6 +41,10 @@ public class UINPCStorage : MonoBehaviour
 
     private bool isRenaming;
 
+    private List<InventorySlot> farmItems = new List<InventorySlot>();
+    private List<InventorySlot> ranchItems = new List<InventorySlot>();
+
+    #region Unity
     private void Awake()
     {
         workSlots = GetSlotList(workSlotParent);
@@ -76,6 +81,7 @@ public class UINPCStorage : MonoBehaviour
         workMenuParent.gameObject.SetActive(false);
 
         Refresh();
+        SlotItemsUpdate();
     }
 
     private void OnDisable()
@@ -87,6 +93,45 @@ public class UINPCStorage : MonoBehaviour
         target.subInventory.OnInventoryChanged -= RefreshInventoriesSub;
         target.upgradeInventory.OnInventoryChanged -= RefreshInventoriesUpg;
     }
+
+    private void SlotItemsUpdate()
+    {
+        farmItems.Clear();
+        ranchItems.Clear();
+
+        foreach (var farmItem in DataManager.Instance.itemsData.Values)
+        {
+            if (!farmItem.useToDemo)
+                continue;
+
+            if (farmItem.itemType == ItemType.Seed)
+            {
+                farmItems.Add(new InventorySlot
+                {
+                    itemID = farmItem.itemID + 1,
+                    count = 1,
+                    remainingStoragePeriod = -1
+                });
+            }
+        }
+
+        foreach (var ranchItem in DataManager.Instance.itemsData.Values)
+        {
+            if (!ranchItem.useToDemo)
+                continue;
+
+            if (ranchItem.itemName == "Milk")
+            {
+                ranchItems.Add(new InventorySlot
+                {
+                    itemID = ranchItem.itemID,
+                    count = 1,
+                    remainingStoragePeriod = -1
+                });
+            }
+        }
+    }
+    #endregion
 
     private List<UIInvenSlot> GetSlotList(Transform parent)
     {
@@ -186,8 +231,6 @@ public class UINPCStorage : MonoBehaviour
         RefreshWorkSlots();
         RefreshWorkItem();
 
-        RefreshWorkMenu();
-
         RefreshInventoriesMain();
         RefreshInventoriesSub();
         RefreshInventoriesUpg();
@@ -274,7 +317,7 @@ public class UINPCStorage : MonoBehaviour
     {
         Sprite sprite =
             DataManager.Instance.GetItemImage(
-                target.job.productItemID);
+                target.job.productItemID + 1);
 
         bool hasItem = sprite != null;
 
@@ -312,6 +355,8 @@ public class UINPCStorage : MonoBehaviour
         if (!workMenuParent.gameObject.activeSelf)
             return;
 
+        Debug.Log("NPC 작업 : " + target.job.jobType);
+
         switch (target.job.jobType)
         {
             case JobType.None:
@@ -337,6 +382,9 @@ public class UINPCStorage : MonoBehaviour
         foreach (var slot in workMenuSlots)
         {
             slot.ClearSlot();
+            slot.SetColor(Color.white);
+            slot.GetComponent<Button>().interactable = false;
+            slot.GetComponent<Button>().onClick.RemoveAllListeners();
         }
     }
     private void RefreshFarmWorkMenu()
@@ -370,9 +418,9 @@ public class UINPCStorage : MonoBehaviour
                 if (item.itemType != ItemType.Seed)
                     continue;
 
-                if (!seedIDs.Contains(slot.itemID + 1))
+                if (!seedIDs.Contains(slot.itemID))
                 {
-                    seedIDs.Add(slot.itemID + 1);
+                    seedIDs.Add(slot.itemID);
                 }
             }
         }
@@ -401,7 +449,35 @@ public class UINPCStorage : MonoBehaviour
             }
         }
 
-        SetWorkMenuItems(seedIDs);
+        Debug.Log("작업에 필요한 씨앗 아이템 ID 목록");
+        foreach (var seedID in seedIDs)
+        {
+            Debug.Log($"씨앗 아이템 ID: {seedID}");
+        }
+
+        ClearWorkMenu();
+
+        for (int i = 0; i < workMenuSlots.Count; i++)
+        {
+            if (farmItems.Count > i)
+            {
+                workMenuSlots[i].SetSlot(farmItems[i]);
+                workMenuSlots[i].SetColor(Color.gray);
+
+                foreach (var seedID in seedIDs)
+                {
+                    if (farmItems[i].itemID == seedID + 1)
+                    {
+                        workMenuSlots[i].SetColor(Color.white);
+                        workMenuSlots[i].GetComponent<Button>().interactable = true;
+                        workMenuSlots[i].GetComponent<Button>().onClick.AddListener(() => OnClickWorkMenuSlot(seedID));
+                        
+                        Debug.Log($"버튼 활성화 및 부여{seedID}");
+                        break;
+                    }
+                }
+            }
+        }
     }
     private void RefreshRanchWorkMenu()
     {
@@ -417,7 +493,7 @@ public class UINPCStorage : MonoBehaviour
             if (ranch == null)
                 continue;
 
-            if (ranch.animals == null)
+            if (ranch.animals.Count == 0)
                 continue;
 
             int productID =
@@ -429,7 +505,29 @@ public class UINPCStorage : MonoBehaviour
             }
         }
 
-        SetWorkMenuItems(productIDs);
+        ClearWorkMenu();
+
+        for (int i = 0; i < workMenuSlots.Count; i++)
+        {
+            if (ranchItems.Count > i)
+            {
+                workMenuSlots[i].SetSlot(ranchItems[i]);
+                workMenuSlots[i].SetColor(Color.gray);
+
+                foreach (var productID in productIDs)
+                {
+                    if (ranchItems[i].itemID == productID)
+                    {
+                        workMenuSlots[i].SetColor(Color.white);
+                        workMenuSlots[i].GetComponent<Button>().interactable = true;
+                        workMenuSlots[i].GetComponent<Button>().onClick.AddListener(() => OnClickWorkMenuSlot(productID));
+                        
+                        Debug.Log($"버튼 활성화 및 부여{productID}");
+                        break;
+                    }
+                }
+            }
+        }
     }
     private void SetWorkMenuItems(List<int> itemIDs)
     {
@@ -449,6 +547,18 @@ public class UINPCStorage : MonoBehaviour
             };
 
             workMenuSlots[i].SetSlot(tempSlot);
+        }
+    }
+
+    public void OpenWorkMenu()
+    {
+        bool workMenuActive = workMenuParent.gameObject.activeSelf;
+        workMenuParent.gameObject.SetActive(!workMenuActive);
+
+        if (!workMenuActive)
+        {
+            RefreshWorkMenu();
+            Debug.Log("Work Menu Opened");
         }
     }
     #endregion
@@ -573,6 +683,17 @@ public class UINPCStorage : MonoBehaviour
         gameObject.SetActive(false);
 
         GameManager.Instance.EnterWorkMode();
+    }
+
+    // 작업 메뉴 슬롯 버튼 연결
+    public void OnClickWorkMenuSlot(int index)
+    {
+        if (target == null)
+            return;
+
+        target.job.productItemID = index;
+        RefreshWorkItem();
+        Debug.Log($"Work Menu Slot Click : {index}");
     }
     #endregion
 }

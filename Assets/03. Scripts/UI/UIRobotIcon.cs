@@ -1,8 +1,10 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIRobotIcon : MonoBehaviour
 {
+    [SerializeField] TMP_Text robotName;
     [SerializeField] GameObject[] robotWorkIcon;
     [SerializeField] Image workItem;
 
@@ -24,6 +26,7 @@ public class UIRobotIcon : MonoBehaviour
         this.id = id;
 
         config = dataManager.NPCManager.npcs[id].job;
+        robotName.text = dataManager.NPCManager.npcs[id].entityName;
     }
 
     public void SetInfo()

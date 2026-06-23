@@ -28,6 +28,11 @@ public class UIInvenSlot : MonoBehaviour
         RefreshTimer(slot);
     }
 
+    public void SetColor(Color color)
+    {
+        itemImage.color = color;
+    }
+
     public void ClearSlot()
     {
         itemImage.sprite = null;
