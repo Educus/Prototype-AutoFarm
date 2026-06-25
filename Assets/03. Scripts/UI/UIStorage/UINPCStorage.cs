@@ -58,6 +58,7 @@ public class UINPCStorage : MonoBehaviour
 
         BindButtons();
 
+        nameInputField.onEndEdit.AddListener(OnNameEditEnd);
         nameInputField.gameObject.SetActive(false);
         workMenuParent.gameObject.SetActive(false);
     }
@@ -627,6 +628,16 @@ public class UINPCStorage : MonoBehaviour
     }
     private void EndRename()
     {
+        if (target != null)
+        {
+            string newName = nameInputField.text.Trim();
+
+            if (!string.IsNullOrEmpty(newName))
+            {
+                target.SetName(newName);
+            }
+        }
+
         isRenaming = false;
 
         nameInputField.gameObject.SetActive(false);
@@ -634,6 +645,12 @@ public class UINPCStorage : MonoBehaviour
         npcName.gameObject.SetActive(true);
 
         RefreshName();
+    }
+
+    // 이름 변경 완료 이벤트
+    public void OnNameEditEnd(string value)
+    {
+        EndRename();
     }
 
     // 메인 인벤토리 슬롯 버튼 연결
