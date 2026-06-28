@@ -142,8 +142,44 @@ public class FarmBuilding : BuildingBase
     }
     #endregion
 
-    public override void OnInteract()
+    // 플레이어가 상호작용
+    public override void OnInteract(int itemId)
     {
+        Debug.Log("이거 말고;");
+    }
+
+    public void OnPlayerInteract(int index, int itemId)
+    {
+        FarmTile tile = tiles[index - 1];
+
+        Debug.Log($"index : {index}, itemID : {itemId}");
+
+        // 1. 심기
+        if (itemId != 0 && DataManager.Instance.itemsData[itemId].itemType == ItemType.Seed && tile.CanPlant())
+        {
+            bool success = TryPlant(tile, itemId);
+            if (success)
+            {
+                GameManager.Instance.player.subInventory.RemoveItem(itemId, 1);
+            }
+            return;
+        }
+        // 2. 물주기
+        if (tile.hasCrop && !tile.watered)
+        {
+            Water(tile);
+            return;
+        }
+        // 3. 수확
+        if (tile.IsReady())
+        {
+            int item = TryHarvest(tile);
+            if (item > 0)
+            {
+                GameManager.Instance.player.AddItemToInventory(item, 1);
+            }
+            return;
+        }
         
     }
 }
