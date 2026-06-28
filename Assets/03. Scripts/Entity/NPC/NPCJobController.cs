@@ -50,6 +50,11 @@ public class NPCJobController : MonoBehaviour
     private void Awake()
     {
         npc = GetComponent<NPC>();
+        npc.OnJobChanged += () =>
+        {
+            // 직업이 바뀌면 작업 상태 초기화
+            ResetDailyWork();
+        };
     }
 
     private void Start()

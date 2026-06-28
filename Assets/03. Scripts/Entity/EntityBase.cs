@@ -12,7 +12,7 @@ public abstract class EntityBase : MonoBehaviour, IInteractable
     {
         return entityName;
     }
-    public virtual void OnInteract()
+    public virtual void OnInteract(int itemId)
     {
         Debug.Log($"{entityName} interact");
     }

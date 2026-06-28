@@ -15,6 +15,7 @@ public class Player : StatusBase
     public int selectedSubSlotIndex { get; private set; } = -1;
 
     public static event Action OnInitialized;
+    public Action onMoveComplete;
 
     void Start()
     {
@@ -62,7 +63,30 @@ public class Player : StatusBase
         selectedSubSlotIndex = index;
     }
 
-    public override void OnInteract()
+    public int AddItemToInventory(int itemID, int amount)
+    {
+        int added =
+            mainInventory.AddItem(
+                itemID,
+                amount,
+                DataManager.Instance
+                .itemsData[itemID]
+                .storagePeriod);
+
+        if (added < amount)
+        {
+            added += subInventory.AddItem(
+                itemID,
+                amount - added,
+                DataManager.Instance
+                .itemsData[itemID]
+                .storagePeriod);
+        }
+
+        return added;
+    }
+
+    public override void OnInteract(int itemId)
     {
     }
 }

@@ -32,8 +32,11 @@ public class NPC : MonoBehaviour, IInteractable
     public bool isMoving { get; private set; }
     public float moveSpeed = 3f;
 
+    // 작업 및 할당 건물이 바뀌었을 때 작업 초기화
+    public event Action OnJobChanged;
+
     // 상호작용
-    public void OnInteract()
+    public void OnInteract(int itemId)
     {
         if (GameManager.Instance.selectedNPC == this)
         {
@@ -104,6 +107,11 @@ public class NPC : MonoBehaviour, IInteractable
     public string GetName()
     {
         return entityName;
+    }
+
+    public void JobChanged()
+    {
+        OnJobChanged?.Invoke();
     }
 
     #region 업그레이드 관리

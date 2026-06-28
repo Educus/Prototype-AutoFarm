@@ -333,7 +333,7 @@ public class Rocket : BuildingBase
 
     #region Interaction
 
-    public override void OnInteract()
+    public override void OnInteract(int itemId)
     {
         uiStorageManagement.TargetBuilding(id);
         uiStorageManagement.RocketInv();

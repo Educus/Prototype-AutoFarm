@@ -85,7 +85,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 8
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7198947452999271198, guid: 37b84cc2e6e27204e8ff1afce1520ac3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -155,12 +155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b423d9becad2d46988ed4454b3fc48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPC
-  entityName: 1111
-  maxHp: 0
-  hp: 0
-  speed: 3
-  invenNum: 0
   id: 11
+  entityName: 1111
   water: 0
   maxWater: 0
   mainInventory: {fileID: 1686289418573687}
@@ -171,6 +167,8 @@ MonoBehaviour:
     buildingIDs: []
     productItemID: 0
     step: 0
+    maxWorkSlots: 4
+  targetAnimal: {fileID: 0}
   moveSpeed: 3
 --- !u!114 &1686289418573687
 MonoBehaviour:
@@ -236,4 +234,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCJobController
   npc: {fileID: 0}
-  interval: 1
+  actionDuration: 1

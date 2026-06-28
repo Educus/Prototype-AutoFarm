@@ -9,5 +9,5 @@ public interface Loader<Key, Value>
 
 public interface IInteractable
 {
-    void OnInteract();
+    void OnInteract(int itemId);
 }

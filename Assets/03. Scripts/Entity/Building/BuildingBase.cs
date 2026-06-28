@@ -191,6 +191,7 @@ public abstract class BuildingBase : MonoBehaviour, IInteractable
         }
 
         selectedNPC.job.buildingIDs.Add(id);
+        selectedNPC.JobChanged();
 
         GameManager.Instance.RefreshHighlights();
     }
@@ -202,7 +203,7 @@ public abstract class BuildingBase : MonoBehaviour, IInteractable
 
     public abstract void LoadJsonData(string json);
 
-    public abstract void OnInteract();
+    public abstract void OnInteract(int itemId);
 
     #endregion
 }

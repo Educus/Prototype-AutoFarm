@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FarmTileView : MonoBehaviour
+public class FarmTileView : MonoBehaviour, IInteractable
 {
     // 농장 이미지 애니메이션
     // 이후 추가 수정
@@ -22,5 +22,12 @@ public class FarmTileView : MonoBehaviour
         sprite.sprite = field[value];
 
         cropsSprite.sprite = image;
+    }
+
+    public void OnInteract(int itemId)
+    {
+        FarmBuilding farm = gameObject.GetComponentInParent<FarmBuilding>();
+
+        farm.OnPlayerInteract(index, itemId);
     }
 }

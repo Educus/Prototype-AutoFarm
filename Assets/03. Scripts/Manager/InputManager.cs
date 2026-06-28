@@ -20,6 +20,7 @@ public class InputManager : MonoBehaviour
 
     private Player player;
     private PlayerController playerController;
+    private PlayerAction playerAction;
 
 
     private Camera mainCamera;
@@ -31,6 +32,7 @@ public class InputManager : MonoBehaviour
     {
         player = GameManager.Instance.player;
         playerController = player.GetComponent<PlayerController>();
+        playerAction = player.GetComponent<PlayerAction>();
 
         mainCamera = Camera.main;
 
@@ -193,7 +195,7 @@ public class InputManager : MonoBehaviour
         IInteractable interactable =
             hit.GetComponentInParent<IInteractable>();
 
-        interactable?.OnInteract();
+        interactable?.OnInteract(player.subInventory.slots[player.selectedSubSlotIndex].itemID);
     }
 
     void RightClick()
@@ -231,7 +233,7 @@ public class InputManager : MonoBehaviour
 
             if (distance <= 1f)
             {
-                interactable.OnInteract();
+                interactable.OnInteract(player.subInventory.slots[player.selectedSubSlotIndex].itemID);
                 return;
             }
         }
@@ -256,7 +258,7 @@ public class InputManager : MonoBehaviour
             {
                 if (interactable != null)
                 {
-                    interactable.OnInteract();
+                    interactable.OnInteract(player.subInventory.slots[player.selectedSubSlotIndex].itemID);
                 }
             });
     }

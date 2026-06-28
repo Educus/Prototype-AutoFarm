@@ -49,30 +49,42 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        // foreach (Node node in path)
+        // {
+        //     Vector3 target = new Vector3(node.x + 0.5f, node.y, 0);
+        // 
+        //     while (Vector3.Distance(transform.position, target) > 0.05f)
+        //     {
+        //         transform.position = Vector3.MoveTowards(
+        //             transform.position,
+        //             target,
+        //             speed * Time.deltaTime
+        //         );
+        // 
+        //         yield return null;
+        //     }
+        // 
+        //     currentGridPos = new Vector2Int(node.x, node.y);
+        // }
+
         onComplete?.Invoke();
-
-            // foreach (Node node in path)
-            // {
-            //     Vector3 target = new Vector3(node.x + 0.5f, node.y, 0);
-            // 
-            //     while (Vector3.Distance(transform.position, target) > 0.05f)
-            //     {
-            //         transform.position = Vector3.MoveTowards(
-            //             transform.position,
-            //             target,
-            //             speed * Time.deltaTime
-            //         );
-            // 
-            //         yield return null;
-            //     }
-            // 
-            //     currentGridPos = new Vector2Int(node.x, node.y);
-            // }
     }
-
 
     public Vector2Int GetCurrentGridPos()
     {
         return currentGridPos;
+    }
+
+    public void MoveTo(Vector2Int target, System.Action onComplete = null)
+    {
+        List<Node> path =
+            pathfinder.FindPath(
+                currentGridPos,
+                target);
+
+        if (path == null || path.Count == 0)
+            return;
+
+        Move(path, onComplete);
     }
 }

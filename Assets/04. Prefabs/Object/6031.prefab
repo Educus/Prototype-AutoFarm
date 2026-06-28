@@ -81,7 +81,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: -214247445006816288, guid: 32ecbf14d8995bb479431c78a4161ea4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -155,5 +155,6 @@ MonoBehaviour:
   id: 6031
   animalName: 
   position: {x: 0, y: 0, z: 0}
+  productItemID: 0
   isStack: 0
   isReady: 0
