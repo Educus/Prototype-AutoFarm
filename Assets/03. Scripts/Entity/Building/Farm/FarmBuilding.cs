@@ -27,6 +27,11 @@ public class FarmBuilding : BuildingBase
         TimeManager.Instance.onDayEvent += NextDay;
     }
 
+    private void OnDestroy()
+    {
+        TimeManager.Instance.onDayEvent -= NextDay;
+    }
+
     private void LateUpdate()
     {
         ViewUpdate();
@@ -143,7 +148,7 @@ public class FarmBuilding : BuildingBase
     #endregion
 
     // 플레이어가 상호작용
-    public override void OnInteract(int itemId)
+    public override void OnInteract()
     {
         Debug.Log("이거 말고;");
     }
@@ -154,23 +159,7 @@ public class FarmBuilding : BuildingBase
 
         Debug.Log($"index : {index}, itemID : {itemId}");
 
-        // 1. 심기
-        if (itemId != 0 && DataManager.Instance.itemsData[itemId].itemType == ItemType.Seed && tile.CanPlant())
-        {
-            bool success = TryPlant(tile, itemId);
-            if (success)
-            {
-                GameManager.Instance.player.subInventory.RemoveItem(itemId, 1);
-            }
-            return;
-        }
-        // 2. 물주기
-        if (tile.hasCrop && !tile.watered)
-        {
-            Water(tile);
-            return;
-        }
-        // 3. 수확
+        // 1. 수확
         if (tile.IsReady())
         {
             int item = TryHarvest(tile);
@@ -180,6 +169,21 @@ public class FarmBuilding : BuildingBase
             }
             return;
         }
-        
+        // 2. 심기
+        if (itemId != 0 && DataManager.Instance.itemsData[itemId].itemType == ItemType.Seed && tile.CanPlant())
+        {
+            bool success = TryPlant(tile, itemId);
+            if (success)
+            {
+                GameManager.Instance.player.subInventory.RemoveItem(itemId, 1);
+            }
+            return;
+        }
+        // 3. 물주기
+        if (tile.hasCrop && !tile.watered)
+        {
+            Water(tile);
+            return;
+        }
     }
 }

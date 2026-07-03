@@ -39,6 +39,7 @@ public class GridManager : MonoBehaviour
     public float cellSize = 1f;
 
     private Node[,] grid;
+    private Node[,] gridBuilding;
 
     [SerializeField] private ChunkManager chunkManager;
     public ChunkManager ChunkManager { get; private set; }
@@ -61,6 +62,7 @@ public class GridManager : MonoBehaviour
     void GenerateGrid()
     {
         grid = new Node[width, height];
+        gridBuilding = new Node[width, height];
 
         for (int x = 0; x < width; x++)
         {
@@ -68,6 +70,7 @@ public class GridManager : MonoBehaviour
             {
                 // 기본은 이동 가능
                 grid[x, y] = new Node(x, y, true, TileType.Ground);
+                gridBuilding[x, y] = new Node(x, y, true, TileType.Ground);
             }
         }
     }
@@ -79,6 +82,12 @@ public class GridManager : MonoBehaviour
             return null;
 
         return grid[x, y];
+    }
+    public Node GetBuildingNode(int x, int y)
+    {
+        if (x < 0 || y < 0 || x >= width || y >= height)
+            return null;
+        return gridBuilding[x, y];
     }
 
     // 이동 가능 여부(청크 포함)
@@ -92,6 +101,142 @@ public class GridManager : MonoBehaviour
         if (!chunkManager.IsUnlocked(new Vector2Int(x, y))) return false;
 
         return true;
+    }
+
+    // 갈 수 없는 곳일때 가장 가까운 이동 가능 좌표 찾기 (BFS)
+    public Vector2Int FindNearestWalkable(Vector2Int target)
+    {
+        // 목표가 이동 가능하면 그대로 반환
+        if (IsWalkable(target.x, target.y))
+            return target;
+
+        Queue<Vector2Int> queue = new();
+        HashSet<Vector2Int> visited = new();
+
+        queue.Enqueue(target);
+        visited.Add(target);
+
+        Vector2Int[] dirs =
+        {
+        Vector2Int.down,
+        Vector2Int.left,
+        Vector2Int.right,
+        Vector2Int.up
+    };
+
+        while (queue.Count > 0)
+        {
+            Vector2Int current = queue.Dequeue();
+
+            foreach (var dir in dirs)
+            {
+                Vector2Int next = current + dir;
+
+                if (visited.Contains(next))
+                    continue;
+
+                visited.Add(next);
+
+                if (IsWalkable(next.x, next.y))
+                    return next;
+
+                if (GetNode(next.x, next.y) != null)
+                    queue.Enqueue(next);
+            }
+        }
+
+        return target;
+    }
+
+    // NPC 이동 시, 이동 불가 좌표일 경우 가장 가까운 이동 가능 좌표를 찾는 함수 (반경 탐색)
+    public Vector2Int GetNearestWalkablePosition(Vector2Int center)
+    {
+        List<Vector2Int> candidates = new();
+
+        for (int radius = 1; radius <= Mathf.Max(width, height); radius++)
+        {
+            candidates.Clear();
+
+            for (int x = -radius; x <= radius; x++)
+            {
+                for (int y = -radius; y <= radius; y++)
+                {
+                    if (Mathf.Abs(x) != radius &&
+                        Mathf.Abs(y) != radius)
+                        continue;
+
+                    Vector2Int pos = center + new Vector2Int(x, y);
+
+                    if (IsWalkable(pos.x, pos.y))
+                    {
+                        candidates.Add(pos);
+                    }
+                }
+            }
+
+            // 현재 반경에서 하나라도 찾았다면
+            if (candidates.Count > 0)
+            {
+                Vector2Int best = candidates[0];
+
+                foreach (var pos in candidates)
+                {
+                    if (pos.y < best.y)
+                    {
+                        best = pos;
+                    }
+                }
+
+                return best;
+            }
+        }
+
+        // 못 찾으면 원래 위치 반환
+        return center;
+    }
+
+    // 이동 불가 좌표일 경우 가장 가까운 이동 가능 좌표를 찾는 함수 (BFS)
+    public Vector2Int GetNearestWalkableFrom(Vector2Int start)
+    {
+        if (IsWalkable(start.x, start.y))
+            return start;
+
+        Queue<Vector2Int> queue = new();
+        HashSet<Vector2Int> visited = new();
+
+        queue.Enqueue(start);
+        visited.Add(start);
+
+        Vector2Int[] dirs =
+        {
+        Vector2Int.up,
+        Vector2Int.down,
+        Vector2Int.left,
+        Vector2Int.right
+    };
+
+        while (queue.Count > 0)
+        {
+            Vector2Int current = queue.Dequeue();
+
+            foreach (var dir in dirs)
+            {
+                Vector2Int next = current + dir;
+
+                if (visited.Contains(next))
+                    continue;
+
+                visited.Add(next);
+
+                if (IsWalkable(next.x, next.y))
+                    return next;
+
+                if (GetNode(next.x, next.y) != null)
+                    queue.Enqueue(next);
+            }
+        }
+
+        return start;
     }
 
     // 월드 → 그리드 좌표
@@ -127,6 +272,15 @@ public class GridManager : MonoBehaviour
 
         node.isWalkable = !blocked;
     }
+    public void SetBuildingBlocked(int x, int y, bool blocked)
+    {
+        Node node = GetBuildingNode(x, y);
+
+        if (node == null)
+            return;
+
+        node.isWalkable = !blocked;
+    }
 
     // 타일 타입 설정 (물 등)
     public void SetTileType(int x, int y, TileType type)
@@ -138,6 +292,17 @@ public class GridManager : MonoBehaviour
 
         if (type == TileType.Water)
             node.isWalkable = false;
+    }
+
+    // 설치 가능 여부 검사
+    public bool CanPlaceBuilding(int x, int y)
+    {
+        Node node = GetBuildingNode(x, y);
+
+        if (node == null)
+            return false;
+
+        return node.isWalkable;
     }
 
     void OnDrawGizmos()

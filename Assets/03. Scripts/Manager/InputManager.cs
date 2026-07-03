@@ -170,9 +170,7 @@ public class InputManager : MonoBehaviour
                 Input.mousePosition);
 
         Collider2D hit =
-            Physics2D.OverlapPoint(
-                mousePos,
-                layerMask);
+            GetPriorityHit(mousePos);
 
         if (hit == null)
             return;
@@ -192,10 +190,10 @@ public class InputManager : MonoBehaviour
         }
 
         // 일반 상호작용
-        IInteractable interactable =
-            hit.GetComponentInParent<IInteractable>();
+        ILeftInteractable interactable =
+            hit.GetComponentInParent<ILeftInteractable>();
 
-        interactable?.OnInteract(player.subInventory.slots[player.selectedSubSlotIndex].itemID);
+        interactable?.OnInteract();
     }
 
     void RightClick()
@@ -212,14 +210,14 @@ public class InputManager : MonoBehaviour
             mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
         Collider2D hit =
-            Physics2D.OverlapPoint(mousePos, layerMask);
+            GetPriorityHit(mousePos);
 
-        IInteractable interactable = null;
+        IRightInteractable interactable = null;
 
         if (hit != null)
         {
             interactable =
-                hit.GetComponentInParent<IInteractable>();
+                hit.GetComponentInParent<IRightInteractable>();
         }
 
         // 가까우면 즉시 상호작용
@@ -239,8 +237,11 @@ public class InputManager : MonoBehaviour
         }
 
         // 이동 처리
+        Vector2 currentWorldPos =
+            (Vector2)player.transform.position + Vector2.up * 0.5f;
+
         Vector2Int currentPos =
-            gridManager.WorldToGrid(player.transform.position);
+            gridManager.WorldToGrid(currentWorldPos);
 
         Vector2Int targetPos =
             gridManager.WorldToGrid(mousePos);
@@ -261,6 +262,30 @@ public class InputManager : MonoBehaviour
                     interactable.OnInteract(player.subInventory.slots[player.selectedSubSlotIndex].itemID);
                 }
             });
+    }
+
+    private Collider2D GetPriorityHit(Vector2 mousePos)
+    {
+        Collider2D[] hits =
+            Physics2D.OverlapPointAll(mousePos, layerMask);
+
+        Collider2D structureHit = null;
+
+        foreach (Collider2D hit in hits)
+        {
+            // NPC를 가장 높은 우선순위
+            if (hit.GetComponentInParent<NPC>() != null)
+                return hit;
+
+            // 건물은 후보로만 저장
+            if (structureHit == null &&
+                hit.GetComponentInParent<BuildingBase>() != null)
+            {
+                structureHit = hit;
+            }
+        }
+
+        return structureHit;
     }
 
     public void Move(List<Node> path)

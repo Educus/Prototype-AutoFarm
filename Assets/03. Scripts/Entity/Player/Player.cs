@@ -6,7 +6,7 @@ public class Player : StatusBase
 {
     public float moveSpeed = 3f;
 
-    IInteractable interactTarget;
+    ILeftInteractable interactTarget;
     bool isInteracting;
 
     public Inventory mainInventory;
@@ -86,7 +86,7 @@ public class Player : StatusBase
         return added;
     }
 
-    public override void OnInteract(int itemId)
+    public override void OnInteract()
     {
     }
 }

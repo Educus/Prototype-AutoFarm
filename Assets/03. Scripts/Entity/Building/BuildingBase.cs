@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class BuildingBase : MonoBehaviour, IInteractable
+public abstract class BuildingBase : MonoBehaviour, ILeftInteractable
 {
     [Header("Building Info")]
     public BuildingType type = BuildingType.None;
@@ -203,7 +203,7 @@ public abstract class BuildingBase : MonoBehaviour, IInteractable
 
     public abstract void LoadJsonData(string json);
 
-    public abstract void OnInteract(int itemId);
+    public abstract void OnInteract();
 
     #endregion
 }

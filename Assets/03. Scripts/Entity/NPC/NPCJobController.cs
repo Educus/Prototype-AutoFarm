@@ -726,16 +726,13 @@ public class NPCJobController : MonoBehaviour
             if (slot.itemID <= 0)
                 continue;
 
-            int remain =
+            int added =
                 storage.AddItem(
                     slot.itemID,
                     slot.count,
                     slot.remainingStoragePeriod);
 
-            int deposited =
-                slot.count - remain;
-
-            slot.count -= deposited;
+            slot.count -= added;
 
             if (slot.count <= 0)
             {

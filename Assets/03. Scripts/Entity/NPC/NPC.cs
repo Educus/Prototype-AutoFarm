@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(NPCJobController))]
-public class NPC : MonoBehaviour, IInteractable
+public class NPC : MonoBehaviour, ILeftInteractable
 {
     // NPC
     public string id;
@@ -36,7 +36,7 @@ public class NPC : MonoBehaviour, IInteractable
     public event Action OnJobChanged;
 
     // 상호작용
-    public void OnInteract(int itemId)
+    public void OnInteract()
     {
         if (GameManager.Instance.selectedNPC == this)
         {
@@ -180,6 +180,9 @@ public class NPC : MonoBehaviour, IInteractable
 
                 yield return null;
             }
+
+            // 정확한 위치로 보정
+            transform.position = target;
 
             currentGridPos = new Vector2Int(node.x, node.y);
         }

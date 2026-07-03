@@ -1,4 +1,5 @@
 using System;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 using static UnityEditor.Progress;
 
@@ -66,6 +67,13 @@ public abstract class AnimalBase : MonoBehaviour
         isStack = 0;
 
         return itemID;
+    }
+
+    private void OnMouseDown()
+    {
+        GameManager.Instance.player
+            .GetComponent<PlayerAction>()
+            .StartAnimalAction(this);
     }
 
     #region Save/Load

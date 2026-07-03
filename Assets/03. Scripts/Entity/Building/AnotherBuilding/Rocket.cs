@@ -186,6 +186,7 @@ public class Rocket : BuildingBase
 
         // TODO:
         // 로켓 비활성화 / 이동 연출
+        GetComponent<SpriteRenderer>().enabled = false;
         collider.enabled = false;
     }
 
@@ -242,6 +243,8 @@ public class Rocket : BuildingBase
         // 구매 목록 없음
         if (reservedBuyItems.Count <= 0)
         {
+            GetComponent<SpriteRenderer>().enabled = true;
+            collider.enabled = true;
             return;
         }
 
@@ -312,6 +315,7 @@ public class Rocket : BuildingBase
 
         // TODO:
         // 로켓 활성화 / 도착 연출
+        GetComponent<SpriteRenderer>().enabled = true;
         collider.enabled = true;
     }
 
@@ -333,7 +337,7 @@ public class Rocket : BuildingBase
 
     #region Interaction
 
-    public override void OnInteract(int itemId)
+    public override void OnInteract()
     {
         uiStorageManagement.TargetBuilding(id);
         uiStorageManagement.RocketInv();

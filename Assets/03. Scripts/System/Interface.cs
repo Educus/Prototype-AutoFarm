@@ -7,7 +7,12 @@ public interface Loader<Key, Value>
     public Dictionary<Key, Value> MakeDict();
 }
 
-public interface IInteractable
+public interface ILeftInteractable
+{
+    void OnInteract();
+}
+
+public interface IRightInteractable
 {
     void OnInteract(int itemId);
 }

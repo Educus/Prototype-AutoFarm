@@ -2,7 +2,7 @@ using UnityEngine;
 
 public static class InteractionHandler
 {
-    public static IInteractable GetInteractable(Vector2 position)
+    public static ILeftInteractable GetInteractable(Vector2 position)
     {
         Collider2D col = Physics2D.OverlapPoint(position);
 
@@ -11,6 +11,6 @@ public static class InteractionHandler
             return null;
         }
 
-        return col.GetComponent<IInteractable>();
+        return col.GetComponent<ILeftInteractable>();
     }
 }

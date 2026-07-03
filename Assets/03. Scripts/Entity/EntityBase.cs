@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class EntityBase : MonoBehaviour, IInteractable
+public abstract class EntityBase : MonoBehaviour, ILeftInteractable
 {
     [SerializeField] protected string entityName;
     
@@ -12,7 +12,7 @@ public abstract class EntityBase : MonoBehaviour, IInteractable
     {
         return entityName;
     }
-    public virtual void OnInteract(int itemId)
+    public virtual void OnInteract()
     {
         Debug.Log($"{entityName} interact");
     }

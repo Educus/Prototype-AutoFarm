@@ -240,21 +240,24 @@ public class BuildingManager : MonoBehaviour
                 Vector2Int checkPos =
                     pos + new Vector2Int(x, y);
 
-                Node node =
+                Node moveNode =
                     gridManager.GetNode(
                         checkPos.x,
                         checkPos.y);
 
-                if (node == null)
+                if (moveNode == null)
                     return false;
 
-                if (!node.isWalkable)
+                if (moveNode.tileType == TileType.Water)
+                    return false;
+
+                if (!moveNode.isWalkable)
                     return false;
 
                 if (!chunkManager.IsUnlocked(checkPos))
                     return false;
 
-                if (node.tileType == TileType.Water)
+                if (!gridManager.CanPlaceBuilding(checkPos.x, checkPos.y))
                     return false;
             }
         }
@@ -344,20 +347,19 @@ public class BuildingManager : MonoBehaviour
                 Vector2Int p =
                     pos + new Vector2Int(x, y);
 
-                if (data.patternFlat[index])
-                {
-                    gridManager.SetBlocked(
-                        p.x,
-                        p.y,
-                        false);
-                }
-                else
-                {
-                    gridManager.SetBlocked(
-                        p.x,
-                        p.y,
-                        true);
-                }
+                bool isRoad = data.patternFlat[index];
+
+                // 이동 Grid
+                gridManager.SetBlocked(
+                    p.x,
+                    p.y,
+                    !isRoad);
+
+                // 건물 Grid
+                gridManager.SetBuildingBlocked(
+                    p.x,
+                    p.y,
+                    true);
             }
         }
     }

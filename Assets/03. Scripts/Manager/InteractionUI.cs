@@ -7,11 +7,11 @@ public class InteractionUI : MonoBehaviour
     public Text nameText;
     public Text statusText;
 
-    IInteractable interactable;
+    ILeftInteractable interactable;
 
     Coroutine pollingCoroutine;
 
-    public void SetTartget(IInteractable target)
+    public void SetTartget(ILeftInteractable target)
     {
         interactable = target;
 

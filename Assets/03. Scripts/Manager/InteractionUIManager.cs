@@ -9,7 +9,7 @@ public class InteractionUIManager : MonoBehaviour
     // Esc키 입력 시 켜져있는 UI 순서대로 끄기
     private List<GameObject> popUpUIList = new List<GameObject>();
 
-    public void ShowUI(IInteractable interactable)
+    public void ShowUI(ILeftInteractable interactable)
     {
 
     }
