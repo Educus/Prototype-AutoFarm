@@ -1,0 +1,162 @@
+[
+    {
+        "ItemID":1011,
+        "ItemName":"CornSeed",
+        "Korean":"옥수수 씨앗"
+    },
+    {
+        "ItemID":1012,
+        "ItemName":"Corn",
+        "Korean":"옥수수"
+    },
+    {
+        "ItemID":1021,
+        "ItemName":"PotatoSeed",
+        "Korean":"씨 감자"
+    },
+    {
+        "ItemID":1022,
+        "ItemName":"Potato",
+        "Korean":"감자"
+    },
+    {
+        "ItemID":2011,
+        "ItemName":"CarrotSeed",
+        "Korean":"당근 씨앗"
+    },
+    {
+        "ItemID":2012,
+        "ItemName":"Carrot",
+        "Korean":"당근"
+    },
+    {
+        "ItemID":2021,
+        "ItemName":"OnionSeed",
+        "Korean":"양파 씨앗"
+    },
+    {
+        "ItemID":2022,
+        "ItemName":"Onion",
+        "Korean":"양파"
+    },
+    {
+        "ItemID":3011,
+        "ItemName":"StrawberrySeed",
+        "Korean":"딸기 씨앗"
+    },
+    {
+        "ItemID":3012,
+        "ItemName":"Strawberry",
+        "Korean":"딸기"
+    },
+    {
+        "ItemID":3021,
+        "ItemName":"BlueBerrySeed",
+        "Korean":"블구베리 씨앗"
+    },
+    {
+        "ItemID":3022,
+        "ItemName":"BlueBerry",
+        "Korean":"블루베리"
+    },
+    {
+        "ItemID":4011,
+        "ItemName":"Bottle",
+        "Korean":"빈 병"
+    },
+    {
+        "ItemID":4012,
+        "ItemName":"Milk",
+        "Korean":"우유"
+    },
+    {
+        "ItemID":5001,
+        "ItemName":"Water",
+        "Korean":"물"
+    },
+    {
+        "ItemID":5011,
+        "ItemName":"100000G",
+        "Korean":"10만 골드"
+    },
+    {
+        "ItemID":5021,
+        "ItemName":"ObjectPackage",
+        "Korean":"정착 지원 패키지"
+    },
+    {
+        "ItemID":6021,
+        "ItemName":"Prototype",
+        "Korean":"Prototype"
+    },
+    {
+        "ItemID":6031,
+        "ItemName":"Cow",
+        "Korean":"소"
+    },
+    {
+        "ItemID":6032,
+        "ItemName":"Chicken",
+        "Korean":"닭"
+    },
+    {
+        "ItemID":7011,
+        "ItemName":"BatteryLv1",
+        "Korean":"베터리 LV1"
+    },
+    {
+        "ItemID":8011,
+        "ItemName":"MainInvLv1",
+        "Korean":"메인 인벤토리 LV1"
+    },
+    {
+        "ItemID":8012,
+        "ItemName":"MainInvLv2",
+        "Korean":"메인 인벤토리 LV2"
+    },
+    {
+        "ItemID":8021,
+        "ItemName":"SubInvLv1",
+        "Korean":"서브 인벤토리 LV1"
+    },
+    {
+        "ItemID":8022,
+        "ItemName":"SubInvLv2",
+        "Korean":"서브 인벤토리 LV2"
+    },
+    {
+        "ItemID":8031,
+        "ItemName":"SpeedLv1",
+        "Korean":"속도 LV1"
+    },
+    {
+        "ItemID":8032,
+        "ItemName":"SpeedLv2",
+        "Korean":"속도 LV2"
+    },
+    {
+        "ItemID":8041,
+        "ItemName":"EfficLv1",
+        "Korean":"효율 LV1"
+    },
+    {
+        "ItemID":8042,
+        "ItemName":"EfficLv2",
+        "Korean":"효율 LV2"
+    },
+    {
+        "ItemID":9001,
+        "ItemName":"Field",
+        "Korean":"밭"
+    },
+    {
+        "ItemID":9011,
+        "ItemName":"Storage",
+        "Korean":"창고"
+    },
+    {
+        "ItemID":9021,
+        "ItemName":"Barn",
+        "Korean":"축사"
+    }
+]
