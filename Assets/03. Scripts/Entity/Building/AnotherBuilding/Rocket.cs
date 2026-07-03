@@ -27,6 +27,9 @@ public class Rocket : BuildingBase
 
     private Collider2D collider;
 
+    // NPC 스폰 장소
+    [SerializeField] private GameObject npcPrefab;
+
     #region Unity
 
     protected override void Awake()
@@ -37,6 +40,8 @@ public class Rocket : BuildingBase
         collider = GetComponent<Collider2D>();
 
         uiStorageManagement = UIStorageManagement.Instance;
+
+        npcPrefab = DataManager.Instance.GetObjectPrefabs(6021);
     }
 
     private void Update()
@@ -227,7 +232,7 @@ public class Rocket : BuildingBase
     #endregion
 
     #region Calculate
-    // 00:30 도착 처리
+    // 00:30 도착 처리 6021
     private void Calculate()
     {
         Debug.Log("로켓 도착");
@@ -259,6 +264,18 @@ public class Rocket : BuildingBase
         {
             int itemID = buyItem.Key;
             int remaining = buyItem.Value;
+
+            // NPC 구매
+            if (itemID == 6021)
+            {
+                for (int i = 0; i < remaining; i++)
+                {
+                    SpawnNPC();
+                }
+
+                // NPC는 모두 지급되었으므로 다음 아이템 처리
+                continue;
+            }
 
             ItemData itemData =
               DataManager.Instance.itemsData[itemID];
@@ -317,6 +334,29 @@ public class Rocket : BuildingBase
         // 로켓 활성화 / 도착 연출
         GetComponent<SpriteRenderer>().enabled = true;
         collider.enabled = true;
+    }
+
+    private void SpawnNPC()
+    {
+        if (npcPrefab == null)
+        {
+            Debug.LogWarning("NPC Prefab is null.");
+            return;
+        }
+
+        GameObject obj =
+            Instantiate(npcPrefab, transform.position + new Vector3(0, -3f, 0), Quaternion.identity);
+
+        int npcIndex = DataManager.Instance.NPCManager.npcs.Count;
+
+        // 이름 생성
+        string npcID = $"6021_{npcIndex}";
+
+        obj.name = npcID;
+
+        NPC npc = obj.GetComponent<NPC>();
+
+        npc.Initialize(npcID);
     }
 
     #endregion

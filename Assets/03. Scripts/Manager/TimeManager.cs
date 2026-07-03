@@ -8,7 +8,8 @@ public class TimeManager : MonoBehaviour
 
     [Tooltip("현실 시간 기준 하루 길이(초)")]
     // private float realSecondsPerDay = 900f; // 15분
-    private float realSecondsPerDay = 60f; // 테스트 1분
+    private float realSecondsPerDay = 300f; // 테스트 5분
+    // private float realSecondsPerDay = 60f; // 테스트 1분
 
     [Tooltip("표시 시간 단위")]
     public int miniteStep = 10; // 10분 단위로 표시
