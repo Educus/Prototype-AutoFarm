@@ -50,8 +50,8 @@ public class Rocket : BuildingBase
         int minute = TimeManager.Instance.currentMinute;
         int day = TimeManager.Instance.currentDay;
 
-        // 00:30 판매 정산 및 아이템 적재
-        if (hour == 0 && minute == 30)
+        // 09:00 판매 정산 및 아이템 적재
+        if (hour == 9 && minute == 0)
         {
             if (lastCalculateDay != day)
             {
@@ -270,7 +270,7 @@ public class Rocket : BuildingBase
             {
                 for (int i = 0; i < remaining; i++)
                 {
-                    SpawnNPC();
+                    SpawnNPC(i);
                 }
 
                 // NPC는 모두 지급되었으므로 다음 아이템 처리
@@ -336,7 +336,7 @@ public class Rocket : BuildingBase
         collider.enabled = true;
     }
 
-    private void SpawnNPC()
+    private void SpawnNPC(int x)
     {
         if (npcPrefab == null)
         {
@@ -345,7 +345,7 @@ public class Rocket : BuildingBase
         }
 
         GameObject obj =
-            Instantiate(npcPrefab, transform.position + new Vector3(0, -3f, 0), Quaternion.identity);
+            Instantiate(npcPrefab, transform.position + new Vector3(x, -3f, 0), Quaternion.identity);
 
         int npcIndex = DataManager.Instance.NPCManager.npcs.Count;
 

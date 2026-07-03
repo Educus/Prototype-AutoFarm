@@ -77,7 +77,6 @@ public class UIShopBuy : MonoBehaviour
     // InputField 입력 완료
     private void OnInputChanged(string value)
     {
-
         // 구매 불가능 상태
         if (maxBuyCount <= 0)
         {
@@ -87,12 +86,18 @@ public class UIShopBuy : MonoBehaviour
             return;
         }
 
-        if (!int.TryParse(value, out int result))
+        int result;
+
+        if (string.IsNullOrEmpty(value))
+        {
+            result = 1;
+        }
+        else if (!int.TryParse(value, out result))
         {
             result = 1;
         }
 
-        currentNum = Mathf.Clamp(currentNum, 0, maxBuyCount);
+        currentNum = Mathf.Clamp(result, 0, maxBuyCount);
 
         RefreshUI();
     }
@@ -178,7 +183,7 @@ public class UIShopBuy : MonoBehaviour
 
         // 골드 차감
         DataManager.Instance.CurrencyManager.AddMoney(-totalPrice);
-
+        
         Exit();
     }
 

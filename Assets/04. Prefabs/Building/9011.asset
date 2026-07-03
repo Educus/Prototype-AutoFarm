@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: 9011
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   itemID: 9011
-  name: 
+  buildingName: 
   width: 6
-  height: 6
+  height: 7
   cost: 0
-  patternFlat: 000000000000000000000000000000000000000000000000000000000000000000000000
+  jobType: 0
+  workSlotCost: 1
+  patternFlat: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000

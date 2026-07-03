@@ -40,6 +40,9 @@ public class BuildingManager : MonoBehaviour
     private GameObject currentPrefab;
     private GameObject previewObj;
 
+    // 프리뷰 렌더러 배열
+    private SpriteRenderer[] previewRenderers;
+
     private BuildingData currentData;
 
     private bool isPlacing = false;
@@ -122,7 +125,16 @@ public class BuildingManager : MonoBehaviour
                 data.itemID,
                 data.gridPosition);
         }
+
+        foreach (var building in buildings.Values)
+        {
+            if (building.type == BuildingType.Storage)
+            {
+                building.inventory.AddItem(1021, 90, -1);
+            }
+        }
     }
+
     #endregion
 
     #region Placement
@@ -162,7 +174,12 @@ public class BuildingManager : MonoBehaviour
 
         previewObj = Instantiate(currentPrefab);
 
-        SetPreviewAlpha(previewObj, alpha);
+        // 모든 SpriteRenderer 캐싱
+        previewRenderers =
+            previewObj.GetComponentsInChildren<SpriteRenderer>(true);
+
+        // 알파 적용
+        SetPreviewAlpha(alpha);
 
         currentData =
             previewObj
@@ -194,26 +211,31 @@ public class BuildingManager : MonoBehaviour
 
         color.a = 0.5f;
 
-        SpriteRenderer sr =
-           previewObj.GetComponent<SpriteRenderer>();
+        SetPreviewColor(color);
+    }
 
-        if (sr != null)
+    private void SetPreviewAlpha(float alpha)
+    {
+        if (previewRenderers == null)
+            return;
+
+        foreach (SpriteRenderer sr in previewRenderers)
         {
-            sr.color = color;
+            Color c = sr.color;
+            c.a = alpha;
+            sr.color = c;
         }
     }
 
-    private void SetPreviewAlpha(GameObject obj, float alpha)
+    private void SetPreviewColor(Color color)
     {
-        SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
-
-        if (sr == null)
+        if (previewRenderers == null)
             return;
 
-        Color c = sr.color;
-        c.a = alpha;
-
-        sr.color = c;
+        foreach (SpriteRenderer sr in previewRenderers)
+        {
+            sr.color = color;
+        }
     }
 
     private bool CanPlace(Vector2Int pos)
@@ -233,12 +255,17 @@ public class BuildingManager : MonoBehaviour
                     return false;
                 }
 
+                Vector2Int checkPos =
+                    pos + new Vector2Int(x, y);
+
+                // 건물 중복 여부는 항상 검사
+                if (!gridManager.CanPlaceBuilding(checkPos.x, checkPos.y))
+                    return false;
+
+                // 길인 경우에는 이동 Grid 검사는 생략
                 // true면 비어있는 타일
                 if (currentData.patternFlat[index])
                     continue;
-
-                Vector2Int checkPos =
-                    pos + new Vector2Int(x, y);
 
                 Node moveNode =
                     gridManager.GetNode(
@@ -255,6 +282,18 @@ public class BuildingManager : MonoBehaviour
                     return false;
 
                 if (!chunkManager.IsUnlocked(checkPos))
+                    return false;
+
+                // 추가
+                Node buildingNode =
+                    gridManager.GetBuildingNode(
+                        checkPos.x,
+                        checkPos.y);
+
+                if (buildingNode == null)
+                    return false;
+
+                if (!buildingNode.isWalkable)
                     return false;
 
                 if (!gridManager.CanPlaceBuilding(checkPos.x, checkPos.y))
@@ -387,6 +426,7 @@ public class BuildingManager : MonoBehaviour
         }
 
         previewObj = null;
+        previewRenderers = null;
 
         // 설치 상태 초기화
         isPlacing = false;

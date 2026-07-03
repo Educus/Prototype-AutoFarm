@@ -42,5 +42,7 @@ public class UIRobotIcon : MonoBehaviour
             robotWorkIcon[1].SetActive(true);
             workItem.sprite = dataManager.GetItemImage(config.productItemID);
         }
+
+        robotName.text = dataManager.NPCManager.npcs[id].entityName;
     }
 }

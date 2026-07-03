@@ -653,6 +653,13 @@ public class NPCJobController : MonoBehaviour
         if (npc.isMoving)
             return;
 
+        // 적재할 아이템이 없다면 쉬기
+        if (!HasItemToDeposit())
+        {
+            npc.job.step = JobStep.Rest;
+            return;
+        }
+
         // 목표 창고가 아직 없다면 탐색
         if (targetStorage == null)
         {
@@ -740,42 +747,42 @@ public class NPCJobController : MonoBehaviour
             }
         }
 
-        foreach (var slot in npc.subInventory.slots)
-        {
-            if (slot.itemID <= 0)
-                continue;
-
-            int remain =
-                storage.AddItem(
-                    slot.itemID,
-                    slot.count,
-                    slot.remainingStoragePeriod);
-
-            int deposited =
-                slot.count - remain;
-
-            slot.count -= deposited;
-
-            if (slot.count <= 0)
-            {
-                slot.Clear();
-            }
-        }
+        // 씨앗을 적제(사용X)
+        // foreach (var slot in npc.subInventory.slots)
+        // {
+        //     if (slot.itemID <= 0)
+        //         continue;
+        // 
+        //     int remain =
+        //         storage.AddItem(
+        //             slot.itemID,
+        //             slot.count,
+        //             slot.remainingStoragePeriod);
+        // 
+        //     slot.count -= remain;
+        // 
+        //     if (slot.count <= 0)
+        //     {
+        //         slot.Clear();
+        //     }
+        // }
     }
 
     private bool HasItemToDeposit()
     {
+        // 보유한 농작물이 있는가?
         foreach (var slot in npc.mainInventory.slots)
         {
             if (slot.itemID > 0)
                 return true;
         }
 
-        foreach (var slot in npc.subInventory.slots)
-        {
-            if (slot.itemID > 0)
-                return true;
-        }
+        // 보유한 씨앗이 있는가?
+        // foreach (var slot in npc.subInventory.slots)
+        // {
+        //     if (slot.itemID > 0)
+        //         return true;
+        // }
 
         return false;
     }

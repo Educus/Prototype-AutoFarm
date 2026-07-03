@@ -60,10 +60,11 @@ public class CameraController : MonoBehaviour
     // 카메라 이동
     void HandleMovement()
     {
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
-        {
-            return;
-        }
+        // 마우스 위치에 UI가 있으면 이동하지 않음
+        // if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        // {
+        //     return;
+        // }
 
         Vector3 pos = transform.position;
         bool isMoving = false;

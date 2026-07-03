@@ -22,6 +22,10 @@ public class UIRobot : MonoBehaviour
     {
         UIRobotUpdate();
     }
+    private void OnEnable()
+    {
+        
+    }
     private void UIRobotUpdate()
     {
         if (dataManager.NPCManager.npcs.Count == 0) return;
@@ -55,7 +59,8 @@ public class UIRobot : MonoBehaviour
                 case 2:
                     if (dataManager.NPCManager.npcs[robot.Key].job.productItemID == 0)
                         robot.Value.gameObject.SetActive(value == 2);
-                    else robot.Value.gameObject.SetActive(value == 1);
+                    else 
+                        robot.Value.gameObject.SetActive(value == 1);
                         break;
 
                 default:
