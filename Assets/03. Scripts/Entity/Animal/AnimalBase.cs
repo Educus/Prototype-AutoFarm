@@ -1,7 +1,5 @@
 using System;
-using Unity.Burst.Intrinsics;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public abstract class AnimalBase : MonoBehaviour
 {
