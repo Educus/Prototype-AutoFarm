@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -55,7 +54,7 @@ public class FarmBuilding : BuildingBase
     }
     #endregion
 
-    #region NPC가 실행
+    #region Player, NPC가 실행
     // 씨앗 심기
     public bool TryPlant(FarmTile tile, int seedID)
     {
@@ -151,39 +150,5 @@ public class FarmBuilding : BuildingBase
     public override void OnInteract()
     {
         Debug.Log("이거 말고;");
-    }
-
-    public void OnPlayerInteract(int index, int itemId)
-    {
-        FarmTile tile = tiles[index - 1];
-
-        Debug.Log($"index : {index}, itemID : {itemId}");
-
-        // 1. 수확
-        if (tile.IsReady())
-        {
-            int item = TryHarvest(tile);
-            if (item > 0)
-            {
-                GameManager.Instance.player.AddItemToInventory(item, 1);
-            }
-            return;
-        }
-        // 2. 심기
-        if (itemId != 0 && DataManager.Instance.itemsData[itemId].itemType == ItemType.Seed && tile.CanPlant())
-        {
-            bool success = TryPlant(tile, itemId);
-            if (success)
-            {
-                GameManager.Instance.player.subInventory.RemoveItem(itemId, 1);
-            }
-            return;
-        }
-        // 3. 물주기
-        if (tile.hasCrop && !tile.watered)
-        {
-            Water(tile);
-            return;
-        }
     }
 }

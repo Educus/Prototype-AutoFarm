@@ -1,7 +1,11 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerAction : MonoBehaviour
 {
+    [SerializeField] private float workTime = 5f;
+
     private Player player;
     private PlayerController controller;
 
@@ -10,11 +14,32 @@ public class PlayerAction : MonoBehaviour
 
     private AnimalBase targetAnimal;
 
+    public bool IsWorking { get; private set; }
+
     private void Awake()
     {
         player = GetComponent<Player>();
         controller = GetComponent<PlayerController>();
     }
+
+    #region 공통
+    private IEnumerator IEWorkRoutine(Action work)
+    {
+        IsWorking = true;
+
+        controller.SetCanMove(false);
+        controller.SetWorking(true);
+
+        yield return new WaitForSeconds(workTime);
+
+        work?.Invoke();
+
+        controller.SetWorking(false);
+        controller.SetCanMove(true);
+
+        IsWorking = false;
+    }
+    #endregion
 
     #region Farm
 
@@ -22,6 +47,9 @@ public class PlayerAction : MonoBehaviour
         FarmBuilding farm,
         FarmTile tile)
     {
+        if (IsWorking)
+            return;
+
         targetFarm = farm;
         targetTile = tile;
 
@@ -35,11 +63,16 @@ public class PlayerAction : MonoBehaviour
 
         controller.MoveTo(
             target,
-            ExecuteFarmAction);
+            () =>
+            {
+                StartCoroutine(IEWorkRoutine(ExecuteFarmAction));
+            });
     }
 
     private void ExecuteFarmAction()
     {
+        Debug.Log("농장 작업 실행");
+
         // 1. 수확
         if (targetTile.IsReady())
         {
@@ -103,6 +136,9 @@ public class PlayerAction : MonoBehaviour
     public void StartAnimalAction(
         AnimalBase animal)
     {
+        if (IsWorking)
+            return;
+
         targetAnimal = animal;
 
         Vector2Int target =
@@ -111,7 +147,10 @@ public class PlayerAction : MonoBehaviour
 
         controller.MoveTo(
             target,
-            ExecuteAnimalAction);
+            () =>
+            {
+                StartCoroutine(IEWorkRoutine(ExecuteAnimalAction));
+            });
     }
 
     private void ExecuteAnimalAction()

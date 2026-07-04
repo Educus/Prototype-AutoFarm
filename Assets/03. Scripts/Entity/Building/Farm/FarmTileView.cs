@@ -48,10 +48,14 @@ public class FarmTileView : MonoBehaviour, IRightInteractable
         cropsSprite.sprite = image;
     }
 
-    public void OnInteract(int itemId)
+    public void OnInteract(Player player)
     {
-        FarmBuilding farm = gameObject.GetComponentInParent<FarmBuilding>();
+        FarmBuilding farm = 
+            gameObject.GetComponentInParent<FarmBuilding>();
 
-        farm.OnPlayerInteract(index, itemId);
+        FarmTile tile =
+            farm.tiles[index - 1];
+
+        player.GetComponent<PlayerAction>().StartFarmAction(farm, tile);
     }
 }

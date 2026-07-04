@@ -5622,11 +5622,12 @@ GameObject:
   - component: {fileID: 292274684}
   - component: {fileID: 292274683}
   - component: {fileID: 292274687}
+  - component: {fileID: 292274692}
   - component: {fileID: 292274686}
   - component: {fileID: 292274690}
+  - component: {fileID: 292274691}
   - component: {fileID: 292274689}
   - component: {fileID: 292274688}
-  - component: {fileID: 292274691}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -5831,6 +5832,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 211314527d802cc4baf9c340e94c5c20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAction
+  workTime: 5
+--- !u!95 &292274692
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292274682}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 267b6347a8032be46b109024f0b05675, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &296588178
 GameObject:
   m_ObjectHideFlags: 0

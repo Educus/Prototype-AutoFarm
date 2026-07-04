@@ -206,6 +206,10 @@ public class InputManager : MonoBehaviour
         if (!GameManager.Instance.IsMode(GameMode.None))
             return;
 
+        // 플레이어 작업 중이면 입력 차단
+        if (!playerController.CanMove)
+            return;
+
         Vector2 mousePos =
             mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
@@ -231,37 +235,47 @@ public class InputManager : MonoBehaviour
 
             if (distance <= 1f)
             {
-                interactable.OnInteract(player.subInventory.slots[player.selectedSubSlotIndex].itemID);
+                interactable.OnInteract(player);
                 return;
             }
         }
 
-        // 이동 처리
-        Vector2 currentWorldPos =
-            (Vector2)player.transform.position + Vector2.up * 0.5f;
-
-        Vector2Int currentPos =
-            gridManager.WorldToGrid(currentWorldPos);
-
-        Vector2Int targetPos =
-            gridManager.WorldToGrid(mousePos);
-
-        List<Node> path =
-            pathfinder.FindPath(currentPos, targetPos);
-
-        if (path == null || path.Count == 0)
-            return;
-
-        // 이동 후 상호작용
-        playerController.Move(
-            path,
+        playerController.MoveToWorld(
+            mousePos,
             () =>
             {
                 if (interactable != null)
                 {
-                    interactable.OnInteract(player.subInventory.slots[player.selectedSubSlotIndex].itemID);
+                    interactable.OnInteract(player);
                 }
             });
+
+        // // 이동 처리
+        // Vector2 currentWorldPos =
+        //     (Vector2)player.transform.position + Vector2.up * 0.5f;
+        // 
+        // Vector2Int currentPos =
+        //     gridManager.WorldToGrid(currentWorldPos);
+        // 
+        // Vector2Int targetPos =
+        //     gridManager.WorldToGrid(mousePos);
+        // 
+        // List<Node> path =
+        //     pathfinder.FindPath(currentPos, targetPos);
+        // 
+        // if (path == null || path.Count == 0)
+        //     return;
+        // 
+        // // 이동 후 상호작용
+        // playerController.Move(
+        //     path,
+        //     () =>
+        //     {
+        //         if (interactable != null)
+        //         {
+        //             interactable.OnInteract(player.subInventory.slots[player.selectedSubSlotIndex].itemID);
+        //         }
+        //     });
     }
 
     private Collider2D GetPriorityHit(Vector2 mousePos)

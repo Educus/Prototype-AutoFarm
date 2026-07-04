@@ -14,5 +14,5 @@ public interface ILeftInteractable
 
 public interface IRightInteractable
 {
-    void OnInteract(int itemId);
+    void OnInteract(Player player);
 }
