@@ -17,10 +17,16 @@ public class UIShopIcon : MonoBehaviour
     [SerializeField] private Image itemImage;
     [SerializeField] private TMP_Text itemName;
     [SerializeField] private TMP_Text itemPrice;
+    [SerializeField] private TMP_Text itemAmount;
 
     private void Awake()
     {
         button = GetComponent<Button>();
+    }
+
+    private void OnEnable()
+    {
+        SetData();
     }
 
     public void GetInfo(DataManager data, UIShop ui, int id)
@@ -38,13 +44,17 @@ public class UIShopIcon : MonoBehaviour
         button.onClick.AddListener(() => uiShop.OnClickShopButton(itemID));
         itemImage.sprite = dataManager.GetItemImage(itemID);
         itemName.text = dataManager.itemsData[itemID].itemName;
+
+        int price = dataManager.itemsData[itemID].basicPrice;
+        itemPrice.text = price.ToString();
     }
 
     // 데이터 갱신
     public void SetData()
     {
-        int price = dataManager.itemsData[itemID].basicPrice;
+        if (itemID == 0)
+            return;
 
-        itemPrice.text = price.ToString();
+        itemAmount.text = "보유량:" + DataManager.Instance.InventoryManager.HaveTotalItem(itemID).ToString();
     }
 }

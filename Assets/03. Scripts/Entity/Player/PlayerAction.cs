@@ -23,8 +23,11 @@ public class PlayerAction : MonoBehaviour
     }
 
     #region °øÅë
-    private IEnumerator IEWorkRoutine(Action work)
+    private IEnumerator IEWorkRoutine(Func<bool> canWork, Action work)
     {
+        if (!canWork())
+            yield break;
+
         IsWorking = true;
 
         controller.SetCanMove(false);
@@ -50,6 +53,9 @@ public class PlayerAction : MonoBehaviour
         if (IsWorking)
             return;
 
+        if (!tile.CanWork(player))
+            return;
+
         targetFarm = farm;
         targetTile = tile;
 
@@ -65,7 +71,7 @@ public class PlayerAction : MonoBehaviour
             target,
             () =>
             {
-                StartCoroutine(IEWorkRoutine(ExecuteFarmAction));
+                StartCoroutine(IEWorkRoutine(() => targetTile.CanWork(player), ExecuteFarmAction));
             });
     }
 
@@ -149,7 +155,7 @@ public class PlayerAction : MonoBehaviour
             target,
             () =>
             {
-                StartCoroutine(IEWorkRoutine(ExecuteAnimalAction));
+                StartCoroutine(IEWorkRoutine(() => targetAnimal.CanWork(), ExecuteAnimalAction));
             });
     }
 

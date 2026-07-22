@@ -11,6 +11,14 @@ public class DisplaySlotData
     public InventorySlot slot;
 }
 
+// 정렬 순서
+public enum StorageSortType
+{
+    Default,    // 기본값
+    ItemID,     // 아이템 ID
+    Expiration  // 유통기한
+}
+
 public class UIBuildingStorage : MonoBehaviour
 {
     // 슬롯 프리팹
@@ -21,6 +29,9 @@ public class UIBuildingStorage : MonoBehaviour
 
     // 슬롯이 생성될 부모 오브젝트
     [SerializeField] private Transform content;
+
+    [SerializeField] private Button itemIDButton;
+    [SerializeField] private Button expirationButton;
 
     // 생성된 UI 슬롯 목록
     private readonly List<UIInvenSlot> slotList =
@@ -46,6 +57,12 @@ public class UIBuildingStorage : MonoBehaviour
     private const string rocketID =
         "Building_-101_0";
 
+    // 현재 정렬 방식
+    private StorageSortType sortType = StorageSortType.Default;
+    // false = 오름차순
+    // true = 내림차순
+    private bool reverseSort = false;
+
     private void Awake()
     {
         // 로켓 창고 찾기
@@ -55,6 +72,9 @@ public class UIBuildingStorage : MonoBehaviour
 
         // 최초 슬롯 30개 생성
         CreateDefaultSlots();
+
+        itemIDButton.onClick.AddListener(OnClickItemSort);
+        expirationButton.onClick.AddListener(OnClickExpirationSort);
     }
 
     private void OnEnable()
@@ -64,6 +84,10 @@ public class UIBuildingStorage : MonoBehaviour
 
         // 현재 창고 이벤트 등록
         SubscribeInventories();
+
+        // 열었을 때 기본 정렬
+        sortType = StorageSortType.Default;
+        reverseSort = false;
 
         // UI 갱신
         RefreshUI();
@@ -261,6 +285,21 @@ public class UIBuildingStorage : MonoBehaviour
                         });
                 }
             }
+
+            // 아이템 있는 슬롯 우선
+            displaySlots.Sort((a, b) =>
+            {
+                bool aEmpty = a.slot.IsEmpty();
+                bool bEmpty = b.slot.IsEmpty();
+
+                if (aEmpty != bEmpty)
+                    return aEmpty ? 1 : -1;
+
+                if (!aEmpty)
+                    return a.slot.itemID.CompareTo(b.slot.itemID);
+
+                return 0;
+            });
         }
         // 단일 창고 표시
         else
@@ -282,8 +321,105 @@ public class UIBuildingStorage : MonoBehaviour
                     });
             }
         }
+
+        SortDisplaySlots();
+    }
+    #endregion
+
+    #region sort
+    // 정렬 방식 변경
+    public void SetSort(StorageSortType type)
+    {
+        // 같은 버튼을 다시 누르면 역순
+        if (sortType == type)
+        {
+            reverseSort = !reverseSort;
+        }
+        // 다른 정렬 선택 시 오름차순부터 시작
+        else
+        {
+            sortType = type;
+            reverseSort = false;
+        }
+
+        RefreshUI();
     }
 
+    // 슬롯 정렬
+    private void SortDisplaySlots()
+    {
+        switch (sortType)
+        {
+            case StorageSortType.Default:
+                return;
+
+            case StorageSortType.ItemID:
+                displaySlots.Sort(CompareItemID);
+                break;
+
+            case StorageSortType.Expiration:
+                displaySlots.Sort(CompareExpiration);
+                break;
+        }
+    }
+
+    // 빈 슬롯은 항상 마지막.
+    // reverse 시에도 마지막을 유지하기 위해 Reverse 전에 사용.
+    private int CompareEmpty(DisplaySlotData a, DisplaySlotData b)
+    {
+        bool aEmpty = a.slot.IsEmpty();
+        bool bEmpty = b.slot.IsEmpty();
+
+        if (aEmpty == bEmpty)
+            return 0;
+
+        return aEmpty ? 1 : -1;
+    }
+
+    private int ApplyReverse(int result)
+    {
+        return reverseSort ? -result : result;
+    }
+
+    private int CompareItemID(DisplaySlotData a, DisplaySlotData b)
+    {
+        int result = CompareEmpty(a, b);
+        if (result != 0)
+            return result;
+
+        return ApplyReverse(a.slot.itemID.CompareTo(b.slot.itemID));
+    }
+
+    private int CompareExpiration(DisplaySlotData a, DisplaySlotData b)
+    {
+        int result = CompareEmpty(a, b);
+        if (result != 0)
+            return result;
+
+        int aPeriod = a.slot.remainingStoragePeriod;
+        int bPeriod = b.slot.remainingStoragePeriod;
+
+        // 유통기한 없음(-1)은 항상 마지막
+        if (aPeriod == -1 && bPeriod != -1)
+            return 1;
+
+        if (aPeriod != -1 && bPeriod == -1)
+            return -1;
+
+        return ApplyReverse(aPeriod.CompareTo(bPeriod));
+    }
+
+    // 클릭 이벤트
+    // 아이템 ID 정렬 버튼 클릭
+    public void OnClickItemSort()
+    {
+        SetSort(StorageSortType.ItemID);
+    }
+    // 유통기한 정렬 버튼 클릭
+    public void OnClickExpirationSort()
+    {
+        SetSort(StorageSortType.Expiration);
+    }
     #endregion
 
     #region Slot Click

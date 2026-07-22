@@ -43,6 +43,27 @@ public class InventoryManager : MonoBehaviour
         return null;
     }
 
+    // 아이템 총 보유량 확인(로켓 제외)
+    public int HaveTotalItem(int itemID)
+    {
+        int totalCount = 0;
+        ItemType itemType = DataManager.Instance.itemsData[itemID].itemType;
+
+        foreach (var inv in inventories.Values)
+        {
+            if (inv.type == InventoryType.Rocket)
+                continue;
+
+            foreach (var slot in inv.slots)
+            {
+                if (slot.itemID == itemID)
+                    totalCount += slot.count;
+            }
+        }
+
+        return totalCount;
+    }
+
     public Dictionary<string, Inventory> GetInvType(InventoryType type)
     {
         Dictionary<string, Inventory> result = new Dictionary<string, Inventory>();

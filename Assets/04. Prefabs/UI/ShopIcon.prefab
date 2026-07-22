@@ -424,6 +424,7 @@ MonoBehaviour:
   itemImage: {fileID: 5986045568967281098}
   itemName: {fileID: 97475505457652572}
   itemPrice: {fileID: 3146484571969412397}
+  itemAmount: {fileID: 1754854820342901167}
 --- !u!114 &7182482405151591244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -935,7 +936,7 @@ GameObject:
   - component: {fileID: 8140922985597621981}
   - component: {fileID: 1754854820342901167}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: AmountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

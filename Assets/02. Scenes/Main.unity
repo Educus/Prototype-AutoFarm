@@ -4361,9 +4361,9 @@ RectTransform:
   - {fileID: 840657448}
   m_Father: {fileID: 1190585634}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 318.75, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 93, y: 84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &227912577
@@ -5832,7 +5832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 211314527d802cc4baf9c340e94c5c20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAction
-  workTime: 5
+  workTime: 4
 --- !u!95 &292274692
 Animator:
   serializedVersion: 7
@@ -8437,7 +8437,7 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 517005218}
-  m_TextViewport: {fileID: 0}
+  m_TextViewport: {fileID: 517005217}
   m_TextComponent: {fileID: 517005218}
   m_Placeholder: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
@@ -9092,7 +9092,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uCD5C\uC2E0\uC21C"
+  m_text: "\uAE30\uBCF8\uC21C\uC11C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3578b17adc7178c4aba7e223a486df23, type: 2}
   m_sharedMaterial: {fileID: -4480309906589985651, guid: 3578b17adc7178c4aba7e223a486df23, type: 2}
@@ -113947,7 +113947,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 5
   m_Viewport: {fileID: 651967732}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
@@ -114644,7 +114644,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC624\uB798\uB41C\uC21C"
+  m_text: "\uAE30\uD55C\uC21C\uC11C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3578b17adc7178c4aba7e223a486df23, type: 2}
   m_sharedMaterial: {fileID: -4480309906589985651, guid: 3578b17adc7178c4aba7e223a486df23, type: 2}
@@ -118075,6 +118075,8 @@ MonoBehaviour:
   slotPrefab: {fileID: 6748358971288171815, guid: b47af872f9ff65645a4f1e344ef6d052, type: 3}
   scrollRect: {fileID: 771306329}
   content: {fileID: 885140981}
+  itemIDButton: {fileID: 1601647076}
+  expirationButton: {fileID: 1441503568}
 --- !u!1001 &1044162616
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -119561,7 +119563,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -3, y: 5}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1133325554
 MonoBehaviour:
@@ -122424,9 +122426,9 @@ RectTransform:
   - {fileID: 1988197368}
   m_Father: {fileID: 1190585634}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 446.25, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 93, y: 84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1346308737
@@ -123720,9 +123722,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 892761119}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -240}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 432, y: 417}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1410566293
@@ -124059,9 +124061,9 @@ RectTransform:
   - {fileID: 341007701}
   m_Father: {fileID: 1190585634}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 191.25, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 93, y: 84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1435818385
@@ -124278,19 +124280,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1441503566}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1042203828}
-        m_TargetAssemblyTypeName: UIBuildingStorage, Assembly-CSharp
-        m_MethodName: SortExpiryButton
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1001 &1450732161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -125262,9 +125252,9 @@ RectTransform:
   - {fileID: 1244093357}
   m_Father: {fileID: 1190585634}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 63.75, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 93, y: 84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1489338923
@@ -127574,19 +127564,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1601647074}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1042203828}
-        m_TargetAssemblyTypeName: UIBuildingStorage, Assembly-CSharp
-        m_MethodName: SortExpiryButton
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1601694297
 GameObject:
   m_ObjectHideFlags: 0
@@ -130720,7 +130698,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -122.5, y: 5.8}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1764034447
 MonoBehaviour:
@@ -137521,9 +137499,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 892761119}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 750, y: -240}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 432, y: 417}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2129992323

@@ -21,6 +21,27 @@ public class FarmTile
         return !hasCrop;
     }
 
+    // 작업 가능 여부
+    public bool CanWork(Player player)
+    {
+        if (IsReady())
+            return true;
+
+        if (hasCrop && !watered)
+            return true;
+
+        if (CanPlant())
+        {
+            InventorySlot slot =
+                player.subInventory.slots[player.selectedSubSlotIndex];
+
+            return !slot.IsEmpty() &&
+                   DataManager.Instance.itemsData[slot.itemID].itemType == ItemType.Seed;
+        }
+
+        return false;
+    }
+
     // 작물
     public void Plant(int seedID)
     {

@@ -1,4 +1,5 @@
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class NPCJobController : MonoBehaviour
@@ -179,24 +180,32 @@ public class NPCJobController : MonoBehaviour
                 if (npc.isMoving)
                     return;
 
-                StorageBuilding storage =
-                    FindNearestStorageWithSeed();
+                targetStorage = FindNearestStorageWithSeed();
 
-                // 씨앗이 없어도 작업은 진행
-                if (storage == null)
+                // 창고에 씨앗이 있으면 가지러 감
+                if (targetStorage != null)
                 {
-                    noMoreSeedsToday = true;
+                    Vector2Int pos =
+                        GridManager.Instance.WorldToGrid(
+                            targetStorage.transform.position);
+
+                    npc.MoveTo(pos);
+
+                    npc.job.step = JobStep.TakeResource;
+                    return;
+                }
+
+                // 창고에는 없음
+                // 인벤토리에 있으면 그대로 작업
+                if (npc.subInventory.ContainsItem(npc.job.productItemID))
+                {
                     npc.job.step = JobStep.FindFarmTile;
                     return;
                 }
 
-                Vector2Int pos =
-                    GridManager.Instance.WorldToGrid(
-                        storage.transform.position);
-
-                npc.MoveTo(pos);
-
-                npc.job.step = JobStep.TakeResource;
+                // 둘 다 없음
+                noMoreSeedsToday = true;
+                npc.job.step = JobStep.FindFarmTile;
 
                 break;
 
@@ -208,7 +217,9 @@ public class NPCJobController : MonoBehaviour
                 if (!CanDoAction())
                     return;
 
-                TakeSeed();
+                TakeSeed(targetStorage);
+
+                targetStorage = null;
 
                 npc.job.step = JobStep.FindFarmTile;
 
@@ -251,15 +262,17 @@ public class NPCJobController : MonoBehaviour
                 break;
         }
     }
-    private void TakeSeed()
-    {
-        StorageBuilding storage = FindNearestStorageWithSeed();
 
+    private void TakeSeed(StorageBuilding storage)
+    {
         if (storage == null)
         {
             noMoreSeedsToday = true;
             return;
         }
+
+        // 작업에 사용하지 않는 씨앗 먼저 적재
+        TryDepositToStorage(storage);
 
         int canCarry = npc.subInventory
             .GetAddableAmount(npc.job.productItemID);
@@ -646,7 +659,6 @@ public class NPCJobController : MonoBehaviour
     #endregion
 
     #region 공통
-
     private void HandleReturnToStorage()
     {
         // 이동 중
@@ -698,27 +710,11 @@ public class NPCJobController : MonoBehaviour
         if (!CanDoAction())
             return;
 
-        DepositToStorage(targetStorage.inventory);
-
-        // 아직 남아있다면 다른 창고 탐색
-        if (HasItemToDeposit())
+        if (!TryDepositToStorage(targetStorage))
         {
-            targetStorage =
-                FindNearestAvailableStorage();
-
-            if (targetStorage != null)
-            {
-                Vector2Int pos =
-                    GridManager.Instance.WorldToGrid(
-                        targetStorage.transform.position);
-
-                npc.MoveTo(pos);
-
-                npc.job.step =
-                    JobStep.ReturnToStorage;
-
-                return;
-            }
+            targetStorage = null;
+            npc.job.step = JobStep.Rest;
+            return;
         }
 
         targetStorage = null;
@@ -726,18 +722,22 @@ public class NPCJobController : MonoBehaviour
         npc.job.step = JobStep.Rest;
     }
 
-    private void DepositToStorage(Inventory storage)
+    private bool DepositToStorage(Inventory storage)
     {
+        bool deposited = false;
+
         foreach (var slot in npc.mainInventory.slots)
         {
             if (slot.itemID <= 0)
                 continue;
 
-            int added =
-                storage.AddItem(
+            int added = storage.AddItem(
                     slot.itemID,
                     slot.count,
                     slot.remainingStoragePeriod);
+
+            if (added > 0)
+                deposited = true;
 
             slot.count -= added;
 
@@ -748,24 +748,65 @@ public class NPCJobController : MonoBehaviour
         }
 
         // 씨앗을 적제(사용X)
-        // foreach (var slot in npc.subInventory.slots)
-        // {
-        //     if (slot.itemID <= 0)
-        //         continue;
-        // 
-        //     int remain =
-        //         storage.AddItem(
-        //             slot.itemID,
-        //             slot.count,
-        //             slot.remainingStoragePeriod);
-        // 
-        //     slot.count -= remain;
-        // 
-        //     if (slot.count <= 0)
-        //     {
-        //         slot.Clear();
-        //     }
-        // }
+        foreach (var slot in npc.subInventory.slots)
+        {
+            if (slot.itemID <= 0)
+                continue;
+
+            if (slot.itemID == npc.job.productItemID)
+                continue;
+        
+            int remain = storage.AddItem(
+                    slot.itemID,
+                    slot.count,
+                    slot.remainingStoragePeriod);
+
+            if (remain > 0)
+                deposited = true;
+
+            slot.count -= remain;
+        
+            if (slot.count <= 0)
+            {
+                slot.Clear();
+            }
+        }
+
+        if (deposited)
+        {
+            storage.InvokeChange();
+            npc.mainInventory.InvokeChange();
+            npc.subInventory.InvokeChange();
+        }
+
+        return deposited;
+    }
+
+    private bool TryDepositToStorage(StorageBuilding storage)
+    {
+        while (HasItemToDeposit())
+        {
+            if (storage == null)
+                return false;
+
+            bool deposited = DepositToStorage(storage.inventory);
+
+            // 하나도 못 넣었으면 다른 창고 탐색
+            if (!deposited)
+            {
+                storage = FindNearestAvailableStorage(storage);
+                continue;
+            }
+
+            // 모두 적재 완료
+            if (!HasItemToDeposit())
+                return true;
+
+            // 아직 남았다면 다른 창고 탐색
+            storage = FindNearestAvailableStorage(storage);
+        }
+
+        return true;
     }
 
     private bool HasItemToDeposit()
@@ -778,16 +819,19 @@ public class NPCJobController : MonoBehaviour
         }
 
         // 보유한 씨앗이 있는가?
-        // foreach (var slot in npc.subInventory.slots)
-        // {
-        //     if (slot.itemID > 0)
-        //         return true;
-        // }
+        foreach (var slot in npc.subInventory.slots)
+        {
+            // 작업중인 씨앗 제외
+            float slotItemID = slot.itemID;
+
+            if (slotItemID > 0 && slotItemID != npc.job.productItemID)
+                return true;
+        }
 
         return false;
     }
 
-    private StorageBuilding FindNearestAvailableStorage()
+    private StorageBuilding FindNearestAvailableStorage(StorageBuilding ignoreStorage = null)
     {
         StorageBuilding result = null;
 
@@ -800,6 +844,10 @@ public class NPCJobController : MonoBehaviour
                 building as StorageBuilding;
 
             if (storage == null)
+                continue;
+
+            // 사용한 창고는 제외
+            if (storage == ignoreStorage)
                 continue;
 
             if (storage.inventory.IsFull())

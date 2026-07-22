@@ -26,6 +26,11 @@ public abstract class AnimalBase : MonoBehaviour
             type = result;
     }
 
+    public bool CanWork()
+    {
+        return isReady;
+    }
+
     private void AddStack()
     {
         if (isReady) return;
