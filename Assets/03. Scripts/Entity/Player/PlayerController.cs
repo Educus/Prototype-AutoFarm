@@ -12,7 +12,10 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Animator animator;
 
-    public float speed = 5f;
+    //애니메이션 스크립트 참조
+    private PlayerAnimation playerAnimation;
+
+    public float speed = 0.5f;
 
     private Vector2Int currentGridPos;
 
@@ -24,6 +27,9 @@ public class PlayerController : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+
+        //초기화
+        playerAnimation = GetComponent<PlayerAnimation>();
     }
     void Start()
     {
@@ -38,13 +44,16 @@ public class PlayerController : MonoBehaviour
         if (moveCoroutine != null)
             StopCoroutine(moveCoroutine);
 
-        animator.SetBool("isMoving", true);
+        //animator.SetBool("isMoving", true);
 
         moveCoroutine = StartCoroutine(MoveAlongPath(path, onComplete));
     }
 
     IEnumerator MoveAlongPath(List<Node> path, System.Action onComplete)
     {
+        //이동 명령 하달 시에 상태 전달
+        playerAnimation.IsMoving = true;
+
         foreach (Node node in path)
         {
             Vector3 target =
@@ -52,21 +61,23 @@ public class PlayerController : MonoBehaviour
 
             while (Vector3.Distance(transform.position, target) > 0.05f)
             {
-                Vector2 direction =
-                    (target - transform.position).normalized;
+                Vector2 direction = (target - transform.position).normalized;
 
-                animator.SetFloat("DrtX", direction.x);
-                animator.SetFloat("DrtY", direction.y);
+                //애니메이션 스크립트에 이동 방향 전달
+                playerAnimation.MoveDirection = direction;
+
+                //animator.SetFloat("DrtX", direction.x);
+                //animator.SetFloat("DrtY", direction.y);
 
                 // direction.x == 0에 가까우면 Flip 유지
-                if (direction.x < 0)
-                {
-                    spriteRenderer.flipX = false;
-                }
-                else if (direction.x > 0)
-                {
-                    spriteRenderer.flipX = true;
-                }
+                //if (direction.x < 0)
+                //{
+                //    spriteRenderer.flipX = false;
+                //}
+                //else if (direction.x > 0)
+                //{
+                //    spriteRenderer.flipX = true;
+                //}
 
                 transform.position =
                     Vector3.MoveTowards(
@@ -99,7 +110,9 @@ public class PlayerController : MonoBehaviour
         //     currentGridPos = new Vector2Int(node.x, node.y);
         // }
 
-        animator.SetBool("isMoving", false);
+        //이동 종료 상태 전달
+        playerAnimation.IsMoving = false;
+        //animator.SetBool("isMoving", false);
 
         onComplete?.Invoke();
     }

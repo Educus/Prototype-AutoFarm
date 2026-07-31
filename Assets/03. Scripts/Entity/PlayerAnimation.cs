@@ -10,9 +10,32 @@ public class PlayerAnimation : MonoBehaviour
 
     //방향 벡터, 이동, 작업은 PlayerController.cs 에서 값을 넘겨주세요.
     //각 작업 별로 시작과 끝에 bool값 조절
-    public Vector2 moveDirection;
-    public bool isMoving;
-    public bool isWorking;
+    private Vector2 moveDirection;
+    private bool isMoving;
+    private bool isWorking;
+    public Vector2 MoveDirection 
+    { 
+        get => moveDirection;
+        set
+        {
+            if(Vector2.Distance(moveDirection, value) > 0.001f)
+            {
+                moveDirection = value;
+                MovingController();
+            }
+        }
+    }
+    public bool IsMoving
+    {
+        get => isMoving;
+        set
+        {
+            isMoving = value;
+            MovingController();
+        }
+    }
+    public bool IsWorking { get => isWorking; set => isWorking = value; }
+
 
     private void Awake()
     {
@@ -24,7 +47,7 @@ public class PlayerAnimation : MonoBehaviour
     {
 
         //이동 관련 함수
-        MovingController();
+        //MovingController();
 
         //작업 관련 함수
         WorkingController();
