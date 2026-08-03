@@ -15,6 +15,10 @@ public class PlayerController : MonoBehaviour
     //애니메이션 스크립트 참조
     private PlayerAnimation playerAnimation;
 
+    //사운드 매니저 참조 및 오디오 소스
+    private SoundManager soundManager;
+    private AudioSource SFX;
+
     public float speed = 0.5f;
 
     private Vector2Int currentGridPos;
@@ -30,6 +34,8 @@ public class PlayerController : MonoBehaviour
 
         //초기화
         playerAnimation = GetComponent<PlayerAnimation>();
+        soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        SFX = GetComponent<AudioSource>();
     }
     void Start()
     {
@@ -45,7 +51,7 @@ public class PlayerController : MonoBehaviour
             StopCoroutine(moveCoroutine);
 
         //animator.SetBool("isMoving", true);
-
+        soundManager.PlaySFX("SFX_GUI_Button", SFX, true);
         moveCoroutine = StartCoroutine(MoveAlongPath(path, onComplete));
     }
 
@@ -53,7 +59,6 @@ public class PlayerController : MonoBehaviour
     {
         //이동 명령 하달 시에 상태 전달
         playerAnimation.IsMoving = true;
-
         foreach (Node node in path)
         {
             Vector3 target =
@@ -113,7 +118,7 @@ public class PlayerController : MonoBehaviour
         //이동 종료 상태 전달
         playerAnimation.IsMoving = false;
         //animator.SetBool("isMoving", false);
-
+        soundManager.StopSFX(SFX);
         onComplete?.Invoke();
     }
 

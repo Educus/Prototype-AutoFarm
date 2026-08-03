@@ -14,12 +14,18 @@ public class PlayerAction : MonoBehaviour
 
     private AnimalBase targetAnimal;
 
+    //애니메이션 스크립트 참조
+    private PlayerAnimation playerAnimation;
+
     public bool IsWorking { get; private set; }
 
     private void Awake()
     {
         player = GetComponent<Player>();
         controller = GetComponent<PlayerController>();
+
+        //애니메이션 스크립트 초기화
+        playerAnimation = GetComponent<PlayerAnimation>();
     }
 
     #region 공통
@@ -33,7 +39,13 @@ public class PlayerAction : MonoBehaviour
         controller.SetCanMove(false);
         controller.SetWorking(true);
 
+        //작업 애니메이션 시작
+        playerAnimation.IsWorking = true;
+
         yield return new WaitForSeconds(workTime);
+
+        //작업 애니메이션 종료
+        playerAnimation.IsWorking = false;
 
         work?.Invoke();
 

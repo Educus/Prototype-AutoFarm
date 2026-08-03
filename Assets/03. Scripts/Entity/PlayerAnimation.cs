@@ -13,6 +13,7 @@ public class PlayerAnimation : MonoBehaviour
     private Vector2 moveDirection;
     private bool isMoving;
     private bool isWorking;
+
     public Vector2 MoveDirection 
     { 
         get => moveDirection;
@@ -34,23 +35,20 @@ public class PlayerAnimation : MonoBehaviour
             MovingController();
         }
     }
-    public bool IsWorking { get => isWorking; set => isWorking = value; }
+    public bool IsWorking 
+    { 
+        get => isWorking;
+        set
+        {
+            isWorking = value;
+            WorkingController();
+        } 
+    }
 
 
     private void Awake()
     {
         init();
-    }
-    
-    // Update is called once per frame
-    void Update()
-    {
-
-        //이동 관련 함수
-        //MovingController();
-
-        //작업 관련 함수
-        WorkingController();
     }
 
     //초기화

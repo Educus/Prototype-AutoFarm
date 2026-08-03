@@ -61,6 +61,8 @@ public class UIManagement : MonoBehaviour
 
     public void OpenManagement()
     {
+        SoundManager soundManager;
+
         // 이미 열려있으면 닫기
         if (management.activeSelf)
         {
@@ -73,6 +75,10 @@ public class UIManagement : MonoBehaviour
         {
             return;
         }
+
+        //하드코딩 해둔 상태
+        soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        soundManager.PlaySFX("SFX_GUI_Button");
 
         management.SetActive(true);
     }
@@ -152,6 +158,10 @@ public class UIManagement : MonoBehaviour
 
     public void ExitButton()
     {
+        //하드코딩 해둔 상태
+        SoundManager soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        soundManager.PlaySFX("SFX_GUI_Button");
+
         management.SetActive(false);
 
         GameManager.Instance.ExitMode();
