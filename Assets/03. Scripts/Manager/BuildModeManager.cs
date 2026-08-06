@@ -10,7 +10,7 @@ public class BuildModeManager : MonoBehaviour
 
     private void Start()
     {
-        buildModeUI.BuildMode(false);
+        //buildModeUI.BuildMode(false);
     }
 
     public void ToggleBuildMode()

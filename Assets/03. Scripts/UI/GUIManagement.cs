@@ -85,4 +85,5 @@ public class GUIManagement : MonoBehaviour
     {
         goldText.text = $"{DataManager.Instance.CurrencyManager.money}";
     }
+
 }

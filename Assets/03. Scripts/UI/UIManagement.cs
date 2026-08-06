@@ -59,28 +59,23 @@ public class UIManagement : MonoBehaviour
         ChangeIcon(0);
     }
 
-    public void OpenManagement()
+    public GameObject OpenManagement()
     {
-        SoundManager soundManager;
-
         // 이미 열려있으면 닫기
         if (management.activeSelf)
         {
             ExitButton();
-            return;
+            return null;
         }
 
         // 다른 모드 중이면 열지 않음
         if (!GameManager.Instance.EnterMode(GameMode.Popup))
         {
-            return;
+            return null;
         }
 
-        //하드코딩 해둔 상태
-        soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
-        soundManager.PlaySFX("SFX_GUI_Button");
-
-        management.SetActive(true);
+        //management.SetActive(true);
+        return management;
     }
 
     public void ChangeChip(int value)
@@ -158,14 +153,8 @@ public class UIManagement : MonoBehaviour
 
     public void ExitButton()
     {
-        //하드코딩 해둔 상태
-        SoundManager soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
-        soundManager.PlaySFX("SFX_GUI_Button");
-
-        management.SetActive(false);
-
+        //management.SetActive(false);
         GameManager.Instance.ExitMode();
-
         ChangeIcon(0);
     }
 }

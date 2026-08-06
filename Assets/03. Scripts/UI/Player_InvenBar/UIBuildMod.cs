@@ -6,6 +6,12 @@ public class UIBuildMod : MonoBehaviour
     [SerializeField] private BuildingManager buildingManager;
     [SerializeField] private ItemInfoUI itemInfoUI;
 
+    private void Awake()
+    {
+        //초기화
+        BuildMode(false);
+    }
+
     public void OnClickBuildingButton(int itemID)
     {
         // 같은 버튼 클릭 시 취소

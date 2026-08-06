@@ -53,6 +53,9 @@ public class UIStorageManagement : MonoBehaviour
 
         rocketStorage.SetActive(false);
         buildingStorage.SetActive(true);
+
+        //UIManager 스택에 추가
+        UIManager.Instance.InputPopUpOpen(buildingStorage);
     }
 
     public void NPCInv()
