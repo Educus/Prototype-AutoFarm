@@ -118,7 +118,7 @@ public class UIManager : MonoBehaviour
         buildMod.OnClickBuildingButton(itemID);
     }
 
-    public void ToggleBuildMode()
+    public void ToggleBuildMod()
     {
         // 이미 BuildMode면 종료
         if (GameManager.Instance.IsMode(GameMode.Build))

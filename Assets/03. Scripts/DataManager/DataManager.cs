@@ -119,4 +119,20 @@ public class DataManager : MonoBehaviour
 
         return null; // 아이템 ID에 해당하는 프리팹이 없는 경우
     }
+
+    //데이터 테이블에 비교하는 것 이기 때문에 정확히 일치하도록 비교
+    public int GetItemIDNumber(string itemName)
+    {
+        string name = itemName.ToLower();
+        foreach (var item in itemsData)
+        {
+            if (item.Value.itemName.ToLower() == name)
+            {
+                return item.Key;
+            }
+        }
+
+        Debug.Log("해당 아이템은 테이블에 존재하지 않습니다. : " + itemName);
+        return -1;
+    }
 }
