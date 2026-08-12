@@ -342,7 +342,7 @@ GameObject:
   - component: {fileID: 10923651}
   - component: {fileID: 10923653}
   m_Layer: 5
-  m_Name: Image
+  m_Name: NPCManagement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1641,7 +1641,7 @@ GameObject:
   - component: {fileID: 77622208}
   - component: {fileID: 77622210}
   m_Layer: 5
-  m_Name: Empty
+  m_Name: Shop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116986,7 +116986,7 @@ GameObject:
   - component: {fileID: 957313281}
   - component: {fileID: 957313280}
   m_Layer: 8
-  m_Name: Barn
+  m_Name: GUI_BuildingKit_Barn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117679,7 +117679,7 @@ GameObject:
   - component: {fileID: 990318092}
   - component: {fileID: 990318091}
   m_Layer: 8
-  m_Name: Field
+  m_Name: GUI_BuildingKit_Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126484,7 +126484,7 @@ GameObject:
   - component: {fileID: 1533468980}
   - component: {fileID: 1533468979}
   m_Layer: 8
-  m_Name: BuildingMod
+  m_Name: GUI_BuildingMod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128628,7 +128628,7 @@ GameObject:
   - component: {fileID: 1648506070}
   - component: {fileID: 1648506072}
   m_Layer: 8
-  m_Name: SettingB
+  m_Name: Button_Setting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129839,7 +129839,7 @@ GameObject:
   - component: {fileID: 1711684950}
   - component: {fileID: 1711684949}
   m_Layer: 8
-  m_Name: Storage
+  m_Name: GUI_BuildingKit_Storage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132314,7 +132314,7 @@ GameObject:
   - component: {fileID: 1826415211}
   - component: {fileID: 1826415213}
   m_Layer: 5
-  m_Name: OnLight
+  m_Name: UIManagement_DataChip_Chart_OnLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135580,7 +135580,7 @@ GameObject:
   - component: {fileID: 2043629078}
   - component: {fileID: 2043629077}
   m_Layer: 8
-  m_Name: Button_PopUp
+  m_Name: GUI_Management
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
