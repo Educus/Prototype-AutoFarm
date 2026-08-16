@@ -18,7 +18,9 @@ public class SoundManager : MonoBehaviour
         init();
     }
 
-    private void init()
+
+    //awake 초기화 오류로 수정 필요.
+    public void init()
     {
         Load_BGM();
         Load_SFX();
@@ -105,8 +107,18 @@ public class SoundManager : MonoBehaviour
     //Manager에서 직접 재생할 경우
     public void PlaySFX(string name)
     {
+        if (SFX_Clips == null)
+        {
+            Debug.Log("it is not init");
+            return;
+        }
         if (SFX_Clips.TryGetValue(name, out AudioClip clip))
         {
+            if(clip == null)
+            {
+                Debug.Log("it is not init");
+                return;
+            }
             SFX.PlayOneShot(clip);
         }
     }

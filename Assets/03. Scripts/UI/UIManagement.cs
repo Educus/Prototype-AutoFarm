@@ -20,8 +20,20 @@ public class UIManagement : MonoBehaviour
 
     [SerializeField] private GameObject[] chipMenu;
 
-    [SerializeField] private GameObject coiceB;
+    [SerializeField] private GameObject choiceB;
 
+    /// <summary>
+    /// index버튼은 어쩔 수 없이 버튼 4개로 나뉘기 때문에 자식 오브젝트 순서로 구분
+    /// int 값으로 조정하되, 눈으로 보기 쉽게 enum으로 current chip 내용으로 구분하기.
+    /// </summary>
+    private enum CurrentInsertedChip
+    {
+        None = -1,       //null 생성
+        Chart = 0,
+        Shop = 1,
+        NPCManagement = 2
+    }
+    CurrentInsertedChip current;
 
     private GameObject[][] chips;
     private GameObject[][] icons;
@@ -45,6 +57,8 @@ public class UIManagement : MonoBehaviour
             icon[1].SetActive(false);
             icon[2].SetActive(false);
         }
+
+        current = CurrentInsertedChip.None;
 
         ChangeChip(0);
         ChangeIcon(0);
@@ -100,6 +114,50 @@ public class UIManagement : MonoBehaviour
         }
     }
 
+    private void SelectChip(int chipNum)
+    {
+        if (chipNum == 0) 
+        { 
+            
+        }
+        else if (chipNum == 1) 
+        { 
+        
+        }
+        else if (chipNum == 2) 
+        { 
+        
+        }
+    }
+
+    // 이름으로 칩 변경 및 이후 디테일 애니메이션 작업을 위한 초석
+    // SetActive가 아닌 movetoward 연출 사용
+    public void ChangeChip(string name)
+    {
+        string chipname = name.ToLower();
+
+        if(chipname.Contains("chart"))
+        {
+            current = CurrentInsertedChip.Chart;
+            ChangeChip(0);
+        }
+        else if (chipname.Contains("shop"))
+        {
+            current = CurrentInsertedChip.Shop;
+            ChangeChip(1);
+        }
+        else if (chipname.Contains("npcmanage"))
+        {
+            current = CurrentInsertedChip.NPCManagement;
+            ChangeChip(2);
+        }
+    }
+
+    private void ChangeIndexIcon()
+    {
+        
+    }
+
     public void ChangeIcon(int value)
     {
         int count = chipMenu[onChips].transform.childCount;
@@ -127,11 +185,13 @@ public class UIManagement : MonoBehaviour
                 // 즐겨찾기 모드 해제
                 uiChart.OffBookMark();
             }
+
             else if (value == 1)
             {
                 // 즐겨찾기 모드 사용
                 uiChart.OnBookMark();
             }
+
             else if (value == 2)
             {
                 uiChart.ChartNews();
@@ -148,7 +208,7 @@ public class UIManagement : MonoBehaviour
             uiRobot.ViewRobot(value);
         }
 
-        coiceB.transform.position = icons[value][0].transform.position;
+        choiceB.transform.position = icons[value][0].transform.position;
     }
 
     public void ExitButton()

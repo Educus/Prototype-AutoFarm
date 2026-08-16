@@ -9,12 +9,7 @@ public class ButtonManager : MonoBehaviour
 
     private List<Button> Buttons;
 
-    private void Start()
-    {
-        init();
-    }
-
-    private void init()
+    public void init()
     {
         //버튼 수집
         Button[] buttons = UIManager.Instance.CollectButtons();
@@ -37,7 +32,7 @@ public class ButtonManager : MonoBehaviour
                 GUIButtonInit(buttonName, button);
             }
 
-            else if (buttonName.Contains("uimanagement"))
+            else if (buttonName.Contains("datachip"))
             {
                 UIDataChipInit(buttonName, button);
             }
@@ -124,15 +119,41 @@ public class ButtonManager : MonoBehaviour
 
     private void UIDataChipInit(string buttonName, Button button)
     {
-        if(buttonName.Contains("chart"))
+        if (buttonName.Contains("chart"))
         {
             button.onClick.AddListener(() =>
             {
                 UIManager.Instance.PlaySFX("SFX_UI_PopUp_DataChip");
-
+                UIManager.Instance.ChangeChip(buttonName);
             }
             );
         }
+
+        else if (buttonName.Contains("shop"))
+        {
+            button.onClick.AddListener(() =>
+            {
+                UIManager.Instance.PlaySFX("SFX_UI_PopUp_DataChip");
+                UIManager.Instance.ChangeChip(buttonName);
+            }
+            );
+        }
+
+        else if (buttonName.Contains("npcmanage"))
+        {
+            button.onClick.AddListener(() =>
+            {
+                UIManager.Instance.PlaySFX("SFX_UI_PopUp_DataChip");
+                UIManager.Instance.ChangeChip(buttonName);
+            }
+            );
+        }
+    }
+
+    //매니지먼트 창 인덱스 버튼 초기화
+    private void UIIndexButtonInit(string buttonName, Button button)
+    {
+
     }
 
 }

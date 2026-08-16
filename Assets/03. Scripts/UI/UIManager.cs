@@ -57,6 +57,7 @@ public class UIManager : MonoBehaviour
     //초기화 함수
     private void init()
     {
+        //스크립트 초기화
         soundManager = SoundManager.GetComponent<SoundManager>();
         buildingManager = BuildingManager.GetComponent<BuildingManager>();
         buildMod = BuildingMode.GetComponent<UIBuildMod>();
@@ -65,6 +66,9 @@ public class UIManager : MonoBehaviour
         guiManagement = GUIManagement.GetComponent<GUIManagement>();
         uiManagement = UIManagement.GetComponent<UIManagement>();   
         storageManagement = UIStorageManagement.GetComponent<UIStorageManagement>();
+
+        //버튼 이벤트 초기화
+        buttonManager.init();
     }
 
     public Button[] CollectButtons()
@@ -78,6 +82,7 @@ public class UIManager : MonoBehaviour
         soundManager.PlaySFX(filename);
     }
 
+    // UIManagement에서 관리 팝업을 열 때 스택에 추가하는 함수
     public void OpenPopUpPage()
     {
         GameObject popup;
@@ -85,7 +90,7 @@ public class UIManager : MonoBehaviour
         if (popup != null)
         {
             popup.SetActive(true);
-            PopUpStack.Push(popup);
+            InputPopUpOpen(popup);
         }
     }
 
@@ -108,11 +113,20 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // UIManagement에서 관리 팝업의 칩을 클릭해 변경하는 버튼 함수
+    public void ChangeChip(string name)
+    {
+        uiManagement.ChangeChip(name);
+    }
+
+    // UIManager에서 관리 이외의 팝업을 열 때 스택에 추가하는 함수
+    // UIManager에서도 일관성을 위해 사용 중
     public void InputPopUpOpen(GameObject popup)
     {
         PopUpStack.Push(popup);
     }
 
+    // 건물 설치 시에 어떤 건물을 선택했는지 ID로 체크
     public void SelectBuildingKit(int itemID)
     {
         buildMod.OnClickBuildingButton(itemID);
