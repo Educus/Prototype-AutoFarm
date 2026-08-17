@@ -9,9 +9,9 @@ public class UIManagement : MonoBehaviour
     [SerializeField] public UIShop uiShop;
     [SerializeField] public UIRobot uiRobot;
 
-    [SerializeField] private GameObject[] chips0;
-    [SerializeField] private GameObject[] chips1;
-    [SerializeField] private GameObject[] chips2;
+    [SerializeField] private GameObject[] chartChips;
+    [SerializeField] private GameObject[] shopChips;
+    [SerializeField] private GameObject[] NPCManagementChips;
 
     [SerializeField] private GameObject[] icon0;
     [SerializeField] private GameObject[] icon1;
@@ -42,7 +42,7 @@ public class UIManagement : MonoBehaviour
 
     private void Start()
     {
-        chips = new GameObject[][] { chips0, chips1, chips2 };
+        chips = new GameObject[][] { chartChips, shopChips, NPCManagementChips };
         icons = new GameObject[][] { icon0, icon1, icon2, icon3 };
 
         foreach (var chip in chips)
@@ -114,22 +114,6 @@ public class UIManagement : MonoBehaviour
         }
     }
 
-    private void SelectChip(int chipNum)
-    {
-        if (chipNum == 0) 
-        { 
-            
-        }
-        else if (chipNum == 1) 
-        { 
-        
-        }
-        else if (chipNum == 2) 
-        { 
-        
-        }
-    }
-
     // 이름으로 칩 변경 및 이후 디테일 애니메이션 작업을 위한 초석
     // SetActive가 아닌 movetoward 연출 사용
     public void ChangeChip(string name)
@@ -151,11 +135,6 @@ public class UIManagement : MonoBehaviour
             current = CurrentInsertedChip.NPCManagement;
             ChangeChip(2);
         }
-    }
-
-    private void ChangeIndexIcon()
-    {
-        
     }
 
     public void ChangeIcon(int value)
