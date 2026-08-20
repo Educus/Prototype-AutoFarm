@@ -38,7 +38,7 @@ public class Product
 
 public class ProductClosing
 {
-    // 종가 7일치 저장
+    // 종가 n일치 저장
     public List<int> productsClosingPrice = new List<int>();
 }
 

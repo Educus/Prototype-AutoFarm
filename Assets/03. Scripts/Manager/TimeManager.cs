@@ -1,37 +1,87 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+
 
 public class TimeManager : MonoBehaviour
 {
+    public static TimeManager Instance;
 
-    [SerializeField] private GameManager gameManager;
+    [Tooltip("시간 배율")]
+    private float timeScale = 0f;
 
     [Tooltip("현실 시간 기준 하루 길이(초)")]
-    // private float realSecondsPerDay = 900f; // 15분
     private float realSecondsPerDay = 300f; // 테스트 5분
-    // private float realSecondsPerDay = 60f; // 테스트 1분
 
     [Tooltip("표시 시간 단위")]
     public int miniteStep = 10; // 10분 단위로 표시
 
-    private float timer = 0f;
+    private float timer;
 
     // 현재 날짜
-    public int currentDay {get; private set;} = 1;
-    public int currentHour {get; private set;} = 0;
-    public int currentMinute { get; private set; }  = 0;
+    public int minute { get; private set; }  = 0;
+    public int hour {get; private set;} = 0;
+    public int day {get; private set;} = 1;
+
+    // 몇주차인지, 요일은 몇요일인지
+    public int week => ((day - 1) / 7) + 1;
+    public int weekDay => (day - 1) % 7; //(0 = 월요일 ~ 6 = 일요일)
 
     // UI용 분 단위 표시
     private int displayMinute = 0;
 
-    // 이벤트
-    public event Action onTimeSetpEvent;        // 시간 단위 이벤트
-    public event Action onDayEvent;             // 매일
-    public event Action onWeekEvent;            // 매주
-    public event Action onEvent;                // 7일마다 오전9시에 이벤트 발생
-    public event Action<int> onSpecificDay;     // 특정 날짜
+    // 기본 시간 이벤트
+    public event Action<int> onMinuteEvent;          // 10분 단위 이벤트
+    public event Action<int> onHourEvent;            // 1시간 단위 이벤트
+    public event Action<int> onDayEvent;             // 매일
+    public event Action<int> onWeekEvent;            // 매주
 
-    public static TimeManager Instance;
+    #region Schedule
+    public enum ScheduleType
+    {
+        Once,       // 일회성
+        Daily,      // 매일
+        Weekly,     // 매주
+        Monthly,    // 매월
+        Interval    // 일정 주기
+    }
+    public class ScheduledEvent
+    {
+        public int ID;
+
+        public ScheduleType tpye;
+    
+        public int day;
+        public int weekDay;
+    
+        public int hour;
+        public int minute;
+    
+        // Interval 타입일 경우, 몇일마다 발생하는지
+        public int intervalDays;
+    
+        // 발생시킬 이벤트
+        public Action callback;
+
+        // 현재 시간과 비교하여 이벤트 발생 여부를 판단
+        public bool IsMatch(TimeManager time)
+        {
+            if (hour != time.hour || minute != time.minute)
+                return false;
+
+            return tpye switch
+            {
+                ScheduleType.Once => day == time.day,
+                ScheduleType.Daily => true,
+                ScheduleType.Weekly => weekDay == time.weekDay,
+                _ => false
+            };
+        }
+    }
+
+    private List<ScheduledEvent> scheduledEvents = new();
+    private int nextEventID = 0;
+    #endregion
 
     private void Awake()
     {
@@ -41,97 +91,210 @@ public class TimeManager : MonoBehaviour
 
     void Update()
     {
-        // 게임매니저에서 게임이 진행 중인지 확인
-        if (!gameManager.isPlay) return;
+        // 시간 배율이 0 이하이면 시간 진행하지 않음
+        if (timeScale <= 0f) return;
 
-        timer += Time.deltaTime;
+        timer += Time.deltaTime * timeScale;
 
         float timerGameMinute = realSecondsPerDay / (24f * 60f); // 게임 내 시간으로 변환
 
         while (timer >= timerGameMinute)
         {
             timer -= timerGameMinute;
-            AddMinute(1);
+            AddMinute();
         }
     }
 
-    // 테스트용 시간 추가 함수
-    public void TestAddTime(int value)
+    #region Time Control
+    public void SetTimeScale(float scale)
     {
-        AddMinute(value);
+        timeScale = Mathf.Max(0f, scale);
     }
 
-    void AddMinute(int minutes)
+    public void Pause()
     {
-        currentMinute += minutes;
+        timeScale = 0f;
+    }
 
-        if (currentMinute >= 60)
+    public void Resume()
+    {
+        timeScale = 1f;
+    }
+
+    public void SetTime(int day, int hour, int minute)
+    {
+        this.day = Mathf.Max(1, day);
+        this.hour = Mathf.Clamp(hour, 0, 23);
+        this.minute = Mathf.Clamp(minute, 0, 59);
+    }
+    #endregion
+
+    #region Time Flow
+    public const int minuteStep = 10;
+    void AddMinute(int amount = 1)
+    {
+        while (amount-- > 0)
         {
-            currentMinute = 0;
-            currentHour++;
-        }
+            minute++;
 
-        if (currentHour >= 24)
+            if (minute >= 60)
+            {
+                minute = 0;
+                AddHour();
+            }
+
+            if (minute % miniteStep == 0)
+            {
+                onMinuteEvent?.Invoke(minute);
+                CheckSchedules();
+            }
+        }
+    }
+
+    public void AddHour()
+    {
+        hour++;
+        
+        onHourEvent?.Invoke(hour);
+
+        if (hour >= 24)
         {
-            currentHour = 0;
-            currentDay++;
-
-            CheckDayEvent();        // 하루가 지날 때마다 이벤트 발생
-            CheckWeekEvent();       // 일주가 지날 때마다 이벤트 발생
-            CheckSpecificDayEvent();// 특정 날짜 이벤트 발생
+            hour = 0;
+            AddDay();
         }
-
-        OnTimeSetpEvent();
-        CheckEvent();               // 특정 시간 이벤트 발생
     }
 
-    // 이벤트 추가 방법
-    // TimeManager.onTimeSetEvent += 함수(); 이하동문
-    void OnTimeSetpEvent()
+    public void AddDay()
     {
-        int newDisplayMinute = (currentMinute / miniteStep) * miniteStep; // miniteStep분 단위로 계산
+        day++;
+        
+        onDayEvent?.Invoke(day);
 
-        if (newDisplayMinute != displayMinute)
+        if (weekDay == 0)
         {
-            displayMinute = newDisplayMinute;
-            onTimeSetpEvent?.Invoke();
+            onWeekEvent?.Invoke(week);
         }
     }
+    #endregion
 
-    // test
-    // void CheckDayEvent()
-    public void CheckDayEvent()
+    #region Skip Time(수면 시간 스킵용, 개발자용)
+    public void SkipMinute(int amount)
     {
-        onDayEvent?.Invoke();
+        AddMinute(amount);
     }
-    void CheckWeekEvent()
+    
+    public void SkipHour(int amount)
     {
-        if (currentDay % 7 == 0)
+       SkipMinute(amount * 60);
+    }
+
+    public void SkipDay(int amount)
+    {
+        SkipMinute(amount * 60 * 24);
+    }
+    #endregion
+
+    #region Utility
+    public bool IsTime(int hour, int minute)
+    {
+        return this.hour == hour && this.minute == minute;
+    }
+
+    public bool IsDay(int day)
+    {
+        return this.day == day;
+    }
+    #endregion
+
+    #region Event
+    // 이벤트 등록
+    public int RegisterDaily(int hour, int minute, Action callback)
+    {
+        MinuteDebug(minute);
+
+        ScheduledEvent newEvent = new ScheduledEvent()
         {
-            onWeekEvent?.Invoke();
-        }
-    }
-    void CheckSpecificDayEvent()
-    {
-        onSpecificDay?.Invoke(currentDay);
-    }
-
-    void CheckEvent()
-    {
-        if (currentDay % 7 == 0 && currentHour == 9 && currentMinute == 0)
-        {
-            onEvent?.Invoke();
-        }
-    }
-
-    // UI용 시간 반환
-    public string[] GetTimeString()
-    {
-        return new string[] 
-        { 
-            currentDay.ToString(), 
-            currentHour >= 10 ? currentHour.ToString() : $"0{currentHour}",
-            displayMinute >= 10 ? displayMinute.ToString() : $"0{displayMinute}"
+            ID = nextEventID++,
+            tpye = ScheduleType.Daily,
+            hour = hour,
+            minute = minute,
+            callback = callback
         };
+
+        scheduledEvents.Add(newEvent);
+
+        return newEvent.ID;
     }
+
+    public int RegisterWeekly(int weekDay, int hour, int minute, Action callback)
+    {
+        MinuteDebug(minute);
+
+        ScheduledEvent newEvent = new ScheduledEvent()
+        {
+            ID = nextEventID++,
+            tpye = ScheduleType.Weekly,
+            weekDay = weekDay,
+            hour = hour,
+            minute = minute,
+            callback = callback
+        };
+
+        scheduledEvents.Add(newEvent);
+
+        return newEvent.ID;
+    }
+
+    // 일회성 이벤트 등록
+    public int RegisterOnce(int day, int hour, int minute, Action callback)
+    {
+        MinuteDebug(minute);
+
+        ScheduledEvent newEvent = new ScheduledEvent()
+        {
+            ID = nextEventID++,
+            tpye = ScheduleType.Once,
+            day = day,
+            hour = hour,
+            minute = minute,
+            callback = callback
+        };
+
+        scheduledEvents.Add(newEvent);
+
+        return newEvent.ID;
+    }
+
+    public void MinuteDebug(int minutes)
+    {
+        if (minutes % minuteStep != 0)
+        {
+            Debug.LogError("분은 10분 단위만 사용할 수 있습니다.");
+        }
+    }
+
+    // 이벤트 제거
+    public bool RemoveSchedule(int id)
+    {
+        int index = scheduledEvents.FindIndex(e => e.ID == id);
+
+        if (index < 0) return false;
+
+        scheduledEvents.RemoveAt(index);
+
+        return true;
+    }
+
+    // 이벤트 실행
+    private void CheckSchedules()
+    {
+        foreach (var schedule in scheduledEvents)
+        {
+            if (schedule.IsMatch(this))
+            {
+                schedule.callback?.Invoke();
+            }
+        }
+    }
+    #endregion
 }

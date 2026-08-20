@@ -17,12 +17,12 @@ public class TestInputM : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             testKeyText.text = "1번 키 입력\n시간 30분 추가";
-            timeManager.TestAddTime(30);
+            timeManager.SkipMinute(30);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             testKeyText.text = "2번 키 입력\n매일 이벤트 갱신(날짜변경X)";
-            timeManager.CheckDayEvent();
+            timeManager.SkipDay(1);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {

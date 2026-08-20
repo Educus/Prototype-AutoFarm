@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class NPCJobController : MonoBehaviour
@@ -16,9 +16,7 @@ public class NPCJobController : MonoBehaviour
     // 현재 목표 창고
     private StorageBuilding targetStorage;
 
-    // =========================
-    // Farm 작업 상태
-    // =========================
+    #region Farm 작업 상태
     private enum FarmAction
     {
         Harvest,
@@ -28,15 +26,27 @@ public class NPCJobController : MonoBehaviour
 
     private FarmAction farmAction;
 
-    private int currentFarmIndex;
     private int currentTileIndex;
 
     private FarmBuilding currentFarm;
     private FarmTile currentTile;
     private FarmTileView currentTileView;
 
+    // 작업 요청된 밭
+    private Queue<FarmBuilding> farmWorkQueue = new Queue<FarmBuilding>();
+
+    // 작업Queue에 들어간 밭
+    private HashSet<FarmBuilding> queuedFarms = new HashSet<FarmBuilding>();
+
+    // 이미 이벤트를 구독한 밭
+    private HashSet<FarmBuilding> subscribedFarms = new HashSet<FarmBuilding>();
+
+    // 현재 작업 중인 밭이 있는지
+    private bool isWorkingFarm;
+
     // 오늘 씨앗이 더 이상 없는 상태
     private bool noMoreSeedsToday;
+    #endregion
 
     // =========================
     // Ranch 작업 상태
@@ -44,32 +54,18 @@ public class NPCJobController : MonoBehaviour
 
     private int currentRanchIndex;
 
-    // =========================
-    // Unity
-    // =========================
+    #region Unity
 
     private void Awake()
     {
         npc = GetComponent<NPC>();
-        npc.OnJobChanged += () =>
-        {
-            // 직업이 바뀌면 작업 상태 초기화
-            ResetDailyWork();
-        };
+
+        npc.OnJobChanged += OnJobChanged;
     }
 
     private void Start()
     {
-        // 날짜가 바뀌면 다시 일을 시작할 수 있도록 초기화
-        TimeManager.Instance.onDayEvent += ResetDailyWork;
-    }
-
-    private void OnDestroy()
-    {
-        if (TimeManager.Instance != null)
-        {
-            TimeManager.Instance.onDayEvent -= ResetDailyWork;
-        }
+        OnJobChanged();
     }
 
     private void Update()
@@ -81,10 +77,45 @@ public class NPCJobController : MonoBehaviour
         ProcessJob();
     }
 
-    // =========================
-    // 행동 시간 처리
-    // =========================
+    private void OnDestroy()
+    {
+        npc.OnJobChanged -= OnJobChanged;
 
+        UnsubscribeAllFarmEvents();
+    }
+
+    private void OnJobChanged()
+    {
+        npc.StopMove();
+
+        // 기존 작업 Queue 제거
+        ClearFarmWorkQueue();
+
+        // 기존 Farm 이벤트 해제
+        UnsubscribeAllFarmEvents();
+
+        // 현재 작업 상태 초기화
+        ResetWorkState();
+
+        // 현재 Job이 Farm이라면 새로 등록
+        if (npc.job.jobType == JobType.Farm)
+        {
+            SubscribeFarmEvents();
+        }
+
+        // 유효한 직업이면 다시 작업 시작
+        if (npc.job.IsValid())
+        {
+            npc.job.step = JobStep.Idle;
+        }
+        else
+        {
+            npc.job.step = JobStep.Rest;
+        }
+    }
+    #endregion
+
+    #region 행동 시간 처리
     /// <summary>
     /// 행동 애니메이션 및 작업 시간 대기
     /// true : 행동 가능
@@ -100,39 +131,44 @@ public class NPCJobController : MonoBehaviour
         actionTimer = 0f;
         return true;
     }
+    #endregion
 
-    // =========================
-    // 하루 초기화
-    // =========================
 
-    /// <summary>
-    /// 자정 이후 호출
-    /// 작물 성장 및 동물 생산 준비 이후 실행됨
-    /// Rest → Idle 전환
-    /// </summary>
-    private void ResetDailyWork()
+    #region 직업 및 날짜 변경
+    // Job 변경 시 작업 상태 초기화
+    private void ResetWorkState()
     {
-        currentFarmIndex = 0;
         currentTileIndex = 0;
 
         currentFarm = null;
         currentTile = null;
         currentTileView = null;
 
-        currentRanchIndex = 0;
-
-        npc.targetAnimal = null;
-
         noMoreSeedsToday = false;
 
         actionTimer = 0f;
 
-        // 유효한 직업이 있다면 다시 작업 시작
+        currentRanchIndex = 0;
+
+        npc.targetAnimal = null;
+
+        targetStorage = null;
+
+        isWorkingFarm = false;
+    }
+
+    // 하루가 바뀌면 작업 상태 초기화
+    private void ResetDailyWork()
+    {
+        ClearFarmWorkQueue();
+        ResetWorkState();
+
         if (npc.job.IsValid())
         {
             npc.job.step = JobStep.Idle;
         }
     }
+    #endregion
 
     // =========================
     // Job 처리
@@ -155,6 +191,100 @@ public class NPCJobController : MonoBehaviour
         }
     }
 
+    #region Farm 구독 및 Queue 관리
+    // Job이 Farm일 때 이벤트 구독 해제
+    private void ClearFarmWorkQueue()
+    {
+        farmWorkQueue.Clear();
+        queuedFarms.Clear();
+    }
+
+    // Job이 Farm일 때 할당 해제된 건물의 이벤트 구독 해제
+    private void UnsubscribeAllFarmEvents()
+    {
+        foreach (FarmBuilding farm in subscribedFarms)
+        {
+            if (farm == null)
+                continue;
+
+            farm.onWorkRequested -= OnFarmWorkRequested;
+        }
+
+        subscribedFarms.Clear();
+    }
+
+    // Job이 Farm일 때 이벤트 구독
+    private void SubscribeFarmEvents()
+    {
+        if (npc.job.jobType != JobType.Farm)
+            return;
+
+        foreach (string buildingID in npc.job.buildingIDs)
+        {
+            FarmBuilding farm =
+                DataManager.Instance.BuildingManager
+                .Get<FarmBuilding>(buildingID);
+
+            if (farm == null)
+                continue;
+
+            // 중복 구독 방지
+            if (subscribedFarms.Contains(farm))
+                continue;
+
+            farm.onWorkRequested += OnFarmWorkRequested;
+
+            subscribedFarms.Add(farm);
+
+            // 이미 작업이 존재하는 Farm이면
+            // 이벤트를 기다리지 말고 바로 Queue 등록
+            if (farm.HasPendingWork())
+            {
+                EnqueueFarm(farm);
+            }
+        }
+    }
+
+    private void OnFarmWorkRequested(FarmBuilding farm)
+    {
+        EnqueueFarm(farm);
+
+        // 쉬고 있었다면 다시 작업 시작
+        if (npc.job.step == JobStep.Rest)
+        {
+            npc.job.step = JobStep.Idle;
+        }
+    }
+
+    // Queue에 Farm을 넣는 함수
+    private void EnqueueFarm(FarmBuilding farm)
+    {
+        if (farm == null)
+            return;
+
+        // 현재 작업 중인 Farm
+        // → Queue에 넣지 않는다.
+        // 현재 작업을 끝내면서 다시 확인한다.
+        if (farm == currentFarm)
+            return;
+
+        // 담당 Farm인지 확인
+        if (!npc.job.buildingIDs.Contains(farm.id))
+            return;
+
+        // 이미 Queue에 있으면 중복 방지
+        if (queuedFarms.Contains(farm))
+            return;
+
+        // 실제 작업이 없다면 넣지 않음
+        if (!farm.HasPendingWork())
+            return;
+
+        farmWorkQueue.Enqueue(farm);
+        queuedFarms.Add(farm);
+    }
+    #endregion
+
     #region Farm
     private void ProcessFarm()
     {
@@ -162,16 +292,11 @@ public class NPCJobController : MonoBehaviour
         {
             case JobStep.Idle:
 
-                currentFarmIndex = 0;
-                currentTileIndex = 0;
-
-                currentFarm = null;
-                currentTile = null;
-                currentTileView = null;
-
-                noMoreSeedsToday = false;
-
-                npc.job.step = JobStep.MoveToStorage;
+                if (!StartNextFarm())
+                {
+                    npc.job.step = JobStep.Rest;
+                    return;
+                }
 
                 break;
 
@@ -229,7 +354,7 @@ public class NPCJobController : MonoBehaviour
 
                 if (!FindNextFarmTile())
                 {
-                    npc.job.step = JobStep.ReturnToStorage;
+                    FinishCurrentFarm();
                 }
 
                 break;
@@ -261,6 +386,43 @@ public class NPCJobController : MonoBehaviour
 
                 break;
         }
+    }
+
+    private bool StartNextFarm()
+    {
+        while (farmWorkQueue.Count > 0)
+        {
+            FarmBuilding farm = farmWorkQueue.Dequeue();
+
+            queuedFarms.Remove(farm);
+
+            if (farm == null)
+                continue;
+
+            // 담당 Farm인지 확인
+            if (!npc.job.buildingIDs.Contains(farm.id))
+                continue;
+
+            // 작업이 이미 끝났다면 다음 Farm
+            if (!farm.HasPendingWork())
+                continue;
+
+            currentFarm = farm;
+            currentTileIndex = 0;
+            currentTile = null;
+            currentTileView = null;
+
+            isWorkingFarm = true;
+
+            npc.job.step = JobStep.MoveToStorage;
+
+            return true;
+        }
+
+        currentFarm = null;
+        isWorkingFarm = false;
+
+        return false;
     }
 
     private void TakeSeed(StorageBuilding storage)
@@ -303,91 +465,89 @@ public class NPCJobController : MonoBehaviour
 
     private bool FindNextFarmTile()
     {
-        while (currentFarmIndex < npc.job.buildingIDs.Count)
+        if (currentFarm == null)
+            return false;
+
+        // =================================
+        // 1. 수확
+        // =================================
+
+        var harvestTiles =
+            currentFarm.GetHarvestableTiles();
+
+        if (harvestTiles.Count > 0)
         {
-            currentFarm =
-                DataManager.Instance.BuildingManager
-                .Get<FarmBuilding>(
-                    npc.job.buildingIDs[currentFarmIndex]);
+            currentTile = harvestTiles[0];
+            farmAction = FarmAction.Harvest;
 
-            if (currentFarm == null)
+            MoveToCurrentFarmTile();
+
+            return true;
+        }
+
+        // =================================
+        // 2. 심기
+        // =================================
+
+        if (!noMoreSeedsToday)
+        {
+            var plantTiles =
+                currentFarm.GetPlantableTiles();
+
+            if (plantTiles.Count > 0)
             {
-                currentFarmIndex++;
-                currentTileIndex = 0;
-                continue;
-            }
+                currentTile = plantTiles[0];
+                farmAction = FarmAction.Plant;
 
-            while (currentTileIndex < currentFarm.tiles.Count)
-            {
-                currentTile =
-                    currentFarm.tiles[currentTileIndex];
-
-                currentTileView =
-                    currentFarm.tileViews[currentTileIndex];
-
-                // ------------------
-                // 작업 필요 여부 판단
-                // ------------------
-
-                bool needHarvest =
-                    currentTile.IsReady();
-
-                bool needPlant =
-                    currentTile.CanPlant() &&
-                    !noMoreSeedsToday;
-
-                bool needWater =
-                    currentTile.hasCrop &&
-                    !currentTile.watered;
-
-                // 아무 작업도 필요 없으면 다음 타일
-                if (!needHarvest &&
-                    !needPlant &&
-                    !needWater)
-                {
-                    currentTileIndex++;
-                    continue;
-                }
-
-                // ------------------
-                // 어떤 작업부터 할지 결정
-                // ------------------
-
-                if (needHarvest)
-                {
-                    farmAction = FarmAction.Harvest;
-                }
-                else if (needPlant)
-                {
-                    farmAction = FarmAction.Plant;
-                }
-                else
-                {
-                    farmAction = FarmAction.Water;
-                }
-
-                // ------------------
-                // 이동
-                // ------------------
-
-                Vector2Int target =
-                    GridManager.Instance.WorldToGrid(
-                        currentTileView.transform.position);
-
-                npc.MoveTo(target);
-
-                npc.job.step =
-                    JobStep.MoveToFarmTile;
+                MoveToCurrentFarmTile();
 
                 return true;
             }
+        }
 
-            // 다음 농장
-            currentFarmIndex++;
-            currentTileIndex = 0;
+        // =================================
+        // 3. 물주기
+        // =================================
+
+        var waterTiles =
+            currentFarm.GetWaterableTiles();
+
+        if (waterTiles.Count > 0)
+        {
+            currentTile = waterTiles[0];
+            farmAction = FarmAction.Water;
+
+            MoveToCurrentFarmTile();
+
+            return true;
         }
 
         return false;
+    }
+
+    private void MoveToCurrentFarmTile()
+    {
+        if (currentTile == null)
+            return;
+
+        int index =
+            currentFarm.tiles.IndexOf(currentTile);
+
+        if (index < 0 ||
+            index >= currentFarm.tileViews.Count)
+            return;
+
+        currentTileView =
+            currentFarm.tileViews[index];
+
+        Vector2Int target =
+            GridManager.Instance.WorldToGrid(
+                currentTileView.transform.position);
+
+        npc.MoveTo(target);
+
+        npc.job.step =
+            JobStep.MoveToFarmTile;
     }
 
     private void WorkCurrentFarmTile()
@@ -397,9 +557,14 @@ public class NPCJobController : MonoBehaviour
 
         switch (farmAction)
         {
+            // =========================
+            // Harvest
+            // =========================
+
             case FarmAction.Harvest:
 
-                if (currentTile.IsReady())
+                if (currentTile != null &&
+                    currentTile.IsReady())
                 {
                     int item =
                         currentFarm.TryHarvest(currentTile);
@@ -410,13 +575,20 @@ public class NPCJobController : MonoBehaviour
                     }
                 }
 
-                farmAction = FarmAction.Plant;
+                // 수확 후 다시 탐색
+                npc.job.step = JobStep.FindFarmTile;
 
                 break;
 
+
+            // =========================
+            // Plant
+            // =========================
+
             case FarmAction.Plant:
 
-                if (currentTile.CanPlant())
+                if (currentTile != null &&
+                    currentTile.CanPlant())
                 {
                     if (!noMoreSeedsToday)
                     {
@@ -431,42 +603,73 @@ public class NPCJobController : MonoBehaviour
                                 currentTile,
                                 npc.job.productItemID);
 
-                            // 마지막 씨앗 사용 여부 확인
+                            // =========================
+                            // 심었으면 바로 물주기
+                            // =========================
+
+                            currentFarm.TryWater(currentTile);
+
+                            // 씨앗이 모두 떨어졌는지 확인
                             if (!npc.subInventory.ContainsItem(
-                                    npc.job.productItemID))
+                                npc.job.productItemID))
                             {
-                                npc.job.step = JobStep.MoveToStorage;
-                                return;
+                                noMoreSeedsToday = true;
                             }
                         }
                         else
                         {
-                            npc.job.step =
-                                JobStep.MoveToStorage;
-
-                            return;
+                            noMoreSeedsToday = true;
                         }
                     }
                 }
 
-                farmAction = FarmAction.Water;
+                npc.job.step = JobStep.FindFarmTile;
 
                 break;
+
+
+            // =========================
+            // Water
+            // =========================
 
             case FarmAction.Water:
 
-                if (currentTile.hasCrop &&
+                if (currentTile != null &&
+                    currentTile.hasCrop &&
+                    !currentTile.IsReady() &&
                     !currentTile.watered)
                 {
-                    currentFarm.Water(currentTile);
+                    currentFarm.TryWater(currentTile);
                 }
 
-                currentTileIndex++;
-
-                npc.job.step =
-                    JobStep.FindFarmTile;
+                npc.job.step = JobStep.FindFarmTile;
 
                 break;
+        }
+    }
+
+    private void FinishCurrentFarm()
+    {
+        // 현재 Farm에 새로운 작업이 생겼다면
+        // Queue 다음 Farm으로 가지 않고 현재 Farm을 다시 처리
+        if (currentFarm != null &&
+            currentFarm.HasPendingWork())
+        {
+            currentTile = null;
+            currentTileView = null;
+            currentTileIndex = 0;
+
+            npc.job.step = JobStep.FindFarmTile;
+            return;
+        }
+
+        currentFarm = null;
+        currentTile = null;
+        currentTileView = null;
+
+        if (!StartNextFarm())
+        {
+            npc.job.step = JobStep.ReturnToStorage;
         }
     }
 

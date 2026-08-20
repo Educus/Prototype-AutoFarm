@@ -17,7 +17,7 @@ public abstract class AnimalBase : MonoBehaviour
 
     private void Start()
     {
-        TimeManager.Instance.onDayEvent += AddStack;
+        TimeManager.Instance.onMinuteEvent += AddStack;
 
         ObjectData objData = DataManager.Instance.objectsData[itemId];
 
@@ -25,13 +25,17 @@ public abstract class AnimalBase : MonoBehaviour
         if (Enum.TryParse(objData.ObjectName, out AnimalType result))
             type = result;
     }
+    private void OnDestroy()
+    {
+        TimeManager.Instance.onMinuteEvent -= AddStack;
+    }
 
     public bool CanWork()
     {
         return isReady;
     }
 
-    private void AddStack()
+    private void AddStack(int minute)
     {
         if (isReady) return;
 

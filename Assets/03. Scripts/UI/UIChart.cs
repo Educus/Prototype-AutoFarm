@@ -33,9 +33,9 @@ public class UIChart : MonoBehaviour
             GameObject chartIcon = Instantiate(chartIconPrefab, chartIconContent.transform);
             chartIcon.GetComponent<UIChartIcon>().GetInfo(dataManager, this, product.itemID);
 
-            timeManager.onDayEvent += () =>
+            timeManager.onDayEvent += (int day) =>
             {
-                chartIcon.GetComponent<UIChartIcon>().SetData();
+                chartIcon.GetComponent<UIChartIcon>().SetData(day);
             };
             eventOnBookMark += () =>
             {

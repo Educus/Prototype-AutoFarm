@@ -276,7 +276,7 @@ public class Inventory : MonoBehaviour
     #endregion
 
     #region Expiry
-    void OnDayPassed()
+    void OnDayPassed(int day)
     {
         bool changed = false;
 

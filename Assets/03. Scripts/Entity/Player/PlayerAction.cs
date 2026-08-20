@@ -135,7 +135,7 @@ public class PlayerAction : MonoBehaviour
         // 3. π∞¡÷±‚
         if (!targetTile.watered)
         {
-            targetFarm.Water(targetTile);
+            targetFarm.TryWater(targetTile);
         }
 
         ClearFarm();

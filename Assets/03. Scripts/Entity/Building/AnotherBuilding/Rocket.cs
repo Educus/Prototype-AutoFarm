@@ -46,9 +46,9 @@ public class Rocket : BuildingBase
 
     private void Update()
     {
-        int hour = TimeManager.Instance.currentHour;
-        int minute = TimeManager.Instance.currentMinute;
-        int day = TimeManager.Instance.currentDay;
+        int hour = TimeManager.Instance.hour;
+        int minute = TimeManager.Instance.minute;
+        int day = TimeManager.Instance.day;
 
         // 09:00 판매 정산 및 아이템 적재
         if (hour == 9 && minute == 0)

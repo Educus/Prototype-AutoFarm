@@ -161,7 +161,19 @@ public class NPC : MonoBehaviour, ILeftInteractable
 
         moveCoroutine = StartCoroutine(MoveAlongPath(path));
     }
+    public void StopMove()
+    {
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
 
+        isMoving = false;
+
+        currentGridPos =
+            gridManager.WorldToGrid(transform.position);
+    }
     IEnumerator MoveAlongPath(List<Node> path)
     {
         isMoving = true;
@@ -288,6 +300,8 @@ public class NPC : MonoBehaviour, ILeftInteractable
         upgradeInventory.Load(data.upgradeInventory);
 
         job = data.job;
+
+        JobChanged();
     }
     #endregion
 }

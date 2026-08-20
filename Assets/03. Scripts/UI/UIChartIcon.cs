@@ -32,7 +32,7 @@ public class UIChartIcon : MonoBehaviour
         itemID = id;
 
         SetInfo();
-        SetData();
+        SetData(0);
         SetBookMark();
 
         Debug.Log($"UIChartIcon GetInfo: {itemID}");
@@ -46,7 +46,7 @@ public class UIChartIcon : MonoBehaviour
     }
 
     // 데이터 갱신
-    public void SetData()
+    public void SetData(int day)
     {
         int count = dataManager.productClosingData[itemID].productsClosingPrice.Count;
 

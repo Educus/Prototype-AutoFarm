@@ -4,12 +4,8 @@ using TMPro;
 public class GUIManagement : MonoBehaviour
 {
     // 시간
-    [SerializeField] private TimeManager timeManager;
-
     [SerializeField] private TMP_Text dayText;
     [SerializeField] private TMP_Text timeText;
-
-    private string[] value;
 
     [SerializeField] private CurrencyManager currencyManager;
     // NPC
@@ -23,11 +19,11 @@ public class GUIManagement : MonoBehaviour
 
     private void Awake()
     {
-        timeManager.onTimeSetpEvent += SetTime;
+        TimeManager.Instance.onMinuteEvent += SetTime;
     }
     private void Start()
     {
-        SetTime();
+        SetTime(TimeManager.Instance.minute);
     }
     private void Update()
     {
@@ -37,12 +33,13 @@ public class GUIManagement : MonoBehaviour
     }
 
     // 시간 GUI 자동 갱신
-    private void SetTime()
+    private void SetTime(int minute)
     {
-        value = timeManager.GetTimeString();
+        int day = TimeManager.Instance.day;
+        int hour = TimeManager.Instance.hour;
 
-        dayText.text = $"Day-{value[0]}";
-        timeText.text = $"{value[1]}:{value[2]}";
+        dayText.text = $"Day-{day}";
+        timeText.text = $"{hour}:{minute}";
     }
 
     // NPC GUI 자동 갱신
