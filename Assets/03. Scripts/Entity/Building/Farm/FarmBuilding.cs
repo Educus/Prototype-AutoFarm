@@ -55,10 +55,6 @@ public class FarmBuilding : BuildingBase
         }
     }
 
-    private void LateUpdate()
-    {
-        ViewUpdate();
-    }
     #endregion
 
     #region 작물 성장
@@ -251,7 +247,9 @@ public class FarmBuilding : BuildingBase
 
             int value = tile.watered ? 1 : 0;
 
-            Sprite image = DataManager.Instance.GetCropImage(tile.cropID, tile.growth);
+            int growValue = tile.GetGrowthValue();
+
+            Sprite image = DataManager.Instance.GetCropImage(tile.cropID, growValue);
 
             tileView.UpdateView(value, image);
         }

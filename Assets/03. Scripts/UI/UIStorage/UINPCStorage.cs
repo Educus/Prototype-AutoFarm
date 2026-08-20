@@ -709,6 +709,7 @@ public class UINPCStorage : MonoBehaviour
             return;
 
         target.job.productItemID = index;
+        target.JobChanged();
         RefreshWorkItem();
         Debug.Log($"Work Menu Slot Click : {index}");
     }

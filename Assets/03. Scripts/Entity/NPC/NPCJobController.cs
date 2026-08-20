@@ -705,19 +705,12 @@ public class NPCJobController : MonoBehaviour
             StorageBuilding storage =
                 building as StorageBuilding;
 
-            Debug.Log($"building = {building.name}");
-            Debug.Log($"storage = {storage}");
-
             if (storage == null)
                 continue;
 
             int seedCount = storage.inventory.slots
                 .Where(s => s.itemID == npc.job.productItemID)
                 .Sum(s => s.count);
-
-            Debug.Log($"storage = {storage.id}");
-            Debug.Log($"seed = {npc.job.productItemID}");
-            Debug.Log($"count = {seedCount}");
 
             if (seedCount <= 0)
                 continue;

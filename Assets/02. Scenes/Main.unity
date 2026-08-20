@@ -3211,7 +3211,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87d017ba84cf381478b6af9e95b77199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GUIManagement
-  timeManager: {fileID: 2128320187}
   dayText: {fileID: 1052942608}
   timeText: {fileID: 1230655109}
   currencyManager: {fileID: 1625470979}
@@ -3721,8 +3720,10 @@ MonoBehaviour:
   - {fileID: -3918316082086133311, guid: f92f25c34f35a1c46bf1c713e7fa1413, type: 3}
   - {fileID: 7299808992091893612, guid: 5e5fd5f2a4407a84aa11c3047278e819, type: 3}
   - {fileID: -3568340447415289625, guid: 0fef04ad3d1b46f43817c25686c892a6, type: 3}
+  - {fileID: 8015329109788138117, guid: 054a4e239e05e364faa7346d0e2ed1a0, type: 3}
   - {fileID: 5758579155355519821, guid: 9ef34ce3d7d845c4594352e2354067b5, type: 3}
   - {fileID: 3491757324583755114, guid: 6a513b6c6994571459b13792a0d4d456, type: 3}
+  - {fileID: -6707170217923589672, guid: 3e0d8a6233fc11245af19f4945311640, type: 3}
   - {fileID: 6487024872765592436, guid: 0a8bf23d55b11054092c3efbf1e14afa, type: 3}
   objPrefabs:
   - {fileID: 849748869396653004, guid: c53a88ce33bf99e429d66a48070340a1, type: 3}
@@ -11372,13 +11373,13 @@ MonoBehaviour:
   uiChart: {fileID: 600827998}
   uiShop: {fileID: 798042900}
   uiRobot: {fileID: 2019002553}
-  chips0:
+  chartChips:
   - {fileID: 1826415209}
   - {fileID: 2095317987}
-  chips1:
+  shopChips:
   - {fileID: 1404069118}
   - {fileID: 2062630863}
-  chips2:
+  NPCManagementChips:
   - {fileID: 1184548432}
   - {fileID: 1753808509}
   icon0:
@@ -114899,8 +114900,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f57712c5651f24bb1e563ce96e717f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EventManager
-  dataManager: {fileID: 165399817}
-  timeManager: {fileID: 2128320187}
 --- !u!1001 &850828670
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -131939,6 +131938,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MarketManager
   dataManager: {fileID: 165399817}
   timeManager: {fileID: 2128320187}
+  closingPriceDays: 7
+  eventDurationDays: 7
+  eventCalculationDays: 7
+  weeklyEventCount: 2
+  newEventDifferenceRate: 1.5
+  meanReversionStrength: 0.1
 --- !u!4 &1804111520
 Transform:
   m_ObjectHideFlags: 0
@@ -137837,7 +137842,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 473ccd7aef0da1f4caa28713545e6440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeManager
-  gameManager: {fileID: 1570929483}
   miniteStep: 10
 --- !u!1 &2129992321
 GameObject:

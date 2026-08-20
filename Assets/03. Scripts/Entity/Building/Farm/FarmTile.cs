@@ -1,3 +1,5 @@
+using UnityEngine;
+
 [System.Serializable]
 public class FarmTile
 {
@@ -77,6 +79,8 @@ public class FarmTile
         if (!watered)
             return false;
 
+        float previousGrowth = growth;
+
         growth -= minute;
 
         if (growth < 0f)
@@ -90,7 +94,7 @@ public class FarmTile
             watered = false;
         }
 
-        return IsReady();
+        return !Mathf.Approximately(previousGrowth, growth);
     }
 
     // 리턴 작물
@@ -110,5 +114,23 @@ public class FarmTile
         growth = 0f;
 
         return result;
+    }
+
+    // 성장 상태 퍼센티지 리턴
+    public int GetGrowthValue()
+    {
+        if (!hasCrop)
+            return 0;
+
+        float maxGrowth =
+            DataManager.Instance.productsData[cropID].growthTime * 24f * 60f;
+
+        if (growth <= 0f)
+            return 2;
+
+        if (growth <= maxGrowth * 0.5f)
+            return 1;
+
+        return 0;
     }
 }
