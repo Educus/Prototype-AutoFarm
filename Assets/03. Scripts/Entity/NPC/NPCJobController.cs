@@ -557,8 +557,11 @@ public class NPCJobController : MonoBehaviour
     private void WorkCurrentFarmTile()
     {
         if (!CanDoAction())
+        {
+            npcAnimation.IsWorking = false;
             return;
-
+        }
+        npcAnimation.IsWorking = true;
         switch (farmAction)
         {
             // =========================
@@ -594,13 +597,14 @@ public class NPCJobController : MonoBehaviour
                 if (currentTile != null &&
                     currentTile.CanPlant())
                 {
+
                     if (!noMoreSeedsToday)
                     {
                         int taken =
                             npc.subInventory.TakeUpTo(
                                 npc.job.productItemID,
                                 1);
-
+                        
                         if (taken > 0)
                         {
                             currentFarm.TryPlant(
