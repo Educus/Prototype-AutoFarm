@@ -34,7 +34,15 @@ public class NPCAnimation : MonoBehaviour
             MovingController();
         }
     }
-    public bool IsWorking { get => isWorking; set => isWorking = value; }
+    public bool IsWorking 
+    { 
+        get => isWorking;
+        set
+        {
+            isWorking = value;
+            WorkingController();
+        }
+    }
     private void Awake()
     {
         init();
@@ -48,7 +56,7 @@ public class NPCAnimation : MonoBehaviour
         //MovingController();
 
         //작업 관련 함수
-        WorkingController();
+        //WorkingController();
     }
 
     //초기화

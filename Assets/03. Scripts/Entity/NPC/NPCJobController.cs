@@ -13,6 +13,9 @@ public class NPCJobController : MonoBehaviour
 
     private float actionTimer;
 
+    //일단 작업 애니메이션은 하드 코딩 해둔 상태.
+    private NPCAnimation npcAnimation;
+
     // 현재 목표 창고
     private StorageBuilding targetStorage;
 
@@ -65,6 +68,7 @@ public class NPCJobController : MonoBehaviour
 
     private void Start()
     {
+        npcAnimation = GetComponent<NPCAnimation>();
         OnJobChanged();
     }
 
@@ -602,7 +606,6 @@ public class NPCJobController : MonoBehaviour
                             currentFarm.TryPlant(
                                 currentTile,
                                 npc.job.productItemID);
-
                             // =========================
                             // 심었으면 바로 물주기
                             // =========================

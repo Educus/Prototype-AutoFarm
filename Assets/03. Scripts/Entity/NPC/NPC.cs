@@ -29,6 +29,13 @@ public class NPC : MonoBehaviour, ILeftInteractable
     private Coroutine moveCoroutine;
     private Vector2Int currentGridPos;
 
+    //Sound 관련
+    private SoundManager soundManager;
+    private AudioSource SFX;
+
+    //애니메이션 관련
+    private NPCAnimation npcAnimation;
+
     public bool isMoving { get; private set; }
     public float moveSpeed = 3f;
 
@@ -68,6 +75,13 @@ public class NPC : MonoBehaviour, ILeftInteractable
 
         currentGridPos =
             gridManager.WorldToGrid(transform.position);
+
+        //애니메이션 스크립트 초기화
+        npcAnimation = GetComponent<NPCAnimation>();
+
+        //사운드 관련 초기화
+        soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        SFX = GetComponent<AudioSource>();
     }
 
     private void InitializeInventories()
@@ -159,6 +173,8 @@ public class NPC : MonoBehaviour, ILeftInteractable
         if (moveCoroutine != null)
             StopCoroutine(moveCoroutine);
 
+        //이동 사운드 재생
+        //soundManager.PlaySFX("SFX_GUI_Button", SFX, true);
         moveCoroutine = StartCoroutine(MoveAlongPath(path));
     }
     public void StopMove()
@@ -177,6 +193,7 @@ public class NPC : MonoBehaviour, ILeftInteractable
     IEnumerator MoveAlongPath(List<Node> path)
     {
         isMoving = true;
+        npcAnimation.IsMoving = true;
 
         foreach (Node node in path)
         {
@@ -184,6 +201,10 @@ public class NPC : MonoBehaviour, ILeftInteractable
 
             while (Vector3.Distance(transform.position, target) > 0.05f)
             {
+                Vector2 direction = (target - transform.position).normalized;
+
+                npcAnimation.MoveDirection = direction;
+
                 transform.position = Vector3.MoveTowards(
                     transform.position,
                     target,
@@ -199,6 +220,10 @@ public class NPC : MonoBehaviour, ILeftInteractable
             currentGridPos = new Vector2Int(node.x, node.y);
         }
 
+        npcAnimation.IsMoving = false;
+        //코루틴 종료 시점에 SFX 종료
+        //코루틴으로 재생되다보니 재생 함수는 코루틴 밖에 둔 상태
+        soundManager.StopSFX(SFX);
         isMoving = false;
     }
 
