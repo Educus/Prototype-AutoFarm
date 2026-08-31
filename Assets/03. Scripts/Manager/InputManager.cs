@@ -36,7 +36,7 @@ public class InputManager : MonoBehaviour
 
         mainCamera = Camera.main;
 
-        layerMask = LayerMask.GetMask("NPC", "Structure");
+        layerMask = LayerMask.GetMask("NPC", "Structure", "Animal");
     }
 
     void Update()
@@ -216,12 +216,16 @@ public class InputManager : MonoBehaviour
         Collider2D hit =
             GetPriorityHit(mousePos);
 
+        Debug.Log($"Hit : {hit}");
+
         IRightInteractable interactable = null;
 
         if (hit != null)
         {
             interactable =
                 hit.GetComponentInParent<IRightInteractable>();
+
+            Debug.Log($"Interactable : {interactable}");
         }
 
         // 가까우면 즉시 상호작용
@@ -232,6 +236,8 @@ public class InputManager : MonoBehaviour
                     player.transform.position,
                     hit.transform.position
                 );
+
+            Debug.Log($"Distance : {distance}");
 
             if (distance <= 1f)
             {
@@ -290,6 +296,12 @@ public class InputManager : MonoBehaviour
             // NPC를 가장 높은 우선순위
             if (hit.GetComponentInParent<NPC>() != null)
                 return hit;
+
+            // 다음 순위 동물
+            if (hit.GetComponentInParent<AnimalBase>() != null)
+            {
+                return hit;
+            }
 
             // 건물은 후보로만 저장
             if (structureHit == null &&

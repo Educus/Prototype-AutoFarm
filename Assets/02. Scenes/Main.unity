@@ -10027,6 +10027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594a2eba2579c0d4996eee11a816b7d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimalManager
+  debugAnimals: []
 --- !u!1 &585714107
 GameObject:
   m_ObjectHideFlags: 0
@@ -118120,7 +118121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1028683789}
   m_Layer: 0
-  m_Name: Build
+  m_Name: BuildManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118134,7 +118135,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1028683788}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -118144,7 +118145,7 @@ Transform:
   - {fileID: 494453410}
   - {fileID: 47825730}
   - {fileID: 1013366859}
-  m_Father: {fileID: 1737613783}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1035931906
 GameObject:
@@ -130345,7 +130346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1737613783}
   m_Layer: 0
-  m_Name: Manager
+  m_Name: SystemManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130370,7 +130371,6 @@ Transform:
   - {fileID: 1804111520}
   - {fileID: 405290353}
   - {fileID: 915378958}
-  - {fileID: 1028683789}
   - {fileID: 1463282775}
   - {fileID: 1351812948}
   m_Father: {fileID: 0}
@@ -138605,6 +138605,7 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 1737613783}
+  - {fileID: 1028683789}
   - {fileID: 1516238695}
   - {fileID: 82632274}
   - {fileID: 786970621}

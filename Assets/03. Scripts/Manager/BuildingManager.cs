@@ -471,9 +471,26 @@ public class BuildingManager : MonoBehaviour
         return null;
     }
 
+    // 모든 건물 가져오기
     public IEnumerable<BuildingBase> GetAll()
     {
         return buildings.Values;
+    }
+
+    // 특정 타입의 건물들만 가져오기()
+    public List<T> GetBuildingsByType<T>(BuildingType type) where T : BuildingBase
+    {
+        List<T> result = new List<T>();
+
+        foreach (BuildingBase building in buildings.Values)
+        {
+            if (building.type == type && building is T typedBuilding)
+            {
+                result.Add(typedBuilding);
+            }
+        }
+
+        return result;
     }
 
     // NPC가 사용할 창고 위치

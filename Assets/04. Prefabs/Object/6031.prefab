@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2299173069040282365}
   - component: {fileID: 358783882832215749}
   - component: {fileID: 144525384711862829}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: 6031
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,10 +151,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fbfcb340fc13f04fa319d43eba7ec69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Cow
-  itemId: 6031
-  id: 6031
+  itemId: 0
+  id: 
   animalName: 
-  position: {x: 0, y: 0, z: 0}
-  productItemID: 0
+  type: 1
+  productItemID: 4012
+  productionTime: 60
   isStack: 0
   isReady: 0

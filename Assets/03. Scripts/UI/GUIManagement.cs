@@ -32,6 +32,11 @@ public class GUIManagement : MonoBehaviour
         SetGold();
     }
 
+    private void OnDisable()
+    {
+        TimeManager.Instance.onMinuteEvent -= SetTime;
+    }
+
     // 시간 GUI 자동 갱신
     private void SetTime(int minute)
     {

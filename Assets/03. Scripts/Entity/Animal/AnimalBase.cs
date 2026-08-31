@@ -1,50 +1,77 @@
 using System;
 using UnityEngine;
 
-public abstract class AnimalBase : MonoBehaviour
+public abstract class AnimalBase : MonoBehaviour, IRightInteractable
 {
-    public int itemId;
-    public string id;
-    public string animalName;
-    public Vector3 position;
-    public int productItemID;
+    // 이걸 부모로 쓰는 동물들
+    // 동물 타입만 연결해주면 모두 연결, 행동 가능하게 만들기
+    // 추가한다면 동물 설명?
+
+    [HideInInspector] public int itemId;         // 아이디
+    [HideInInspector] public string id;          // 아이디
+    [HideInInspector] public string animalName;  // 동물 이름
+
+    public AnimalType type;     // 동물 타입
+    public int productItemID;   // 생산 아이템
+    [Tooltip("생산시간(10분 단위)")]
+    public int productionTime = 60;  // 생산 시간
+
+    private int remainingTime;
 
     private int workStack;
-    public int isStack;
+    [HideInInspector] public int isStack;
     public bool isReady = false;
 
-    private AnimalType type;
 
-    private void Start()
+    // 상호작용
+    public void OnInteract(Player player)
     {
-        TimeManager.Instance.onMinuteEvent += AddStack;
+        Debug.Log("동물 클릭 됨");
 
-        ObjectData objData = DataManager.Instance.objectsData[itemId];
-
-        workStack = objData.WorkDuration;
-        if (Enum.TryParse(objData.ObjectName, out AnimalType result))
-            type = result;
+        // 생산품 있는 상태에서 플레이어 상호작용 시 생산
+        GameManager.Instance.player
+            .GetComponent<PlayerAction>()
+            .StartAnimalAction(this);
     }
+
+    public void Initialize(string animalID)
+    {
+        id = animalID;
+        remainingTime = productionTime;
+
+        gameObject.name = animalID;
+
+        DataManager.Instance.AnimalManager.Register(this);
+
+        TimeManager.Instance.onMinuteEvent += ReproducingItem;
+    }
+
     private void OnDestroy()
     {
-        TimeManager.Instance.onMinuteEvent -= AddStack;
+        TimeManager.Instance.onMinuteEvent -= ReproducingItem;
     }
 
     public bool CanWork()
     {
-        return isReady;
+        // 생산된 품목이 1개 이상이면 작업 가능
+        return isStack > 0;
     }
 
-    private void AddStack(int minute)
+    // 아이템 재생산
+    private void ReproducingItem(int minute)
     {
         if (isReady) return;
 
-        isStack += 1;
+        remainingTime -= minute;
 
-        if (workStack == isStack)
+        if (remainingTime <= 0)
         {
-            isStack = 0;
-            isReady = true;
+            isStack++;
+
+            if (workStack <= isStack)
+            {
+                isReady = true;
+            }
         }
     }
 
@@ -52,50 +79,36 @@ public abstract class AnimalBase : MonoBehaviour
     {
         if (!isReady) return -1;
 
-        int itemID = -1;
-
-        switch (type)
+        if (type == AnimalType.NONE)
         {
-            case AnimalType.COW:
-                itemID = 4012;
-                break;
 
-            case AnimalType.CHICKEN:
-                itemID = -1;
-                break;
-
-            case AnimalType.NONE:
-            default:
-                return -1;
+            return -1;
         }
+        else
+        {
+            // 수확 완료 처리
+            isReady = false;
+            isStack = 0;
 
-        // 수확 완료 처리
-        isReady = false;
-        isStack = 0;
-
-        return itemID;
+            return productItemID;
+        }
     }
 
-    private void OnMouseDown()
-    {
-        GameManager.Instance.player
-            .GetComponent<PlayerAction>()
-            .StartAnimalAction(this);
-    }
+    // 할당된 건물이 없다면 마음대로 움직임 (추가 예정)
+
 
     #region Save/Load
     public AnimalSaveData GetSaveData()
     {
-        position = gameObject.transform.position;
-
         return new AnimalSaveData
         {
             itemId = this.itemId,
             id = this.id,
             animalName = this.animalName,
-            position = this.position,
             isStack = this.isStack,
-            isReady = this.isReady
+            isReady = this.isReady,
+
+            position = transform.position
         };
     }
     public void Load(AnimalSaveData data)
@@ -103,9 +116,10 @@ public abstract class AnimalBase : MonoBehaviour
         this.itemId = data.itemId;
         this.id = data.id;
         this.animalName = data.animalName;
-        this.position = data.position;
         this.isStack = data.isStack;
         this.isReady = data.isReady;
+
+        transform.position = data.position;
     }
     #endregion
 }

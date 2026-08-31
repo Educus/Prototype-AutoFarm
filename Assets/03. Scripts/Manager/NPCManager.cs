@@ -17,12 +17,14 @@ public class NPCManager : MonoBehaviour
     private List<NPCDebugData> debugNPCs =
         new List<NPCDebugData>();
 
+    // NPC 정보 저장
     public void Register(NPC npc)
     {
         if (!npcs.ContainsKey(npc.id))
             npcs.Add(npc.id, npc);
     }
 
+    // NPC 정보 찾기
     public NPC Get(string id)
     {
         if (string.IsNullOrEmpty(id))

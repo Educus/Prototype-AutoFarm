@@ -27,8 +27,8 @@ public class Rocket : BuildingBase
 
     private Collider2D collider;
 
-    // NPC 스폰 장소
-    [SerializeField] private GameObject npcPrefab;
+    // 등록된 이벤트 관리
+    private List<int> eventsNum = new List<int>();
 
     #region Unity
 
@@ -40,37 +40,19 @@ public class Rocket : BuildingBase
         collider = GetComponent<Collider2D>();
 
         uiStorageManagement = UIStorageManagement.Instance;
-
-        npcPrefab = DataManager.Instance.GetObjectPrefabs(6021);
     }
 
-    private void Update()
+    private void Start()
     {
-        int hour = TimeManager.Instance.hour;
-        int minute = TimeManager.Instance.minute;
-        int day = TimeManager.Instance.day;
-
-        // 09:00 판매 정산 및 아이템 적재
-        if (hour == 9 && minute == 0)
-        {
-            if (lastCalculateDay != day)
-            {
-                lastCalculateDay = day;
-
-                Calculate();
-            }
-        }
-
-        // 23:30 판매
-        if (hour == 23 && minute == 30)
-        {
-            if (lastSellDay != day)
-            {
-                lastSellDay = day;
-
-                LaunchRocket();
-            }
-        }
+        // 22:00 출발(판매)
+        eventsNum.Add(TimeManager.Instance.RegisterDaily(22,0, () => LaunchRocket()));
+        // 01:00 도착(판매 정산 및 아이템 적재)
+        eventsNum.Add(TimeManager.Instance.RegisterDaily(1,0, () => Calculate()));
+        
+        // 09:00 출발
+        eventsNum.Add(TimeManager.Instance.RegisterDaily(9,00, () => LaunchRocket()));
+        // 13:00 도착
+        eventsNum.Add(TimeManager.Instance.RegisterDaily(13,0, () => Calculate()));
     }
 
     private void OnDestroy()
@@ -78,6 +60,11 @@ public class Rocket : BuildingBase
         if (inventory != null)
         {
             inventory.OnInventoryChanged -= CheckRocketAvailable;
+        }
+
+        foreach (var eventNum in eventsNum)
+        {
+            TimeManager.Instance.RemoveSchedule(eventNum);
         }
     }
 
@@ -264,21 +251,34 @@ public class Rocket : BuildingBase
         {
             int itemID = buyItem.Key;
             int remaining = buyItem.Value;
-
-            // NPC 구매
-            if (itemID == 6021)
-            {
-                for (int i = 0; i < remaining; i++)
-                {
-                    SpawnNPC(i);
-                }
-
-                // NPC는 모두 지급되었으므로 다음 아이템 처리
-                continue;
-            }
-
+            
             ItemData itemData =
               DataManager.Instance.itemsData[itemID];
+
+            if (itemData.itemType == ItemType.Object)
+            {
+                // NPC 구매
+                if (itemID == 6021)
+                {
+                    for (int i = 0; i < remaining; i++)
+                    {
+                        SpawnNPC(i);
+                    }
+
+                    // NPC는 모두 지급되었으므로 다음 아이템 처리
+                    continue;
+                }
+                // 동물 구매
+                else
+                {
+                    for (int i = 0; i < remaining; i++)
+                    {
+                        SpawnAnimal(itemID);
+                    }
+
+                    continue;
+                }
+            }
 
             // 창고에 먼저 저장
             foreach (var storage in storages.Values)
@@ -338,6 +338,8 @@ public class Rocket : BuildingBase
 
     private void SpawnNPC(int x)
     {
+        GameObject npcPrefab = DataManager.Instance.GetObjectPrefabs(6021);
+
         if (npcPrefab == null)
         {
             Debug.LogWarning("NPC Prefab is null.");
@@ -352,11 +354,32 @@ public class Rocket : BuildingBase
         // 이름 생성
         string npcID = $"6021_{npcIndex}";
 
-        obj.name = npcID;
-
         NPC npc = obj.GetComponent<NPC>();
 
         npc.Initialize(npcID);
+    }
+
+    private void SpawnAnimal(int animalID)
+    {
+        GameObject animalPrefab = DataManager.Instance.GetObjectPrefabs(animalID);
+
+        if (animalPrefab == null)
+        {
+            Debug.LogWarning("Animal Prefab is null.");
+            return;
+        }
+
+        GameObject obj =
+            Instantiate(animalPrefab, transform.position + new Vector3(0, -4f, 0), Quaternion.identity);
+
+        int animalIndex = DataManager.Instance.AnimalManager.animals.Count;
+
+        // 이름 생성
+        string animalsID = $"{animalID}_{animalIndex}";
+
+        AnimalBase animal = obj.GetComponent<AnimalBase>();
+
+        animal.Initialize(animalsID);
     }
 
     #endregion
