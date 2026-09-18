@@ -13,30 +13,31 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable
 
     public AnimalType type;     // 동물 타입
     public int productItemID;   // 생산 아이템
-    [Tooltip("생산시간(10분 단위)")]
-    public int productionTime = 60;  // 생산 시간
 
+    [Tooltip("생산시간(10분 단위)")]
+    public int productionTime = 360;  // 생산 시간
+
+    // 다음 생산까지 남은 시간
     private int remainingTime;
 
-    private int workStack;
-    [HideInInspector] public int isStack;
-    public bool isReady = false;
+    // 하루 최대 수확 횟수
+    [SerializeField]
+    private int dailyHarvestCount = 2;
+
+    // 오늘 수확한 횟수
+    private int todayHarvestCount;
+
+    // 현재 생산품 개수
+    [HideInInspector]
+    public int isStack;
 
 
-    // 상호작용
-    public void OnInteract(Player player)
-    {
-        Debug.Log("동물 클릭 됨");
-
-        // 생산품 있는 상태에서 플레이어 상호작용 시 생산
-        GameManager.Instance.player
-            .GetComponent<PlayerAction>()
-            .StartAnimalAction(this);
-    }
+    #region Initialize
 
     public void Initialize(string animalID)
     {
         id = animalID;
+
         remainingTime = productionTime;
 
         gameObject.name = animalID;
@@ -44,60 +45,108 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable
         DataManager.Instance.AnimalManager.Register(this);
 
         TimeManager.Instance.onMinuteEvent += ReproducingItem;
+        TimeManager.Instance.onDayEvent += ResetDailyProduction;
     }
+
+    #endregion
+
+
+    #region Unity
 
     private void OnDestroy()
     {
-        TimeManager.Instance.onMinuteEvent -= ReproducingItem;
+        if (TimeManager.Instance != null)
+        {
+            TimeManager.Instance.onMinuteEvent -= ReproducingItem;
+            TimeManager.Instance.onDayEvent -= ResetDailyProduction;
+        }
     }
 
-    public bool CanWork()
+    #endregion
+
+
+    #region Interaction
+
+    public void OnInteract(Player player)
     {
-        // 생산된 품목이 1개 이상이면 작업 가능
+        Debug.Log("동물 클릭 됨");
+
+        GameManager.Instance.player
+            .GetComponent<PlayerAction>()
+            .StartAnimalAction(this);
+    }
+
+    #endregion
+
+    #region Production
+
+    // 수확 가능한가?
+    public bool IsReady()
+    {
         return isStack > 0;
     }
 
-    // 아이템 재생산
+
+    // 아이템 생산
     private void ReproducingItem(int minute)
     {
-        if (isReady) return;
+        // 오늘 수확 가능 횟수를 모두 사용했다면 생산하지 않음
+        if (todayHarvestCount >= dailyHarvestCount)
+            return;
+
+        // 아직 수확하지 않은 생산품이 있다면
+        // 추가 생산하지 않음
+        if (isStack > 0)
+            return;
 
         remainingTime -= minute;
 
-        if (remainingTime <= 0)
-        {
-            isStack++;
+        if (remainingTime > 0)
+            return;
 
-            if (workStack <= isStack)
-            {
-                isReady = true;
-            }
-        }
+        // 생산품 생성
+        isStack = 1;
+
+        // 다음 생산까지 쿨타임 초기화
+        remainingTime = productionTime;
     }
 
+    // 하루가 바뀌면 오늘 수확 횟수 초기화
+    private void ResetDailyProduction(int day)
+    {
+        todayHarvestCount = 0;
+    }
+
+    // 수확
     public int Harvest()
     {
-        if (!isReady) return -1;
+        // 생산품이 없으면 수확 불가
+        if (isStack <= 0)
+            return -1;
+
+        // 오늘 수확 횟수를 모두 사용했다면 수확 불가
+        if (todayHarvestCount >= dailyHarvestCount)
+            return -1;
 
         if (type == AnimalType.NONE)
-        {
-
             return -1;
-        }
-        else
-        {
-            // 수확 완료 처리
-            isReady = false;
-            isStack = 0;
 
-            return productItemID;
-        }
+        // 생산품 하나 수확
+        isStack--;
+
+        // 오늘 수확 횟수 증가
+        todayHarvestCount++;
+
+        return productItemID;
     }
+
+    #endregion
 
     // 할당된 건물이 없다면 마음대로 움직임 (추가 예정)
 
 
-    #region Save/Load
+    #region Save / Load
+
     public AnimalSaveData GetSaveData()
     {
         return new AnimalSaveData
@@ -106,20 +155,22 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable
             id = this.id,
             animalName = this.animalName,
             isStack = this.isStack,
-            isReady = this.isReady,
 
             position = transform.position
         };
     }
+
     public void Load(AnimalSaveData data)
     {
         this.itemId = data.itemId;
         this.id = data.id;
         this.animalName = data.animalName;
         this.isStack = data.isStack;
-        this.isReady = data.isReady;
 
         transform.position = data.position;
+
+        remainingTime = productionTime;
     }
+
     #endregion
 }

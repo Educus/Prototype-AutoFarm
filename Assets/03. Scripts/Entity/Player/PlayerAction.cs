@@ -167,7 +167,7 @@ public class PlayerAction : MonoBehaviour
             target,
             () =>
             {
-                StartCoroutine(IEWorkRoutine(() => targetAnimal.CanWork(), ExecuteAnimalAction));
+                StartCoroutine(IEWorkRoutine(() => targetAnimal.IsReady(), ExecuteAnimalAction));
             });
     }
 
@@ -175,6 +175,13 @@ public class PlayerAction : MonoBehaviour
     {
         if (targetAnimal == null)
             return;
+
+        // 작업 시간이 끝난 시점에 다시 수확 가능 여부 확인
+        if (!targetAnimal.IsReady())
+        {
+            targetAnimal = null;
+            return;
+        }
 
         int item =
             targetAnimal.Harvest();

@@ -810,7 +810,7 @@ public class NPCJobController : MonoBehaviour
                 if (animal == null)
                     continue;
 
-                if (!animal.isReady)
+                if (!animal.IsReady())
                     continue;
 
                 npc.targetAnimal = animal;

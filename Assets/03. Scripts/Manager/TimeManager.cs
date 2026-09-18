@@ -8,7 +8,7 @@ public class TimeManager : MonoBehaviour
     public static TimeManager Instance;
 
     [Tooltip("시간 배율")]
-    private float timeScale = 0f;
+    [SerializeField] private float timeScale = 0f;
 
     [Tooltip("현실 시간 기준 하루 길이(초)")]
     private float realSecondsPerDay = 300f; // 테스트 5분

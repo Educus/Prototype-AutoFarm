@@ -109,9 +109,20 @@ public class BuildingManager : MonoBehaviour
     #region Register
     public void Register(BuildingBase building)
     {
+        if (building == null)
+            return;
+
         if (!buildings.ContainsKey(building.id))
         {
             buildings.Add(building.id, building);
+
+            // Ranch가 등록되었을 때
+            // 대기 중인 동물이 있다면 자동 할당
+            if (building.type == BuildingType.Ranch)
+            {
+                DataManager.Instance.AnimalManager
+                    .AssignAnimalToBuilding();
+            }
         }
     }
     #endregion

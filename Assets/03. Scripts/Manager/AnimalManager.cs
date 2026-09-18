@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static NPCManager;
 
 public enum AnimalType
 {
@@ -8,12 +7,17 @@ public enum AnimalType
     COW,
     CHICKEN
 }
+
 public class AnimalManager : MonoBehaviour
 {
     // 모든 동물 정보
-    public Dictionary<string, AnimalBase> animals = new Dictionary<string, AnimalBase>();
-    // 할당되지 않은 동물 정보(아이디 값만)
-    public Queue<string> animalQueue = new Queue<string>();
+    public Dictionary<string, AnimalBase> animals =
+        new Dictionary<string, AnimalBase>();
+
+    // 할당되지 않은 동물
+    public Queue<string> animalQueue =
+        new Queue<string>();
+
 
     // Inspector 확인용
     [System.Serializable]
@@ -27,17 +31,43 @@ public class AnimalManager : MonoBehaviour
     private List<AnimalDebugData> debugAnimals =
         new List<AnimalDebugData>();
 
-    // 동물 정보 저장
+
+    #region 등록
+
+    // 새로운 동물 등록
     public void Register(AnimalBase animal)
     {
-        if (!animals.ContainsKey(animal.id))
-        {
-            animals.Add(animal.id, animal);
-            animalQueue.Enqueue(animal.id);
+        if (animal == null)
+            return;
 
-            AssignAnimalToBuilding();
-        }
+        if (animals.ContainsKey(animal.id))
+            return;
+
+        animals.Add(animal.id, animal);
+
+        EnqueueAnimal(animal);
     }
+
+
+    // 할당되지 않은 동물로 등록
+    public void EnqueueAnimal(AnimalBase animal)
+    {
+        if (animal == null)
+            return;
+
+        // 이미 Queue에 들어있는지 확인
+        if (animalQueue.Contains(animal.id))
+            return;
+
+        animalQueue.Enqueue(animal.id);
+
+        AssignAnimalToBuilding();
+    }
+
+    #endregion
+
+
+    #region 찾기
 
     // 동물 정보 찾기
     public AnimalBase Get(string id)
@@ -53,49 +83,97 @@ public class AnimalManager : MonoBehaviour
             return animal;
         }
 
-        Debug.LogWarning($"Animal with ID '{id}' not found.");
+        Debug.LogWarning(
+            $"Animal with ID '{id}' not found."
+        );
 
         return null;
     }
 
-    // 동물을 건물에 자동 할당(1.동물이 생겼을 때, 2.건물이 생겼을 때)
+    #endregion
+
+
+    #region 동물 자동 할당
+
+    // 동물을 건물에 자동 할당
+    // 1. 동물이 생겼을 때
+    // 2. 건물이 생겼을 때
+    // 3. 목장이 삭제되어 동물이 돌아왔을 때
     public void AssignAnimalToBuilding()
     {
-        // 동물이 없으면 할당하지 않음
+        // 동물이 없으면 종료
         if (animalQueue.Count == 0)
-        {
-            Debug.Log("No unassigned animals available.");
             return;
-        }
-
-        // 동물에게 이미 건물이 할당되어 있다면 패스
-
 
 
         // Ranch 건물 가져오기
         List<RanchBuilding> ranchBuildings =
             DataManager.Instance.BuildingManager
-                .GetBuildingsByType<RanchBuilding>(BuildingType.Ranch);
+                .GetBuildingsByType<RanchBuilding>(
+                    BuildingType.Ranch
+                );
 
-        // Ranch 건물이 없으면 할당하지 않음
+
+        // Ranch가 없으면 대기
         if (ranchBuildings.Count == 0)
         {
-            Debug.Log("No Ranch buildings available.");
             return;
         }
 
-        // 빈 건물이 없으면 할당하지 않음
+
+        // 할당 가능한 Ranch가 있는 동안 반복
+        while (animalQueue.Count > 0)
+        {
+            RanchBuilding targetRanch = null;
 
 
+            // 빈 공간이 있는 Ranch 찾기
+            foreach (RanchBuilding ranch in ranchBuildings)
+            {
+                if (ranch == null)
+                    continue;
 
-        string animalID = animalQueue.Dequeue();
-        AnimalBase animal = Get(animalID);
+                if (ranch.CanAddAnimal())
+                {
+                    targetRanch = ranch;
+                    break;
+                }
+            }
+
+
+            // 빈 Ranch가 없으면 종료
+            if (targetRanch == null)
+            {
+                break;
+            }
+
+
+            // Queue에서 동물 가져오기
+            string animalID = animalQueue.Dequeue();
+
+            AnimalBase animal = Get(animalID);
+
+            if (animal == null)
+                continue;
+
+
+            // Ranch에 동물 추가
+            bool added = targetRanch.AddAnimal(animal);
+
+            // 추가 실패하면 다시 Queue에 넣음
+            if (!added)
+            {
+                animalQueue.Enqueue(animalID);
+                break;
+            }
+        }
     }
 
+    #endregion
 
 
+    #region Debug
 
-    // Dictionary -> List 변환
     private void RefreshDebugList()
     {
         debugAnimals.Clear();
@@ -110,11 +188,11 @@ public class AnimalManager : MonoBehaviour
         }
     }
 
-#if UNITY_EDITOR
-    // Inspector 실시간 갱신
+    #if UNITY_EDITOR
     private void Update()
     {
         RefreshDebugList();
     }
-#endif
+    #endif
+    #endregion
 }

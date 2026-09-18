@@ -156,6 +156,6 @@ MonoBehaviour:
   animalName: 
   type: 1
   productItemID: 4012
-  productionTime: 60
+  productionTime: 360
+  dailyHarvestCount: 2
   isStack: 0
-  isReady: 0
