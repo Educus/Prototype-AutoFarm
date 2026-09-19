@@ -40,11 +40,12 @@ public class GUIManagement : MonoBehaviour
     // 시간 GUI 자동 갱신
     private void SetTime(int minute)
     {
+        int min = TimeManager.Instance.minute;
         int day = TimeManager.Instance.day;
         int hour = TimeManager.Instance.hour;
 
         dayText.text = $"Day-{day}";
-        timeText.text = $"{hour}:{minute}";
+        timeText.text = $"{hour}:{min}";
     }
 
     // NPC GUI 자동 갱신

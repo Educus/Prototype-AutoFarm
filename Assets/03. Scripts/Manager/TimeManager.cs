@@ -145,7 +145,7 @@ public class TimeManager : MonoBehaviour
 
             if (minute % miniteStep == 0)
             {
-                onMinuteEvent?.Invoke(minute);
+                onMinuteEvent?.Invoke(minuteStep);
                 CheckSchedules();
             }
         }

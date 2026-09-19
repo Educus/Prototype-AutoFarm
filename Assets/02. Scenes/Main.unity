@@ -137940,6 +137940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 473ccd7aef0da1f4caa28713545e6440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeManager
+  timeScale: 0
   miniteStep: 10
 --- !u!1 &2129992321
 GameObject:
@@ -138611,7 +138612,7 @@ SceneRoots:
   - {fileID: 786970621}
   - {fileID: 572868744}
   - {fileID: 292274684}
+  - {fileID: 1775373072}
   - {fileID: 5733299886470525291}
   - {fileID: 2268039935067959686}
   - {fileID: 5626427618260555056}
-  - {fileID: 1775373072}

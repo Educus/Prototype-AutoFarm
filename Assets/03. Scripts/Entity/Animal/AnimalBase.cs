@@ -6,6 +6,7 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable
     // 이걸 부모로 쓰는 동물들
     // 동물 타입만 연결해주면 모두 연결, 행동 가능하게 만들기
     // 추가한다면 동물 설명?
+    [HideInInspector] public RanchBuilding ranchBuilding = null; // 농장 건물 참조
 
     [HideInInspector] public int itemId;         // 아이디
     [HideInInspector] public string id;          // 아이디
@@ -90,22 +91,26 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable
     // 아이템 생산
     private void ReproducingItem(int minute)
     {
-        // 오늘 수확 가능 횟수를 모두 사용했다면 생산하지 않음
-        if (todayHarvestCount >= dailyHarvestCount)
-            return;
-
         // 아직 수확하지 않은 생산품이 있다면
         // 추가 생산하지 않음
         if (isStack > 0)
             return;
 
         remainingTime -= minute;
-
+        Debug.Log($"동물 {minute}분 생산 시간 감소: {remainingTime}분 남음");
+        
         if (remainingTime > 0)
+            return;
+
+        // 오늘 수확 가능 횟수를 모두 사용했다면 생산하지 않음
+        if (todayHarvestCount >= dailyHarvestCount)
             return;
 
         // 생산품 생성
         isStack = 1;
+
+        // 목장 건물이 있다면 작업 요청
+        ranchBuilding?.RequestWork();
 
         // 다음 생산까지 쿨타임 초기화
         remainingTime = productionTime;
@@ -121,7 +126,7 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable
     public int Harvest()
     {
         // 생산품이 없으면 수확 불가
-        if (isStack <= 0)
+        if (isStack < 1)
             return -1;
 
         // 오늘 수확 횟수를 모두 사용했다면 수확 불가

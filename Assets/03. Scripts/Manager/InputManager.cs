@@ -86,6 +86,8 @@ public class InputManager : MonoBehaviour
         {
             GameManager.Instance.isPlay = !GameManager.Instance.isPlay;
 
+            TimeManager.Instance.SetTimeScale(GameManager.Instance.isPlay ? 1 : 0);
+
             Debug.Log(
                 GameManager.Instance.isPlay
                 ? "게임 시작"
