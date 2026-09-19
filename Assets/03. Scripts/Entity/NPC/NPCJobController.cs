@@ -76,7 +76,10 @@ public class NPCJobController : MonoBehaviour
     {
         // 쉬는 중이면 작업 안 함
         if (npc.job.step == JobStep.Rest)
+        {
+            npcAnimation.IsWorking = false;
             return;
+        }
 
         ProcessJob();
     }
@@ -556,12 +559,13 @@ public class NPCJobController : MonoBehaviour
 
     private void WorkCurrentFarmTile()
     {
+        npcAnimation.IsWorking = true;
+
         if (!CanDoAction())
         {
-            npcAnimation.IsWorking = false;
             return;
         }
-        npcAnimation.IsWorking = true;
+
         switch (farmAction)
         {
             // =========================
@@ -653,6 +657,8 @@ public class NPCJobController : MonoBehaviour
 
                 break;
         }
+
+        npcAnimation.IsWorking = false;
     }
 
     private void FinishCurrentFarm()
@@ -837,11 +843,13 @@ public class NPCJobController : MonoBehaviour
     {
         if (npc.targetAnimal == null)
         {
+            npcAnimation.IsWorking = false;
             npc.job.step = JobStep.FindAnimal;
             return;
         }
 
-        // 행동 애니메이션 시간
+        npcAnimation.IsWorking = true;
+
         if (!CanDoAction())
             return;
 
@@ -854,6 +862,8 @@ public class NPCJobController : MonoBehaviour
         }
 
         npc.targetAnimal = null;
+
+        npcAnimation.IsWorking = false;
 
         npc.job.step = JobStep.FindAnimal;
     }
@@ -905,9 +915,12 @@ public class NPCJobController : MonoBehaviour
     {
         if (targetStorage == null)
         {
+            npcAnimation.IsWorking = false;
             npc.job.step = JobStep.Rest;
             return;
         }
+
+        npcAnimation.IsWorking = true;
 
         // 적재 애니메이션
         if (!CanDoAction())
@@ -916,12 +929,14 @@ public class NPCJobController : MonoBehaviour
         if (!TryDepositToStorage(targetStorage))
         {
             targetStorage = null;
+            npcAnimation.IsWorking = false;
             npc.job.step = JobStep.Rest;
             return;
         }
 
         targetStorage = null;
 
+        npcAnimation.IsWorking = false;
         npc.job.step = JobStep.Rest;
     }
 

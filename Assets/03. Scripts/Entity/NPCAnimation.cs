@@ -49,15 +49,15 @@ public class NPCAnimation : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-
-        //이동 관련 함수
-        //MovingController();
-
-        //작업 관련 함수
-        //WorkingController();
-    }
+    // void Update()
+    // {
+    // 
+    //     //이동 관련 함수
+    //     //MovingController();
+    // 
+    //     //작업 관련 함수
+    //     //WorkingController();
+    // }
 
     //초기화
     private void init()
