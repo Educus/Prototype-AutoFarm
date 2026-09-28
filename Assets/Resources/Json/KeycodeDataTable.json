@@ -1,112 +1,112 @@
 [
-  {
-    "KeyID": 11,
-    "ActionName": "PC_Movement",
-    "ActionType": "Interaction",
-    "DefaultKeyCode": "Mouse0",
-    "Modifier1": null,
-    "Modifier2": null,
-    "IsRebindable": 0,
-    "Description_KR": "상호작용"
-  },
-  {
-    "KeyID": 12,
-    "ActionName": "PC_Interaction",
-    "ActionType": "Movement",
-    "DefaultKeyCode": "Mouse1",
-    "Modifier1": null,
-    "Modifier2": null,
-    "IsRebindable": 0,
-    "Description_KR": "이동"
-  },
-  {
-    "KeyID": 21,
-    "ActionName": "PopUp_Chart",
-    "ActionType": "UI",
-    "DefaultKeyCode": "C",
-    "Modifier1": null,
-    "Modifier2": null,
-    "IsRebindable": 1,
-    "Description_KR": "차트"
-  },
-  {
-    "KeyID": 22,
-    "ActionName": "PopUp_Shop",
-    "ActionType": "UI",
-    "DefaultKeyCode": "S",
-    "Modifier1": null,
-    "Modifier2": null,
-    "IsRebindable": 1,
-    "Description_KR": "상점"
-  },
-  {
-    "KeyID": 23,
-    "ActionName": "PopUp_Robot",
-    "ActionType": "UI",
-    "DefaultKeyCode": "R",
-    "Modifier1": null,
-    "Modifier2": null,
-    "IsRebindable": 1,
-    "Description_KR": "로봇 관리"
-  },
-  {
-    "KeyID": 24,
-    "ActionName": "PopUp_Storage",
-    "ActionType": "UI",
-    "DefaultKeyCode": "E",
-    "Modifier1": null,
-    "Modifier2": null,
-    "IsRebindable": 1,
-    "Description_KR": "창고"
-  },
-  {
-    "KeyID": 25,
-    "ActionName": "PopUp_Hydro",
-    "ActionType": "UI",
-    "DefaultKeyCode": "H",
-    "Modifier1": null,
-    "Modifier2": null,
-    "IsRebindable": 1,
-    "Description_KR": "하이드로 리엑터"
-  },
-  {
-    "KeyID": 29,
-    "ActionName": "PopUp_Setting",
-    "ActionType": "UI",
-    "DefaultKeyCode": "Escape",
-    "Modifier1": null,
-    "Modifier2": null,
-    "IsRebindable": 0,
-    "Description_KR": "설정"
-  },
-  {
-    "KeyID": 41,
-    "ActionName": "Select_Slot1",
-    "ActionType": "Selection",
-    "DefaultKeyCode": "Alpha1",
-    "Modifier1": null,
-    "Modifier2": null,
-    "IsRebindable": 1,
-    "Description_KR": "1번 슬롯"
-  },
-  {
-    "KeyID": 42,
-    "ActionName": "Select_Slot2",
-    "ActionType": "Selection",
-    "DefaultKeyCode": "Alpha2",
-    "Modifier1": null,
-    "Modifier2": null,
-    "IsRebindable": 1,
-    "Description_KR": "2번 슬롯"
-  },
-  {
-    "KeyID": 43,
-    "ActionName": "Select_Slot3",
-    "ActionType": "Selection",
-    "DefaultKeyCode": "Alpha3",
-    "Modifier1": null,
-    "Modifier2": null,
-    "IsRebindable": 1,
-    "Description_KR": "3번 슬롯"
-  }
+    {
+        "ID":11,
+        "Name":"PC_Movement",
+        "Type":"Interaction",
+        "DefaultKeyCode":"Mouse0",
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":0,
+        "Description_KR":"상호작용"
+    },
+    {
+        "ID":12,
+        "Name":"PC_Interaction",
+        "Type":"Movement",
+        "DefaultKeyCode":"Mouse1",
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":0,
+        "Description_KR":"이동"
+    },
+    {
+        "ID":21,
+        "Name":"PopUp_Chart",
+        "Type":"UI",
+        "DefaultKeyCode":"C",
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":1,
+        "Description_KR":"차트"
+    },
+    {
+        "ID":22,
+        "Name":"PopUp_Shop",
+        "Type":"UI",
+        "DefaultKeyCode":"S",
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":1,
+        "Description_KR":"상점"
+    },
+    {
+        "ID":23,
+        "Name":"PopUp_Robot",
+        "Type":"UI",
+        "DefaultKeyCode":"R",
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":1,
+        "Description_KR":"로봇 관리"
+    },
+    {
+        "ID":24,
+        "Name":"PopUp_Storage",
+        "Type":"UI",
+        "DefaultKeyCode":"E",
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":1,
+        "Description_KR":"창고"
+    },
+    {
+        "ID":25,
+        "Name":"PopUp_Hydro",
+        "Type":"UI",
+        "DefaultKeyCode":"H",
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":1,
+        "Description_KR":"하이드로 리엑터"
+    },
+    {
+        "ID":29,
+        "Name":"PopUp_Setting",
+        "Type":"UI",
+        "DefaultKeyCode":"Escape",
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":0,
+        "Description_KR":"설정"
+    },
+    {
+        "ID":41,
+        "Name":"Select_Slot1",
+        "Type":"Selection",
+        "DefaultKeyCode":1,
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":1,
+        "Description_KR":"1번 슬롯"
+    },
+    {
+        "ID":42,
+        "Name":"Select_Slot2",
+        "Type":"Selection",
+        "DefaultKeyCode":2,
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":1,
+        "Description_KR":"2번 슬롯"
+    },
+    {
+        "ID":43,
+        "Name":"Select_Slot3",
+        "Type":"Selection",
+        "DefaultKeyCode":3,
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":1,
+        "Description_KR":"3번 슬롯"
+    }
 ]
