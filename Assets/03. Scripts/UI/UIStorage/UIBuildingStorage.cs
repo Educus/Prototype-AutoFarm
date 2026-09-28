@@ -479,7 +479,7 @@ public class UIBuildingStorage : MonoBehaviour
         Inventory targetInventory;
 
         // ¾¾¾ÑÀº ¼­ºê ÀÎº¥
-        if (itemData.itemType == ItemType.Seed)
+        if (itemData.itemType == ItemType.Seed || itemData.itemType == ItemType.Material)
         {
             targetInventory =
                 player.subInventory;

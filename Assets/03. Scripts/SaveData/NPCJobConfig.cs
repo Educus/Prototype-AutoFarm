@@ -23,6 +23,8 @@ public enum JobStep
     MoveToAnimal,
     InteractAnimal,
 
+    TakeHarvestItem,
+
     ReturnToStorage,
     DepositItems,
 

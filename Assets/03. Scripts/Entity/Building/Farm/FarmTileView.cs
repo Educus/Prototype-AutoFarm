@@ -22,13 +22,6 @@ public class FarmTileView : MonoBehaviour, IRightInteractable
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            UpdateView(0, null);
-        }
-    }
     public void UpdateView(int value, Sprite image)
     {
         if (sprite == null)

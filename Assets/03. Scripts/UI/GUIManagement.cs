@@ -45,7 +45,7 @@ public class GUIManagement : MonoBehaviour
         int hour = TimeManager.Instance.hour;
 
         dayText.text = $"Day-{day}";
-        timeText.text = $"{hour}:{min}";
+        timeText.text = $"{hour:D2}:{min:D2}";
     }
 
     // NPC GUI 자동 갱신

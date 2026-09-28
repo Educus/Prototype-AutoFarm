@@ -183,11 +183,18 @@ public class PlayerAction : MonoBehaviour
             return;
         }
 
-        int item =
-            targetAnimal.Harvest();
+        int item = targetAnimal.Harvest(player);
 
         if (item > 0)
         {
+            // 수확 성공했으므로 필요한 아이템 1개 소모
+            if (targetAnimal.harvestRequiredItemID >= 0)
+            {
+                player.subInventory.TakeUpTo(
+                    targetAnimal.harvestRequiredItemID,
+                    1);
+            }
+
             player.AddItemToInventory(item, 1);
         }
 

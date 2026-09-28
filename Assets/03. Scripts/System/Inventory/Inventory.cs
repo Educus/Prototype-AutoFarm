@@ -250,11 +250,13 @@ public class Inventory : MonoBehaviour
                 return true;
 
             case InventoryType.Main:
-                return data.itemType != ItemType.Seed && 
-                       data.itemType != ItemType.UpgPerk;
+                return data.itemType != ItemType.Seed &&
+                       data.itemType != ItemType.UpgPerk &&
+                       data.itemType != ItemType.Material;
 
             case InventoryType.Sub:
-                return data.itemType == ItemType.Seed;
+                return data.itemType == ItemType.Seed ||
+                       data.itemType == ItemType.Material;
 
             case InventoryType.Upgrade:
                 return data.itemType == ItemType.UpgPerk && !ContainsItem(itemID);;

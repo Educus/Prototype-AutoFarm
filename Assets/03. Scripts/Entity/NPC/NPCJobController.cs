@@ -57,6 +57,12 @@ public class NPCJobController : MonoBehaviour
 
     private int currentRanchIndex;
 
+    // 현재 수확에 필요한 아이템
+    private int requiredHarvestItemID = -1;
+
+    // 현재 수확에 필요한 아이템이 더 이상 없는지
+    private bool noMoreHarvestItems;
+
     #region Unity
 
     private void Awake()
@@ -162,6 +168,9 @@ public class NPCJobController : MonoBehaviour
         targetStorage = null;
 
         isWorkingFarm = false;
+
+        requiredHarvestItemID = -1;
+        noMoreHarvestItems = false;
     }
 
     // 하루가 바뀌면 작업 상태 초기화
@@ -312,7 +321,7 @@ public class NPCJobController : MonoBehaviour
                 if (npc.isMoving)
                     return;
 
-                targetStorage = FindNearestStorageWithSeed();
+                targetStorage = FindNearestStorageWithItem(npc.job.productItemID);
 
                 // 창고에 씨앗이 있으면 가지러 감
                 if (targetStorage != null)
@@ -686,6 +695,7 @@ public class NPCJobController : MonoBehaviour
         }
     }
 
+    /*
     private StorageBuilding FindNearestStorageWithSeed()
     {
         Debug.Log($"찾는 아이템 : {npc.job.productItemID}");
@@ -742,6 +752,7 @@ public class NPCJobController : MonoBehaviour
 
         return result;
     }
+    */
     #endregion
 
     #region Ranch
@@ -754,6 +765,8 @@ public class NPCJobController : MonoBehaviour
                 currentRanchIndex = 0;
                 npc.targetAnimal = null;
 
+                noMoreHarvestItems = false;
+
                 npc.job.step = JobStep.FindAnimal;
 
                 break;
@@ -763,6 +776,39 @@ public class NPCJobController : MonoBehaviour
                 if (!FindNextAnimal())
                 {
                     npc.job.step = JobStep.ReturnToStorage;
+                }
+
+                break;
+
+            case JobStep.TakeHarvestItem:
+
+                if (npc.isMoving)
+                    return;
+
+                if (!CanDoAction())
+                    return;
+
+                TakeHarvestItem(targetStorage);
+
+                targetStorage = null;
+
+                // 아이템을 가져왔으면 다시 동물에게 이동
+                if (npc.targetAnimal != null &&
+                    npc.subInventory.ContainsItem(requiredHarvestItemID))
+                {
+                    Vector2Int animalPos =
+                        GridManager.Instance.WorldToGrid(
+                            npc.targetAnimal.transform.position);
+
+                    npc.MoveTo(animalPos);
+
+                    npc.job.step = JobStep.MoveToAnimal;
+                }
+                else
+                {
+                    // 가져오지 못했으면 다음 동물
+                    npc.targetAnimal = null;
+                    npc.job.step = JobStep.FindAnimal;
                 }
 
                 break;
@@ -821,6 +867,38 @@ public class NPCJobController : MonoBehaviour
 
                 npc.targetAnimal = animal;
 
+                // 수확에 필요한 아이템 확인
+                requiredHarvestItemID =
+                    animal.harvestRequiredItemID;
+
+                // 필요한 아이템이 없다면
+                if (requiredHarvestItemID >= 0 &&
+                    !npc.subInventory.ContainsItem(requiredHarvestItemID))
+                {
+                    // 창고에서 가져올 수 있는지 확인
+                    targetStorage =
+                        FindNearestStorageWithItem(requiredHarvestItemID);
+
+                    if (targetStorage != null)
+                    {
+                        Vector2Int storagePos =
+                            GridManager.Instance.WorldToGrid(
+                                targetStorage.transform.position);
+
+                        npc.MoveTo(storagePos);
+
+                        npc.job.step = JobStep.TakeHarvestItem;
+
+                        return true;
+                    }
+
+                    // 창고에도 없다면 이 동물은 현재 수확할 수 없음
+                    npc.targetAnimal = null;
+                    currentRanchIndex++;
+
+                    continue;
+                }
+
                 Vector2Int target =
                     GridManager.Instance.WorldToGrid(
                         animal.transform.position);
@@ -839,6 +917,40 @@ public class NPCJobController : MonoBehaviour
         return false;
     }
 
+    private void TakeHarvestItem(StorageBuilding storage)
+    {
+        if (storage == null)
+        {
+            noMoreHarvestItems = true;
+            return;
+        }
+
+        int canCarry =
+            npc.subInventory.GetAddableAmount(
+                requiredHarvestItemID);
+
+        if (canCarry <= 0)
+            return;
+
+        int taken =
+            storage.inventory.TakeUpTo(
+                requiredHarvestItemID,
+                canCarry);
+
+        if (taken <= 0)
+        {
+            noMoreHarvestItems = true;
+            return;
+        }
+
+        npc.subInventory.AddItem(
+            requiredHarvestItemID,
+            taken,
+            -1);
+
+        noMoreHarvestItems = false;
+    }
+
     private void InteractCurrentAnimal()
     {
         if (npc.targetAnimal == null)
@@ -853,12 +965,22 @@ public class NPCJobController : MonoBehaviour
         if (!CanDoAction())
             return;
 
-        int itemID =
-            npc.targetAnimal.Harvest();
+        int requiredItemID = npc.targetAnimal.harvestRequiredItemID;
+
+        int itemID = npc.targetAnimal.Harvest(npc);
 
         if (itemID > 0)
         {
+            // 수확 성공
             npc.AddItemToInventory(itemID, 1);
+
+            // 수확에 사용한 아이템 1개 소비
+            if (requiredItemID >= 0)
+            {
+                npc.subInventory.TakeUpTo(
+                    requiredItemID,
+                    1);
+            }
         }
 
         npc.targetAnimal = null;
@@ -872,6 +994,43 @@ public class NPCJobController : MonoBehaviour
     #endregion
 
     #region 공통
+    private StorageBuilding FindNearestStorageWithItem(int itemID)
+    {
+        StorageBuilding result = null;
+
+        float bestDistance = float.MaxValue;
+
+        foreach (BuildingBase building in
+                 DataManager.Instance.BuildingManager.GetAll())
+        {
+            StorageBuilding storage =
+                building as StorageBuilding;
+
+            if (storage == null)
+                continue;
+
+            int itemCount = storage.inventory.slots
+                .Where(s => s.itemID == itemID)
+                .Sum(s => s.count);
+
+            if (itemCount <= 0)
+                continue;
+
+            float distance = Vector2Int.Distance(
+                npc.GetGridPos(),
+                GridManager.Instance.WorldToGrid(
+                    storage.transform.position));
+
+            if (distance < bestDistance)
+            {
+                bestDistance = distance;
+                result = storage;
+            }
+        }
+
+        return result;
+    }
+
     private void HandleReturnToStorage()
     {
         // 이동 중
