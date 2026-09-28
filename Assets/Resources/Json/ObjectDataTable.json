@@ -1,54 +1,46 @@
 [
     {
-        "ObjectID":6011,
-        "ObjectName":"Player",
-        "ObjectType":"PC",
-        "Price":0,
+        "ID":6011,
+        "Name":"Player",
+        "Type":"PC",
         "MainInv":5,
         "SubInv":3,
         "Speed":1,
-        "WorkDuration":6,
+        "WorkDuration":10,
         "DailyYield":0,
-        "YieldCoolDown":0,
-        "UseToDemo":1
+        "YieldCoolDown":0
     },
     {
-        "ObjectID":6021,
-        "ObjectName":"Prototype",
-        "ObjectType":"NPC",
-        "Price":10000,
+        "ID":6021,
+        "Name":"Prototype",
+        "Type":"NPC",
         "MainInv":10,
         "SubInv":1,
         "Speed":4,
-        "WorkDuration":2,
+        "WorkDuration":6,
         "DailyYield":0,
-        "YieldCoolDown":0,
-        "UseToDemo":1
+        "YieldCoolDown":0
     },
     {
-        "ObjectID":6031,
-        "ObjectName":"Cow",
-        "ObjectType":"Cattle",
-        "Price":20000,
+        "ID":6031,
+        "Name":"Cow",
+        "Type":"Cattle",
         "MainInv":0,
         "SubInv":0,
         "Speed":6,
         "WorkDuration":0,
         "DailyYield":2,
-        "YieldCoolDown":6,
-        "UseToDemo":1
+        "YieldCoolDown":6
     },
     {
-        "ObjectID":6032,
-        "ObjectName":"Sheep",
-        "ObjectType":"Cattle",
-        "Price":10000,
+        "ID":6032,
+        "Name":"Sheep",
+        "Type":"Cattle",
         "MainInv":0,
         "SubInv":0,
         "Speed":3,
         "WorkDuration":0,
         "DailyYield":1,
-        "YieldCoolDown":12,
-        "UseToDemo":0
+        "YieldCoolDown":12
     }
 ]
