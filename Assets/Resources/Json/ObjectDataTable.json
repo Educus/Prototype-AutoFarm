@@ -8,7 +8,9 @@
         "Speed":1,
         "WorkDuration":10,
         "DailyYield":0,
-        "YieldCoolDown":0
+        "YieldCoolDown":0,
+        "YieldMaterial":-1,
+        "YieldItem":-1
     },
     {
         "ID":6021,
@@ -19,7 +21,9 @@
         "Speed":4,
         "WorkDuration":6,
         "DailyYield":0,
-        "YieldCoolDown":0
+        "YieldCoolDown":0,
+        "YieldMaterial":-1,
+        "YieldItem":-1
     },
     {
         "ID":6031,
@@ -30,7 +34,9 @@
         "Speed":6,
         "WorkDuration":0,
         "DailyYield":2,
-        "YieldCoolDown":6
+        "YieldCoolDown":6,
+        "YieldMaterial":4011,
+        "YieldItem":4012
     },
     {
         "ID":6032,
@@ -41,6 +47,8 @@
         "Speed":3,
         "WorkDuration":0,
         "DailyYield":1,
-        "YieldCoolDown":12
+        "YieldCoolDown":12,
+        "YieldMaterial":-1,
+        "YieldItem":-1
     }
 ]
