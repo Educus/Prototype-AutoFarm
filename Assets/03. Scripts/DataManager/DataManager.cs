@@ -126,7 +126,7 @@ public class DataManager : MonoBehaviour
         string name = itemName.ToLower();
         foreach (var item in itemsData)
         {
-            if (item.Value.itemName.ToLower() == name)
+            if (item.Value.name.ToLower() == name)
             {
                 return item.Key;
             }

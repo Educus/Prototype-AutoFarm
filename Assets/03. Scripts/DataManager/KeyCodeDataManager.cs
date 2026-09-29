@@ -7,9 +7,9 @@ using Newtonsoft.Json;
 [Serializable]
 public class KeyCodeData
 {
-    public int KeyID;
-    public string ActionName;
-    public string ActionType;
+    public int ID;
+    public string Name;
+    public string Type;
     public string DefaultKeyCode;
     public string Modifier1;
     public string Modifier2;
@@ -61,11 +61,11 @@ public class KeyCodeDataManager : MonoBehaviour
                         key.DefaultKeyCode
                     );
 
-                keyBindings[key.ActionName] = parsedKey;
+                keyBindings[key.Name] = parsedKey;
             }
             catch
             {
-                Debug.LogWarning($"Key Parse 실패 : {key.ActionName}");
+                Debug.LogWarning($"Key Parse 실패 : {key.Name}");
             }
         }
     }

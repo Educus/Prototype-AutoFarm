@@ -27,11 +27,11 @@ public class UIChart : MonoBehaviour
 
         foreach (var product in dataManager.productsData.Values)
         {
-            if (dataManager.itemsData[product.itemID].useToDemo == false)
+            if (dataManager.itemsData[product.ID].useToDemo == false)
                 continue;
 
             GameObject chartIcon = Instantiate(chartIconPrefab, chartIconContent.transform);
-            chartIcon.GetComponent<UIChartIcon>().GetInfo(dataManager, this, product.itemID);
+            chartIcon.GetComponent<UIChartIcon>().GetInfo(dataManager, this, product.ID);
 
             timeManager.onDayEvent += (int day) =>
             {
@@ -57,7 +57,7 @@ public class UIChart : MonoBehaviour
     {
         uiChart.gameObject.SetActive(true);
 
-        uiChart.DrawChart(dataManager.productsData[itemID].itemID);
+        uiChart.DrawChart(dataManager.productsData[itemID].ID);
     }
 
     public void OnBookMark()

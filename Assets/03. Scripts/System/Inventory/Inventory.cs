@@ -250,16 +250,16 @@ public class Inventory : MonoBehaviour
                 return true;
 
             case InventoryType.Main:
-                return data.itemType != ItemType.Seed &&
-                       data.itemType != ItemType.UpgPerk &&
-                       data.itemType != ItemType.Material;
+                return data.type != ItemType.Seed &&
+                       data.type != ItemType.UpgPerk &&
+                       data.type != ItemType.Material;
 
             case InventoryType.Sub:
-                return data.itemType == ItemType.Seed ||
-                       data.itemType == ItemType.Material;
+                return data.type == ItemType.Seed ||
+                       data.type == ItemType.Material;
 
             case InventoryType.Upgrade:
-                return data.itemType == ItemType.UpgPerk && !ContainsItem(itemID);;
+                return data.type == ItemType.UpgPerk && !ContainsItem(itemID);;
 
         }
 
@@ -295,7 +295,7 @@ public class Inventory : MonoBehaviour
 
             var data = DataManager.Instance.itemsData[slot.itemID];
 
-            if (data.itemType != ItemType.Product)
+            if (data.type != ItemType.Product)
                 continue;
 
             slot.remainingStoragePeriod--;
@@ -377,7 +377,7 @@ public class Inventory : MonoBehaviour
             DataManager.Instance.itemsData[slot.itemID];
 
         // Product가 아닌 경우 맨 아래
-        if (data.itemType != ItemType.Product)
+        if (data.type != ItemType.Product)
             return int.MaxValue - 1;
 
         // 유통기한 없는 경우 맨 아래

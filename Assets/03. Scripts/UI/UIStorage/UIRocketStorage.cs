@@ -88,7 +88,7 @@ public class UIRocketStorage : MonoBehaviour
                 DataManager.Instance.itemsData[slot.itemID];
 
             // Product만 판매 가격 계산
-            if (itemData.itemType == ItemType.Product)
+            if (itemData.type == ItemType.Product)
             {
                 if (DataManager.Instance.productClosingData
                     .TryGetValue(slot.itemID, out var closingData))

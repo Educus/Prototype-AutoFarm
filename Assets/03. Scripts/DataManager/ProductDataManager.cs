@@ -8,20 +8,17 @@ using Newtonsoft.Json;
 [Serializable]
 public class Product
 {
-    [JsonProperty("ItemID")]
-    public int itemID;
+    [JsonProperty("ID")]
+    public int ID;
 
-    [JsonProperty("ItemName")]
-    public string itemName;
+    [JsonProperty("Name")]
+    public string name;
 
-    [JsonProperty("ItemType")]
-    public ItemType itemType;
+    [JsonProperty("Type")]
+    public ItemType type;
 
     [JsonProperty("PriceStdDev")]
     public float priceStdDev;
-
-    [JsonProperty("BasicPrice")]
-    public int basicCost;
 
     [JsonProperty("GrowthTime")]
     public int growthTime;
@@ -31,9 +28,6 @@ public class Product
 
     [JsonProperty("MinYield")]
     public int minimumYield;
-
-    [JsonProperty("WaterConsumption")]
-    public int waterConsumption;
 }
 
 public class ProductClosing
@@ -106,9 +100,9 @@ public class ProductDataManager : MonoBehaviour
 
         foreach (var product in productList)
         {
-            productData[product.itemID] = product;
-            productClosingData[product.itemID] = new ProductClosing();
-            productSubData[product.itemID] = new ProductSubData();
+            productData[product.ID] = product;
+            productClosingData[product.ID] = new ProductClosing();
+            productSubData[product.ID] = new ProductSubData();
         }
     }
 }

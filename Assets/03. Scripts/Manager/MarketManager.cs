@@ -80,6 +80,13 @@ public class MarketManager : MonoBehaviour
     #region Unity
     private void Start()
     {
+        foreach (var pair in dataManager.productClosingData)
+        {
+            Debug.Log(
+                $"[MarketManager] productClosingData Key = {pair.Key}"
+            );
+        }
+
         InitializeMarketStates();
 
         timeManager.onDayEvent += UpdatePrice;
@@ -122,22 +129,37 @@ public class MarketManager : MonoBehaviour
         {
             int itemID = pair.Key;
 
-            ProductClosing closing = pair.Value;
-
-            Product product =
-                dataManager.productsData[itemID];
-
-
-            // 최초 가격
-            if (closing.productsClosingPrice.Count == 0)
+            // Product 확인
+            if (!dataManager.productsData.TryGetValue(itemID, out Product product))
             {
-                closing.productsClosingPrice.Add(
-                    product.basicCost
+                Debug.LogError(
+                    $"UpdatePrice 실패: productsData에 itemID={itemID}가 없습니다."
                 );
 
                 continue;
             }
 
+            // ItemData 확인
+            if (!dataManager.itemsData.TryGetValue(itemID, out ItemData itemData))
+            {
+                Debug.LogError(
+                    $"UpdatePrice 실패: itemsData에 itemID={itemID}가 없습니다."
+                );
+
+                continue;
+            }
+
+            ProductClosing closing = pair.Value;
+
+            // 최초 가격
+            if (closing.productsClosingPrice.Count == 0)
+            {
+                closing.productsClosingPrice.Add(
+                    itemData.basicPrice
+                );
+
+                continue;
+            }
 
             // 전일 종가
             float beforePrice =
@@ -292,9 +314,10 @@ public class MarketManager : MonoBehaviour
         if (state.state == MarketState.Event)
             return;
 
+        ItemData itemData = dataManager.itemsData[state.itemID];
         Product product = dataManager.productsData[state.itemID];
 
-        float basicPrice = product.basicCost;
+        float basicPrice = itemData.basicPrice;
 
         float stdDev = product.priceStdDev;
 
@@ -328,9 +351,9 @@ public class MarketManager : MonoBehaviour
 
     private float GetMeanReversionMean(MarketItemState state)
     {
-        Product product = dataManager.productsData[state.itemID];
+        ItemData itemData = dataManager.itemsData[state.itemID];
 
-        float basicPrice = product.basicCost;
+        float basicPrice = itemData.basicPrice;
 
         float currentPrice = GetCurrentPrice(state.itemID);
 
@@ -348,7 +371,7 @@ public class MarketManager : MonoBehaviour
 
         if (closing.productsClosingPrice.Count == 0)
         {
-            return dataManager.productsData[itemID].basicCost;
+            return dataManager.itemsData[itemID].basicPrice;
         }
 
         return closing.productsClosingPrice[closing.productsClosingPrice.Count - 1];

@@ -39,7 +39,7 @@ public class UIShopBuy : MonoBehaviour
     public void SetItem(ItemData itemData, Sprite itemSprite)
     {
         itemImage.sprite = itemSprite;
-        itemName.text = itemData.itemName;
+        itemName.text = itemData.name;
 
         currentItem = itemData;
         currentPrice = itemData.basicPrice;
@@ -142,7 +142,7 @@ public class UIShopBuy : MonoBehaviour
             return;
         }
 
-        int itemID = currentItem.itemID;
+        int itemID = currentItem.ID;
 
         // ÃÑ ±¸¸Å ±Ý¾×
         int totalPrice = currentPrice * currentNum;

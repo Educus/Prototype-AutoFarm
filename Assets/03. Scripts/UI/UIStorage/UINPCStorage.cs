@@ -105,11 +105,11 @@ public class UINPCStorage : MonoBehaviour
             if (!farmItem.useToDemo)
                 continue;
 
-            if (farmItem.itemType == ItemType.Seed)
+            if (farmItem.type == ItemType.Seed)
             {
                 farmItems.Add(new InventorySlot
                 {
-                    itemID = farmItem.itemID + 1,
+                    itemID = farmItem.ID + 1,
                     count = 1,
                     remainingStoragePeriod = -1
                 });
@@ -121,11 +121,11 @@ public class UINPCStorage : MonoBehaviour
             if (!ranchItem.useToDemo)
                 continue;
 
-            if (ranchItem.itemName == "Milk")
+            if (ranchItem.name == "Milk")
             {
                 ranchItems.Add(new InventorySlot
                 {
-                    itemID = ranchItem.itemID,
+                    itemID = ranchItem.ID,
                     count = 1,
                     remainingStoragePeriod = -1
                 });
@@ -416,7 +416,7 @@ public class UINPCStorage : MonoBehaviour
                 if (item == null)
                     continue;
 
-                if (item.itemType != ItemType.Seed)
+                if (item.type != ItemType.Seed)
                     continue;
 
                 if (!seedIDs.Contains(slot.itemID))
@@ -440,7 +440,7 @@ public class UINPCStorage : MonoBehaviour
                 if (item == null)
                     continue;
 
-                if (item.itemType != ItemType.Seed)
+                if (item.type != ItemType.Seed)
                     continue;
 
                 if (!seedIDs.Contains(slot.itemID))

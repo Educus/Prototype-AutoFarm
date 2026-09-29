@@ -42,7 +42,7 @@ public class UIChartIcon : MonoBehaviour
     {
         button.onClick.AddListener(() => uiChart.OnClickChartButton(itemID));
         itemImage.sprite = dataManager.GetItemImage(itemID);
-        itemName.text = dataManager.productsData[itemID].itemName;
+        itemName.text = dataManager.productsData[itemID].name;
     }
 
     // 데이터 갱신

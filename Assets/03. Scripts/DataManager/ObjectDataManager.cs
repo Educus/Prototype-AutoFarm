@@ -13,16 +13,21 @@ public enum ObjectType
 }
 public class ObjectData
 {
-    [SerializeField] public int ObjectID;
-    [SerializeField] public string ObjectName;
-    [SerializeField] public ObjectType ObjectType;
-    [SerializeField] public int Price;
+    [SerializeField] public int ID;
+    [SerializeField] public string name;
+    [SerializeField] public ObjectType type;
+    [SerializeField] public int Speed;
+
+    // 플레이어, NPC 전용
     [SerializeField] public int MainInv;
     [SerializeField] public int SubInv;
-    [SerializeField] public int Speed;
-    [SerializeField] public int WorkDuration;
-    [SerializeField] public int ProductionAmount;
-    [SerializeField] public int UseToDemo;
+    [SerializeField] public int WorkDuration;       // 작업에 걸리는 시간
+
+    // 동물 전용
+    [SerializeField] public int DailyYield;         // 하루 생산 가능량
+    [SerializeField] public int YieldCoolDown;      // 생산 쿨타임
+    [SerializeField] public int YieldMaterial;      // 생산에 필요한 재료
+    [SerializeField] public int YieldItem;          // 생산 아이템
 }
 
 public class ObjectDataManager : MonoBehaviour
@@ -56,7 +61,7 @@ public class ObjectDataManager : MonoBehaviour
 
         foreach (var obj in objectList)
         {
-            objectData[obj.ObjectID] = obj;
+            objectData[obj.ID] = obj;
         }
     }
 }

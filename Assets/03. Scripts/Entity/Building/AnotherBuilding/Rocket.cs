@@ -255,7 +255,7 @@ public class Rocket : BuildingBase
             ItemData itemData =
               DataManager.Instance.itemsData[itemID];
 
-            if (itemData.itemType == ItemType.Object)
+            if (itemData.type == ItemType.Object)
             {
                 // NPC ±¸¸Å
                 if (itemID == 6021)

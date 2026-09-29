@@ -20,9 +20,9 @@ public enum ItemType
 }
 public class ItemData
 {
-    public int itemID;
-    public string itemName;
-    public ItemType itemType;
+    public int ID;
+    public string name;
+    public ItemType type;
     public int basicPrice;
     public int stack;
     public int storagePeriod;
@@ -59,7 +59,7 @@ public class ItemDataManager : MonoBehaviour
 
         foreach (var item in itemList)
         {
-            itemData[item.itemID] = item;
+            itemData[item.ID] = item;
         }
     }
 

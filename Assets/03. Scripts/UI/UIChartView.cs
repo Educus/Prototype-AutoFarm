@@ -31,7 +31,7 @@ public class UIChartView : MonoBehaviour
 
         float cellWidth = widthArea / 8f;   // 8등분 (7포인트 사이의 간격, 각 끝 포인트는 사용x)
 
-        float basicCost = dataManager.productsData[itemID].basicCost;
+        float basicCost = dataManager.itemsData[itemID].basicPrice;
         float minCost = basicCost * 0.7f;   // 최소 가격 : 기본 가격의 70%
         float maxCost = basicCost * 1.3f;   // 최대 가격 : 기본 가격의 130%
 
@@ -141,7 +141,7 @@ public class UIChartView : MonoBehaviour
 
         // 아이템 텍스트
         itemDescription.text =
-            $"{itemData.itemName}\n" +
+            $"{itemData.name}\n" +
             $"<color=#{colorHex}>{nowPrice}{priceText}</color>\n";
     }
 }
