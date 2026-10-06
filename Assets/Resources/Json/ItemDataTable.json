@@ -205,7 +205,7 @@
         "Type":"Battery",
         "BasicPrice":1000,
         "Stack":1,
-        "MaxCapacity":1000,
+        "MaxCapacity":300,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
