@@ -6,6 +6,9 @@ using UnityEngine;
 [RequireComponent(typeof(NPCJobController))]
 public class NPC : MonoBehaviour, ILeftInteractable
 {
+    public int ClickPriority => ClickPriorities.Npc;
+    public ClickTarget Target => ClickTarget.Npc;
+
     // NPC
     public string id;
     public string entityName;
@@ -37,13 +40,15 @@ public class NPC : MonoBehaviour, ILeftInteractable
     private NPCAnimation npcAnimation;
 
     public bool isMoving { get; private set; }
+
+
     public float moveSpeed = 3f;
 
     // 작업 및 할당 건물이 바뀌었을 때 작업 초기화
     public event Action OnJobChanged;
 
     // 상호작용
-    public void OnInteract()
+    public void OnLInteract()
     {
         if (GameManager.Instance.selectedNPC == this)
         {

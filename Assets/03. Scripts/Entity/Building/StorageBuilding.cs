@@ -54,9 +54,16 @@ public class StorageBuilding : BuildingBase
         throw new System.NotImplementedException();
     }
 
-    public override void OnInteract()
+    public override void OnLInteract()
     {
+        Debug.Log("StorageBuilding OnLInteract");
+
         UIStorageManagement.Instance.TargetBuilding(id);
         UIStorageManagement.Instance.BuildingInv();
+    }
+
+    public override void OnRInteract()
+    {
+        Debug.Log("StorageBuilding OnRInteract");
     }
 }

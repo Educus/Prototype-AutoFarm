@@ -11,12 +11,12 @@ TagManager:
   - Player
   - Water
   - UI
-  - NPC
-  - Structure
   - GUI
+  - NPC
   - Animal
   - 
-  - 
+  - Building
+  - BuildingPoint
   - 
   - 
   - 

@@ -3,7 +3,10 @@ using UnityEngine;
 public abstract class EntityBase : MonoBehaviour, ILeftInteractable
 {
     [SerializeField] protected string entityName;
-    
+
+    public abstract int ClickPriority { get; }
+    public abstract ClickTarget Target { get; }
+
     public virtual void SetName(string name)
     {
         entityName = name;
@@ -12,7 +15,7 @@ public abstract class EntityBase : MonoBehaviour, ILeftInteractable
     {
         return entityName;
     }
-    public virtual void OnInteract()
+    public virtual void OnLInteract()
     {
         Debug.Log($"{entityName} interact");
     }
