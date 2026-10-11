@@ -311,8 +311,9 @@ public class FarmBuilding : BuildingBase
     #endregion
 
     // 플레이어가 상호작용
-    public override void OnInteract()
+    
+    public override void OnRInteract()
     {
-        Debug.Log("이거 말고;");
+        Debug.Log("FarmBuilding OnRInteract");
     }
 }

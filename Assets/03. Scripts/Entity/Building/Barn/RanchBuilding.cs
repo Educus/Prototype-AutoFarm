@@ -222,8 +222,13 @@ public class RanchBuilding : BuildingBase
         throw new System.NotImplementedException();
     }
 
-    public override void OnInteract()
+    // public override void OnLInteract()
+    // {
+    //     Debug.Log("RanchBuilding OnLInteract");
+    // }
+    // 
+    public override void OnRInteract()
     {
-        // 상호작용 없음
+        Debug.Log("RanchBuilding OnRInteract");
     }
 }

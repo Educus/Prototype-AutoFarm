@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public class FarmTileView : MonoBehaviour, IRightInteractable
+public class FarmTileView : MonoBehaviour, IRightInteractable, IClickPriority
 {
+    public int ClickPriority => ClickPriorities.BuildingPoint;
+    public ClickTarget Target => ClickTarget.BuildingPoint;
+
     // 농장 이미지 애니메이션
     // 이후 추가 수정
 
@@ -41,13 +44,15 @@ public class FarmTileView : MonoBehaviour, IRightInteractable
         cropsSprite.sprite = image;
     }
 
-    public void OnInteract(Player player)
+    public void OnRInteract()
     {
         FarmBuilding farm = 
             gameObject.GetComponentInParent<FarmBuilding>();
 
         FarmTile tile =
             farm.tiles[index - 1];
+
+        Player player = GameManager.Instance.player;
 
         player.GetComponent<PlayerAction>().StartFarmAction(farm, tile);
     }

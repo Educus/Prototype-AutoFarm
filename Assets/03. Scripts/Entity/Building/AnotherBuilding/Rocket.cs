@@ -400,8 +400,17 @@ public class Rocket : BuildingBase
 
     #region Interaction
 
-    public override void OnInteract()
+    public override void OnLInteract()
     {
+        Debug.Log("Rocket OnLInteract");
+
+        uiStorageManagement.TargetBuilding(id);
+        uiStorageManagement.RocketInv();
+    }
+    public override void OnRInteract()
+    {
+        Debug.Log("Rocket OnRInteract");
+
         uiStorageManagement.TargetBuilding(id);
         uiStorageManagement.RocketInv();
     }

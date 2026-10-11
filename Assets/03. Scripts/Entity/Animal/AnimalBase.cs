@@ -1,8 +1,11 @@
 using System;
 using UnityEngine;
 
-public abstract class AnimalBase : MonoBehaviour, IRightInteractable
+public abstract class AnimalBase : MonoBehaviour, IRightInteractable, IClickPriority
 {
+    public int ClickPriority => ClickPriorities.Animal;
+    public ClickTarget Target => ClickTarget.Animal;
+
     // 이걸 부모로 쓰는 동물들
     // 동물 타입만 연결해주면 모두 연결, 행동 가능하게 만들기
     // 추가한다면 동물 설명?
@@ -71,7 +74,7 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable
 
     #region Interaction
 
-    public void OnInteract(Player player)
+    public void OnRInteract()
     {
         Debug.Log("동물 클릭 됨");
 

@@ -4,6 +4,9 @@ using UnityEngine.AI;
 
 public class Player : StatusBase
 {
+    public override int ClickPriority => ClickPriorities.None;
+    public override ClickTarget Target => ClickTarget.None;
+
     public float moveSpeed = 3f;
 
     ILeftInteractable interactTarget;
@@ -13,6 +16,7 @@ public class Player : StatusBase
     public Inventory subInventory;
 
     public int selectedSubSlotIndex { get; private set; } = -1;
+
 
     public static event Action OnInitialized;
     public Action onMoveComplete;
@@ -86,7 +90,7 @@ public class Player : StatusBase
         return added;
     }
 
-    public override void OnInteract()
+    public override void OnLInteract()
     {
     }
 }

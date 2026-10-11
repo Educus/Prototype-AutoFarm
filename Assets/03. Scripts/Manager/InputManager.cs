@@ -1,102 +1,108 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour
 {
-    // 좌클릭 시 UI매니저를 통한 UI 오픈
-    // 우클릭 시 플레이어 이동 및 해당 위치에 상호작용 대상이 있을 경우 상호작용
-    // 창고, NPC의 경우 UI오픈 // 물탱크, 마른밭의 경우 행동 상호작용
+    // 좌클릭: 클릭 위치의 대상(ILeftInteractable)에게 상호작용을 전달
+    // 우클릭: 플레이어 이동 + 도착 후 대상(IRightInteractable)과 상호작용
 
-    [SerializeField] private MovingManager movingManager;
-    [SerializeField] private InteractionUIManager uiManager;
-    [SerializeField] private GridManager gridManager;
-    [SerializeField] private Pathfinder pathfinder;
-    
     [SerializeField] private UIBuildMod buildModeUI;
     [SerializeField] private UIManagement uiManagement;
     [SerializeField] private InvenMod invenMod;
 
+    private const float InteractRange = 1f;
+
+    private static readonly string[] ClickLayerNames = { "NPC", "Animal", "Building", "BuildingPoint" };
+    private static readonly string[] SlotKeys = { "Select_Slot1", "Select_Slot2", "Select_Slot3" };
+
+    private readonly List<Collider2D> hitBuffer = new();
+
     private Player player;
     private PlayerController playerController;
-    private PlayerAction playerAction;
-
-
     private Camera mainCamera;
 
-    int layerMask;
-    Coroutine moveCoroutine;
+    private int layerMask;
+    private ContactFilter2D clickFilter;
 
     private void Start()
     {
         player = GameManager.Instance.player;
         playerController = player.GetComponent<PlayerController>();
-        playerAction = player.GetComponent<PlayerAction>();
 
         mainCamera = Camera.main;
 
-        layerMask = LayerMask.GetMask("NPC", "Structure", "Animal");
+        // 존재하지 않는 레이어 이름은 GetMask가 에러 없이 무시하므로 미리 검사
+        foreach (string layerName in ClickLayerNames)
+        {
+            if (LayerMask.NameToLayer(layerName) < 0)
+                Debug.LogError($"[InputManager] 존재하지 않는 레이어: '{layerName}'");
+        }
+
+        layerMask = LayerMask.GetMask(ClickLayerNames);
+
+        clickFilter = new ContactFilter2D();
+        clickFilter.SetLayerMask(layerMask);
+        clickFilter.useTriggers = false;
     }
 
-    void Update()
+    private void Update()
     {
         HandleSystemInput();
-
         HandleUIInput();
-
         HandleSelectSlot();
-
         HandleMouseInput();
     }
 
-    void HandleSystemInput()
+    #region Keyboard
+
+    private void HandleSystemInput()
     {
         // 테스트용 ESC
         if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Setting"))
         {
-            if (GameManager.Instance.IsMode(GameMode.None))
+            GameManager gm = GameManager.Instance;
+
+            if (gm.IsMode(GameMode.None))
             {
                 // 설정 열기
-
                 Debug.Log("설정 열기");
-            } 
-            else if (GameManager.Instance.IsMode(GameMode.Build))
+            }
+            else if (gm.IsMode(GameMode.Build))
             {
                 DataManager.Instance.BuildingManager.ExitBuildMode();
-
                 buildModeUI.BuildMode(false);
             }
-            else if (GameManager.Instance.IsMode(GameMode.Popup))
+            else if (gm.IsMode(GameMode.Popup))
             {
                 uiManagement.ExitButton();
-
                 UIStorageManagement.Instance.CloseStorageManagement();
             }
-            else if (GameManager.Instance.IsMode(GameMode.Work))
+            else if (gm.IsMode(GameMode.Work))
             {
                 Debug.Log("작업 모드 종료");
-                GameManager.Instance.ExitWorkMode();
-
+                gm.ExitWorkMode();
                 UIStorageManagement.Instance.NPCInv();
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GameManager.Instance.isPlay = !GameManager.Instance.isPlay;
+            GameManager gm = GameManager.Instance;
 
-            TimeManager.Instance.SetTimeScale(GameManager.Instance.isPlay ? 1 : 0);
+            gm.isPlay = !gm.isPlay;
+            TimeManager.Instance.SetTimeScale(gm.isPlay ? 1 : 0);
 
-            Debug.Log(
-                GameManager.Instance.isPlay
-                ? "게임 시작"
-                : "게임 일시정지");
+            Debug.Log(gm.isPlay ? "게임 시작" : "게임 일시정지");
         }
     }
 
-    void HandleUIInput()
+    private void HandleUIInput()
     {
+        // TODO: PopUp_Chart, PopUp_Shop, PopUp_Storage, PopUp_Hydro 구현 시 추가
+        if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Robot"))
+            uiManagement.OpenManagement();
+
         if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Chart"))
         {
 
@@ -105,11 +111,6 @@ public class InputManager : MonoBehaviour
         if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Shop"))
         {
 
-        }
-
-        if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Robot"))
-        {
-            uiManagement.OpenManagement();
         }
 
         if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Storage"))
@@ -123,228 +124,152 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    void HandleSelectSlot()
+    private void HandleSelectSlot()
     {
-        if (KeyCodeDataManager.Instance.GetKeyDown("Select_Slot1"))
+        for (int i = 0; i < SlotKeys.Length; i++)
         {
-            invenMod.SelectSubSlot(0);
-        }
-
-        if (KeyCodeDataManager.Instance.GetKeyDown("Select_Slot2"))
-        {
-            invenMod.SelectSubSlot(1);
-        }
-
-        if (KeyCodeDataManager.Instance.GetKeyDown("Select_Slot3"))
-        {
-            invenMod.SelectSubSlot(2);
+            if (KeyCodeDataManager.Instance.GetKeyDown(SlotKeys[i]))
+                invenMod.SelectSubSlot(i);
         }
     }
 
-    void HandleMouseInput()
+    #endregion
+
+    #region Mouse
+
+    private void HandleMouseInput()
     {
         // 좌클릭
         if (KeyCodeDataManager.Instance.GetKeyDown("PC_Movement"))
-        {
             LeftClick();
-        }
 
         // 우클릭
         if (KeyCodeDataManager.Instance.GetKeyDown("PC_Interaction"))
-        {
             RightClick();
-        }
     }
 
-    void LeftClick()
+    private void LeftClick()
     {
-        if (UnityEngine.EventSystems.EventSystem.current
-        .IsPointerOverGameObject())
+        // Popup 모드는 차단
+        if (GameManager.Instance.IsMode(GameMode.Popup))
             return;
 
-        // Popup, Build 모드는 차단
-        if (GameManager.Instance.IsMode(GameMode.Popup) ||
-            GameManager.Instance.IsMode(GameMode.Build))
+        if (!TryGetWorldClick(out Vector2 worldPos))
             return;
 
-        Vector2 mousePos =
-            Camera.main.ScreenToWorldPoint(
-                Input.mousePosition);
-
-        Collider2D hit =
-            GetPriorityHit(mousePos);
-
-        if (hit == null)
-            return;
-
-        // WorkMode
-        if (GameManager.Instance.IsMode(GameMode.Work))
-        {
-            BuildingBase building =
-                hit.GetComponentInParent<BuildingBase>();
-
-            if (building != null)
-            {
-                building.OnWorkInteract();
-
-                return;
-            }
-        }
-
-        // 일반 상호작용
-        ILeftInteractable interactable =
-            hit.GetComponentInParent<ILeftInteractable>();
-
-        interactable?.OnInteract();
+        // 모드별 동작(Build / Work / None)은 대상이 직접 판단
+        if (TryGetTarget<ILeftInteractable>(worldPos, GetAllowedTargets(), out _, out var target))
+            target.OnLInteract();
     }
 
-    void RightClick()
+    private void RightClick()
     {
-        if (UnityEngine.EventSystems.EventSystem.current
-        .IsPointerOverGameObject())
-            return;
-
-        // 모드 중엔 입력 차단
+        // 모드 중에는 입력 차단
         if (!GameManager.Instance.IsMode(GameMode.None))
             return;
 
-        // 플레이어 작업 중이면 입력 차단
+        // 플레이어가 작업 중이면 입력 차단
         if (!playerController.CanMove)
             return;
 
-        Vector2 mousePos =
-            mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        if (!TryGetWorldClick(out Vector2 worldPos))
+            return;
 
-        Collider2D hit =
-            GetPriorityHit(mousePos);
+        TryGetTarget<IRightInteractable>(worldPos, ClickTarget.All, out var hit, out var interactable);
 
-        Debug.Log($"Hit : {hit}");
-
-        IRightInteractable interactable = null;
-
-        if (hit != null)
-        {
-            interactable =
-                hit.GetComponentInParent<IRightInteractable>();
-
-            Debug.Log($"Interactable : {interactable}");
-        }
-
-        // 가까우면 즉시 상호작용
+        // 가까우면 즉시 상호작용 (큰 건물을 위해 콜라이더의 가장 가까운 점 기준)
         if (interactable != null)
         {
-            float distance =
-                Vector2.Distance(
-                    player.transform.position,
-                    hit.transform.position
-                );
+            Vector2 playerPos = player.transform.position;
+            float distance = Vector2.Distance(playerPos, hit.ClosestPoint(playerPos));
 
-            Debug.Log($"Distance : {distance}");
-
-            if (distance <= 1f)
+            if (distance <= InteractRange)
             {
-                interactable.OnInteract(player);
+                interactable.OnRInteract();
                 return;
             }
         }
 
-        playerController.MoveToWorld(
-            mousePos,
-            () =>
-            {
-                if (interactable != null)
-                {
-                    interactable.OnInteract(player);
-                }
-            });
-
-        // // 이동 처리
-        // Vector2 currentWorldPos =
-        //     (Vector2)player.transform.position + Vector2.up * 0.5f;
-        // 
-        // Vector2Int currentPos =
-        //     gridManager.WorldToGrid(currentWorldPos);
-        // 
-        // Vector2Int targetPos =
-        //     gridManager.WorldToGrid(mousePos);
-        // 
-        // List<Node> path =
-        //     pathfinder.FindPath(currentPos, targetPos);
-        // 
-        // if (path == null || path.Count == 0)
-        //     return;
-        // 
-        // // 이동 후 상호작용
-        // playerController.Move(
-        //     path,
-        //     () =>
-        //     {
-        //         if (interactable != null)
-        //         {
-        //             interactable.OnInteract(player.subInventory.slots[player.selectedSubSlotIndex].itemID);
-        //         }
-        //     });
+        // 멀면 이동 후 도착하면 상호작용
+        playerController.MoveToWorld(worldPos, () =>
+        {
+            if (IsAlive(interactable))
+                interactable.OnRInteract();
+        });
     }
 
-    private Collider2D GetPriorityHit(Vector2 mousePos)
+    // UI 위가 아니면 클릭 위치를 월드 좌표로 반환
+    private bool TryGetWorldClick(out Vector2 worldPos)
     {
-        Collider2D[] hits =
-            Physics2D.OverlapPointAll(mousePos, layerMask);
+        worldPos = default;
 
-        Collider2D structureHit = null;
+        if (EventSystem.current.IsPointerOverGameObject())
+            return false;
 
-        foreach (Collider2D hit in hits)
+        worldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        return true;
+    }
+
+    // 현재 모드에서 클릭 가능한 대상 종류
+    private ClickTarget GetAllowedTargets()
+    {
+        GameManager gm = GameManager.Instance;
+
+        return (gm.IsMode(GameMode.Build) || gm.IsMode(GameMode.Work))
+            ? ClickTarget.Building
+            : ClickTarget.All;
+    }
+
+    // 클릭 위치에서 해당 클릭(T)을 처리할 수 있는 대상 중 우선순위가 가장 높은 하나를 반환
+    // 우선순위, 모드 필터, 실행 대상이 모두 같은 컴포넌트(candidate)를 기준으로 결정됨
+    private bool TryGetTarget<T>(Vector2 worldPos, ClickTarget allowed,
+                                 out Collider2D hitCollider, out T target)
+        where T : class, IClickPriority
+    {
+        hitCollider = null;
+        target = null;
+
+        Physics2D.OverlapPoint(worldPos, clickFilter, hitBuffer);
+
+        int bestPriority = int.MinValue;
+        int bestOrder = int.MinValue;
+
+        foreach (Collider2D col in hitBuffer)
         {
-            // NPC를 가장 높은 우선순위
-            if (hit.GetComponentInParent<NPC>() != null)
-                return hit;
+            T candidate = col.GetComponentInParent<T>();
+            if (candidate == null)
+                continue;
 
-            // 다음 순위 동물
-            if (hit.GetComponentInParent<AnimalBase>() != null)
-            {
-                return hit;
-            }
+            // 현재 모드에서 허용되지 않는 대상은 제외
+            if ((candidate.Target & allowed) == 0)
+                continue;
 
-            // 건물은 후보로만 저장
-            if (structureHit == null &&
-                hit.GetComponentInParent<BuildingBase>() != null)
+            // 같은 우선순위끼리는 화면에서 위에 그려지는 쪽
+            int order = col.TryGetComponent(out SpriteRenderer sr) ? sr.sortingOrder : 0;
+
+            if (candidate.ClickPriority > bestPriority ||
+                (candidate.ClickPriority == bestPriority && order > bestOrder))
             {
-                structureHit = hit;
+                bestPriority = candidate.ClickPriority;
+                bestOrder = order;
+                hitCollider = col;
+                target = candidate;
             }
         }
 
-        return structureHit;
+        return target != null;
     }
 
-    public void Move(List<Node> path)
+    // 인터페이스 변수는 유니티의 "파괴됨 == null" 판정을 받지 못하므로 직접 확인
+    private static bool IsAlive(object target)
     {
-        if (moveCoroutine != null)
-            StopCoroutine(moveCoroutine);
+        if (target == null)
+            return false;
 
-        moveCoroutine =
-            StartCoroutine(MoveAlongPath(path, 1f));
+        if (target is UnityEngine.Object unityObject)
+            return unityObject != null;   // 파괴된 오브젝트면 false
+
+        return true;   // MonoBehaviour가 아닌 일반 클래스
     }
-
-    IEnumerator MoveAlongPath(List<Node> path, float speed)
-    {
-        foreach (Node node in path)
-        {
-            Vector3 targetPos =
-                new Vector3(node.x, node.y, 0);
-
-            while (Vector3.Distance(
-                transform.position,
-                targetPos) > 0.05f)
-            {
-                transform.position =
-                    Vector3.MoveTowards(
-                        transform.position,
-                        targetPos,
-                        speed * Time.deltaTime
-                    );
-
-                yield return null;
-            }
-        }
-    }
+    #endregion
 }

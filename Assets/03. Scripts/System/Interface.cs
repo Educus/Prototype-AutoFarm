@@ -1,18 +1,38 @@
-
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public interface Loader<Key, Value>
+public interface ILeftInteractable : IClickPriority
 {
-    public Dictionary<Key, Value> MakeDict();
+    void OnLInteract();
 }
 
-public interface ILeftInteractable
+public interface IRightInteractable : IClickPriority
 {
-    void OnInteract();
+    void OnRInteract();
 }
 
-public interface IRightInteractable
+[Flags]
+public enum ClickTarget
 {
-    void OnInteract(Player player);
+    None = 0,
+    Npc = 1 << 0,
+    Animal = 1 << 1,
+    BuildingPoint = 1 << 2,  // 건물 내부 상호작용 지점
+    Building = 1 << 3,
+    All = ~0
+}
+
+public static class ClickPriorities
+{
+    public const int None = -1;
+    public const int Npc = 100;
+    public const int Animal = 50;
+    public const int BuildingPoint = 20;  // 건물 내부 상호작용 지점
+    public const int Building = 0;
+}
+
+public interface IClickPriority
+{
+    int ClickPriority { get; }
+    ClickTarget Target { get; }
 }
