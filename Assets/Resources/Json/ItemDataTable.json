@@ -5,6 +5,7 @@
         "Type":"Seed",
         "BasicPrice":900,
         "Stack":45,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":0
     },
@@ -14,6 +15,7 @@
         "Type":"Product",
         "BasicPrice":1000,
         "Stack":9,
+        "MaxCapacity":0,
         "StoragePeriod":30,
         "UseToDemo":0
     },
@@ -23,6 +25,7 @@
         "Type":"Seed",
         "BasicPrice":800,
         "Stack":45,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -32,6 +35,7 @@
         "Type":"Product",
         "BasicPrice":900,
         "Stack":9,
+        "MaxCapacity":0,
         "StoragePeriod":30,
         "UseToDemo":1
     },
@@ -41,6 +45,7 @@
         "Type":"Seed",
         "BasicPrice":900,
         "Stack":45,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -50,6 +55,7 @@
         "Type":"Product",
         "BasicPrice":1000,
         "Stack":9,
+        "MaxCapacity":0,
         "StoragePeriod":20,
         "UseToDemo":1
     },
@@ -59,6 +65,7 @@
         "Type":"Seed",
         "BasicPrice":990,
         "Stack":45,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":0
     },
@@ -68,6 +75,7 @@
         "Type":"Product",
         "BasicPrice":1100,
         "Stack":9,
+        "MaxCapacity":0,
         "StoragePeriod":20,
         "UseToDemo":0
     },
@@ -77,6 +85,7 @@
         "Type":"Seed",
         "BasicPrice":1100,
         "Stack":45,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -86,6 +95,7 @@
         "Type":"Product",
         "BasicPrice":1200,
         "Stack":9,
+        "MaxCapacity":0,
         "StoragePeriod":15,
         "UseToDemo":1
     },
@@ -95,6 +105,7 @@
         "Type":"Seed",
         "BasicPrice":990,
         "Stack":45,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":0
     },
@@ -104,6 +115,7 @@
         "Type":"Product",
         "BasicPrice":1100,
         "Stack":9,
+        "MaxCapacity":0,
         "StoragePeriod":15,
         "UseToDemo":0
     },
@@ -113,6 +125,7 @@
         "Type":"Material",
         "BasicPrice":5000,
         "Stack":8,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -122,6 +135,7 @@
         "Type":"Product",
         "BasicPrice":5000,
         "Stack":4,
+        "MaxCapacity":0,
         "StoragePeriod":7,
         "UseToDemo":1
     },
@@ -131,6 +145,7 @@
         "Type":"Water",
         "BasicPrice":0,
         "Stack":99,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -140,6 +155,7 @@
         "Type":"Developer",
         "BasicPrice":0,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -149,6 +165,7 @@
         "Type":"Tutorial",
         "BasicPrice":0,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -158,6 +175,7 @@
         "Type":"Object",
         "BasicPrice":10000,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -167,6 +185,7 @@
         "Type":"Object",
         "BasicPrice":20000,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -176,6 +195,7 @@
         "Type":"Object",
         "BasicPrice":5000,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":0
     },
@@ -185,6 +205,7 @@
         "Type":"Battery",
         "BasicPrice":1000,
         "Stack":1,
+        "MaxCapacity":300,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -194,6 +215,7 @@
         "Type":"UpgPerk",
         "BasicPrice":10000,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -203,6 +225,7 @@
         "Type":"UpgPerk",
         "BasicPrice":20000,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":0
     },
@@ -212,6 +235,7 @@
         "Type":"UpgPerk",
         "BasicPrice":10000,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -221,6 +245,7 @@
         "Type":"UpgPerk",
         "BasicPrice":20000,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":0
     },
@@ -230,6 +255,7 @@
         "Type":"UpgPerk",
         "BasicPrice":10000,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -239,6 +265,7 @@
         "Type":"UpgPerk",
         "BasicPrice":20000,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":0
     },
@@ -248,6 +275,7 @@
         "Type":"UpgPerk",
         "BasicPrice":10000,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -257,6 +285,7 @@
         "Type":"UpgPerk",
         "BasicPrice":20000,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":0
     },
@@ -266,6 +295,7 @@
         "Type":"BuildingKit",
         "BasicPrice":0,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -275,6 +305,7 @@
         "Type":"BuildingKit",
         "BasicPrice":100000,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     },
@@ -284,6 +315,7 @@
         "Type":"BuildingKit",
         "BasicPrice":30000,
         "Stack":1,
+        "MaxCapacity":0,
         "StoragePeriod":-1,
         "UseToDemo":1
     }

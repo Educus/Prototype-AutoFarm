@@ -2,7 +2,7 @@
     {
         "ID":11,
         "Name":"PC_Movement",
-        "Type":"Interaction",
+        "Type":"Movement",
         "DefaultKeyCode":"Mouse0",
         "Modifier1":null,
         "Modifier2":null,
@@ -12,12 +12,52 @@
     {
         "ID":12,
         "Name":"PC_Interaction",
-        "Type":"Movement",
+        "Type":"Interaction",
         "DefaultKeyCode":"Mouse1",
         "Modifier1":null,
         "Modifier2":null,
         "IsRebindable":0,
         "Description_KR":"이동"
+    },
+    {
+        "ID":13,
+        "Name":"PC_MoveUp",
+        "Type":"Movement",
+        "DefaultKeyCode":"W",
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":1,
+        "Description_KR":"위로 이동"
+    },
+    {
+        "ID":14,
+        "Name":"PC_MoveLeft",
+        "Type":"Movement",
+        "DefaultKeyCode":"A",
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":1,
+        "Description_KR":"왼쪽으로 이동"
+    },
+    {
+        "ID":15,
+        "Name":"PC_MoveDown",
+        "Type":"Movement",
+        "DefaultKeyCode":"S",
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":1,
+        "Description_KR":"아래로 이동"
+    },
+    {
+        "ID":16,
+        "Name":"PC_MoveRight",
+        "Type":"Movement",
+        "DefaultKeyCode":"D",
+        "Modifier1":null,
+        "Modifier2":null,
+        "IsRebindable":1,
+        "Description_KR":"오른쪽으로 이동"
     },
     {
         "ID":21,
@@ -33,7 +73,7 @@
         "ID":22,
         "Name":"PopUp_Shop",
         "Type":"UI",
-        "DefaultKeyCode":"S",
+        "DefaultKeyCode":"M",
         "Modifier1":null,
         "Modifier2":null,
         "IsRebindable":1,
