@@ -266,6 +266,7 @@ public class FarmBuilding : BuildingBase
                 hasCrop = t.hasCrop,
                 cropID = t.cropID,
                 watered = t.watered,
+                waterTime = t.waterTime,
                 growth = t.growth,
             })
         };
@@ -294,6 +295,12 @@ public class FarmBuilding : BuildingBase
 
             tiles[i].watered =
                 data.tiles[i].watered;
+
+            tiles[i].waterTime =
+                data.tiles[i].waterTime;
+
+            if (tiles[i].watered && tiles[i].waterTime <= 0f)
+                tiles[i].waterTime = 24f * 60f;
 
             tiles[i].growth =
                 data.tiles[i].growth;

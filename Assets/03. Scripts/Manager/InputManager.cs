@@ -9,7 +9,7 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] private UIBuildMod buildModeUI;
     [SerializeField] private UIManagement uiManagement;
-    [SerializeField] private InvenMod invenMod;
+    [SerializeField] private UIInvenMod invenMod;
 
     private const float InteractRange = 1f;
 
@@ -52,10 +52,8 @@ public class InputManager : MonoBehaviour
         HandleUIInput();
         HandleSelectSlot();
         HandleMouseInput();
+        HandleKeyboardMove();
     }
-
-    #region Keyboard
-
     private void HandleSystemInput()
     {
         // 테스트용 ESC
@@ -68,21 +66,9 @@ public class InputManager : MonoBehaviour
                 // 설정 열기
                 Debug.Log("설정 열기");
             }
-            else if (gm.IsMode(GameMode.Build))
+            else
             {
-                DataManager.Instance.BuildingManager.ExitBuildMode();
-                buildModeUI.BuildMode(false);
-            }
-            else if (gm.IsMode(GameMode.Popup))
-            {
-                uiManagement.ExitButton();
-                UIStorageManagement.Instance.CloseStorageManagement();
-            }
-            else if (gm.IsMode(GameMode.Work))
-            {
-                Debug.Log("작업 모드 종료");
-                gm.ExitWorkMode();
-                UIStorageManagement.Instance.NPCInv();
+                CloseCurrentMode();
             }
         }
 
@@ -94,6 +80,79 @@ public class InputManager : MonoBehaviour
             TimeManager.Instance.SetTimeScale(gm.isPlay ? 1 : 0);
 
             Debug.Log(gm.isPlay ? "게임 시작" : "게임 일시정지");
+        }
+    }
+
+    private void HandleMouseInput()
+    {
+        // 좌클릭
+        if (KeyCodeDataManager.Instance.GetKeyDown("PC_Movement"))
+            LeftClick();
+
+        // 우클릭
+        if (KeyCodeDataManager.Instance.GetKeyDown("PC_Interaction"))
+            RightClick();
+    }
+
+    #region Keyboard
+    private void HandleKeyboardMove()
+    {
+        Vector2 dir = Vector2.zero;
+
+        // 모드 중이거나 플레이어가 작업 중이면 이동 입력 차단
+        bool blocked = !GameManager.Instance.IsMode(GameMode.None)
+                       || !playerController.CanMove;
+
+        if (!blocked)
+        {
+            var key = KeyCodeDataManager.Instance;
+
+            if (key.GetKeyHeld("PC_MoveUp")) dir.y += 1;
+            if (key.GetKeyHeld("PC_MoveDown")) dir.y -= 1;
+            if (key.GetKeyHeld("PC_MoveLeft")) dir.x -= 1;
+            if (key.GetKeyHeld("PC_MoveRight")) dir.x += 1;
+        }
+
+        // 입력 없어도 매번 전달(키 입력 없을 때 정지 가능)
+        playerController.SetKeyboardInput(dir);
+    }
+
+    public bool CloseCurrentMode()
+    {
+        GameManager gm = GameManager.Instance;
+
+        if (gm.IsMode(GameMode.Build))
+        {
+            DataManager.Instance.BuildingManager.ExitBuildMode();
+            buildModeUI.BuildMode(false);
+            return true;
+        }
+
+        if (gm.IsMode(GameMode.Popup))
+        {
+            uiManagement.ExitButton();
+            UIStorageManagement.Instance.CloseStorageManagement();
+            return true;
+        }
+
+        if (gm.IsMode(GameMode.Work))
+        {
+            Debug.Log("작업 모드 종료");
+            gm.ExitWorkMode();
+            UIStorageManagement.Instance.NPCInv();
+            return true;
+        }
+
+        return false;
+    }
+
+    // 모든 모드/UI를 닫음 (불러오기 맨 앞에서 호출)
+    public void CloseAllModes()
+    {
+        for (int i = 0; i < 5; i++)   // 안전장치: 무한 반복 방지
+        {
+            if (!CloseCurrentMode())
+                break;
         }
     }
 
@@ -137,16 +196,6 @@ public class InputManager : MonoBehaviour
 
     #region Mouse
 
-    private void HandleMouseInput()
-    {
-        // 좌클릭
-        if (KeyCodeDataManager.Instance.GetKeyDown("PC_Movement"))
-            LeftClick();
-
-        // 우클릭
-        if (KeyCodeDataManager.Instance.GetKeyDown("PC_Interaction"))
-            RightClick();
-    }
 
     private void LeftClick()
     {
@@ -271,5 +320,8 @@ public class InputManager : MonoBehaviour
 
         return true;   // MonoBehaviour가 아닌 일반 클래스
     }
+
+
+    
     #endregion
 }

@@ -60,8 +60,8 @@ public class MarketManager : MonoBehaviour
     [SerializeField] DataManager dataManager;
     [SerializeField] TimeManager timeManager;
 
-    // 종가 저장 기간(최소 7일)
-    [SerializeField][Min(7)] private int closingPriceDays = 7;
+    // 시세 저장 기간(최소 28일 한달)
+    [SerializeField][Min(28)] private int closingPriceDays = 28;
     // 이벤트 진행 기간
     [SerializeField][Min(1)] private int eventDurationDays = 7;
     // 이벤트 목표가격 계산에 사용할 기간
@@ -74,32 +74,30 @@ public class MarketManager : MonoBehaviour
     // 평균회귀 강도
     [SerializeField] private float meanReversionStrength = 0.1f;
 
+    // 하루에 시세가 변하는 횟수 (24시간 기준)
+    private const int TicksPerDay = 24;
+    // 보관할 최소 일 수
+    private const int MinCandleDays = 28;
 
     private Dictionary<int, MarketItemState> marketStates = new Dictionary<int, MarketItemState>();
 
     #region Unity
     private void Start()
     {
-        foreach (var pair in dataManager.productClosingData)
-        {
-            Debug.Log(
-                $"[MarketManager] productClosingData Key = {pair.Key}"
-            );
-        }
-
         InitializeMarketStates();
+        SeedInitialPrices();
 
-        timeManager.onDayEvent += UpdatePrice;
+        timeManager.onHourEvent += OnHourTick;
+        timeManager.onDayEvent += StartNewDay;
         timeManager.onWeekEvent += ProcessWeeklyEvent;
-
-        UpdatePrice(0);
     }
 
     private void OnDestroy()
     {
         if (timeManager == null) return;
 
-        timeManager.onDayEvent -= UpdatePrice;
+        timeManager.onHourEvent -= OnHourTick;
+        timeManager.onDayEvent -= StartNewDay;
         timeManager.onWeekEvent -= ProcessWeeklyEvent;
     }
     #endregion
@@ -120,120 +118,73 @@ public class MarketManager : MonoBehaviour
             };
         }
     }
-    #endregion
 
-    #region OnDayEvent
-    public void UpdatePrice(int day)
+    private void SeedInitialPrices()
     {
         foreach (var pair in dataManager.productClosingData)
         {
-            int itemID = pair.Key;
-
-            // Product 확인
-            if (!dataManager.productsData.TryGetValue(itemID, out Product product))
+            if (!dataManager.itemsData.TryGetValue(pair.Key, out ItemData itemData))
             {
-                Debug.LogError(
-                    $"UpdatePrice 실패: productsData에 itemID={itemID}가 없습니다."
-                );
-
-                continue;
-            }
-
-            // ItemData 확인
-            if (!dataManager.itemsData.TryGetValue(itemID, out ItemData itemData))
-            {
-                Debug.LogError(
-                    $"UpdatePrice 실패: itemsData에 itemID={itemID}가 없습니다."
-                );
+                Debug.LogError($"SeedInitialPrices 실패: itemsData에 itemID={pair.Key}가 없습니다.");
 
                 continue;
             }
 
             ProductClosing closing = pair.Value;
 
-            // 최초 가격
-            if (closing.productsClosingPrice.Count == 0)
-            {
-                closing.productsClosingPrice.Add(
-                    itemData.basicPrice
-                );
-
+            if (closing.HasData)
                 continue;
-            }
 
-            // 전일 종가
-            float beforePrice =
-                closing.productsClosingPrice[
-                    closing.productsClosingPrice.Count - 1
-                ];
-
-            // 현재 시장 상태
-            MarketItemState state =
-                marketStates[itemID];
-
-            // 현재 M
-            float mean = GetCurrentMean(state);
-
-            // 표준편차 S
-            float stdDev = product.priceStdDev;
-
-            // 새로운 가격
-            int newPrice =
-                Mathf.RoundToInt(
-                    GetNextPrice(
-                        beforePrice,
-                        mean,
-                        stdDev
-                    )
-                );
-
-            // 종가 저장
-            closing.productsClosingPrice.Add(newPrice);
-
-            // 설정된 기간만큼만 저장(최소 7일)
-            TrimClosingPrices(closing);
-
-            // 평균회귀 상태 확인
-            CheckMeanReversion(state, newPrice);
+            closing.candles.Add(new PriceCandle(itemData.basicPrice));
+            closing.exactPrice = itemData.basicPrice;
         }
+    }
+    #endregion
 
-        /*
+    #region OnHourEvent / OnDayEvent
+    // 1시간마다 : 오늘의 종가/고가/저가 갱신
+    private void OnHourTick(int hour)
+    {
         foreach (var pair in dataManager.productClosingData)
         {
-            // 데이터가 없을 경우
-            if (pair.Value.productsClosingPrice.Count == 0)
-            {
-                // 초기 가격 설정 (기본 가격)
-                pair.Value.productsClosingPrice.Add(dataManager.productsData[pair.Key].basicCost);
-            }
-            else
-            {
-                // 가격 변동
-                // 1.가격 변동 후 = 변동 전 * (1 + 평균값 + 표준편차 * 난수)
-                // 2.가격 변동 후 = 변동 전 * e^(평균값 + 표준편차 * 난수)
+            int itemID = pair.Key;
+            ProductClosing closing = pair.Value;
 
-                // 변동 전 가격
-                float beforePrice = pair.Value.productsClosingPrice[pair.Value.productsClosingPrice.Count - 1];
-                // 평균값
-                float mean = 0f;
-                // float mean = dataManager.eventsData[-1].average;
-                // 표준편차
-                float stdDev = dataManager.productsData[pair.Key].priceStdDev;
+            if (!closing.HasData)
+                continue;
 
-                // 변동 후 가격
-                int newPrice = (int)GetNextPrice(beforePrice, mean, stdDev);
+            if (!dataManager.productsData.TryGetValue(itemID, out Product product))
+                continue;
 
-                // 종가 업데이트
-                pair.Value.productsClosingPrice.Add(newPrice);
+            if (!marketStates.TryGetValue(itemID, out MarketItemState state))
+                continue;
 
-                // 7일치 가격만 저장
-                if (pair.Value.productsClosingPrice.Count > 7)
-                {
-                    pair.Value.productsClosingPrice.RemoveAt(0);
-                }
-            }
+            // M을 하루에 한번 변하는 만큼
+            float mean = GetCurrentMean(state) / TicksPerDay;
+            float stdDev = product.priceStdDev / Mathf.Sqrt(TicksPerDay);
+
+            float newPrice = GetNextPrice(closing.exactPrice, mean, stdDev);
+
+            Debug.Log($"[Market] {itemID} 이전={closing.exactPrice:F2} " 
+                + $"mean={mean:F4} stdDev={stdDev:F4} " 
+                + $"→ 새가격={newPrice:F2} (candles={closing.candles.Count})");
+
+            closing.ApplyPrice(newPrice);
+
+            // 평균회귀 상태 확인
+            CheckMeanReversion(state, closing.CurrentPrice);
         }
-        */
+    }
+
+    // 매일 00시 어제 종가를 시가로 주식 그래프 시작
+    public void StartNewDay(int day)
+    {
+        int maxDays = Mathf.Max(MinCandleDays, closingPriceDays);
+
+        foreach (var closing in dataManager.productClosingData.Values)
+        {
+            closing.StartNewDay(maxDays);
+        }
     }
 
     private float GetCurrentMean(MarketItemState state)
@@ -294,23 +245,10 @@ public class MarketManager : MonoBehaviour
     }
     #endregion
 
-    #region Save Closing Prices
-    private void TrimClosingPrices(ProductClosing closing)
-    {
-        // 최소 7일 보장
-        int maxDays = Mathf.Max(7, closingPriceDays);
-
-        while (closing.productsClosingPrice.Count > maxDays)
-        {
-            closing.productsClosingPrice.RemoveAt(0);
-        }
-    }
-    #endregion
-
-    #region CheckMeanReversion
+    #region 평균회귀 CheckMeanReversion
     private void CheckMeanReversion(MarketItemState state, float currentPrice)
     {
-        // 이벤트 중에는 평균회귀 진입하지 않음
+        // 이벤트 중에는 평균회귀 진입X
         if (state.state == MarketState.Event)
             return;
 
@@ -349,6 +287,7 @@ public class MarketManager : MonoBehaviour
         }
     }
 
+    // 하루 기준 평균회귀 값 (OnHourTick에서 24로 나눠서 사용)
     private float GetMeanReversionMean(MarketItemState state)
     {
         ItemData itemData = dataManager.itemsData[state.itemID];
@@ -369,12 +308,12 @@ public class MarketManager : MonoBehaviour
     {
         ProductClosing closing = dataManager.productClosingData[itemID];
 
-        if (closing.productsClosingPrice.Count == 0)
+        if (!closing.HasData)
         {
             return dataManager.itemsData[itemID].basicPrice;
         }
 
-        return closing.productsClosingPrice[closing.productsClosingPrice.Count - 1];
+        return closing.CurrentPrice;
     }
     #endregion
 
@@ -524,23 +463,13 @@ public class MarketManager : MonoBehaviour
 
     // 여기서부터
     // 차액비율 판정
-    private void EvaluateEventResult(
-    MarketItemState state,
-    MarketEvent marketEvent,
-    float differenceRate,
-    int currentDay)
+    private void EvaluateEventResult(MarketItemState state, MarketEvent marketEvent, 
+                                        float differenceRate, int currentDay)
     {
-        float S =
-            dataManager
-                .productsData[state.itemID]
-                .priceStdDev
-            * 100f;
+        float S = dataManager.productsData[state.itemID].priceStdDev * 100f;
 
 
-        // =====================================================
         // 목표보다 크게 벗어난 경우
-        // =====================================================
-
         if (differenceRate < -S)
         {
             EndEvent(state);
@@ -548,10 +477,7 @@ public class MarketManager : MonoBehaviour
         }
 
 
-        // =====================================================
         // 목표가격 범위에 들어온 경우
-        // =====================================================
-
         if (differenceRate < S)
         {
             EndEvent(state);
@@ -559,11 +485,7 @@ public class MarketManager : MonoBehaviour
         }
 
 
-        // =====================================================
-        // 목표 미달
-        // → 이벤트 연장
-        // =====================================================
-
+        // 목표 미달 → 이벤트 연장
         ExtendEvent(
             state,
             marketEvent,
@@ -572,59 +494,40 @@ public class MarketManager : MonoBehaviour
     }
 
     // 이벤트 연장
-    private void ExtendEvent(
-    MarketItemState state,
-    MarketEvent oldEvent,
-    int currentDay)
+    private void ExtendEvent(MarketItemState state, MarketEvent oldEvent, int currentDay)
     {
         float currentPrice =
-            GetCurrentPrice(
-                state.itemID
-            );
-
+            GetCurrentPrice(state.itemID);
 
         float stdDev =
-            dataManager
-                .productsData[state.itemID]
-                .priceStdDev;
-
+            dataManager.productsData[state.itemID].priceStdDev;
 
         float averageZ =
             GetEventAverageZ();
 
-
         MarketEvent newEvent =
             new MarketEvent();
-
 
         newEvent.eventID =
             oldEvent.eventID;
 
-
         newEvent.itemID =
             oldEvent.itemID;
-
 
         newEvent.mean =
             oldEvent.mean;
 
-
         newEvent.startDay =
             currentDay;
 
-
         newEvent.endDay =
-            currentDay +
-            eventDurationDays;
-
+            currentDay + eventDurationDays;
 
         newEvent.startPrice =
             currentPrice;
 
-
         newEvent.averageZ =
             averageZ;
-
 
         newEvent.targetPrice =
             CalculateTargetPrice(
@@ -634,53 +537,41 @@ public class MarketManager : MonoBehaviour
                 averageZ
             );
 
-
         newEvent.isFollowUp =
             true;
 
-
         state.currentEvent =
             newEvent;
-
 
         state.state =
             MarketState.Event;
     }
 
     // 이벤트 종료
-    private void EndEvent(
-    MarketItemState state)
+    private void EndEvent(MarketItemState state)
     {
         state.currentEvent = null;
 
-        state.state =
-            MarketState.Normal;
+        state.state = MarketState.Normal;
     }
     #endregion
 
     #region OnWeekEvent
-    // =========================================================
-    // ⑥ 주간 이벤트
-    // =========================================================
-
-    private void ProcessWeeklyEvent(
-        int currentDay)
+    // 주간 이벤트
+    private void ProcessWeeklyEvent(int week)
     {
-        // 먼저 종료된 이벤트 처리
-        ProcessFinishedEvents(
-            currentDay
-        );
+        int currentDay = timeManager.day;
 
+        // 먼저 종료된 이벤트 처리
+        ProcessFinishedEvents(currentDay);
 
         // 이벤트 후보 가져오기
         List<int> candidates =
             GetEventCandidates();
 
-
         // 후보가 부족하면 종료
         if (candidates.Count == 0)
             return;
-
 
         // 실제 발생 개수
         int eventCount =
@@ -689,31 +580,20 @@ public class MarketManager : MonoBehaviour
                 candidates.Count
             );
 
-
         for (int i = 0; i < eventCount; i++)
         {
             // 랜덤 후보
             int randomIndex =
-                UnityEngine.Random.Range(
-                    0,
-                    candidates.Count
-                );
-
+                UnityEngine.Random.Range(0, candidates.Count);
 
             int itemID =
                 candidates[randomIndex];
 
-
             // 중복 방지
-            candidates.RemoveAt(
-                randomIndex
-            );
-
+            candidates.RemoveAt(randomIndex);
 
             // 랜덤 이벤트
-            int eventID =
-                GetRandomEventID();
-
+            int eventID = GetRandomEventID();
 
             CreateMarketEvent(
                 itemID,
@@ -729,35 +609,19 @@ public class MarketManager : MonoBehaviour
         List<int> candidates =
             new List<int>();
 
-
-        foreach (
-            var pair
-            in dataManager.productsData
-        )
+        foreach (var pair in dataManager.productsData)
         {
-            int itemID =
-                pair.Key;
-
+            int itemID = pair.Key;
 
             MarketItemState state =
                 marketStates[itemID];
 
-
             // 이미 이벤트 중이면 제외
-            if (
-                state.state ==
-                MarketState.Event
-            )
-            {
+            if (state.state == MarketState.Event)
                 continue;
-            }
 
-
-            candidates.Add(
-                itemID
-            );
+            candidates.Add(itemID);
         }
-
 
         return candidates;
     }
@@ -765,28 +629,91 @@ public class MarketManager : MonoBehaviour
     // 랜덤 이벤트 선택
     private int GetRandomEventID()
     {
-        if (
-            dataManager.eventsData.Count == 0
-        )
+        if (dataManager.eventsData.Count == 0)
         {
             return -1;
         }
 
-
         List<int> eventIDs =
-            new List<int>(
-                dataManager.eventsData.Keys
-            );
-
+            new List<int>(dataManager.eventsData.Keys);
 
         int randomIndex =
-            UnityEngine.Random.Range(
-                0,
-                eventIDs.Count
-            );
-
+            UnityEngine.Random.Range(0, eventIDs.Count);
 
         return eventIDs[randomIndex];
+    }
+    #endregion
+
+    #region Save / Load
+    // 저장 : 상품별 시장 상태 + 상품별 주식 차트 + exactPrice
+    public MarketSaveData GetSaveData()
+    {
+        var data = new MarketSaveData();
+
+        foreach (var state in marketStates.Values)
+        {
+            data.states.Add(new MarketItemSaveData
+            {
+                itemID = state.itemID,
+                state = state.state,
+
+                hasEvent = state.currentEvent != null,
+                currentEvent = state.currentEvent ?? new MarketEvent()
+            });
+        }
+
+        foreach (var pair in dataManager.productClosingData)
+        {
+            var entry = new ClosingPriceSaveData
+            {
+                itemID = pair.Key,
+                exactPrice = pair.Value.exactPrice,
+                candles = new List<PriceCandle>()
+            };
+
+            foreach (var candle in pair.Value.candles)
+                entry.candles.Add(candle.Copy());
+
+            data.closingPrices.Add(entry);
+        }
+
+        return data;
+    }
+
+    // Start 이후에 호출
+    public void Load(MarketSaveData data)
+    {
+        if (data == null)
+            return;
+
+        foreach (var s in data.states)
+        {
+            if (!marketStates.TryGetValue(s.itemID, out MarketItemState state))
+                continue;
+
+            state.state = s.state;
+            state.currentEvent = s.hasEvent ? s.currentEvent : null;
+        }
+
+        foreach (var c in data.closingPrices)
+        {
+            if (!dataManager.productClosingData.TryGetValue(c.itemID, out ProductClosing closing))
+                continue;
+
+            closing.candles.Clear();
+
+            foreach (var candle in c.candles)
+                closing.candles.Add(candle.Copy());
+
+            closing.exactPrice = c.exactPrice;
+
+            // 저장된 값이 없을 경우 기본 가격
+            if (!closing.HasData && dataManager.itemsData.TryGetValue(c.itemID, out ItemData itemData))
+            {
+                closing.candles.Add(new PriceCandle(itemData.basicPrice));
+                closing.exactPrice = itemData.basicPrice;
+            }
+        }
     }
     #endregion
 }

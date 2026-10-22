@@ -38,6 +38,18 @@ public class GridManager : MonoBehaviour
     public int height = 100;
     public float cellSize = 1f;
 
+    private const float StandOffsetY1 = 0f;
+    private const float CellOffsetY1 = 0.5f;
+    private const float StandOffsetY2 = 0.5f;
+    private const float CellOffsetY2 = 0f;
+
+    [Header("Character Position Mode")]
+    [Tooltip("1: 칸 바닥 중심, 2: 칸 중앙 중심")]
+    [SerializeField] private bool useMode1 = true;
+
+    private float StandOffsetY => useMode1 ? StandOffsetY1 : StandOffsetY2;
+    private float CellOffsetY => useMode1 ? CellOffsetY1 : CellOffsetY2;
+
     private Node[,] grid;
     private Node[,] gridBuilding;
 
@@ -239,7 +251,7 @@ public class GridManager : MonoBehaviour
         return start;
     }
 
-    // 월드 → 그리드 좌표
+    // 월드 -> 그리드 좌표
     public Vector2Int WorldToGrid(Vector2 worldPos)
     {
         int x = Mathf.FloorToInt(worldPos.x / cellSize);
@@ -248,7 +260,20 @@ public class GridManager : MonoBehaviour
         return new Vector2Int(x, y);
     }
 
-    // 그리드 → 월드 좌표
+    // 캐릭터 위치 -> 칸 (판정 보정)
+    public Vector2Int CharacterToGrid(Vector2 worldPos)
+    {
+        return WorldToGrid(worldPos + Vector2.up * CellOffsetY);
+    }
+
+    // 칸 -> 캐릭터 위치
+    public Vector3 GetStandPosition(int x, int y)
+    {
+        return new Vector3(x + 0.5f, y + StandOffsetY, 0);
+    }
+
+
+    // 그리드 -> 월드 좌표
     public Vector3 GridToWorld(int x, int y)
     {
         return new Vector3(x * cellSize, y * cellSize, 0);

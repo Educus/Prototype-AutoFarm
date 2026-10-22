@@ -1,4 +1,3 @@
-using NUnit.Framework.Interfaces;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -84,23 +83,9 @@ public class UIRocketStorage : MonoBehaviour
 
             count++;
 
-            var itemData =
-                DataManager.Instance.itemsData[slot.itemID];
-
-            // Product만 판매 가격 계산
-            if (itemData.type == ItemType.Product)
-            {
-                if (DataManager.Instance.productClosingData
-                    .TryGetValue(slot.itemID, out var closingData))
-                {
-                    if (closingData.productsClosingPrice.Count > 0)
-                    {
-                        gold +=
-                            closingData.productsClosingPrice[0]
-                            * slot.count;
-                    }
-                }
-            }
+            var shop = DataManager.Instance.ShopManager;
+            if (shop != null && shop.CanSell(slot.itemID))
+                gold += shop.GetSellPrice(slot.itemID) * slot.count;
         }
 
         slotCount.text = $"{count}/16";

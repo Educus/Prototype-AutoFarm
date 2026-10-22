@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ChunkManager : MonoBehaviour
 {
-    public int chunkSize = 100;
+    public int chunkSize = 30;
 
     private HashSet<Vector2Int> unlockedChunks = new HashSet<Vector2Int>();
 
@@ -14,8 +14,13 @@ public class ChunkManager : MonoBehaviour
 
     private void Start()
     {
+        UnlockDefaultChunks();
+    }
+
+    private void UnlockDefaultChunks()
+    {
         UnlockChunk(Vector2Int.zero);
-        UnlockChunk(new Vector2Int(0,1));
+        UnlockChunk(new Vector2Int(0, 1));
     }
 
     // 청크 좌표 변환
@@ -41,6 +46,27 @@ public class ChunkManager : MonoBehaviour
 
         unlockedChunks.Add(chunkCoord);
     }
+
+    #region Save / Load
+    public List<Vector2Int> GetSaveData()
+    {
+        return new List<Vector2Int>(unlockedChunks);
+    }
+
+    public void Load(List<Vector2Int> chunks)
+    {
+        unlockedChunks.Clear();
+
+        if (chunks == null || chunks.Count == 0)
+        {
+            UnlockDefaultChunks();
+            return;
+        }
+
+        foreach (var chunk in chunks)
+            unlockedChunks.Add(chunk);
+    }
+    #endregion
 
     // Gizmos 시각화
     private void OnDrawGizmos()

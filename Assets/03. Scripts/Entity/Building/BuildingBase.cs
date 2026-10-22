@@ -147,11 +147,29 @@ public abstract class BuildingBase : MonoBehaviour, ILeftInteractable, IRightInt
 
     #endregion
 
+    #region DestroyBuilding
+    
+    // 처음 기본으로 주어진 건물인가? <= 파괴 불가(로켓, 기본 창고, 아이템이 들어 있는 창고)
+    // 기본값 : 파괴 가능
+    [HideInInspector] public bool isDefaultBuilding = false;
+
+    // GetDestroyBlockReason == null 일 경우 파괴가능
+    public virtual string GetDestroyBlockReason() => null;
+    public bool CanDestroy => GetDestroyBlockReason() == null;
+
+    // 파괴 직전 정리 훅 (건물별로 override)
+    public virtual void OnBeforeDestroy() { }
+
+    #endregion
+
     #region Save
 
-    public abstract string GetJsonData();
+    // 하위 건물
+    // 저장이 필요한 건물 : 로켓, 밭
+    // 저장이 필요 없는 건물 : 창고 (인벤토리가 저장), 목장 (동물 쪽에서 저장)
+    public virtual string GetJsonData() => "";
 
-    public abstract void LoadJsonData(string json);
+    public virtual void LoadJsonData(string json) { }
 
     #endregion
 
@@ -173,6 +191,13 @@ public abstract class BuildingBase : MonoBehaviour, ILeftInteractable, IRightInt
     public virtual void OnBuildInteract()
     {
         Debug.Log($"Building {name} Build Interact");
+
+        // 건물을 설치하는 중(미리보기)에는 파괴 메뉴를 열지 않음
+        if (DataManager.Instance.BuildingManager.IsPlacing)
+            return;
+
+        // 파괴할 수 없는 건물도 메뉴는 띄움 (버튼이 꺼지고 이유가 표시됨)
+        UIBuildingMenu.Instance.Show(this);
     }
 
     public virtual void OnWorkInteract()

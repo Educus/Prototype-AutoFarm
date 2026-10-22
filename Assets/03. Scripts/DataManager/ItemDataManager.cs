@@ -24,8 +24,9 @@ public class ItemData
     public string name;
     public ItemType type;
     public int basicPrice;
-    public int stack;
-    public int storagePeriod;
+    public int stack;           // 최대 스택 수
+    public int storagePeriod;   // 보관 기간
+    public int maxCapacity;     // 내구도
     public bool useToDemo;
 }
 public class ItemDataManager : MonoBehaviour

@@ -21,6 +21,7 @@ public class CurrencyManager : MonoBehaviour
 
         money -= amount;
         OnMoneyChanged?.Invoke(money);
+
         return true;
     }
 

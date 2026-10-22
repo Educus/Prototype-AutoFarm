@@ -143,8 +143,6 @@ public class UIShopBuy : MonoBehaviour
         }
 
         int itemID = currentItem.ID;
-
-        // 총 구매 금액
         int totalPrice = currentPrice * currentNum;
 
         // 개발자용 아이템 예외 처리
@@ -153,37 +151,29 @@ public class UIShopBuy : MonoBehaviour
             DataManager.Instance.CurrencyManager.AddMoney(100000 * currentNum); // 골드 10만 추가
             Exit();
             return;
-        }   
+        }
 
-        var storage = UIStorageManagement.Instance;
+        ShopManager shop = DataManager.Instance.ShopManager;   // var storage = ... 대체
 
-        // 슬롯 제한 검사
-        if (!storage.CanAddBuyItem(itemID, currentNum))
+        // 영수증 칸 수 제한 (CanAddBuyItem 대체)
+        if (!shop.CanAddToCart(itemID, currentNum))
         {
             Debug.Log("구매 가능한 슬롯 수를 초과했습니다.");
             return;
         }
 
-        // 돈 부족 검사
-        if (DataManager.Instance.CurrencyManager.Get() < totalPrice)
+        // 돈 부족 검사: 영수증에 이미 담긴 금액까지 포함 (결제는 로켓 출발 때)
+        int available = DataManager.Instance.CurrencyManager.Get() - shop.GetCartTotal();
+
+        if (available < totalPrice)
         {
             Debug.Log("골드가 부족합니다.");
             return;
         }
 
-        // 실제 추가
-        if (storage.buyItems.ContainsKey(itemID))
-        {
-            storage.buyItems[itemID] += currentNum;
-        }
-        else
-        {
-            storage.buyItems.Add(itemID, currentNum);
-        }
+        // 영수증에 추가 (buyItems 직접 수정 대체). 골드는 여기서 차감하지 않음
+        shop.TryAddToCart(itemID, currentNum);
 
-        // 골드 차감
-        DataManager.Instance.CurrencyManager.AddMoney(-totalPrice);
-        
         Exit();
     }
 

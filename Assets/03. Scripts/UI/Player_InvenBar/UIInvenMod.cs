@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InvenMod : MonoBehaviour
+public class UIInvenMod : MonoBehaviour
 {
     [SerializeField] private Transform subInvenParent;
     [SerializeField] private Transform mainInvenParent;

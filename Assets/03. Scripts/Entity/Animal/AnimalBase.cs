@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 public abstract class AnimalBase : MonoBehaviour, IRightInteractable, IClickPriority
 {
@@ -14,6 +15,7 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable, IClickPrio
     [HideInInspector] public int itemId;         // 아이디
     [HideInInspector] public string id;          // 아이디
     [HideInInspector] public string animalName;  // 동물 이름
+    private int speed;
 
     public AnimalType type;     // 동물 타입
     public int productItemID;   // 생산 아이템
@@ -48,6 +50,7 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable, IClickPrio
         remainingTime = productionTime;
 
         gameObject.name = animalID;
+        speed = DataManager.Instance.objectsData[int.Parse(id)].Speed;
 
         DataManager.Instance.AnimalManager.Register(this);
 
@@ -59,6 +62,11 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable, IClickPrio
 
 
     #region Unity
+    // 파생 동물 클레스에 OnEnable이 있다면 override하고 base.OnEnable() 호출 필요
+    protected virtual void OnEnable()
+    {
+        StartWander();
+    }
 
     private void OnDestroy()
     {
@@ -225,8 +233,102 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable, IClickPrio
     }
     #endregion
 
-    // 할당된 건물이 없다면 마음대로 움직임 (추가 예정)
+    #region Wander
+    // 할당된 건물이 없다면 마음대로 움직임
+    [Header("Wander")]
+    [SerializeField] private float stayTime = 2f; // 머무는 시간
 
+    private static readonly Vector2Int[] WanderDirs =
+    {
+        Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right,
+        Vector2Int.zero // 제자리
+    };
+
+    private Coroutine wanderCorutine;
+    private PlayerAction playerAction;
+
+    private void StartWander()
+    {
+        if (!isActiveAndEnabled)
+            return;
+
+        if (wanderCorutine != null)
+            StopCoroutine(wanderCorutine);
+
+        wanderCorutine = StartCoroutine(WanderRoutine());
+    }
+
+    // 플레이어가 이 동물을 처리중인지 매 프레임 확인
+    private bool IsPlayerHandlingMe()
+    {
+        if (playerAction == null)
+            playerAction = GameManager.Instance.player.GetComponent<PlayerAction>();
+
+        return playerAction != null && playerAction.IsHandling(this);
+    }
+
+    private IEnumerator WaitWhilePaused()
+    {
+        while (IsPlayerHandlingMe())
+            yield return null;
+    }
+
+    private IEnumerator WanderRoutine()
+    {
+        // 씬에 미리 놓인 동물은 OnEnable 시점에 GridManager/GameManager가 초기화되지 않은 경우가 있음
+        yield return null;
+
+        GridManager grid = GridManager.Instance;
+
+        while (true)
+        {
+            yield return WaitWhilePaused();
+
+            // 목장에 배정된 동물은 움직이지 않음
+            if (ranchBuilding != null)
+            {
+                yield return new WaitForSeconds(1f);
+                continue;
+            }
+
+            Vector2Int dir = WanderDirs[UnityEngine.Random.Range(0, WanderDirs.Length)];
+
+            // 1~2칸 이동
+            int steps = (dir == Vector2Int.zero) ? 0 : UnityEngine.Random.Range(1, 3);
+
+            bool moved = false;
+
+            for (int i = 0; i < steps; i++)
+            {
+                Vector2Int next = grid.CharacterToGrid(transform.position) + dir;
+
+                // 건물, 물, 잠긴청크 등 이동 불가한 칸이면 멈춤
+                if (!grid.IsWalkable(next.x, next.y))
+                    break;
+
+                Vector3 dest = grid.GetStandPosition(next.x, next.y);
+                dest.z = transform.position.z; // z축은 그대로 유지
+                moved = true;
+
+                while (transform.position != dest)
+                {
+                    // 상호작용 중이면 이동 중지, 상호작용 끝난 이후 다시 이동 시작
+                    yield return WaitWhilePaused();
+
+                    transform.position = Vector3.MoveTowards(transform.position, dest, speed * Time.deltaTime);
+
+                    yield return null;
+                }
+
+                // 제자리를 골랐거나 막혀서 못움직이면 휴식
+                if (!moved)
+                {
+                    yield return new WaitForSeconds(stayTime);
+                }
+            }
+        }
+    }
+    #endregion
 
     #region Save / Load
 
@@ -239,7 +341,11 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable, IClickPrio
             animalName = this.animalName,
             isStack = this.isStack,
 
-            position = transform.position
+            position = transform.position,
+
+            ranchBuildingID = ranchBuilding != null ? ranchBuilding.id : "",
+            remainingTime = this.remainingTime,
+            todayHarvestCount = this.todayHarvestCount
         };
     }
 
@@ -250,9 +356,18 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable, IClickPrio
         this.animalName = data.animalName;
         this.isStack = data.isStack;
 
-        transform.position = data.position;
+        // 칸 기준으로 맞춰서 복원
+        GridManager grid = GridManager.Instance;
+        Vector2Int cell = grid.CharacterToGrid(data.position);
 
-        remainingTime = productionTime;
+        Vector3 pos = grid.GetStandPosition(cell.x, cell.y);
+        pos.z = data.position.z;
+        transform.position = pos;
+
+        remainingTime = data.remainingTime > 0 ? data.remainingTime : productionTime;
+        todayHarvestCount = data.todayHarvestCount;
+
+        StartWander();   // 이동 중이던 코루틴을 새 위치에서 다시 시작
     }
 
     #endregion

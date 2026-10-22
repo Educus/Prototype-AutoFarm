@@ -73,38 +73,7 @@ public class RanchBuilding : BuildingBase
     // 동물을 목장에 추가
     public bool AddAnimal(AnimalBase animal)
     {
-        if (animal == null)
-            return false;
-
-        if (animals.Contains(animal))
-            return false;
-
-        if (!CanAddAnimal())
-            return false;
-
-        // 리스트에 추가
-        animals.Add(animal);
-
-        // 현재 인덱스에 해당하는 위치 사용
-        int index = animals.Count - 1;
-
-        Transform targetPosition =
-            animalPositions[index];
-
-        // 월드 좌표 기준으로 배치
-        animal.transform.position =
-            targetPosition.position;
-
-        animal.transform.rotation =
-            targetPosition.rotation;
-
-        // 이미 작업 가능한 상태라면 NPC에게 알림
-        if (animal.IsReady())
-        {
-            RequestWork();
-        }
-
-        return true;
+        return AddAnimal(animal, true);
     }
 
     private bool AddAnimal(AnimalBase animal, bool notify)
@@ -127,18 +96,19 @@ public class RanchBuilding : BuildingBase
         }
 
         animals.Add(animal);
+        animal.ranchBuilding = this;    // 배정되면 배회 코루틴 멈춤
 
-        // 고정 위치 배치
+        // 고정 위치 배치 (월드 좌표 기준)
         Transform targetPosition =
             animalPositions[animals.Count - 1];
 
-        // 월드 좌표 기준
         animal.transform.position =
             targetPosition.position;
 
         animal.transform.rotation =
             targetPosition.rotation;
 
+        // 동물이 수확 가능한 상태라면 작업 요청
         if (notify && animal.IsReady())
         {
             RequestWork();
@@ -154,32 +124,6 @@ public class RanchBuilding : BuildingBase
 
     #endregion
 
-
-    #region 동물 위치
-
-    // 목장의 모든 동물을 지정된 위치에 다시 배치
-    private void RefreshAnimalPositions()
-    {
-        for (int i = 0; i < animals.Count; i++)
-        {
-            if (animals[i] == null)
-                continue;
-
-            if (i >= animalPositions.Count)
-                continue;
-
-            // 월드 좌표 기준
-            animals[i].transform.position =
-                animalPositions[i].position;
-
-            animals[i].transform.rotation =
-                animalPositions[i].rotation;
-        }
-    }
-
-    #endregion
-
-
     #region 목장 파괴
 
     // 목장이 파괴될 때 동물을 미배정 상태로 변경
@@ -189,6 +133,13 @@ public class RanchBuilding : BuildingBase
     //
     // BuildingManager에서 실제 Destroy() 전에
     // ReleaseAnimals()를 먼저 호출해야 함.
+
+    public override void OnBeforeDestroy()
+    {
+        // 동물을 AnimalManager의 미배정 Queue로 돌려보냄
+        // (다른 목장에 자리가 있으면 바로 그쪽으로 배정되고, 없으면 돌아다니기 시작함)
+        ReleaseAnimals();
+    }
 
     public void ReleaseAnimals()
     {
@@ -203,6 +154,8 @@ public class RanchBuilding : BuildingBase
             if (animal == null)
                 continue;
 
+            animal.ranchBuilding = null;   // 배정 해제
+
             // AnimalManager의 미배정 Queue로 이동
             DataManager.Instance.AnimalManager
                 .EnqueueAnimal(animal);
@@ -212,21 +165,6 @@ public class RanchBuilding : BuildingBase
     #endregion
 
 
-    public override string GetJsonData()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void LoadJsonData(string json)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    // public override void OnLInteract()
-    // {
-    //     Debug.Log("RanchBuilding OnLInteract");
-    // }
-    // 
     public override void OnRInteract()
     {
         Debug.Log("RanchBuilding OnRInteract");
