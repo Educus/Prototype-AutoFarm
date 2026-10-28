@@ -126806,7 +126806,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1516238695}
   m_Layer: 0
-  m_Name: DataManager
+  m_Name: DataTotalManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126825,8 +126825,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 165399816}
   - {fileID: 2137643873}
+  - {fileID: 165399816}
   - {fileID: 1396356971}
   - {fileID: 849054104}
   m_Father: {fileID: 0}
@@ -138822,7 +138822,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2137643873}
   m_Layer: 0
-  m_Name: PlayerData
+  m_Name: OriginDataManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
