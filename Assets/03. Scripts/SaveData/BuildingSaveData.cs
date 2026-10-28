@@ -7,6 +7,11 @@ public class BuildingSaveData
     public string id;   // 건물 이름(저장 키)
     public Vector2 position;
 
+    public Vector2Int gridPosition;
+
+    // 기본 제공 건물 유무
+    public bool isDefault;
+
     public BuildingType type;   // 건물 타입
     public string jsonData;     // 건물 상세 데이터
 }

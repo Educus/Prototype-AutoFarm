@@ -33,7 +33,8 @@ public class DataManager : MonoBehaviour
 
     [SerializeField] private BuildingManager buildingManager;
     public BuildingManager BuildingManager { get; private set; }
-
+    [SerializeField] private ShopManager shopManager;
+    public ShopManager ShopManager { get; private set; }
 
     public int nowEventID = -1;
 
@@ -69,6 +70,7 @@ public class DataManager : MonoBehaviour
         AnimalManager = animalManager;
         InventoryManager = inventoryManager;
         BuildingManager = buildingManager;
+        ShopManager= shopManager;
     }
 
     public void ContinueGame()

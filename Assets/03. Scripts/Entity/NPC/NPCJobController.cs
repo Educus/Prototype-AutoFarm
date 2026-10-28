@@ -797,7 +797,7 @@ public class NPCJobController : MonoBehaviour
                     npc.subInventory.ContainsItem(requiredHarvestItemID))
                 {
                     Vector2Int animalPos =
-                        GridManager.Instance.WorldToGrid(
+                        GridManager.Instance.CharacterToGrid(
                             npc.targetAnimal.transform.position);
 
                     npc.MoveTo(animalPos);
@@ -900,7 +900,7 @@ public class NPCJobController : MonoBehaviour
                 }
 
                 Vector2Int target =
-                    GridManager.Instance.WorldToGrid(
+                    GridManager.Instance.CharacterToGrid(
                         animal.transform.position);
 
                 npc.MoveTo(target);

@@ -10,5 +10,10 @@ public class AnimalSaveData
     public Vector3 position;
 
     public int isStack;
-    public bool isReady;
+
+    public string ranchBuildingID;
+
+    public int remainingTime;
+
+    public int todayHarvestCount;
 }

@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Inventory))]
@@ -12,23 +10,35 @@ public class Rocket : BuildingBase
     [Header("Rocket")]
     [SerializeField] private int defaultSlotCount = 16;
 
-    // 판매 금액
+    [Header("Trip")]
+    [SerializeField] private int oneWayTripHours = 4;   // 판매 or 구매만
+    [SerializeField] private int bothTripHours = 6;     // 판매 구매 둘 다
+
+    private ShopManager shop => DataManager.Instance.ShopManager;
+
+    // 판매 금액 (출발 시 계산, 도착 시 지급)
     private int money = 0;
 
-    // 구매 아이템 배송 대기 여부
+    // 구매 아이템 배송 대기 여부 (로켓 내부에 꺼내야 할 배송품 여부)
     private bool hasPendingBuyDelivery = false;
 
-    // 날짜 확인용
-    private int lastCalculateDay = -1;
-    private int lastSellDay = -1;
+    // 복귀 여부, 복귀까지 남은 시간
+    private bool isAway;
+    private int remainingMinutes;
 
-    // 23:30 출발 시 확정된 구매 목록
+    // 출발 시 확정된 구매 목록
     private Dictionary<int, int> reservedBuyItems = new();
 
     private Collider2D collider;
+    private SpriteRenderer spriteRenderer;
 
-    // 등록된 이벤트 관리
-    private List<int> eventsNum = new List<int>();
+    public bool IsAway => isAway;
+    public int RemainingMinutes => remainingMinutes;
+
+    public override string GetDestroyBlockReason()
+    {
+        return "로켓은 파괴할 수 없습니다.";
+    }
 
     #region Unity
 
@@ -38,21 +48,14 @@ public class Rocket : BuildingBase
 
         type = BuildingType.Rocket;
         collider = GetComponent<Collider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         uiStorageManagement = UIStorageManagement.Instance;
     }
 
     private void Start()
     {
-        // 22:00 출발(판매)
-        eventsNum.Add(TimeManager.Instance.RegisterDaily(22,0, () => LaunchRocket()));
-        // 01:00 도착(판매 정산 및 아이템 적재)
-        eventsNum.Add(TimeManager.Instance.RegisterDaily(1,0, () => Calculate()));
-        
-        // 09:00 출발
-        eventsNum.Add(TimeManager.Instance.RegisterDaily(9,00, () => LaunchRocket()));
-        // 13:00 도착
-        eventsNum.Add(TimeManager.Instance.RegisterDaily(13,0, () => Calculate()));
+        TimeManager.Instance.onMinuteEvent += OnMinute;
     }
 
     private void OnDestroy()
@@ -62,9 +65,9 @@ public class Rocket : BuildingBase
             inventory.OnInventoryChanged -= CheckRocketAvailable;
         }
 
-        foreach (var eventNum in eventsNum)
+        if (TimeManager.Instance != null)
         {
-            TimeManager.Instance.RemoveSchedule(eventNum);
+            TimeManager.Instance.onMinuteEvent -= OnMinute;
         }
     }
 
@@ -142,73 +145,107 @@ public class Rocket : BuildingBase
 
         return false;
     }
+
+    // 판매 가격 데이터가 없는 물품 검사
+    private bool HasUnsellableItems()
+    {
+        foreach (var slot in inventory.slots)
+        {
+            if (!slot.IsEmpty() && !shop.CanSell(slot.itemID))
+                return true;
+        }
+
+        return false;
+    }
+
     #endregion
 
     #region Launch
-    private void LaunchRocket()
+
+    // 출발 버튼에서 호출. 실패 이유는 UI에 표시
+    // 로켓 찾기: DataManager.Instance.BuildingManager.Get<Rocket>(id)
+    public bool TryLaunch(out string reason)
     {
-        // 이전 구매 아이템 남아있음
+        reason = null;
+
+        if (shop == null)
+        {
+            reason = "상점 매니저를 찾을 수 없습니다.";
+            return false;
+        }
+
+        if (isAway)
+        {
+            reason = "로켓이 이미 출발했습니다.";
+            return false;
+        }
+
+        // 이전 구매 배송 아이템이 남아 있음
         if (hasPendingBuyDelivery)
         {
-            Debug.Log("구매 아이템이 남아있어 로켓 출발 불가");
+            reason = "배송된 아이템을 먼저 꺼내야 합니다.";
+            return false;
+        }
 
-            return;
+        // 판매할 수 없는 물품이 하나라도 있으면 출발 불가
+        if (HasUnsellableItems())
+        {
+            reason = "판매할 수 없는 물품이 들어 있습니다.";
+            return false;
         }
 
         bool hasSellItems = HasSellItems();
+        bool hasBuyItems = shop.HasCartItems;
 
-        bool hasBuyItems = uiStorageManagement.buyItems.Count > 0;
-        
-        // 아무것도 없음
         if (!hasSellItems && !hasBuyItems)
         {
-            return;
+            reason = "판매하거나 구매할 물품이 없습니다.";
+            return false;
+        }
+
+        // 구매 대금은 출발 버튼을 누를 때 차감 (돈이 부족하면 출발하지 않음)
+        // 상태를 바꾸기 전에 실패 조건을 모두 확인: 판매 물품을 비우기 전에 먼저 검사
+        CurrencyManager currency = DataManager.Instance.CurrencyManager;
+        int cost = shop.GetCartTotal();
+
+        if (cost > 0 && currency.Get() < cost)
+        {
+            reason = "돈이 부족합니다.";
+            return false;
         }
 
         Debug.Log("로켓 출발");
 
-        // 판매 처리
+        // 판매 처리 (정산은 돌아왔을 때)
         SellItems();
 
-        // 구매 목록 확정
-        reservedBuyItems = new Dictionary<int, int>(uiStorageManagement.buyItems);
+        // 구매 대금 차감 (위에서 확인했으므로 성공함. 판매 대금은 로켓의 money에 쌓이므로 영향 없음)
+        if (cost > 0)
+            currency.Spend(cost);
 
-        // UI 구매 목록 초기화
-        uiStorageManagement.buyItems.Clear();
+        // 구매 목록 확정: 장바구니를 복사가 아니라 이동 (이미 결제된 주문이라 저장 대상)
+        reservedBuyItems = shop.TakeCart();
 
-        // TODO:
-        // 로켓 비활성화 / 이동 연출
-        GetComponent<SpriteRenderer>().enabled = false;
-        collider.enabled = false;
+        // 둘 다 있으면 6시간, 하나만 있으면 4시간
+        int hours = (hasSellItems && hasBuyItems) ? bothTripHours : oneWayTripHours;
+        remainingMinutes = hours * 60;
+        isAway = true;
+
+        // TODO: 이동 연출
+        SetVisible(false);
+
+        return true;
     }
 
     private void SellItems()
     {
-        Dictionary<int, ProductClosing> productData =
-            DataManager.Instance.productClosingData;
-
         foreach (var slot in inventory.slots)
         {
             if (slot.IsEmpty())
                 continue;
 
-            if (!productData.ContainsKey(slot.itemID))
-            {
-                Debug.LogWarning($"판매 데이터 없음 : {slot.itemID}");
-
-                continue;
-            }
-
-            var prices = productData[slot.itemID].productsClosingPrice;
-
-            if (prices == null || prices.Count == 0)
-            {
-                Debug.LogWarning($"판매 가격 데이터 없음 : {slot.itemID}");
-
-                continue;
-            }
-
-            money += prices[0] * slot.count;
+            // TryLaunch에서 판매 불가 물품을 이미 걸러냈음
+            money += shop.GetSellPrice(slot.itemID) * slot.count;
 
             slot.Clear();
         }
@@ -216,13 +253,35 @@ public class Rocket : BuildingBase
         inventory.InvokeChange();
     }
 
+    private void SetVisible(bool visible)
+    {
+        spriteRenderer.enabled = visible;
+        collider.enabled = visible;
+    }
+
     #endregion
 
-    #region Calculate
-    // 00:30 도착 처리 6021
-    private void Calculate()
+    #region Arrive
+
+    // 10분 단위 게임 시간 이벤트 (minute = 한 번에 흐른 게임 분)
+    private void OnMinute(int minute)
+    {
+        if (!isAway)
+            return;
+
+        remainingMinutes -= minute;
+
+        if (remainingMinutes <= 0)
+            Arrive();
+    }
+
+    // 도착 처리 (정산)
+    private void Arrive()
     {
         Debug.Log("로켓 도착");
+
+        isAway = false;
+        remainingMinutes = 0;
 
         // 돈 지급
         if (money > 0)
@@ -235,8 +294,7 @@ public class Rocket : BuildingBase
         // 구매 목록 없음
         if (reservedBuyItems.Count <= 0)
         {
-            GetComponent<SpriteRenderer>().enabled = true;
-            collider.enabled = true;
+            SetVisible(true);
             return;
         }
 
@@ -251,14 +309,14 @@ public class Rocket : BuildingBase
         {
             int itemID = buyItem.Key;
             int remaining = buyItem.Value;
-            
+
             ItemData itemData =
               DataManager.Instance.itemsData[itemID];
 
             if (itemData.type == ItemType.Object)
             {
                 // NPC 구매
-                if (itemID == 6021)
+                if (itemID == NPCManager.NpcItemID)
                 {
                     for (int i = 0; i < remaining; i++)
                     {
@@ -330,78 +388,103 @@ public class Rocket : BuildingBase
         // 구매 목록 초기화
         reservedBuyItems.Clear();
 
-        // TODO:
-        // 로켓 활성화 / 도착 연출
-        GetComponent<SpriteRenderer>().enabled = true;
-        collider.enabled = true;
+        // TODO: 도착 연출
+        SetVisible(true);
     }
 
     private void SpawnNPC(int x)
     {
-        GameObject npcPrefab = DataManager.Instance.GetObjectPrefabs(6021);
+        NPCManager npcManager = DataManager.Instance.NPCManager;
 
-        if (npcPrefab == null)
-        {
-            Debug.LogWarning("NPC Prefab is null.");
-            return;
-        }
+        string npcID = $"{NPCManager.NpcItemID}_{npcManager.npcs.Count}";
 
-        GameObject obj =
-            Instantiate(npcPrefab, transform.position + new Vector3(x, -3f, 0), Quaternion.identity);
-
-        int npcIndex = DataManager.Instance.NPCManager.npcs.Count;
-
-        // 이름 생성
-        string npcID = $"6021_{npcIndex}";
-
-        NPC npc = obj.GetComponent<NPC>();
-
-        npc.Initialize(npcID);
+        npcManager.Spawn(npcID, transform.position + new Vector3(x, -3f, 0));
     }
 
-    private void SpawnAnimal(int animalID)
+    private void SpawnAnimal(int animalItemID)
     {
-        GameObject animalPrefab = DataManager.Instance.GetObjectPrefabs(animalID);
+        AnimalManager animalManager = DataManager.Instance.AnimalManager;
 
-        if (animalPrefab == null)
-        {
-            Debug.LogWarning("Animal Prefab is null.");
-            return;
-        }
+        string animalID = $"{animalItemID}_{animalManager.animals.Count}";
 
-        GameObject obj =
-            Instantiate(animalPrefab, transform.position + new Vector3(0, -4f, 0), Quaternion.identity);
-
-        int animalIndex = DataManager.Instance.AnimalManager.animals.Count;
-
-        // 이름 생성
-        string animalsID = $"{animalID}_{animalIndex}";
-
-        AnimalBase animal = obj.GetComponent<AnimalBase>();
-
-        animal.Initialize(animalsID);
+        animalManager.Spawn(animalItemID, animalID, transform.position + new Vector3(0, -4f, 0));
     }
 
     #endregion
 
     #region Save / Load
 
+    // 인벤토리 내용은 전체 인벤토리 저장에 들어 있으므로 여기서는 이동 상태만 저장
     public override string GetJsonData()
     {
-        throw new System.NotImplementedException();
+        var data = new RocketSaveData
+        {
+            isAway = isAway,
+            remainingMinutes = remainingMinutes,
+            money = money,
+            hasPendingBuyDelivery = hasPendingBuyDelivery,
+            reservedBuyItems = ToEntries(reservedBuyItems)
+        };
+
+        return JsonUtility.ToJson(data);
     }
 
     public override void LoadJsonData(string json)
     {
-        throw new System.NotImplementedException();
+        if (string.IsNullOrEmpty(json))
+            return;
+
+        RocketSaveData data = JsonUtility.FromJson<RocketSaveData>(json);
+
+        isAway = data.isAway;
+        remainingMinutes = data.remainingMinutes;
+        money = data.money;
+        hasPendingBuyDelivery = data.hasPendingBuyDelivery;
+
+        reservedBuyItems = FromEntries(data.reservedBuyItems);
+
+        // 출발 중이었다면 숨긴 채로 이어서 날아감 (타이머는 OnMinute가 이어받음)
+        SetVisible(!isAway);
+    }
+
+    private static List<ItemCountEntry> ToEntries(Dictionary<int, int> dict)
+    {
+        var list = new List<ItemCountEntry>();
+
+        foreach (var pair in dict)
+            list.Add(new ItemCountEntry { itemID = pair.Key, count = pair.Value });
+
+        return list;
+    }
+
+    private static Dictionary<int, int> FromEntries(List<ItemCountEntry> list)
+    {
+        var dict = new Dictionary<int, int>();
+
+        if (list == null)
+            return dict;
+
+        foreach (var e in list)
+            dict[e.itemID] = e.count;
+
+        return dict;
     }
 
     #endregion
 
     #region Interaction
 
-    public override void OnInteract()
+    public override void OnNormalInteract()
     {
+        Debug.Log("Rocket OnNormalInteract");
+
+        uiStorageManagement.TargetBuilding(id);
+        uiStorageManagement.RocketInv();
+    }
+    public override void OnRInteract()
+    {
+        Debug.Log("Rocket OnRInteract");
+
         uiStorageManagement.TargetBuilding(id);
         uiStorageManagement.RocketInv();
     }

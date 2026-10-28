@@ -113,12 +113,22 @@ public class KeyCodeDataManager : MonoBehaviour
         }
     }
 
+    // 키를 눌렀을 때 true (한 번만 입력용)
     public bool GetKeyDown(string actionName)
     {
-        if (!keyBindings.ContainsKey(actionName))
+        if (!keyBindings.TryGetValue(actionName, out KeyCode key))
             return false;
 
-        return Input.GetKeyDown(keyBindings[actionName]);
+        return Input.GetKeyDown(key);
+    }
+
+    // 키를 누르고 있는 동안 true (이동처럼 지속 입력용)
+    public bool GetKeyHeld(string actionName)
+    {
+        if (!keyBindings.TryGetValue(actionName, out KeyCode key))
+            return false;
+
+        return Input.GetKey(key);
     }
 
     public KeyCode GetKey(string actionName)

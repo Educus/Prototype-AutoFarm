@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4886101499470261545}
   - component: {fileID: 4026639383986971365}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Fence4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8026894139136516497}
   - component: {fileID: 7249334387325460948}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Fence1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 1475021349148403799}
   - component: {fileID: 6967035323418929003}
   - component: {fileID: 9215712260750616854}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: 9021
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -298,7 +298,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3776134750363112288}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: pos3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,7 +329,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1763244275211207255}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: AnimalPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6359656253203141431}
   - component: {fileID: 8104859325687297770}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Fence2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -456,7 +456,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8673041061629125120}
   - component: {fileID: 4971702865696336109}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Fence5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -546,7 +546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8859426173210789990}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Fence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -584,7 +584,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2913619220582879231}
   - component: {fileID: 6515437038360101511}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Fence3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -674,7 +674,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3323034679018340293}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: pos1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -706,7 +706,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3407081367705235165}
   - component: {fileID: 5629613451889356691}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -797,7 +797,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1508555880209325613}
   - component: {fileID: 5008991776655949483}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Fence0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -887,7 +887,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4402012832450313381}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: pos2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -918,7 +918,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5143854262691591880}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: pos4
   m_TagString: Untagged
   m_Icon: {fileID: 0}

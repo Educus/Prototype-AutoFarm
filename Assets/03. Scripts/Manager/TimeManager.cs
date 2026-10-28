@@ -127,6 +127,27 @@ public class TimeManager : MonoBehaviour
         this.hour = Mathf.Clamp(hour, 0, 23);
         this.minute = Mathf.Clamp(minute, 0, 59);
     }
+
+    public TimeSaveData GetSaveData()
+    {
+        return new TimeSaveData
+        {
+            day = day,
+            hour = hour,
+            minute = minute,
+        };
+    }
+
+    public void Load(TimeSaveData data)
+    {
+        if (data == null)
+            return;
+
+        SetTime(data.day, data.hour, data.minute);
+
+        timer = 0f;
+
+    }
     #endregion
 
     #region Time Flow

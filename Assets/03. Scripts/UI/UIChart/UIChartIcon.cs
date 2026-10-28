@@ -1,4 +1,3 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,6 +23,32 @@ public class UIChartIcon : MonoBehaviour
         button = GetComponent<Button>();
     }
 
+    #region 시세 갱신 구독
+
+    private void OnEnable()
+    {
+        if (TimeManager.Instance != null)
+            TimeManager.Instance.onHourEvent += OnHourChanged;
+
+        // 숨겨져 있던 동안 바뀐 시세를 반영 (GetInfo가 호출되기 전에는 건너뜀)
+        if (dataManager != null)
+            SetData();
+    }
+
+    private void OnDisable()
+    {
+        if (TimeManager.Instance != null)
+            TimeManager.Instance.onHourEvent -= OnHourChanged;
+    }
+
+    private void OnHourChanged(int hour)
+    {
+        if (dataManager != null)
+            SetData();
+    }
+
+    #endregion
+
     public void GetInfo(DataManager data, UIChart ui,int id)
     {
         dataManager = data;
@@ -32,7 +57,7 @@ public class UIChartIcon : MonoBehaviour
         itemID = id;
 
         SetInfo();
-        SetData(0);
+        SetData();
         SetBookMark();
 
         Debug.Log($"UIChartIcon GetInfo: {itemID}");
@@ -46,27 +71,29 @@ public class UIChartIcon : MonoBehaviour
     }
 
     // 데이터 갱신
-    public void SetData(int day)
+    public void SetData()
     {
-        int count = dataManager.productClosingData[itemID].productsClosingPrice.Count;
-
-        int todayPrice = dataManager.productClosingData[itemID].productsClosingPrice[count - 1];
-        int yesterdayPrice = dataManager.productClosingData[itemID].productsClosingPrice.Count > 1 ? dataManager.productClosingData[itemID].productsClosingPrice[count - 2] : todayPrice;
-
-        itemPrice.text = todayPrice.ToString();
-
-        if (todayPrice < yesterdayPrice)
+        if (!dataManager.productClosingData.TryGetValue(itemID, out ProductClosing closing) || !closing.HasData)
         {
-            backGround[0].SetActive(true);
-            backGround[1].SetActive(false);
+            // 시세가 아직 만들어지지 않았음
+            return;
+        }
 
+        int nowPrice = closing.CurrentPrice;
+        int diff = nowPrice - closing.PreviousClose;
+
+        itemPrice.text = nowPrice.ToString();
+
+        // 하락 / 상승 배경 (같으면 둘 다 꺼서 이전 표시가 남지 않게 함)
+        backGround[0].SetActive(diff < 0);
+        backGround[1].SetActive(diff >= 0);
+
+        if (diff < 0)
+        {
             itemPrice.text += "<sprite=0>";
         }
-        else if (todayPrice > yesterdayPrice)
+        else if (diff > 0)
         {
-            backGround[0].SetActive(false);
-            backGround[1].SetActive(true);
-
             itemPrice.text += "<sprite=1>";
         }
     }

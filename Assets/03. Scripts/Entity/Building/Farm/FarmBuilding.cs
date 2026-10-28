@@ -266,6 +266,7 @@ public class FarmBuilding : BuildingBase
                 hasCrop = t.hasCrop,
                 cropID = t.cropID,
                 watered = t.watered,
+                waterTime = t.waterTime,
                 growth = t.growth,
             })
         };
@@ -295,6 +296,12 @@ public class FarmBuilding : BuildingBase
             tiles[i].watered =
                 data.tiles[i].watered;
 
+            tiles[i].waterTime =
+                data.tiles[i].waterTime;
+
+            if (tiles[i].watered && tiles[i].waterTime <= 0f)
+                tiles[i].waterTime = 24f * 60f;
+
             tiles[i].growth =
                 data.tiles[i].growth;
         }
@@ -311,8 +318,9 @@ public class FarmBuilding : BuildingBase
     #endregion
 
     // 플레이어가 상호작용
-    public override void OnInteract()
+    
+    public override void OnRInteract()
     {
-        Debug.Log("이거 말고;");
+        Debug.Log("FarmBuilding OnRInteract");
     }
 }

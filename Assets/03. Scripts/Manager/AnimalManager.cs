@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum AnimalType
@@ -18,6 +19,8 @@ public class AnimalManager : MonoBehaviour
     public Queue<string> animalQueue =
         new Queue<string>();
 
+    // 불러오는 중에는 자동 할당을 하지 않음
+    private bool suppressAutoAssign;
 
     // Inspector 확인용
     [System.Serializable]
@@ -66,6 +69,81 @@ public class AnimalManager : MonoBehaviour
 
     #endregion
 
+    #region 생성 / 정리
+
+    // 프리팹으로 동물을 만들고 등록 (구매와 불러오기 공용)
+    public AnimalBase Spawn(int itemId, string animalID, Vector3 position)
+    {
+        GameObject prefab = DataManager.Instance.GetObjectPrefabs(itemId);
+
+        if (prefab == null)
+        {
+            Debug.LogWarning("Animal Prefab is null.");
+            return null;
+        }
+
+        GameObject obj = Instantiate(prefab, position, Quaternion.identity);
+
+        AnimalBase animal = obj.GetComponent<AnimalBase>();
+
+        animal.itemId = itemId;   // 저장/불러오기에서 프리팹을 찾는 기준
+        animal.Initialize(animalID);
+
+        return animal;
+    }
+
+    // 불러오기 전에 기존 동물을 모두 정리
+    public void Clear()
+    {
+        foreach (var animal in animals.Values)
+        {
+            if (animal != null)
+                Destroy(animal.gameObject);
+        }
+
+        animals.Clear();
+        animalQueue.Clear();
+    }
+
+    // 불러오기 시작/끝: 중간에는 자동 할당을 끄고, 끝나면 남은 미배정 동물만 자동 할당
+    public void BeginLoad()
+    {
+        suppressAutoAssign = true;
+    }
+
+    public void EndLoad()
+    {
+        suppressAutoAssign = false;
+        AssignAnimalToBuilding();
+    }
+
+    // 저장된 소속대로 배정 (큐에서도 제거)
+    public bool AssignTo(AnimalBase animal, RanchBuilding ranch)
+    {
+        RemoveFromQueue(animal.id);
+
+        if (ranch.AddAnimal(animal))
+            return true;
+
+        // 자리가 없으면 미배정으로 되돌림
+        EnqueueAnimal(animal);
+        return false;
+    }
+
+    private void RemoveFromQueue(string id)
+    {
+        if (!animalQueue.Contains(id))
+            return;
+
+        var rest = animalQueue.Where(x => x != id).ToList();
+
+        animalQueue.Clear();
+
+        foreach (var x in rest)
+            animalQueue.Enqueue(x);
+    }
+
+    #endregion
 
     #region 찾기
 
@@ -101,6 +179,10 @@ public class AnimalManager : MonoBehaviour
     // 3. 목장이 삭제되어 동물이 돌아왔을 때
     public void AssignAnimalToBuilding()
     {
+        // 불러오는 중에는 할당하지 않음
+        if (suppressAutoAssign)
+            return;
+
         // 동물이 없으면 종료
         if (animalQueue.Count == 0)
             return;

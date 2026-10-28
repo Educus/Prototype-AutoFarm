@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [Header("Mode")]
     public GameMode CurrentMode { get; private set; } = GameMode.None;
     private GameMode previousMode = GameMode.None;
+    [SerializeField] public GameMode NowGameMode = GameMode.None;
 
     [Header("Player")]
     public Player player;
@@ -47,6 +48,12 @@ public class GameManager : MonoBehaviour
         else 
             Destroy(gameObject);
     }
+
+    private void Update()
+    {
+        NowGameMode = CurrentMode;
+    }
+
     #endregion
 
     #region Mode

@@ -25,6 +25,16 @@ public class InventoryManager : MonoBehaviour
             inventories.Add(inv.id, inv);
     }
 
+    public void Unregister(Inventory inv)
+    {
+        if (ReferenceEquals(inv, null))
+            return;
+
+        // 등록된 인벤토리와 동일한 인스턴스인지 확인 후 제거
+        if (inventories.TryGetValue(inv.id, out Inventory registered) && registered == inv)
+            inventories.Remove(inv.id);
+    }
+
     public Inventory Get(string id)
     {
         if (string.IsNullOrEmpty(id))

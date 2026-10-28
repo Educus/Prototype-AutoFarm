@@ -5,7 +5,6 @@ using UnityEngine;
 public class UIChart : MonoBehaviour
 {
     [SerializeField] private DataManager dataManager;
-    [SerializeField] private TimeManager timeManager;
     [SerializeField] private UIChartView uiChart;
 
     [SerializeField] private GameObject chartIconPrefab;
@@ -22,7 +21,6 @@ public class UIChart : MonoBehaviour
     private IEnumerator IEUIChartStart()
     {
         // product의 아이템 수만큼 게임 오브젝트 생성
-        // onDayEvent에 등록하여 매일 데이터 갱신
         yield return null;
 
         foreach (var product in dataManager.productsData.Values)
@@ -33,10 +31,6 @@ public class UIChart : MonoBehaviour
             GameObject chartIcon = Instantiate(chartIconPrefab, chartIconContent.transform);
             chartIcon.GetComponent<UIChartIcon>().GetInfo(dataManager, this, product.ID);
 
-            timeManager.onDayEvent += (int day) =>
-            {
-                chartIcon.GetComponent<UIChartIcon>().SetData(day);
-            };
             eventOnBookMark += () =>
             {
                 chartIcon.GetComponent<UIChartIcon>().OnBookMark();

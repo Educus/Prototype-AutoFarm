@@ -46,6 +46,7 @@ public class BuildingManager : MonoBehaviour
     private BuildingData currentData;
 
     private bool isPlacing = false;
+    public bool IsPlacing => isPlacing;
 
     private int buildingIndex = 0;
 
@@ -128,13 +129,16 @@ public class BuildingManager : MonoBehaviour
     #endregion
 
     #region Default Building
+
+    // 기본 건물
     private void CreateDefaultBuildings()
     {
         foreach (var data in defaultBuildings)
         {
-            CreateBuilding(
-                data.itemID,
-                data.gridPosition);
+            BuildingBase created = CreateBuilding(data.itemID, data.gridPosition);
+
+            if (created != null)
+                created.isDefaultBuilding = true;
         }
 
         foreach (var building in buildings.Values)
@@ -340,7 +344,7 @@ public class BuildingManager : MonoBehaviour
         // GameManager.Instance.ExitMode();
     }
 
-    public BuildingBase CreateBuilding(int itemID, Vector2Int pos)
+    public BuildingBase CreateBuilding(int itemID, Vector2Int pos, string forcedId = null)
     {
         // 프리팹 정보 가져오기
         BuildingBase prefabBuilding =
@@ -359,7 +363,7 @@ public class BuildingManager : MonoBehaviour
         GameObject obj = Instantiate(prefabBuilding.gameObject);
 
         obj.name =
-            $"Building_{itemID}_{buildingIndex++}";
+            forcedId ?? $"Building_{itemID}_{buildingIndex++}";
 
         Vector3 world =
             gridManager.GridToWorld(pos.x, pos.y);
@@ -414,6 +418,86 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
+    public void ReleaseFromGrid(BuildingBase building)
+    {
+        Vector2Int origin = GetOrigin(building);
+
+        for (int x = 0; x < building.data.width; x++)
+        {
+            for (int y = 0; y < building.data.height; y++)
+            {
+                Vector2Int position = origin + new Vector2Int(x, y);
+
+                Node node = gridManager.GetNode(position.x, position.y);
+
+                // 물 타일은 건물이 없어져도 막힌 채 유지
+                if (node != null && node.tileType != TileType.Water)
+                    gridManager.SetBlocked(position.x, position.y, false);
+
+                gridManager.SetBuildingBlocked(position.x, position.y, false);
+            }
+        }
+    }
+
+    public void Unregister(BuildingBase building)
+    {
+        if (building == null)
+            return;
+
+        buildings.Remove(building.id);
+    }
+
+    public bool DestroyBuilding(BuildingBase b)
+    {
+        if (b == null || !b.CanDestroy)
+            return false;
+
+        // 1. 이 건물에 배정된 NPC 해제
+        DataManager.Instance.NPCManager.ReleaseBuildingAssignment(b.id);
+
+        // 2. 등록 해제 (목장 동물 반환보다 먼저)
+        Unregister(b);
+
+        // 3. 건물별 정리 (목장은 동물을 미배정으로 돌려보냄)
+        b.OnBeforeDestroy();
+
+        // 4. 차지하던 칸과 인벤토리 등록 해제 (GetOrigin이 transform을 읽으므로 Destroy 전에)
+        ReleaseFromGrid(b);
+
+        if (b.inventory != null)
+            DataManager.Instance.InventoryManager.Unregister(b.inventory);
+
+        // 5. 파괴
+        Destroy(b.gameObject);
+
+        // NPC 배정이 바뀌었으므로 작업 모드 하이라이트 갱신
+        GameManager.Instance.RefreshHighlights();
+
+        return true;
+    }
+
+    private void ClearAllBuildings()
+    {
+        ClearPlacement();
+
+        foreach (var b in buildings.Values.ToList())
+        {
+            if (b == null)
+                continue;
+
+            ReleaseFromGrid(b);
+
+            // Destroy 전에 등록 해제
+            if (b.inventory != null)
+                DataManager.Instance.InventoryManager.Unregister(b.inventory);
+
+            Destroy(b.gameObject);
+        }
+
+        buildings.Clear();
+        buildingIndex = 0;
+    }
+
     public void ExitBuildMode()
     {
         ClearPlacement();
@@ -443,6 +527,9 @@ public class BuildingManager : MonoBehaviour
         isPlacing = false;
 
         CurrentItemID = -1;
+
+        if (UIBuildingMenu.Instance != null)
+            UIBuildingMenu.Instance.Hide();
     }
     #endregion
 
@@ -532,7 +619,9 @@ public class BuildingManager : MonoBehaviour
             {
                 id = b.id,
                 itemId = b.itemID,
-                position = b.transform.position,
+                type = b.type,
+                gridPosition = GetOrigin(b),
+                isDefault = b.isDefaultBuilding,
                 jsonData = b.GetJsonData()
             });
         }
@@ -542,42 +631,35 @@ public class BuildingManager : MonoBehaviour
 
     public void Load(List<BuildingSaveData> dataList)
     {
+        ClearAllBuildings();
+
         foreach (var data in dataList)
         {
-            GameObject prefab = Array.Find(
-                buildingPrefabs,
-                p => p.name == data.itemId.ToString());
+            BuildingBase building = CreateBuilding(data.itemId, data.gridPosition, data.id);
 
-            if (prefab == null)
+            if (building == null)
             {
-                Debug.LogError(
-                    $"Load Prefab Missing : {data.itemId}");
+                Debug.LogError($"Load Prefab Missing : {data.itemId}");
 
                 continue;
             }
 
-            GameObject obj = Instantiate(prefab);
-
-            obj.transform.position = data.position;
-
-            obj.name = data.id;
-
-            BuildingBase building =
-                obj.GetComponent<BuildingBase>();
-
-            building.Initialize();
+            // 기본 건물 표시 복원
+            building.isDefaultBuilding = data.isDefault;
 
             building.LoadJsonData(data.jsonData);
-
-            BuildingData dataInfo = building.data;
-
-            Vector2Int pos =
-                gridManager.WorldToGrid(data.position);
-
-            ApplyToGrid(pos, dataInfo);
         }
 
         UpdateBuildingIndex();
+    }
+
+    // transform.position에서 건물의 원점 좌표를 계산
+    private Vector2Int GetOrigin(BuildingBase building)
+    {
+        return new Vector2Int(
+            Mathf.RoundToInt(building.transform.position.x - building.data.width * 0.5f),
+            Mathf.RoundToInt(building.transform.position.y - building.data.height * 0.5f)
+            );
     }
 
     private void UpdateBuildingIndex()

@@ -54,6 +54,21 @@ public class PlayerAction : MonoBehaviour
 
         IsWorking = false;
     }
+
+    // 불러오기 등으로 진행중인 행동 모두 취소
+    public void ResetAction()
+    {
+        StopAllCoroutines();    // IEWorkRoutine 중지
+
+        IsWorking = false;
+        playerAnimation.IsWorking = false;
+        controller.SetWorking(false);
+        controller.SetCanMove(true);
+
+        targetFarm = null;
+        targetTile = null;
+        targetAnimal = null;
+    }
     #endregion
 
     #region Farm
@@ -151,6 +166,12 @@ public class PlayerAction : MonoBehaviour
 
     #region Animal
 
+    // 동물을 향해 이동 중이거나 작업 중이면 true
+    public bool IsHandling(AnimalBase animal)
+    {
+        return targetAnimal == animal && (IsWorking || controller.IsAutoMoving);
+    }
+
     public void StartAnimalAction(
         AnimalBase animal)
     {
@@ -160,8 +181,7 @@ public class PlayerAction : MonoBehaviour
         targetAnimal = animal;
 
         Vector2Int target =
-            GridManager.Instance.WorldToGrid(
-                animal.transform.position);
+            GridManager.Instance.CharacterToGrid(animal.transform.position);
 
         controller.MoveTo(
             target,

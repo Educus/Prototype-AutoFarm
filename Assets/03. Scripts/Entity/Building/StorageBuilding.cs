@@ -44,19 +44,49 @@ public class StorageBuilding : BuildingBase
         DataManager.Instance.InventoryManager.Register(inventory);
     }
 
-    public override string GetJsonData()
+    #region 파괴 규칙
+    public override string GetDestroyBlockReason()
     {
-        throw new System.NotImplementedException();
+        if (isDefaultBuilding)
+            return "기본 건물을 파괴할 수 없습니다.";
+
+        if (!IsInventoryEmpty())
+            return "창고 안을 비워야 파괴할 수 있습니다.";
+
+        return null;
     }
 
-    public override void LoadJsonData(string json)
+    private bool IsInventoryEmpty()
     {
-        throw new System.NotImplementedException();
-    }
+        if (inventory == null)
+            return true;
 
-    public override void OnInteract()
+        foreach (var slot in inventory.slots)
+        {
+            if (!slot.IsEmpty())
+                return false;
+        }
+
+        return true;
+    }
+    #endregion
+
+    #region Intercation
+    // 게임모드
+    // None일 때 창고 UI
+    // 
+    public override void OnNormalInteract()
     {
+        Debug.Log("StorageBuilding OnNormalInteract");
+
         UIStorageManagement.Instance.TargetBuilding(id);
         UIStorageManagement.Instance.BuildingInv();
     }
+
+    public override void OnRInteract()
+    {
+        Debug.Log("StorageBuilding OnRInteract");
+    }
+
+    #endregion
 }

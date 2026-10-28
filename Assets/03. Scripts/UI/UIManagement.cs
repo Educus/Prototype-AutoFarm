@@ -4,10 +4,11 @@ using UnityEngine;
 public class UIManagement : MonoBehaviour
 {
     [SerializeField] private GameObject management;
-    [SerializeField] public DataManager dataManager;
-    [SerializeField] public UIChart uiChart;
-    [SerializeField] public UIShop uiShop;
-    [SerializeField] public UIRobot uiRobot;
+
+    public DataManager dataManager;
+    public UIChart uiChart;
+    public UIShop uiShop;
+    public UIRobot uiRobot;
 
     [SerializeField] private GameObject[] chartChips;
     [SerializeField] private GameObject[] shopChips;
@@ -26,25 +27,36 @@ public class UIManagement : MonoBehaviour
     /// index버튼은 어쩔 수 없이 버튼 4개로 나뉘기 때문에 자식 오브젝트 순서로 구분
     /// int 값으로 조정하되, 눈으로 보기 쉽게 enum으로 current chip 내용으로 구분하기.
     /// </summary>
-    private enum CurrentInsertedChip
+    private enum Chip
     {
         None = -1,       //null 생성
         Chart = 0,
         Shop = 1,
         NPCManagement = 2
     }
-    CurrentInsertedChip current;
+
+    private Chip current = Chip.None;
 
     private GameObject[][] chips;
     private GameObject[][] icons;
 
-    private int onChips;
-
+    #region Unity
     private void Start()
     {
         chips = new GameObject[][] { chartChips, shopChips, NPCManagementChips };
         icons = new GameObject[][] { icon0, icon1, icon2, icon3 };
 
+        ResetVisualState();
+
+        ChangeChip(0);
+        ChangeIcon(0);
+
+        StartCoroutine(RefreshIconNextFrame());
+    }
+
+    // 칩/아이콘 처음 상태
+    private void ResetVisualState()
+    {
         foreach (var chip in chips)
         {
             chip[0].SetActive(true);
@@ -57,22 +69,17 @@ public class UIManagement : MonoBehaviour
             icon[1].SetActive(false);
             icon[2].SetActive(false);
         }
-
-        current = CurrentInsertedChip.None;
-
-        ChangeChip(0);
-        ChangeIcon(0);
-
-        StartCoroutine(IEStart());
     }
 
-    IEnumerator IEStart()
+    private IEnumerator RefreshIconNextFrame()
     {
         yield return null;
 
         ChangeIcon(0);
     }
+    #endregion
 
+    #region Open / Close
     public GameObject OpenManagement()
     {
         // 이미 열려있으면 닫기
@@ -88,13 +95,24 @@ public class UIManagement : MonoBehaviour
             return null;
         }
 
-        //management.SetActive(true);
+        // 활성화는 호출한 쪽(UIManager)에서 처리
         return management;
     }
 
+    public void ExitButton()
+    {
+        GameManager.Instance.ExitMode();
+        ChangeIcon(0);
+    }
+    #endregion
+
+    #region Chip
     public void ChangeChip(int value)
     {
-        onChips = value;
+        if (value < 0 || value >= chips.Length)
+            return;
+
+        current = (Chip)value;
 
         for (int i = 0; i < chips.Length; i++)
         {
@@ -109,91 +127,101 @@ public class UIManagement : MonoBehaviour
             }
 
             chipMenu[i].SetActive(isActive);
-
-            ChangeIcon(0);
         }
+        
+        ChangeIcon(0);
     }
 
     // 이름으로 칩 변경 및 이후 디테일 애니메이션 작업을 위한 초석
     // SetActive가 아닌 movetoward 연출 사용
-    public void ChangeChip(string name)
+    public void ChangeChip(string chipName)
     {
-        string chipname = name.ToLower();
+        string lowered = chipName.ToLower();
 
-        if(chipname.Contains("chart"))
+        if(lowered.Contains("chart"))
         {
-            current = CurrentInsertedChip.Chart;
-            ChangeChip(0);
+            ChangeChip((int)Chip.Chart);
         }
-        else if (chipname.Contains("shop"))
+        else if (lowered.Contains("shop"))
         {
-            current = CurrentInsertedChip.Shop;
-            ChangeChip(1);
+            ChangeChip((int)Chip.Shop);
         }
-        else if (chipname.Contains("npcmanage"))
+        else if (lowered.Contains("npcmanage"))
         {
-            current = CurrentInsertedChip.NPCManagement;
-            ChangeChip(2);
+            ChangeChip((int)Chip.NPCManagement);
         }
     }
+    #endregion
 
+    #region Icon
     public void ChangeIcon(int value)
     {
-        int count = chipMenu[onChips].transform.childCount;
+        if (current == Chip.None)
+            return;
 
-        int index = value;
+        if (value < 0 || value >= icons.Length)
+            return;
 
-        // 사용안함
-        if (value == 3 && (onChips == 0 || onChips == 2)) return;
+        // 사용 안 함: chart와 NPC 관리에는 네 번째 아이콘이 없음
+        if (value == 3 && (current == Chip.Chart || current == Chip.NPCManagement))
+            return;
 
-        // chart 즐겨찾기 || shop || robot
-        if ((value == 1 && onChips == 0) || onChips != 0)
-        {
-            index = 0;
-        }
+        // 메뉴 페이지: chart의 즐겨찾기(1)와 shop, robot은 첫 번째 페이지를 그대로 사용
+        bool usesFirstPage = (current == Chip.Chart && value == 1) || current != Chip.Chart;
+        int page = usesFirstPage ? 0 : value;
 
-        for (int i = 0; i < count; i++)
-        {
-            chipMenu[onChips].transform.GetChild(i).gameObject.SetActive(i == index);
-        }
-
-        if (onChips == 0)
-        {
-            if (value == 0)
-            {
-                // 즐겨찾기 모드 해제
-                uiChart.OffBookMark();
-            }
-
-            else if (value == 1)
-            {
-                // 즐겨찾기 모드 사용
-                uiChart.OnBookMark();
-            }
-
-            else if (value == 2)
-            {
-                uiChart.ChartNews();
-            }
-        }
-
-        if (onChips == 1)
-        {
-            uiShop.ViewShopItem(value);
-        }
-
-        if (onChips == 2)
-        {
-            uiRobot.ViewRobot(value);
-        }
+        ShowMenuPage(page);
+        ApplyIconToCurrentChip(value);
 
         choiceB.transform.position = icons[value][0].transform.position;
     }
 
-    public void ExitButton()
+    // 현재 칩의 메뉴에서 해당 페이지(자식)만 켬
+    private void ShowMenuPage(int page)
     {
-        //management.SetActive(false);
-        GameManager.Instance.ExitMode();
-        ChangeIcon(0);
+        Transform menu = chipMenu[(int)current].transform;
+
+        for (int i = 0; i < menu.childCount; i++)
+        {
+            menu.GetChild(i).gameObject.SetActive(i == page);
+        }
     }
+
+    // 아이콘 선택을 칩별 화면에 전달
+    private void ApplyIconToCurrentChip(int value)
+    {
+        switch (current)
+        {
+            case Chip.Chart:
+                ApplyChartIcon(value);
+                break;
+
+            case Chip.Shop:
+                uiShop.ViewShopItem(value);
+                break;
+
+            case Chip.NPCManagement:
+                uiRobot.ViewRobot(value);
+                break;
+        }
+    }
+
+    private void ApplyChartIcon(int value)
+    {
+        switch (value)
+        {
+            case 0:
+                uiChart.OffBookMark();   // 즐겨찾기 모드 해제
+                break;
+
+            case 1:
+                uiChart.OnBookMark();    // 즐겨찾기 모드 사용
+                break;
+
+            case 2:
+                uiChart.ChartNews();
+                break;
+        }
+    }
+    #endregion
 }

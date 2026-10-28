@@ -6,6 +6,9 @@ using UnityEngine;
 [RequireComponent(typeof(NPCJobController))]
 public class NPC : MonoBehaviour, ILeftInteractable
 {
+    public int ClickPriority => ClickPriorities.Npc;
+    public ClickTarget Target => ClickTarget.Npc;
+
     // NPC
     public string id;
     public string entityName;
@@ -27,7 +30,6 @@ public class NPC : MonoBehaviour, ILeftInteractable
     private Pathfinder pathfinder;
 
     private Coroutine moveCoroutine;
-    private Vector2Int currentGridPos;
 
     //Sound 관련
     private SoundManager soundManager;
@@ -37,13 +39,15 @@ public class NPC : MonoBehaviour, ILeftInteractable
     private NPCAnimation npcAnimation;
 
     public bool isMoving { get; private set; }
+
+
     public float moveSpeed = 3f;
 
     // 작업 및 할당 건물이 바뀌었을 때 작업 초기화
     public event Action OnJobChanged;
 
     // 상호작용
-    public void OnInteract()
+    public void OnLInteract()
     {
         if (GameManager.Instance.selectedNPC == this)
         {
@@ -72,9 +76,6 @@ public class NPC : MonoBehaviour, ILeftInteractable
 
         // NPC 등록
         DataManager.Instance.NPCManager.Register(this);
-
-        currentGridPos =
-            gridManager.WorldToGrid(transform.position);
 
         //애니메이션 스크립트 초기화
         npcAnimation = GetComponent<NPCAnimation>();
@@ -165,7 +166,7 @@ public class NPC : MonoBehaviour, ILeftInteractable
         // 이동 중이면 무시
         if (isMoving) return;
 
-        List<Node> path = pathfinder.FindPath(currentGridPos, target);
+        List<Node> path = pathfinder.FindPath(GetGridPos(), target);
 
         if (path == null || path.Count == 0)
             return;
@@ -173,10 +174,9 @@ public class NPC : MonoBehaviour, ILeftInteractable
         if (moveCoroutine != null)
             StopCoroutine(moveCoroutine);
 
-        //이동 사운드 재생
-        //soundManager.PlaySFX("SFX_GUI_Button", SFX, true);
         moveCoroutine = StartCoroutine(MoveAlongPath(path));
     }
+
     public void StopMove()
     {
         if (moveCoroutine != null)
@@ -187,9 +187,11 @@ public class NPC : MonoBehaviour, ILeftInteractable
 
         isMoving = false;
 
-        currentGridPos =
-            gridManager.WorldToGrid(transform.position);
+        // 코루틴 중간에 멈췄을 때 애니메이션 상태를 초기화
+        if (npcAnimation != null)
+            npcAnimation.IsMoving = false;
     }
+
     IEnumerator MoveAlongPath(List<Node> path)
     {
         isMoving = true;
@@ -197,7 +199,7 @@ public class NPC : MonoBehaviour, ILeftInteractable
 
         foreach (Node node in path)
         {
-            Vector3 target = new Vector3(node.x + 0.5f, node.y, 0);
+            Vector3 target = gridManager.GetStandPosition(node.x, node.y);
 
             while (Vector3.Distance(transform.position, target) > 0.05f)
             {
@@ -216,20 +218,21 @@ public class NPC : MonoBehaviour, ILeftInteractable
 
             // 정확한 위치로 보정
             transform.position = target;
-
-            currentGridPos = new Vector2Int(node.x, node.y);
         }
 
         npcAnimation.IsMoving = false;
+
         //코루틴 종료 시점에 SFX 종료
-        //코루틴으로 재생되다보니 재생 함수는 코루틴 밖에 둔 상태
         soundManager.StopSFX(SFX);
         isMoving = false;
+        moveCoroutine = null;
     }
 
+    // 위치 매번 계산
     public Vector2Int GetGridPos()
     {
-        return currentGridPos;
+        // 초기화 시 오류 방지로 GridManager.Instance를 직접 호출
+        return GridManager.Instance.CharacterToGrid(transform.position);
     }
     #endregion
 
@@ -291,7 +294,16 @@ public class NPC : MonoBehaviour, ILeftInteractable
         }
     }
 
-    #region Save / Load
+    #region Save / Load / Unregister
+    public void UnregisterInventories()
+    {
+        InventoryManager invManager = DataManager.Instance.InventoryManager;
+
+        invManager.Unregister(mainInventory);
+        invManager.Unregister(subInventory);
+        invManager.Unregister(upgradeInventory);
+    }
+
     public NPCSaveData GetSaveData()
     {
         return new NPCSaveData
@@ -306,27 +318,55 @@ public class NPC : MonoBehaviour, ILeftInteractable
             subInventory = subInventory.GetSaveData(),
             upgradeInventory = upgradeInventory.GetSaveData(),
 
-            job = job
+            job = CloneJob(job)
         };
     }
+
+    // 호출 순서 : Spawn->Initialize->Load
     public void Load(NPCSaveData data)
     {
-        id = data.id;
+        if (data == null)
+        {
+            Debug.LogError("NPC Load Error: data is null");
+            return;
+        }
+
+        // 로드 시 이동 중이면 멈춤
+        StopMove();
+
+        if (id != data.id)
+        {
+            Debug.LogWarning($"NPC Load Warning: id 불일치 : Current: {id}, Data: {data.id}");
+        }
+
         entityName = data.entityName;
-        transform.position = data.position;
+
+        // 칸 기준 복원
+        GridManager grid = GridManager.Instance;
+        Vector2Int cell = grid.CharacterToGrid(data.position);
+        transform.position = grid.GetStandPosition(cell.x, cell.y);
 
         water = data.water;
         maxWater = data.maxWater;
-
-        InitializeInventories();
 
         mainInventory.Load(data.mainInventory);
         subInventory.Load(data.subInventory);
         upgradeInventory.Load(data.upgradeInventory);
 
-        job = data.job;
+        job = CloneJob(data.job);
 
         JobChanged();
     }
+
+    private static NPCJobConfig CloneJob(NPCJobConfig source)
+    {
+        if (source == null)
+            return new NPCJobConfig();
+
+        return JsonUtility.FromJson<NPCJobConfig>(JsonUtility.ToJson(source));
+    }
     #endregion
 }
+
+// 확인할 것: NPCJobController가 JobChanged() 때 HasPendingWork()/HasAnimalWork()를 다시 확인하는지
+//            (농장/목장의 onWorkRequested는 NPC가 불러와지기 전에 발생하고 지나가 버림)
