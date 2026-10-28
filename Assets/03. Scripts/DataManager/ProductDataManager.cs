@@ -85,7 +85,7 @@ public class ProductClosing
     {
         PriceCandle today = Today;
 
-        if (today != null)
+        if (today == null)
             return;
 
         exactPrice = newExactPrice;

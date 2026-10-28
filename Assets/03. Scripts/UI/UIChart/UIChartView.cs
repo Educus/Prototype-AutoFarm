@@ -1,18 +1,33 @@
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
-public class UIChartView : MonoBehaviour
+public class UIChartView : MonoBehaviour, IScrollHandler
 {
     [SerializeField] private DataManager dataManager;
     [SerializeField] private RectTransform chartArea;
 
     [Header("Candle")]
     [SerializeField] private UICandle candlePrefab;
-    [SerializeField] private int maxCandles = 28;
+
+    [FormerlySerializedAs("maxCandles")]
+    [SerializeField] private int visibleCandles = 28;   // 화면에 보이는 캔들 수
+
     [SerializeField][Range(0.2f, 1f)] private float bodyWidthRatio = 0.6f;
     [SerializeField] private float wickWidth = 2f;
+
+    [Header("Y축 범위")]
+    [Tooltip("기본 가격 BasicPrice 기준. 0.1 = 10%")]
+    [SerializeField][Range(0f, 1f)] private float minRangeRatio = 0.1f;
+    [Tooltip("실제 가격 폭이 최소 폭보다 클 때 위아래로 더하는 여백 비율")]
+    [SerializeField][Range(0f, 0.5f)] private float dataPaddingRatio = 0.0f;
+
+    [Header("스크롤")]
+    [SerializeField] private int scrollStep = 2;            // 휠 한 칸당 이동하는 캔들 수
+    [SerializeField] private bool invertScroll = false;
 
     [Header("Colors")]
     [SerializeField] private Color upColor = Color.red;     // 상승
@@ -23,9 +38,16 @@ public class UIChartView : MonoBehaviour
     [SerializeField] private Image itemImage;
     [SerializeField] private TMP_Text itemDescription;
 
+    [Header("가격 표시")]
+    [SerializeField] private TMP_Text itemNameText;
+    [SerializeField] private TMP_Text maxPriceText;
+    [SerializeField] private TMP_Text midPriceText;
+    [SerializeField] private TMP_Text minPriceText;
+
     private readonly List<UICandle> candleViews = new List<UICandle>();
 
     private int currentItemID = -1;
+    private int scrollOffset;
     private bool subscribed;
 
     #region Unity
@@ -44,10 +66,11 @@ public class UIChartView : MonoBehaviour
 
     private void Subscribe()
     {
-        if (subscribed || TimeManager.Instance == null)
+        if (subscribed)
             return;
 
-        TimeManager.Instance.onHourEvent += OnHourChanged;
+        MarketManager.onPricesUpdated += OnPricesUpdated;
+
         subscribed = true;
     }
 
@@ -56,21 +79,43 @@ public class UIChartView : MonoBehaviour
         if (!subscribed) 
             return;
 
-        if (TimeManager.Instance != null)
-            TimeManager.Instance.onHourEvent -= OnHourChanged;
+        MarketManager.onPricesUpdated -= OnPricesUpdated;
 
         subscribed = false;
     }
 
-    private void OnHourChanged(int hour)
+    private void OnPricesUpdated()
     {
         if (currentItemID >= 0)
             DrawChart(currentItemID);
     }
     #endregion
 
+    #region Scroll
+    public void OnScroll(PointerEventData eventData)
+    {
+        if (currentItemID < 0)
+            return;
+
+        float delta = invertScroll ? -eventData.scrollDelta.y : eventData.scrollDelta.y;
+
+        if (Mathf.Approximately(delta, 0f))
+            return;
+
+        // 휠 위로 = 과거로, 아래로 = 최신으로
+        scrollOffset += (delta > 0f ? 1 : -1) * Mathf.Max(1, scrollStep);
+
+        DrawChart(currentItemID);
+    }
+    #endregion
+
+
     public void DrawChart(int itemID)
     {
+        // 다른 아이템이면 맨 최근부터 보여줌
+        if (itemID != currentItemID)
+            scrollOffset = 0;
+
         currentItemID = itemID;
         Subscribe();
 
@@ -82,12 +127,17 @@ public class UIChartView : MonoBehaviour
             return;
         }
 
+        // 보이는 구간 [start, end]
         // 최근 maxCandles일치만 그림 (마지막이 진행 중인 오늘 캔들)
         int total = closing.candles.Count;
-        int count = Mathf.Min(total, maxCandles);
-        int start = total - count;
+        int maxOffset = Mathf.Max(0, total - visibleCandles);
+        scrollOffset = Mathf.Clamp(scrollOffset, 0, maxOffset);
 
-        // Y 범위 : 보이는 차트의 최저가 ~ 최고가 (+여백)
+        int end = total - scrollOffset;
+        int start = Mathf.Max(0, end - visibleCandles);
+        int count = end - start;
+
+        // 보이는 구간의 최저/최고
         int lowest = int.MaxValue;
         int highest = int.MinValue;
 
@@ -101,18 +151,14 @@ public class UIChartView : MonoBehaviour
                 highest = candle.high;
         }
 
-        float range = Mathf.Max(highest - lowest, 1f);
-        float padding = range * 0.1f;
-
-        float minY = lowest - padding;
-        float maxY = highest + padding;
+        CalcRange(itemID, lowest, highest, out float minY, out float maxY);
 
         EnsureCandleViews();
 
         float widthArea = chartArea.rect.width;
         float heightArea = chartArea.rect.height;
 
-        float cellWidth = widthArea / maxCandles;
+        float cellWidth = widthArea / visibleCandles;
         float bodyWidth = cellWidth * bodyWidthRatio;
 
         for (int i = 0; i < candleViews.Count; i++)
@@ -126,7 +172,7 @@ public class UIChartView : MonoBehaviour
             PriceCandle candle = closing.candles[start + i];
 
             // 우측정렬
-            int slot = maxCandles - count + i;
+            int slot = visibleCandles - count + i;
             float xPos = (slot + 0.5f) * cellWidth - widthArea * 0.5f;
 
             candleViews[i].gameObject.SetActive(true);
@@ -139,9 +185,46 @@ public class UIChartView : MonoBehaviour
                 ToY(candle.low, minY, maxY, heightArea),
                 GetColor(candle)
                 );
+
         }
 
+        SetPriceLabels(minY, maxY);
         SetItemInfo(itemID, closing);
+    }
+
+    // Y축 범위 계산: 중심 = 보이는 구간의 중간값, 폭 = max(기본가 x 비율, 실제 폭 + 여백)
+    private void CalcRange(int itemID, int lowest, int highest, out float minY, out float maxY)
+    {
+        float center = (lowest + highest) * 0.5f;
+
+        float basicPrice = 0f;
+        if (dataManager.itemsData.TryGetValue(itemID, out ItemData itemData))
+            basicPrice = itemData.basicPrice;
+
+        // 기본 가격을 모르면 현재 중심값을 기준으로 함
+        float reference = basicPrice > 0f ? basicPrice : center;
+
+        float minSpan = Mathf.Max(reference * minRangeRatio, 1f);
+        float dataSpan = (highest - lowest) * (1f + dataPaddingRatio * 2f);
+
+        float span = Mathf.Max(minSpan, dataSpan);
+
+        minY = center - span * 0.5f;
+        maxY = center + span * 0.5f;
+
+        // 가격은 0 아래로 내려가지 않음
+        if (minY < 0f)
+        {
+            maxY -= minY;
+            minY = 0f;
+        }
+    }
+
+    private void SetPriceLabels(float minY, float maxY)
+    {
+        if (maxPriceText != null) maxPriceText.text = Mathf.RoundToInt(maxY).ToString();
+        if (midPriceText != null) midPriceText.text = Mathf.RoundToInt((minY + maxY) * 0.5f).ToString();
+        if (minPriceText != null) minPriceText.text = Mathf.RoundToInt(minY).ToString();
     }
 
     // 가격 -> 차트 가운데 기준 세로 위치
@@ -162,7 +245,7 @@ public class UIChartView : MonoBehaviour
     // 차트 오브젝트를 maxCandles개까지 만들어 두고 재사용
     private void EnsureCandleViews()
     {
-        while (candleViews.Count < maxCandles)
+        while (candleViews.Count < visibleCandles)
         {
             UICandle view = Instantiate(candlePrefab, chartArea);
             view.gameObject.SetActive(false);
@@ -174,12 +257,13 @@ public class UIChartView : MonoBehaviour
     {
         foreach (var view in candleViews)
             view.gameObject.SetActive(false);
+
+        SetPriceLabels(0, 0);
     }
 
     private void SetItemInfo(int itemID, ProductClosing closing)
     {
-        var itemData = dataManager.itemsData[itemID];
-
+        // 정보 텍스트는 항상 "오늘" 기준 (스크롤해도 현재 시세)
         PriceCandle today = closing.Today;
 
         // 전일 종가 대비 등락
@@ -192,13 +276,23 @@ public class UIChartView : MonoBehaviour
 
         string arrow = diff > 0 ? "▲" : diff < 0 ? "▼" : "■";
 
+        string itemName = dataManager.itemsData.TryGetValue(itemID, out ItemData itemData)
+            ? itemData.name : itemID.ToString();
+
         // 아이템 이미지
         itemImage.sprite = dataManager.GetItemImage(itemID);
 
+        string upHex = ColorUtility.ToHtmlStringRGB(upColor);
+        string downHex = ColorUtility.ToHtmlStringRGB(downColor);
+
         // 아이템 텍스트
+        itemNameText.text = $"{itemData.name}";
         itemDescription.text =
-            $"{itemData.name}\n" +
             $"<color=#{colorHex}>{nowPrice}{arrow}{Mathf.Abs(diff)} ({percent:+0.0;-0.0;0.0}%)</color>\n" +
-            $"시 {today.open}  고 {today.high}  저 {today.low}";
+            $"<color=#{upHex}>최고 {today.high}</color>\n" +
+            $"<color=#{downHex}> 최저 {today.low}</color>";
+
+        if (scrollOffset > 0)
+            itemDescription.text += $"\n<size=70%>과거 보는 중 ({scrollOffset}일 전)</size>";
     }
 }

@@ -27,26 +27,19 @@ public class UIChartIcon : MonoBehaviour
 
     private void OnEnable()
     {
-        if (TimeManager.Instance != null)
-            TimeManager.Instance.onHourEvent += OnHourChanged;
-
-        // 숨겨져 있던 동안 바뀐 시세를 반영 (GetInfo가 호출되기 전에는 건너뜀)
-        if (dataManager != null)
-            SetData();
+        MarketManager.onPricesUpdated += OnPricesUpdated;
+        if (dataManager != null) SetData();
     }
 
     private void OnDisable()
     {
-        if (TimeManager.Instance != null)
-            TimeManager.Instance.onHourEvent -= OnHourChanged;
+        MarketManager.onPricesUpdated -= OnPricesUpdated;
     }
-
-    private void OnHourChanged(int hour)
+    private void OnPricesUpdated() 
     {
-        if (dataManager != null)
+        if (dataManager != null) 
             SetData();
     }
-
     #endregion
 
     public void GetInfo(DataManager data, UIChart ui,int id)

@@ -60,8 +60,8 @@ public class MarketManager : MonoBehaviour
     [SerializeField] DataManager dataManager;
     [SerializeField] TimeManager timeManager;
 
-    // 시세 저장 기간(최소 28일 한달)
-    [SerializeField][Min(28)] private int closingPriceDays = 28;
+    // 시세 저장 기간(최소 한 달 28일 * 1년 12개월)
+    [SerializeField][Min(336)] private int closingPriceDays = 336;
     // 이벤트 진행 기간
     [SerializeField][Min(1)] private int eventDurationDays = 7;
     // 이벤트 목표가격 계산에 사용할 기간
@@ -77,7 +77,7 @@ public class MarketManager : MonoBehaviour
     // 하루에 시세가 변하는 횟수 (24시간 기준)
     private const int TicksPerDay = 24;
     // 보관할 최소 일 수
-    private const int MinCandleDays = 28;
+    private const int MinCandleDays = 336;
 
     private Dictionary<int, MarketItemState> marketStates = new Dictionary<int, MarketItemState>();
 
@@ -143,6 +143,8 @@ public class MarketManager : MonoBehaviour
 
     #region OnHourEvent / OnDayEvent
     // 1시간마다 : 오늘의 종가/고가/저가 갱신
+    public static event System.Action onPricesUpdated;
+
     private void OnHourTick(int hour)
     {
         foreach (var pair in dataManager.productClosingData)
@@ -165,15 +167,13 @@ public class MarketManager : MonoBehaviour
 
             float newPrice = GetNextPrice(closing.exactPrice, mean, stdDev);
 
-            Debug.Log($"[Market] {itemID} 이전={closing.exactPrice:F2} " 
-                + $"mean={mean:F4} stdDev={stdDev:F4} " 
-                + $"→ 새가격={newPrice:F2} (candles={closing.candles.Count})");
-
             closing.ApplyPrice(newPrice);
 
             // 평균회귀 상태 확인
             CheckMeanReversion(state, closing.CurrentPrice);
         }
+
+        onPricesUpdated?.Invoke();
     }
 
     // 매일 00시 어제 종가를 시가로 주식 그래프 시작
@@ -185,6 +185,8 @@ public class MarketManager : MonoBehaviour
         {
             closing.StartNewDay(maxDays);
         }
+
+        onPricesUpdated?.Invoke();
     }
 
     private float GetCurrentMean(MarketItemState state)
