@@ -249,7 +249,7 @@ public class FarmBuilding : BuildingBase
 
             int growValue = tile.GetGrowthValue();
 
-            Sprite image = DataManager.Instance.GetCropImage(tile.cropID, growValue);
+            Sprite image = OriginDataManager.Instance.GetCropImage(tile.cropID, growValue);
 
             tileView.UpdateView(value, image);
         }

@@ -87,7 +87,7 @@ public class ButtonManager : MonoBehaviour
         {
             button.onClick.AddListener(() =>
             {
-                int itemID = DataManager.Instance.GetItemIDNumber("field");
+                int itemID = OriginDataManager.Instance.GetItemIDNumber("field");
                 UIManager.Instance.PlaySFX("SFX_GUI_Button");
                 UIManager.Instance.SelectBuildingKit(itemID);
             }
@@ -98,7 +98,7 @@ public class ButtonManager : MonoBehaviour
         {
             button.onClick.AddListener(() =>
             {
-                int itemID = DataManager.Instance.GetItemIDNumber("storage");
+                int itemID = OriginDataManager.Instance.GetItemIDNumber("storage");
                 UIManager.Instance.PlaySFX("SFX_GUI_Button");
                 UIManager.Instance.SelectBuildingKit(itemID);
             }
@@ -109,7 +109,7 @@ public class ButtonManager : MonoBehaviour
         {
             button.onClick.AddListener(() =>
             {
-                int itemID = DataManager.Instance.GetItemIDNumber("barn");
+                int itemID = OriginDataManager.Instance.GetItemIDNumber("barn");
                 UIManager.Instance.PlaySFX("SFX_GUI_Button");
                 UIManager.Instance.SelectBuildingKit(itemID);
             }

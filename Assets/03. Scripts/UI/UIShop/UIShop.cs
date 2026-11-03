@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UIShop : MonoBehaviour
 {
-    [SerializeField] private DataManager dataManager;
+    [SerializeField] private OriginDataManager dataManager;
     [SerializeField] private TimeManager timeManager;
     [SerializeField] private UIShopBuy uiShopBuy;
 

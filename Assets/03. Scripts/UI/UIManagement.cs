@@ -5,7 +5,7 @@ public class UIManagement : MonoBehaviour
 {
     [SerializeField] private GameObject management;
 
-    public DataManager dataManager;
+    public OriginDataManager dataManager;
     public UIChart uiChart;
     public UIShop uiShop;
     public UIRobot uiRobot;

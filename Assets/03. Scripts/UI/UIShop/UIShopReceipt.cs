@@ -7,8 +7,8 @@ public class UIShopReceipt : MonoBehaviour
     // 영수증
     // 상점 구매 예정인 품목 나열 및 취소가능
 
-    [SerializeField] private ShopManager shopManager;
-    [SerializeField] private CurrencyManager currencyManager;
+    [SerializeField] private ShopManager shop;
+    [SerializeField] private PlayerDataManager currency;
     [SerializeField] private DataManager dataManager;
 
     [Header("Lines")]
@@ -29,25 +29,25 @@ public class UIShopReceipt : MonoBehaviour
     #region Unity
     private void OnEnable()
     {
-        if (shopManager ==  null || currencyManager == null || dataManager == null)
+        if (shop ==  null || currency == null || dataManager == null)
         {
-            Debug.LogError("[UIShopReceipt] Manager를 연결하세요");
+            Debug.LogError("[UIShopReceipt] : Manager를 연결하세요");
             return;
         }
 
-        shopManager.onCartChanged += Refresh;
-        currencyManager.OnMoneyChanged += OnMoneyChanged;
+        shop.onCartChanged += Refresh;
+        currency.OnMoneyChanged += OnMoneyChanged;
 
         Refresh();
     }
 
     private void OnDisable()
     {
-        if (shopManager != null)
-            shopManager.onCartChanged -= Refresh;
+        if (shop != null)
+            shop.onCartChanged -= Refresh;
 
-        if (currencyManager != null)
-            currencyManager.OnMoneyChanged -= OnMoneyChanged;
+        if (currency != null)
+            currency.OnMoneyChanged -= OnMoneyChanged;
     }
     #endregion
 
@@ -60,7 +60,7 @@ public class UIShopReceipt : MonoBehaviour
     {
         int index = 0;
 
-        foreach (var pair in shopManager.Cart)
+        foreach (var pair in shop.Cart)
         {
             if (index >= lines.Count)
                 lines.Add(Instantiate(linePrefab, lineParent));
@@ -76,7 +76,7 @@ public class UIShopReceipt : MonoBehaviour
                 dataManager.itemsData[itemID].name,
                 dataManager.GetItemImage(itemID),
                 count,
-                shopManager.GetBuyPrice(itemID) * count,
+                shop.GetBuyPrice(itemID) * count,
                 OnRemoveClicked
                 );
         }
@@ -89,21 +89,21 @@ public class UIShopReceipt : MonoBehaviour
 
     private void UpdateSummary()
     {
-        int total = shopManager.GetCartTotal();
-        int money = currencyManager.Get();
+        int total = shop.GetCartTotal();
+        int money = currency.Get();
 
-        totalText.text = $"합계 {total:NO}";
+        totalText.text = $"합계 {total:<sprite=2>}";
         totalText.color = total > money ? shortColor : enoughColor;
 
-        slotText.text = $"{shopManager.GetCartSlotCount()} / {ShopManager.CartSlotLimit}";
-        moneyText.text = $"보유 {money:NO}";
+        slotText.text = $"{shop.GetCartSlotCount()} / {ShopManager.CartSlotLimit}";
+        moneyText.text = $"보유 {money:<sprite=2>}";
 
         if (emptyMessage != null)
-            emptyMessage.SetActive(!shopManager.HasCartItems);
+            emptyMessage.SetActive(!shop.HasCartItems);
     }
 
     private void OnRemoveClicked(int itemID)
     {
-        shopManager.RemoveCartItem(itemID);
+        shop.RemoveCartItem(itemID);
     }
 }

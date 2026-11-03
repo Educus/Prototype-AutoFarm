@@ -9,7 +9,7 @@ public class ItemInfoUI : MonoBehaviour
     [SerializeField] private TMP_Text itemName;
     [SerializeField] private TMP_Text itemInfo;
 
-    [SerializeField] private DataManager dataManager;
+    [SerializeField] private OriginDataManager dataManager;
 
     public void Show(int itemID, BuildingData buildingData, Sprite icon)
     {

@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
-    private DataManager dataManager;
+    private OriginDataManager dataManager;
     private TimeManager timeManager;
 
     private Dictionary<int, EventData> eventsData = new Dictionary<int, EventData>();
 
     private void Awake()
     {
-        dataManager = DataManager.Instance;
+        dataManager = OriginDataManager.Instance;
         timeManager = TimeManager.Instance;
     }
     void Start()

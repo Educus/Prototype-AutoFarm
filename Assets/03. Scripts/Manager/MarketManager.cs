@@ -57,7 +57,6 @@ public class MarketItemState
 public class MarketManager : MonoBehaviour
 {
     // 가격변동을 담당
-    [SerializeField] DataManager dataManager;
     [SerializeField] TimeManager timeManager;
 
     // 시세 저장 기간(최소 한 달 28일 * 1년 12개월)
@@ -80,10 +79,17 @@ public class MarketManager : MonoBehaviour
     private const int MinCandleDays = 336;
 
     private Dictionary<int, MarketItemState> marketStates = new Dictionary<int, MarketItemState>();
-
+    public Dictionary<int, ProductClosing> productClosingData { get; } = new Dictionary<int, ProductClosing>();
     #region Unity
+    private void Awake()
+    {
+        BuildClosingData();
+    }
     private void Start()
     {
+        if (productClosingData.Count == 0)
+            BuildClosingData();
+
         InitializeMarketStates();
         SeedInitialPrices();
 
@@ -103,11 +109,19 @@ public class MarketManager : MonoBehaviour
     #endregion
 
     #region Initialize
+    private void BuildClosingData()
+    {
+        productClosingData.Clear();
+
+        foreach (int itemID in OriginDataManager.Instance.productsData.Keys)
+            productClosingData[itemID] = new ProductClosing();
+    }
+
     private void InitializeMarketStates()
     {
         marketStates.Clear();
 
-        foreach (var pair in dataManager.productsData)
+        foreach (var pair in OriginDataManager.Instance.productsData)
         {
             int itemID = pair.Key;
 
@@ -121,9 +135,9 @@ public class MarketManager : MonoBehaviour
 
     private void SeedInitialPrices()
     {
-        foreach (var pair in dataManager.productClosingData)
+        foreach (var pair in productClosingData)
         {
-            if (!dataManager.itemsData.TryGetValue(pair.Key, out ItemData itemData))
+            if (!OriginDataManager.Instance.itemsData.TryGetValue(pair.Key, out ItemData itemData))
             {
                 Debug.LogError($"SeedInitialPrices 실패: itemsData에 itemID={pair.Key}가 없습니다.");
 
@@ -147,7 +161,7 @@ public class MarketManager : MonoBehaviour
 
     private void OnHourTick(int hour)
     {
-        foreach (var pair in dataManager.productClosingData)
+        foreach (var pair in productClosingData)
         {
             int itemID = pair.Key;
             ProductClosing closing = pair.Value;
@@ -155,7 +169,7 @@ public class MarketManager : MonoBehaviour
             if (!closing.HasData)
                 continue;
 
-            if (!dataManager.productsData.TryGetValue(itemID, out Product product))
+            if (!OriginDataManager.Instance.productsData.TryGetValue(itemID, out Product product))
                 continue;
 
             if (!marketStates.TryGetValue(itemID, out MarketItemState state))
@@ -181,7 +195,7 @@ public class MarketManager : MonoBehaviour
     {
         int maxDays = Mathf.Max(MinCandleDays, closingPriceDays);
 
-        foreach (var closing in dataManager.productClosingData.Values)
+        foreach (var closing in productClosingData.Values)
         {
             closing.StartNewDay(maxDays);
         }
@@ -254,8 +268,8 @@ public class MarketManager : MonoBehaviour
         if (state.state == MarketState.Event)
             return;
 
-        ItemData itemData = dataManager.itemsData[state.itemID];
-        Product product = dataManager.productsData[state.itemID];
+        ItemData itemData = OriginDataManager.Instance.itemsData[state.itemID];
+        Product product = OriginDataManager.Instance.productsData[state.itemID];
 
         float basicPrice = itemData.basicPrice;
 
@@ -292,7 +306,7 @@ public class MarketManager : MonoBehaviour
     // 하루 기준 평균회귀 값 (OnHourTick에서 24로 나눠서 사용)
     private float GetMeanReversionMean(MarketItemState state)
     {
-        ItemData itemData = dataManager.itemsData[state.itemID];
+        ItemData itemData = OriginDataManager.Instance.itemsData[state.itemID];
 
         float basicPrice = itemData.basicPrice;
 
@@ -308,11 +322,11 @@ public class MarketManager : MonoBehaviour
 
     private float GetCurrentPrice(int itemID)
     {
-        ProductClosing closing = dataManager.productClosingData[itemID];
+        ProductClosing closing = productClosingData[itemID];
 
         if (!closing.HasData)
         {
-            return dataManager.itemsData[itemID].basicPrice;
+            return OriginDataManager.Instance.itemsData[itemID].basicPrice;
         }
 
         return closing.CurrentPrice;
@@ -323,7 +337,7 @@ public class MarketManager : MonoBehaviour
     private void CreateMarketEvent(int itemID, int eventID, int currentDay, bool isFollowUp = false)
     {
         // 이벤트 데이터 확인
-        if (!dataManager.eventsData.TryGetValue(eventID, out EventData eventData))
+        if (!OriginDataManager.Instance.eventsData.TryGetValue(eventID, out EventData eventData))
         {
             Debug.LogWarning($"존재하지 않는 EventID : {eventID}");
             return;
@@ -336,7 +350,7 @@ public class MarketManager : MonoBehaviour
         float currentPrice = GetCurrentPrice(itemID);
 
         // 상품의 표준편차
-        float stdDev = dataManager.productsData[itemID].priceStdDev;
+        float stdDev = OriginDataManager.Instance.productsData[itemID].priceStdDev;
 
         // 이벤트 계산용 평균 Z
         float averageZ = GetEventAverageZ();
@@ -440,7 +454,7 @@ public class MarketManager : MonoBehaviour
     private void ProcessEventResult(MarketItemState state, MarketEvent marketEvent, int currentDay)
     {
         // 이벤트 데이터
-        if (!dataManager.eventsData.TryGetValue(marketEvent.eventID, out EventData eventData))
+        if (!OriginDataManager.Instance.eventsData.TryGetValue(marketEvent.eventID, out EventData eventData))
         {
             EndEvent(state);
             return;
@@ -468,7 +482,7 @@ public class MarketManager : MonoBehaviour
     private void EvaluateEventResult(MarketItemState state, MarketEvent marketEvent, 
                                         float differenceRate, int currentDay)
     {
-        float S = dataManager.productsData[state.itemID].priceStdDev * 100f;
+        float S = OriginDataManager.Instance.productsData[state.itemID].priceStdDev * 100f;
 
 
         // 목표보다 크게 벗어난 경우
@@ -502,7 +516,7 @@ public class MarketManager : MonoBehaviour
             GetCurrentPrice(state.itemID);
 
         float stdDev =
-            dataManager.productsData[state.itemID].priceStdDev;
+            OriginDataManager.Instance.productsData[state.itemID].priceStdDev;
 
         float averageZ =
             GetEventAverageZ();
@@ -611,7 +625,7 @@ public class MarketManager : MonoBehaviour
         List<int> candidates =
             new List<int>();
 
-        foreach (var pair in dataManager.productsData)
+        foreach (var pair in OriginDataManager.Instance.productsData)
         {
             int itemID = pair.Key;
 
@@ -631,13 +645,13 @@ public class MarketManager : MonoBehaviour
     // 랜덤 이벤트 선택
     private int GetRandomEventID()
     {
-        if (dataManager.eventsData.Count == 0)
+        if (OriginDataManager.Instance.eventsData.Count == 0)
         {
             return -1;
         }
 
         List<int> eventIDs =
-            new List<int>(dataManager.eventsData.Keys);
+            new List<int>(OriginDataManager.Instance.eventsData.Keys);
 
         int randomIndex =
             UnityEngine.Random.Range(0, eventIDs.Count);
@@ -664,7 +678,7 @@ public class MarketManager : MonoBehaviour
             });
         }
 
-        foreach (var pair in dataManager.productClosingData)
+        foreach (var pair in productClosingData)
         {
             var entry = new ClosingPriceSaveData
             {
@@ -699,7 +713,7 @@ public class MarketManager : MonoBehaviour
 
         foreach (var c in data.closingPrices)
         {
-            if (!dataManager.productClosingData.TryGetValue(c.itemID, out ProductClosing closing))
+            if (!productClosingData.TryGetValue(c.itemID, out ProductClosing closing))
                 continue;
 
             closing.candles.Clear();
@@ -710,7 +724,7 @@ public class MarketManager : MonoBehaviour
             closing.exactPrice = c.exactPrice;
 
             // 저장된 값이 없을 경우 기본 가격
-            if (!closing.HasData && dataManager.itemsData.TryGetValue(c.itemID, out ItemData itemData))
+            if (!closing.HasData && OriginDataManager.Instance.itemsData.TryGetValue(c.itemID, out ItemData itemData))
             {
                 closing.candles.Add(new PriceCandle(itemData.basicPrice));
                 closing.exactPrice = itemData.basicPrice;

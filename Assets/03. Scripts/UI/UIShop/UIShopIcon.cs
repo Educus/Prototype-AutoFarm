@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class UIShopIcon : MonoBehaviour
 {
     // 상점 UI 각 슬롯에 할당되는 스크립트
-    private DataManager dataManager;
+    private OriginDataManager dataManager;
     private UIShop uiShop;
 
     private int itemID;
@@ -29,7 +29,7 @@ public class UIShopIcon : MonoBehaviour
         SetData();
     }
 
-    public void GetInfo(DataManager data, UIShop ui, int id)
+    public void GetInfo(OriginDataManager data, UIShop ui, int id)
     {
         dataManager = data;
         uiShop = ui;

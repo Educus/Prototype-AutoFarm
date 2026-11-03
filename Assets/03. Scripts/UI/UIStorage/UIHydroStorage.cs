@@ -10,7 +10,7 @@ public class UIHydroStorage : MonoBehaviour
 
     private void Start()
     {
-        item = DataManager.Instance.GetItemImage(7011);
+        item = OriginDataManager.Instance.GetItemImage(7011);
     }
 
     public void ChargeButton()

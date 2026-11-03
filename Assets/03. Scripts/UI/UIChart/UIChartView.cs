@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class UIChartView : MonoBehaviour, IScrollHandler
 {
-    [SerializeField] private DataManager dataManager;
+    private DataManager dataManager;
     [SerializeField] private RectTransform chartArea;
 
     [Header("Candle")]
@@ -51,6 +51,10 @@ public class UIChartView : MonoBehaviour, IScrollHandler
     private bool subscribed;
 
     #region Unity
+    private void Awake()
+    {
+        dataManager = DataManager.Instance;
+    }
     private void OnEnable()
     {
         Subscribe();

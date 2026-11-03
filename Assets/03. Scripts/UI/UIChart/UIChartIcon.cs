@@ -7,16 +7,17 @@ public class UIChartIcon : MonoBehaviour
     private DataManager dataManager;
     private UIChart uiChart;
 
-    private ProductSubData productSubData;
     private int itemID;
 
     private Button button;
 
-    [SerializeField] private GameObject[] backGround;   // 가격 상승 하락 배경 이미지
+    [SerializeField] private GameObject[] backGround;   // 가격 상승 하락 배경 이미지(0하락, 1상승)
     [SerializeField] private Image itemImage;
     [SerializeField] private TMP_Text itemName;
     [SerializeField] private TMP_Text itemPrice;
-    [SerializeField] private GameObject[] bookMark;     // 북마크 이미지
+    [SerializeField] private GameObject[] bookMark;     // 북마크 이미지(0 off, 1 on)
+
+    private PlayerDataManager Player => DataManager.Instance.PlayerDataManager;
 
     private void Awake()
     {
@@ -28,13 +29,25 @@ public class UIChartIcon : MonoBehaviour
     private void OnEnable()
     {
         MarketManager.onPricesUpdated += OnPricesUpdated;
-        if (dataManager != null) SetData();
+
+        if (DataManager.Instance != null && DataManager.Instance.PlayerDataManager != null)
+            DataManager.Instance.PlayerDataManager.OnBookmarksChanged += RefreshBookMarkIcon;
+
+        if (dataManager != null)
+        {
+            SetData();
+            RefreshBookMarkIcon();
+        }
     }
 
     private void OnDisable()
     {
         MarketManager.onPricesUpdated -= OnPricesUpdated;
+
+        if (DataManager.Instance != null && DataManager.Instance.PlayerDataManager != null)
+            DataManager.Instance.PlayerDataManager.OnBookmarksChanged -= RefreshBookMarkIcon;
     }
+
     private void OnPricesUpdated() 
     {
         if (dataManager != null) 
@@ -45,22 +58,23 @@ public class UIChartIcon : MonoBehaviour
     public void GetInfo(DataManager data, UIChart ui,int id)
     {
         dataManager = data;
-        productSubData = dataManager.productSubData[id];
         uiChart = ui;
         itemID = id;
 
         SetInfo();
         SetData();
-        SetBookMark();
-
-        Debug.Log($"UIChartIcon GetInfo: {itemID}");
+        RefreshBookMarkIcon();
     }
+
     // 최초 정보 설정
     private void SetInfo()
     {
+        OriginDataManager origin = OriginDataManager.Instance;
+
         button.onClick.AddListener(() => uiChart.OnClickChartButton(itemID));
-        itemImage.sprite = dataManager.GetItemImage(itemID);
-        itemName.text = dataManager.productsData[itemID].name;
+        itemImage.sprite = origin.GetItemImage(itemID);
+        itemName.text = origin.TryGetProduct(itemID, out Product product) ? 
+            product.name : itemID.ToString();
     }
 
     // 데이터 갱신
@@ -77,7 +91,7 @@ public class UIChartIcon : MonoBehaviour
 
         itemPrice.text = nowPrice.ToString();
 
-        // 하락 / 상승 배경 (같으면 둘 다 꺼서 이전 표시가 남지 않게 함)
+        // 하락 / 상승 배경
         backGround[0].SetActive(diff < 0);
         backGround[1].SetActive(diff >= 0);
 
@@ -91,25 +105,26 @@ public class UIChartIcon : MonoBehaviour
         }
     }
 
+    #region 북마크
     public void BookMark()
     {
-        productSubData.OnOffBookMark();
-        bookMark[0].SetActive(!productSubData.isBookMarked);
-        bookMark[1].SetActive(productSubData.isBookMarked);
+        Player.ToggleBookmark(itemID);
     }
-    private void SetBookMark()
+    private void RefreshBookMarkIcon()
     {
-        productSubData.GetBookMark();
-        bookMark[0].SetActive(!productSubData.isBookMarked);
-        bookMark[1].SetActive(productSubData.isBookMarked);
+        bool marked = Player.IsBookmarked(itemID);
+
+        bookMark[0].SetActive(!marked);
+        bookMark[1].SetActive(marked);
     }
 
     public void OnBookMark()
     {
-        gameObject.SetActive(productSubData.isBookMarked);
+        gameObject.SetActive(Player.IsBookmarked(itemID));
     }
     public void OffBookMark()
     {
         gameObject.SetActive(true);
     }
+    #endregion
 }

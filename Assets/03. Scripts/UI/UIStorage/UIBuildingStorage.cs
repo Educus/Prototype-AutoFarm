@@ -474,7 +474,7 @@ public class UIBuildingStorage : MonoBehaviour
             return;
 
         ItemData itemData =
-            DataManager.Instance.itemsData[sourceSlot.itemID];
+            OriginDataManager.Instance.itemsData[sourceSlot.itemID];
 
         Inventory targetInventory;
 
@@ -529,7 +529,7 @@ public class UIBuildingStorage : MonoBehaviour
         }
 
         // Product 타입만 이동 가능
-        if (DataManager.Instance.itemsData[sourceSlot.itemID]
+        if (OriginDataManager.Instance.itemsData[sourceSlot.itemID]
             .type != ItemType.Product)
         {
             return;

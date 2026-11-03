@@ -3,27 +3,23 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     public static SoundManager Instance;
 
     private Dictionary<string, AudioClip> BGM_Clips;
     private Dictionary<string, AudioClip> SFX_Clips;
+
+    private float bgmVolume = 0.8f;
+    private float sfxVolume = 0.8f;
 
     private AudioSource BGM;
     private AudioSource SFX;
 
     private void Awake()
     {
+        if (Instance == null) Instance = this;
+        else { Destroy(gameObject); return; }
+
         init();
-    }
-
-
-    //awake 초기화 오류로 수정 필요.
-    public void init()
-    {
-        Load_BGM();
-        Load_SFX();
     }
 
     private void Update()
@@ -32,6 +28,22 @@ public class SoundManager : MonoBehaviour
         // 시간대에 따라 BGM 변경되게 업데이트 필요
         if (!GameManager.Instance.isPlay) return;
         PlayBGM(BGM_Clips["BGM_Main_Dawn_Loop"], BGM);
+    }
+
+    //awake 초기화 오류로 수정 필요.
+    public void init()
+    {
+        Load_BGM();
+        Load_SFX();
+    }
+    
+    public void SetVolumes(float bgm, float sfx)
+    {
+        bgmVolume = Mathf.Clamp01(bgm);
+        sfxVolume = Mathf.Clamp01(sfx);
+
+        if (BGM != null) BGM.volume = bgmVolume;
+        if (SFX != null) SFX.volume = sfxVolume;
     }
 
     private void Load_BGM()
@@ -48,6 +60,8 @@ public class SoundManager : MonoBehaviour
                 BGM_Clips.Add(Cl.name, Cl);
             }
         }
+
+        BGM.volume = bgmVolume;
     }
     private void Load_SFX()
     {
@@ -63,7 +77,10 @@ public class SoundManager : MonoBehaviour
                 SFX_Clips.Add(Cl.name, Cl);
             }
         }
+
+        SFX.volume = sfxVolume;
     }
+
 
     //BGM 재생 함수
     //파일명 입력
@@ -74,6 +91,7 @@ public class SoundManager : MonoBehaviour
             if (source.clip == clip && source.isPlaying) return;
             source.clip = clip;
             source.loop = true;
+            source.volume = bgmVolume;
             source.Play();
         }
     }
@@ -92,6 +110,7 @@ public class SoundManager : MonoBehaviour
                 if (source.clip == clip && source.isPlaying) return;
                 source.clip = clip;
                 source.loop = true;
+                source.volume = sfxVolume;
                 source.Play();
             }
         }
@@ -99,7 +118,7 @@ public class SoundManager : MonoBehaviour
         {
             if (SFX_Clips.TryGetValue(name, out AudioClip clip))
             {
-                source.PlayOneShot(clip);
+                source.PlayOneShot(clip, sfxVolume);
             }
         }
     }
@@ -119,7 +138,7 @@ public class SoundManager : MonoBehaviour
                 Debug.Log("it is not init");
                 return;
             }
-            SFX.PlayOneShot(clip);
+            SFX.PlayOneShot(clip, sfxVolume);
         }
     }
 

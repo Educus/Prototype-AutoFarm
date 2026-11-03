@@ -21,6 +21,23 @@ public class TimeSaveData
     public int hour;
     public int minute;
 }
+
+[Serializable]
+public class SettingsData
+{
+    // 소리 (0~1)
+    public float masterVolume = 1f;
+    public float bgmVolume = 0.8f;
+    public float sfxVolume = 0.8f;
+
+    // 화면, 0일 경우 첫 실행
+    public int screenWidth = 0;
+    public int screenHeight = 0;
+    public int screenMode = (int)FullScreenMode.Windowed;
+
+    // UI 배율 (기본 1)
+    public float uiScale = 1f;
+}
 #endregion
 
 // 아이템 ID와 개수 쌍 (JsonUtility는 Dictionary를 저장하지 못해서 목록으로 바꿔 저장)

@@ -100,7 +100,7 @@ public class UINPCStorage : MonoBehaviour
         farmItems.Clear();
         ranchItems.Clear();
 
-        foreach (var farmItem in DataManager.Instance.itemsData.Values)
+        foreach (var farmItem in OriginDataManager.Instance.itemsData.Values)
         {
             if (!farmItem.useToDemo)
                 continue;
@@ -116,7 +116,7 @@ public class UINPCStorage : MonoBehaviour
             }
         }
 
-        foreach (var ranchItem in DataManager.Instance.itemsData.Values)
+        foreach (var ranchItem in OriginDataManager.Instance.itemsData.Values)
         {
             if (!ranchItem.useToDemo)
                 continue;
@@ -317,7 +317,7 @@ public class UINPCStorage : MonoBehaviour
     private void RefreshWorkItem()
     {
         Sprite sprite =
-            DataManager.Instance.GetItemImage(
+            OriginDataManager.Instance.GetItemImage(
                 target.job.productItemID + 1);
 
         bool hasItem = sprite != null;
@@ -411,7 +411,7 @@ public class UINPCStorage : MonoBehaviour
                     continue;
 
                 ItemData item =
-                    DataManager.Instance.itemsData[slot.itemID];
+                    OriginDataManager.Instance.itemsData[slot.itemID];
 
                 if (item == null)
                     continue;
@@ -435,7 +435,7 @@ public class UINPCStorage : MonoBehaviour
                     continue;
 
                 ItemData item =
-                    DataManager.Instance.itemsData[slot.itemID];
+                    OriginDataManager.Instance.itemsData[slot.itemID];
 
                 if (item == null)
                     continue;

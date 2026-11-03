@@ -30,6 +30,7 @@ public class ObjectData
     [SerializeField] public int YieldItem;          // 생산 아이템
 }
 
+[DefaultExecutionOrder(-100)]
 public class ObjectDataManager : MonoBehaviour
 {
     public Dictionary<int, ObjectData> objectData = new Dictionary<int, ObjectData>();

@@ -41,7 +41,6 @@ public class Rocket : BuildingBase
     }
 
     #region Unity
-
     protected override void Awake()
     {
         base.Awake();
@@ -205,7 +204,7 @@ public class Rocket : BuildingBase
 
         // 구매 대금은 출발 버튼을 누를 때 차감 (돈이 부족하면 출발하지 않음)
         // 상태를 바꾸기 전에 실패 조건을 모두 확인: 판매 물품을 비우기 전에 먼저 검사
-        CurrencyManager currency = DataManager.Instance.CurrencyManager;
+        PlayerDataManager currency = DataManager.Instance.PlayerDataManager;
         int cost = shop.GetCartTotal();
 
         if (cost > 0 && currency.Get() < cost)
@@ -286,7 +285,7 @@ public class Rocket : BuildingBase
         // 돈 지급
         if (money > 0)
         {
-            DataManager.Instance.CurrencyManager.AddMoney(money);
+            DataManager.Instance.PlayerDataManager.AddMoney(money);
 
             money = 0;
         }
@@ -414,7 +413,7 @@ public class Rocket : BuildingBase
 
     #region Save / Load
 
-    // 인벤토리 내용은 전체 인벤토리 저장에 들어 있으므로 여기서는 이동 상태만 저장
+    // 이동 상태만 저장, 인벤토리는 인벤토리 매니저에서
     public override string GetJsonData()
     {
         var data = new RocketSaveData

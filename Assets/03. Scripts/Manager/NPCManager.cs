@@ -105,7 +105,7 @@ public class NPCManager : MonoBehaviour
 
     public NPC Spawn(string npcID, Vector3 position)
     {
-        GameObject prefab = DataManager.Instance.GetObjectPrefabs(NpcItemID);
+        GameObject prefab = OriginDataManager.Instance.GetObjectPrefabs(NpcItemID);
 
         if (prefab == null)
         {

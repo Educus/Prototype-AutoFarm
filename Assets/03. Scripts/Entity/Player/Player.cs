@@ -73,7 +73,7 @@ public class Player : StatusBase
             mainInventory.AddItem(
                 itemID,
                 amount,
-                DataManager.Instance
+                OriginDataManager.Instance
                 .itemsData[itemID]
                 .storagePeriod);
 
@@ -82,7 +82,7 @@ public class Player : StatusBase
             added += subInventory.AddItem(
                 itemID,
                 amount - added,
-                DataManager.Instance
+                OriginDataManager.Instance
                 .itemsData[itemID]
                 .storagePeriod);
         }

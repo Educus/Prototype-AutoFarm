@@ -77,7 +77,7 @@ public class ShopManager : MonoBehaviour
 
         foreach (var pair in items)
         {
-            if (!DataManager.Instance.itemsData.TryGetValue(pair.Key, out ItemData item))
+            if (!OriginDataManager.Instance.itemsData.TryGetValue(pair.Key, out ItemData item))
             {
                 Debug.LogError($"아이템 {pair.Key}의 데이터가 없습니다.");
                 continue;
@@ -102,7 +102,7 @@ public class ShopManager : MonoBehaviour
     // 구매 단가: ItemData.basicPrice (변하지 않음)
     public int GetBuyPrice(int itemID)
     {
-        return DataManager.Instance.itemsData[itemID].basicPrice;
+        return OriginDataManager.Instance.itemsData[itemID].basicPrice;
     }
 
     // 영수증 합계 (Rocket.TryLaunch가 출발할 때 차감하는 금액)

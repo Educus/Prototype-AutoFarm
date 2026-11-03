@@ -57,7 +57,7 @@ public class InventoryManager : MonoBehaviour
     public int HaveTotalItem(int itemID)
     {
         int totalCount = 0;
-        ItemType itemType = DataManager.Instance.itemsData[itemID].type;
+        ItemType itemType = OriginDataManager.Instance.itemsData[itemID].type;
 
         foreach (var inv in inventories.Values)
         {

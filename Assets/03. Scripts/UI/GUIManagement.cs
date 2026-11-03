@@ -7,7 +7,7 @@ public class GUIManagement : MonoBehaviour
     [SerializeField] private TMP_Text dayText;
     [SerializeField] private TMP_Text timeText;
 
-    [SerializeField] private CurrencyManager currencyManager;
+    [SerializeField] private PlayerDataManager currencyManager;
     // NPC
     [SerializeField] private TMP_Text npcText;
 
@@ -86,7 +86,7 @@ public class GUIManagement : MonoBehaviour
     // 골드 GUI 자동 갱신
     private void SetGold()
     {
-        goldText.text = $"{DataManager.Instance.CurrencyManager.money}";
+        goldText.text = $"{DataManager.Instance.PlayerDataManager.money}";
     }
 
 }

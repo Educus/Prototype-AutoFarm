@@ -136,7 +136,7 @@ public class GameManager : MonoBehaviour
     #region Highlight
     public void RefreshHighlights()
     {
-        if (DataManager.Instance == null)
+        if (OriginDataManager.Instance == null)
             return;
 
         if (DataManager.Instance.BuildingManager == null)

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Newtonsoft.Json;
+using UnityEngine;
 
 
 [Serializable]
@@ -17,21 +17,17 @@ public class KeyCodeData
     public string Description_KR;
 }
 
+[DefaultExecutionOrder(-100)]
 public class KeyCodeDataManager : MonoBehaviour
 {
-    public static KeyCodeDataManager Instance;
+    private readonly Dictionary<string, KeyCodeData> table = new Dictionary<string, KeyCodeData>();
+    private readonly Dictionary<string, KeyCode> defaultKeys= new Dictionary<string, KeyCode>();
 
-    // 실제 사용 키
-    private Dictionary<string, KeyCode> keyBindings =
-        new Dictionary<string, KeyCode>();
-
-    private const string SAVE_KEY = "KEY_BINDINGS";
+    public IReadOnlyDictionary<string, KeyCodeData> Table => table;
+    public IReadOnlyDictionary<string, KeyCode> DefaultKeys => defaultKeys;
 
     private void Awake()
     {
-        if (Instance == null)
-            Instance = this;
-
         LoadDefaultData();
     }
 
@@ -49,103 +45,31 @@ public class KeyCodeDataManager : MonoBehaviour
         List<KeyCodeData> keyList =
             JsonConvert.DeserializeObject<List<KeyCodeData>>(jsonFile.text);
 
-        keyBindings.Clear();
+        table.Clear();
+        defaultKeys.Clear();
 
         foreach (var key in keyList)
         {
-            try
-            {
-                KeyCode parsedKey =
-                    (KeyCode)Enum.Parse(
-                        typeof(KeyCode),
-                        key.DefaultKeyCode
-                    );
+            table[key.Name] = key;
 
-                keyBindings[key.Name] = parsedKey;
+            if (Enum.TryParse(key.DefaultKeyCode, out KeyCode parsed))
+            {
+                defaultKeys[key.Name] = parsed;
             }
-            catch
+            else
             {
                 Debug.LogWarning($"Key Parse 실패 : {key.Name}");
             }
         }
     }
 
-    public List<KeyCodeSaveData> GetSaveData()
+    public bool TryGetDefaultKey(string actionName, out KeyCode keyCode)
     {
-        List<KeyCodeSaveData> list =
-            new List<KeyCodeSaveData>();
-
-        foreach (var pair in keyBindings)
-        {
-            list.Add(new KeyCodeSaveData
-            {
-                actionName = pair.Key,
-                keyCode = pair.Value.ToString()
-            });
-        }
-
-        return list;
+        return defaultKeys.TryGetValue(actionName, out keyCode);
     }
 
-    public void Load(List<KeyCodeSaveData> data)
+    public bool IsRebindable(string actionName)
     {
-        if (data == null || data.Count == 0)
-            return;
-
-        keyBindings.Clear();
-
-        foreach (var item in data)
-        {
-            try
-            {
-                KeyCode key =
-                    (KeyCode)Enum.Parse(
-                        typeof(KeyCode),
-                        item.keyCode
-                    );
-
-                keyBindings[item.actionName] = key;
-            }
-            catch
-            {
-                Debug.LogWarning($"로드 실패 : {item.actionName}");
-            }
-        }
-    }
-
-    // 키를 눌렀을 때 true (한 번만 입력용)
-    public bool GetKeyDown(string actionName)
-    {
-        if (!keyBindings.TryGetValue(actionName, out KeyCode key))
-            return false;
-
-        return Input.GetKeyDown(key);
-    }
-
-    // 키를 누르고 있는 동안 true (이동처럼 지속 입력용)
-    public bool GetKeyHeld(string actionName)
-    {
-        if (!keyBindings.TryGetValue(actionName, out KeyCode key))
-            return false;
-
-        return Input.GetKey(key);
-    }
-
-    public KeyCode GetKey(string actionName)
-    {
-        if (!keyBindings.ContainsKey(actionName))
-            return KeyCode.None;
-
-        return keyBindings[actionName];
-    }
-
-    public void RebindKey(string actionName, KeyCode newKey)
-    {
-        keyBindings[actionName] = newKey;
-    }
-
-    public void ResetToDefault()
-    {
-        LoadDefaultData();
+        return table.TryGetValue(actionName, out KeyCodeData data) && data.IsRebindable == 1;
     }
 }

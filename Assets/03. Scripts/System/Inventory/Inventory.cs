@@ -59,7 +59,7 @@ public class Inventory : MonoBehaviour
 
     public int AddItem(int itemID, int amount, int storagePeriod)
     {
-        var data = DataManager.Instance.itemsData[itemID];
+        var data = OriginDataManager.Instance.itemsData[itemID];
         if (data == null) return 0; // if (data != null) return 0; <= ?
         if (!CanAddItem(itemID)) return 0;
 
@@ -196,7 +196,7 @@ public class Inventory : MonoBehaviour
 
     public int GetAddableAmount(int itemID)
     {
-        var data = DataManager.Instance.itemsData[itemID];
+        var data = OriginDataManager.Instance.itemsData[itemID];
 
         if (!CanAddItem(itemID))
             return 0;
@@ -226,7 +226,7 @@ public class Inventory : MonoBehaviour
                 return false;
 
             ItemData data =
-                DataManager.Instance.itemsData[slot.itemID];
+                OriginDataManager.Instance.itemsData[slot.itemID];
 
             if (slot.count < data.stack)
                 return false;
@@ -239,7 +239,7 @@ public class Inventory : MonoBehaviour
     #region Filter
     public bool CanAddItem(int itemID)
     {
-        var data = DataManager.Instance.itemsData[itemID];
+        var data = OriginDataManager.Instance.itemsData[itemID];
 
         switch (type)
         {
@@ -293,7 +293,7 @@ public class Inventory : MonoBehaviour
             if (slot.remainingStoragePeriod < 0)
                 continue;
 
-            var data = DataManager.Instance.itemsData[slot.itemID];
+            var data = OriginDataManager.Instance.itemsData[slot.itemID];
 
             if (data.type != ItemType.Product)
                 continue;
@@ -374,7 +374,7 @@ public class Inventory : MonoBehaviour
             return int.MaxValue;
 
         var data =
-            DataManager.Instance.itemsData[slot.itemID];
+            OriginDataManager.Instance.itemsData[slot.itemID];
 
         // Product가 아닌 경우 맨 아래
         if (data.type != ItemType.Product)

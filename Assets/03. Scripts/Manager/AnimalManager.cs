@@ -74,7 +74,7 @@ public class AnimalManager : MonoBehaviour
     // 프리팹으로 동물을 만들고 등록 (구매와 불러오기 공용)
     public AnimalBase Spawn(int itemId, string animalID, Vector3 position)
     {
-        GameObject prefab = DataManager.Instance.GetObjectPrefabs(itemId);
+        GameObject prefab = OriginDataManager.Instance.GetObjectPrefabs(itemId);
 
         if (prefab == null)
         {

@@ -57,7 +57,7 @@ public class InputManager : MonoBehaviour
     private void HandleSystemInput()
     {
         // 테스트용 ESC
-        if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Setting"))
+        if (DataManager.Instance.PlayerDataManager.GetKeyDown("PopUp_Setting"))
         {
             GameManager gm = GameManager.Instance;
 
@@ -86,11 +86,11 @@ public class InputManager : MonoBehaviour
     private void HandleMouseInput()
     {
         // 좌클릭
-        if (KeyCodeDataManager.Instance.GetKeyDown("PC_Movement"))
+        if (DataManager.Instance.PlayerDataManager.GetKeyDown("PC_Movement"))
             LeftClick();
 
         // 우클릭
-        if (KeyCodeDataManager.Instance.GetKeyDown("PC_Interaction"))
+        if (DataManager.Instance.PlayerDataManager.GetKeyDown("PC_Interaction"))
             RightClick();
     }
 
@@ -105,7 +105,7 @@ public class InputManager : MonoBehaviour
 
         if (!blocked)
         {
-            var key = KeyCodeDataManager.Instance;
+            var key = DataManager.Instance.PlayerDataManager;
 
             if (key.GetKeyHeld("PC_MoveUp")) dir.y += 1;
             if (key.GetKeyHeld("PC_MoveDown")) dir.y -= 1;
@@ -159,25 +159,28 @@ public class InputManager : MonoBehaviour
     private void HandleUIInput()
     {
         // TODO: PopUp_Chart, PopUp_Shop, PopUp_Storage, PopUp_Hydro 구현 시 추가
-        if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Robot"))
+
+        var key = DataManager.Instance.PlayerDataManager;
+
+        if (key.GetKeyDown("PopUp_Robot"))
             uiManagement.OpenManagement();
 
-        if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Chart"))
+        if (key.GetKeyDown("PopUp_Chart"))
         {
 
         }
 
-        if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Shop"))
+        if (key.GetKeyDown("PopUp_Shop"))
         {
 
         }
 
-        if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Storage"))
+        if (key.GetKeyDown("PopUp_Storage"))
         {
 
         }
 
-        if (KeyCodeDataManager.Instance.GetKeyDown("PopUp_Hydro"))
+        if (key.GetKeyDown("PopUp_Hydro"))
         {
 
         }
@@ -187,7 +190,7 @@ public class InputManager : MonoBehaviour
     {
         for (int i = 0; i < SlotKeys.Length; i++)
         {
-            if (KeyCodeDataManager.Instance.GetKeyDown(SlotKeys[i]))
+            if (DataManager.Instance.PlayerDataManager.GetKeyDown(SlotKeys[i]))
                 invenMod.SelectSubSlot(i);
         }
     }

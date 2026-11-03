@@ -254,10 +254,10 @@ public class NPC : MonoBehaviour, ILeftInteractable
     {
         int remainingStoragePeriod = -1;
 
-        if (DataManager.Instance.itemsData.ContainsKey(itemID))
+        if (OriginDataManager.Instance.itemsData.ContainsKey(itemID))
         {
             remainingStoragePeriod =
-                DataManager.Instance.itemsData[itemID].storagePeriod;
+                OriginDataManager.Instance.itemsData[itemID].storagePeriod;
         }
 
         int added = mainInventory.AddItem(

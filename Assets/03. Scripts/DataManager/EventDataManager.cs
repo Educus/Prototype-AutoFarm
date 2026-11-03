@@ -14,6 +14,8 @@ public class EventData
     [SerializeField] public int linkage;
     [SerializeField] public string text;
 }
+
+[DefaultExecutionOrder(-100)]
 public class EventDataManager : MonoBehaviour
 {
     public Dictionary<int, EventData> eventData = new Dictionary<int, EventData>();

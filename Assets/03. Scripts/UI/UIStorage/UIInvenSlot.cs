@@ -21,7 +21,7 @@ public class UIInvenSlot : MonoBehaviour
         itemImage.gameObject.SetActive(true);
 
         itemImage.sprite =
-            DataManager.Instance.GetItemImage(slot.itemID);
+            OriginDataManager.Instance.GetItemImage(slot.itemID);
 
         countText.text = slot.count.ToString();
 
@@ -60,7 +60,7 @@ public class UIInvenSlot : MonoBehaviour
         float current = slot.remainingStoragePeriod;
 
         float max =
-            DataManager.Instance.itemsData[slot.itemID].storagePeriod;
+            OriginDataManager.Instance.itemsData[slot.itemID].storagePeriod;
 
         float value = current / max;
 

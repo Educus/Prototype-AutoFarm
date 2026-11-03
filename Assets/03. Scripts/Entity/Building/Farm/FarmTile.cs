@@ -38,7 +38,7 @@ public class FarmTile
                 player.subInventory.slots[player.selectedSubSlotIndex];
 
             return !slot.IsEmpty() &&
-                   DataManager.Instance.itemsData[slot.itemID].type == ItemType.Seed;
+                   OriginDataManager.Instance.itemsData[slot.itemID].type == ItemType.Seed;
         }
 
         return false;
@@ -49,7 +49,7 @@ public class FarmTile
     {
         hasCrop = true;
         cropID = seedID + 1;
-        growth = DataManager.Instance.productsData[cropID].growthTime * 24f * 60f;
+        growth = OriginDataManager.Instance.productsData[cropID].growthTime * 24f * 60f;
         watered = false;
         waterTime = 24f * 60f;
     }
@@ -123,7 +123,7 @@ public class FarmTile
             return 0;
 
         float maxGrowth =
-            DataManager.Instance.productsData[cropID].growthTime * 24f * 60f;
+            OriginDataManager.Instance.productsData[cropID].growthTime * 24f * 60f;
 
         if (growth <= 0f)
             return 2;

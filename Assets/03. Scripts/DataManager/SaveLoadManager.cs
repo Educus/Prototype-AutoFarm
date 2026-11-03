@@ -123,7 +123,7 @@ public class SaveLoadManager : MonoBehaviour
         data.unlockedChunks = chunkManager.GetSaveData();
 
         // Currency, Market, Shop cart
-        data.currency = dm.CurrencyManager.GetSaveData();
+        data.playerData = dm.PlayerDataManager.GetSaveData();
         data.market = marketManager.GetSaveData();
         data.shopCart = dm.ShopManager.GetSaveData();
 
@@ -166,9 +166,6 @@ public class SaveLoadManager : MonoBehaviour
             data.npcs.Add(npc.GetSaveData());
         }
 
-        // Key Codes
-        data.keyCodes = KeyCodeDataManager.Instance.GetSaveData();
-
         return data;
     }
 
@@ -192,12 +189,53 @@ public class SaveLoadManager : MonoBehaviour
 
     #region Load
 
+    // 기존 세이브 파일이 있는지 확인
+    public bool HasSaveFile()
+    {
+        return File.Exists(GetPath(SaveReason.Manual, null));
+    }
+    // 세이브 삭제 (새 게임). 스토리 지점 세이브(story_*.json)는 지우지 않음
+    public void DeleteSave()
+    {
+        try
+        {
+            string path = GetPath(SaveReason.Manual, null);
+
+            if (File.Exists(path))
+                File.Delete(path);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[SaveLoadManager] 세이브 삭제 실패: {e}");
+        }
+    }
+    // 타이틀의 불러오기 버튼: 성공하면 true
+    public bool ContinueGame()
+    {
+        return TryLoad(SaveReason.Manual, null);
+    }
+
+    // 타이틀에서 나가기: 저장하지 않고 종료
+    public void QuitWithoutSave()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+    Application.Quit();
+#endif
+    }
+
     public void Load()
     {
-        Load(SaveReason.Manual);
+        TryLoad(SaveReason.Manual);
     }
 
     public void Load(SaveReason reason, string tag = null)
+    {
+        TryLoad(reason, tag);
+    }
+
+    public bool TryLoad(SaveReason reason, string tag = null)
     {
         string path = GetPath(reason, tag);
 
@@ -205,10 +243,10 @@ public class SaveLoadManager : MonoBehaviour
         if (!File.Exists(path))
         {
             Debug.LogWarning($"[SaveLoadManager] 세이브 파일이 없습니다: {path}");
-            return;
+            return false;
         }
 
-        GameSaveData data;
+            GameSaveData data;
 
         try
         {
@@ -217,13 +255,13 @@ public class SaveLoadManager : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogError($"[SaveLoadManager] 세이브 파일을 읽을 수 없습니다: {e}");
-            return;
+            return false;
         }
 
         if (data == null)
         {
             Debug.LogError("[SaveLoadManager] 세이브 데이터가 비어 있습니다.");
-            return;
+            return false;
         }
 
         try
@@ -233,7 +271,10 @@ public class SaveLoadManager : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogError($"[SaveLoadManager] 불러오기 중 오류: {e}");
+            return false;
         }
+
+        return true;
     }
 
     private void ApplySaveData(GameSaveData data)
@@ -261,7 +302,7 @@ public class SaveLoadManager : MonoBehaviour
         }
 
         // 5. 돈, 시장, 상점 장바구니
-        dm.CurrencyManager.Load(data.currency);
+        dm.PlayerDataManager.Load(data.playerData);
         marketManager.Load(data.market);
         dm.ShopManager.Load(data.shopCart);
 
@@ -318,9 +359,6 @@ public class SaveLoadManager : MonoBehaviour
             if (npc != null)
                 npc.Load(npcData);
         }
-
-        // 10. 키코드
-        KeyCodeDataManager.Instance.Load(data.keyCodes);
 
         // 불러온 직후에 시간이 바로 흐르지 않게 일시정지
         TimeManager.Instance.Pause();

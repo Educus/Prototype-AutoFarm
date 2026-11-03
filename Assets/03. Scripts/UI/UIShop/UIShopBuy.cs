@@ -47,8 +47,8 @@ public class UIShopBuy : MonoBehaviour
         itemPrice.text = currentPrice.ToString();
 
         // 현재 보유 골드
-        int gold =
-            DataManager.Instance.CurrencyManager.Get();
+        var shop = DataManager.Instance.ShopManager;
+        int gold = DataManager.Instance.PlayerDataManager.Get() - shop.GetCartTotal();
 
         // 최대 구매 가능 수량
         if (currentPrice <= 0)
@@ -58,7 +58,7 @@ public class UIShopBuy : MonoBehaviour
         }
         else
         {
-            maxBuyCount = gold / currentPrice;
+            maxBuyCount = Mathf.Max(0, gold / currentPrice);
         }
 
         // 구매 불가능
@@ -148,30 +148,27 @@ public class UIShopBuy : MonoBehaviour
         // 개발자용 아이템 예외 처리
         if (itemID == 5011) 
         {
-            DataManager.Instance.CurrencyManager.AddMoney(100000 * currentNum); // 골드 10만 추가
+            DataManager.Instance.PlayerDataManager.AddMoney(100000 * currentNum); // 골드 10만 추가
             Exit();
             return;
         }
 
-        ShopManager shop = DataManager.Instance.ShopManager;   // var storage = ... 대체
+        var shop = DataManager.Instance.ShopManager;
 
-        // 영수증 칸 수 제한 (CanAddBuyItem 대체)
+        // 영수증 칸 수 제한
         if (!shop.CanAddToCart(itemID, currentNum))
         {
             Debug.Log("구매 가능한 슬롯 수를 초과했습니다.");
             return;
         }
 
-        // 돈 부족 검사: 영수증에 이미 담긴 금액까지 포함 (결제는 로켓 출발 때)
-        int available = DataManager.Instance.CurrencyManager.Get() - shop.GetCartTotal();
-
-        if (available < totalPrice)
+        if (DataManager.Instance.PlayerDataManager.Get() - shop.GetCartTotal() < totalPrice)
         {
             Debug.Log("골드가 부족합니다.");
             return;
         }
 
-        // 영수증에 추가 (buyItems 직접 수정 대체). 골드는 여기서 차감하지 않음
+        // 영수증에 추가. 골드는 여기서 차감하지 않음
         shop.TryAddToCart(itemID, currentNum);
 
         Exit();

@@ -50,7 +50,7 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable, IClickPrio
         remainingTime = productionTime;
 
         gameObject.name = animalID;
-        speed = DataManager.Instance.objectsData[int.Parse(id)].Speed;
+        speed = OriginDataManager.Instance.objectsData[int.Parse(id)].Speed;
 
         DataManager.Instance.AnimalManager.Register(this);
 

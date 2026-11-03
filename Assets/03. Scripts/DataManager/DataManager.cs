@@ -1,140 +1,73 @@
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
+[DefaultExecutionOrder(-150)]
 public class DataManager : MonoBehaviour
 {
-    [SerializeField] private ItemDataManager itemsDataManager;
-    public Dictionary<int, ItemData> itemsData { get; private set; }
+    public static DataManager Instance { get; private set; }
 
-    [SerializeField] private ProductDataManager productDataManager;
-    public Dictionary<int, Product> productsData { get; private set; }
-    public Dictionary<int, ProductClosing> productClosingData { get; private set; }
-    public Dictionary<int, ProductSubData> productSubData { get; private set; }
-
-    [SerializeField] private EventDataManager eventDataManager;
-    public Dictionary<int, EventData> eventsData { get; private set; }
-    [SerializeField] private ObjectDataManager objectDataManager;
-    public Dictionary<int, ObjectData> objectsData { get; private set; }
-
-    [SerializeField] private SaveLoadManager saveLoadManager;
-    public SaveLoadManager SaveLoadManager { get; private set; }
-
-    [SerializeField] private CurrencyManager currencyManager;
-    public CurrencyManager CurrencyManager { get; private set; }
-
+    [Header("런타임 매니저 (이 오브젝트의 자식)")]
+    [SerializeField] private PlayerDataManager playerDataManager;
     [SerializeField] private NPCManager npcManager;
-    public NPCManager NPCManager { get; private set; }
-    
-    [SerializeField] AnimalManager animalManager;
-    public AnimalManager AnimalManager { get; private set; }
-
+    [SerializeField] private AnimalManager animalManager;
     [SerializeField] private InventoryManager inventoryManager;
-    public InventoryManager InventoryManager { get; private set; }
-
     [SerializeField] private BuildingManager buildingManager;
-    public BuildingManager BuildingManager { get; private set; }
     [SerializeField] private ShopManager shopManager;
-    public ShopManager ShopManager { get; private set; }
+    [SerializeField] private MarketManager marketManager;
 
-    public int nowEventID = -1;
+    public PlayerDataManager PlayerDataManager => playerDataManager;
+    public NPCManager NPCManager => npcManager;
+    public AnimalManager AnimalManager => animalManager;
+    public InventoryManager InventoryManager => inventoryManager;
+    public BuildingManager BuildingManager => buildingManager;
+    public ShopManager ShopManager => shopManager;
+    public MarketManager MarketManager => marketManager;
 
-    [SerializeField] private Sprite[] itemImage;
-    [SerializeField] private Sprite[] cropsImage;
-    [SerializeField] private GameObject[] objPrefabs;
+    // 저장/불러오기는 DataTotalManager에서 관리
+    public SaveLoadManager SaveLoadManager =>
+        DataTotalManager.Instance != null ? DataTotalManager.Instance.SaveLoad : null;
 
-    public static DataManager Instance;
+    // 시세 MarketManager에서 관리
+    public Dictionary<int, ProductClosing> productClosingData => marketManager.productClosingData;
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-    }
-
-    private void Start()
-    {
-        LoadData();
-    }
-
-    private void LoadData()
-    {
-        // 원본 데이터 로드
-        itemsData = itemsDataManager.itemData;
-        productsData = productDataManager.productData;
-        productClosingData = productDataManager.productClosingData;
-        productSubData = productDataManager.productSubData;
-        eventsData = eventDataManager.eventData;
-        objectsData = objectDataManager.objectData;
-        SaveLoadManager = saveLoadManager;
-        CurrencyManager = currencyManager;
-        NPCManager = npcManager;
-        AnimalManager = animalManager;
-        InventoryManager = inventoryManager;
-        BuildingManager = buildingManager;
-        ShopManager= shopManager;
-    }
-
-    public void ContinueGame()
-    {
-        saveLoadManager.Load();
-    }
-
-    public Sprite GetItemImage(int itemId)
-    {
-        foreach (var sprite in itemImage)
+        if (Instance != null && Instance != this)
         {
-            if (sprite.name == itemId.ToString())
-            {
-                return sprite;
-            }
+            Destroy(gameObject);
+            return;
         }
 
-        return null; // 아이템 ID에 해당하는 이미지가 없는 경우
+        Instance = this;
     }
 
-    public Sprite GetCropImage(int itemId, float growth)
-    {
-        if (itemId == 0) return null;
+    #region [임시] 기존 코드가 컴파일되도록 남겨 둔 전달 프로퍼티 - 모두 OriginDataManager로 교체 예정
+    [Obsolete("OriginDataManager.Instance.itemsData 를 사용하세요")]
+    public Dictionary<int, ItemData> itemsData => OriginDataManager.Instance.itemsData;
 
-        int value = Mathf.RoundToInt(growth * productDataManager.productData[itemId].growthTime);
-        string name = itemId.ToString() + "_" + value;
+    [Obsolete("OriginDataManager.Instance.productsData 를 사용하세요")]
+    public Dictionary<int, Product> productsData => OriginDataManager.Instance.productsData;
 
-        foreach (var sprite in cropsImage)
-        {
-            if (sprite.name == name)
-            {
-                return sprite;
-            }
-        }
+    [Obsolete("OriginDataManager.Instance.eventsData 를 사용하세요")]
+    public Dictionary<int, EventData> eventsData => OriginDataManager.Instance.eventsData;
 
-        return null;
-    }
+    [Obsolete("OriginDataManager.Instance.objectsData 를 사용하세요")]
+    public Dictionary<int, ObjectData> objectsData => OriginDataManager.Instance.objectsData;
 
-    public GameObject GetObjectPrefabs(int itemId)
-    {
-        foreach (var obj in objPrefabs)
-        {
-            if (obj.name == itemId.ToString())
-            {
-                return obj;
-            }
-        }
+    [Obsolete("OriginDataManager.Instance.GetItemImage 를 사용하세요")]
+    public Sprite GetItemImage(int itemId) => OriginDataManager.Instance.GetItemImage(itemId);
 
-        return null; // 아이템 ID에 해당하는 프리팹이 없는 경우
-    }
+    [Obsolete("OriginDataManager.Instance.GetCropImage 를 사용하세요")]
+    public Sprite GetCropImage(int itemId, float growth) => OriginDataManager.Instance.GetCropImage(itemId, growth);
 
-    //데이터 테이블에 비교하는 것 이기 때문에 정확히 일치하도록 비교
-    public int GetItemIDNumber(string itemName)
-    {
-        string name = itemName.ToLower();
-        foreach (var item in itemsData)
-        {
-            if (item.Value.name.ToLower() == name)
-            {
-                return item.Key;
-            }
-        }
+    [Obsolete("OriginDataManager.Instance.GetObjectPrefabs 를 사용하세요")]
+    public GameObject GetObjectPrefabs(int itemId) => OriginDataManager.Instance.GetObjectPrefabs(itemId);
 
-        Debug.Log("해당 아이템은 테이블에 존재하지 않습니다. : " + itemName);
-        return -1;
-    }
+    [Obsolete("OriginDataManager.Instance.GetItemIDNumber 를 사용하세요")]
+    public int GetItemIDNumber(string itemName) => OriginDataManager.Instance.GetItemIDNumber(itemName);
+
+    [Obsolete("DataTotalManager.Instance.SaveLoad.ContinueGame() 을 사용하세요")]
+    public void ContinueGame() => SaveLoadManager.ContinueGame();
+    #endregion
 }
