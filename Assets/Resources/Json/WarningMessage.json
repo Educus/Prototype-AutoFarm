@@ -1,0 +1,38 @@
+[
+  {
+    "ID": 101,
+    "Type": "System",
+    "Behavior": "Block",
+    "Text_Kr": "None"
+  },
+  {
+    "ID": 201,
+    "Type": "UI",
+    "Behavior": "Block",
+    "Text_Kr": "None"
+  },
+  {
+    "ID": 202,
+    "Type": "UI",
+    "Behavior": "Block",
+    "Text_Kr": "금액이 부족합니다."
+  },
+  {
+    "ID": 301,
+    "Type": "Object",
+    "Behavior": "Block",
+    "Text_Kr": "기본 건물은 파괴할 수 없습니다."
+  },
+  {
+    "ID": 302,
+    "Type": "Object",
+    "Behavior": "Confirm",
+    "Text_Kr": "로켓에 적재된 것이 없습니다. 출발 시키겠습니까?"
+  },
+  {
+    "ID": 401,
+    "Type": "Action",
+    "Behavior": "Block",
+    "Text_Kr": "아이템이 부족합니다."
+  }
+]

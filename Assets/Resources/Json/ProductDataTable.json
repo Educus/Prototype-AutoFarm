@@ -13,7 +13,7 @@
         "Name":"Potato",
         "Type":"Product",
         "PriceStdDev":0.01,
-        "GrowthTime":1,
+        "GrowthTime":60,
         "MaxYield":1,
         "MinYield":1
     },
@@ -22,7 +22,7 @@
         "Name":"Carrot",
         "Type":"Product",
         "PriceStdDev":0.04,
-        "GrowthTime":1,
+        "GrowthTime":120,
         "MaxYield":1,
         "MinYield":1
     },
@@ -40,7 +40,7 @@
         "Name":"Strawberry",
         "Type":"Product",
         "PriceStdDev":0.08,
-        "GrowthTime":1,
+        "GrowthTime":300,
         "MaxYield":1,
         "MinYield":1
     },
@@ -58,7 +58,7 @@
         "Name":"Milk",
         "Type":"Product",
         "PriceStdDev":0.2,
-        "GrowthTime":1,
+        "GrowthTime":-1,
         "MaxYield":1,
         "MinYield":1
     }
