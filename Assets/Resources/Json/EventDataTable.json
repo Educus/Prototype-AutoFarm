@@ -1,135 +1,184 @@
 [
     {
-        "ID":10011,
-        "Type":"DemandIncrease",
+        "ID":10010,
         "Average":0.01,
-        "Linkage":0,
-        "Text_Kr":"{ItemName}의 수요가 일시적으로 증가한 것으로 보입니다."
+        "Linkage_Event":0,
+        "News_Title":"일시적인 가격 상승",
+        "News_Contents":"{ItemName}의 수요가 일시적으로 증가한 것으로 보입니다."
     },
     {
-        "ID":10012,
-        "Type":"DemandDecrease",
+        "ID":10020,
         "Average":-0.01,
-        "Linkage":0,
-        "Text_Kr":"{ItemName}의 수요가 일시적으로 감소한 것으로 보입니다."
+        "Linkage_Event":0,
+        "News_Title":"일시적인 가격 하락",
+        "News_Contents":"{ItemName}의 수요가 일시적으로 감소한 것으로 보입니다."
     },
     {
-        "ID":10021,
-        "Type":"DemandSurge",
+        "ID":10030,
         "Average":0.03,
-        "Linkage":0,
-        "Text_Kr":"{ItemName}의 수요가 급격히 증가했습니다."
+        "Linkage_Event":0,
+        "News_Title":"일시적인 가격 상승",
+        "News_Contents":"{ItemName}의 수요가 급격히 증가했습니다."
     },
     {
-        "ID":10022,
-        "Type":"DemandCollapse",
+        "ID":10040,
         "Average":-0.03,
-        "Linkage":0,
-        "Text_Kr":"{ItemName}의 수요가 급격히 감소했습니다."
+        "Linkage_Event":0,
+        "News_Title":"일시적인 가격 하락",
+        "News_Contents":"{ItemName}의 수요가 급격히 감소했습니다."
     },
     {
-        "ID":10031,
-        "Type":"DemandIExplosion",
+        "ID":10050,
         "Average":0.05,
-        "Linkage":0,
-        "Text_Kr":"폭발적인 반응과 함께 {ItemName}의 수요도 폭발하고 있습니다."
+        "Linkage_Event":0,
+        "News_Title":"일시적인 가격 상승",
+        "News_Contents":"폭발적인 반응과 함께 {ItemName}의 수요도 폭발하고 있습니다."
     },
     {
-        "ID":10032,
-        "Type":"DemandCrash",
+        "ID":10060,
         "Average":-0.05,
-        "Linkage":0,
-        "Text_Kr":"무슨 일인지 {ItemName}의 수요가 폭락하였습니다."
+        "Linkage_Event":0,
+        "News_Title":"일시적인 가격 하락",
+        "News_Contents":"무슨 일인지 {ItemName}의 수요가 폭락하였습니다."
     },
     {
-        "ID":20001,
-        "Type":"DiseaseOutbreak",
-        "Average":-0.03,
-        "Linkage":0,
-        "Text_Kr":"식품 연구소에서 온 보도인데요, 유해할 수 있는 병원균이 아가레아산 {ItemName}에서 발견되었다는 소식 입니다."
-    },
-    {
-        "ID":20002,
-        "Type":"DiseaseUnderControl",
-        "Average":0.01,
-        "Linkage":201,
-        "Text_Kr":"아가레아산 {ItemName}에서 발견되었다는 병원균에 대한 연구가 꾸준히 이루어지고 있습니다."
-    },
-    {
-        "ID":20003,
-        "Type":"DiseaseContained",
-        "Average":0.02,
-        "Linkage":202,
-        "Text_Kr":"드디어 {ItemName}의 병원균 백신 개발이 성공적으로 이루어졌습니다."
-    },
-    {
-        "ID":20011,
-        "Type":"PoorHarvest",
-        "Average":0.05,
-        "Linkage":0,
-        "Text_Kr":"흉작으로 인해 식량 부족 위기라는 보도입니다."
-    },
-    {
-        "ID":20012,
-        "Type":"GoodHarvest",
-        "Average":-0.05,
-        "Linkage":0,
-        "Text_Kr":"풍작으로 인해 시장에 식량이 많이 모였습니다."
-    },
-    {
-        "ID":20013,
-        "Type":"AgriculturalStrike",
+        "ID":20010,
         "Average":0.03,
-        "Linkage":0,
-        "Text_Kr":"농업 단체에서 집단 파업이 발생했습니다."
+        "Linkage_Event":0,
+        "News_Title":"체질 개선 경험",
+        "News_Contents":"{ItemName}을(를) 섭취한 사람들로부터 체질 개선이 되었다는 소식입니다."
     },
     {
-        "ID":20014,
-        "Type":"GovernmentSupport",
+        "ID":20020,
         "Average":-0.03,
-        "Linkage":213,
-        "Text_Kr":"정부에서 농업 단체의 요구를 들어줄 것을 약속했습니다."
+        "Linkage_Event":0,
+        "News_Title":"섭취 후 복통 경험",
+        "News_Contents":"{ItemName}을(를) 섭취한 사람들 중, 복통을 경험했다는 소식입니다."
     },
     {
-        "ID":30001,
-        "Type":"HealthTrend",
-        "Average":0.03,
-        "Linkage":0,
-        "Text_Kr":"{ItemName}을(를) 섭취한 사람들로부터 체질 개선이 되었다는 소식입니다."
-    },
-    {
-        "ID":30002,
-        "Type":"FoodSafetyInvestigation",
-        "Average":-0.03,
-        "Linkage":0,
-        "Text_Kr":"지난 주에 사망한 A씨의 사인에 그가 구매했던 {ItemName}이 주된 원인이라는 의혹이 나오고 있습니다."
-    },
-    {
-        "ID":30003,
-        "Type":"ClearedOfSuspiction",
+        "ID":20030,
         "Average":0.04,
-        "Linkage":302,
-        "Text_Kr":"다행히도 {ItemName}은(는) A씨의 사인에 직접적인 영향을 끼치진 않았습니다."
+        "Linkage_Event":0,
+        "News_Title":"원종보다 좋은 수입산",
+        "News_Contents":"아가레아에서 생산한 {ItemName}이 원종보다 우월한 영양가가 있어 훨씬 건강하다는 연구 결과입니다."
     },
     {
-        "ID":30004,
-        "Type":"CauseUnderInvestigation",
-        "Average":-0.02,
-        "Linkage":302,
-        "Text_Kr":"A씨의 사인에 대한 원인 분석이 지연되고 있습니다. 그에 따라 {ItemName}의 가격도 지속적으로 하락하고 있습니다."
+        "ID":20040,
+        "Average":-0.04,
+        "Linkage_Event":0,
+        "News_Title":"원종보다 못한 수입산",
+        "News_Contents":"아가레아에서 생산한 {ItemName}은 원종보다 영양가가 떨어져 좋지 못하다는 연구 결과입니다."
+    },
+    {
+        "ID":20050,
+        "Average":0.05,
+        "Linkage_Event":0,
+        "News_Title":"SNS의 흐름에 올라타다",
+        "News_Contents":"최근 SNS로 크게 유행한 {ItemName}피자의 인기에 힘입어, 원재료의 가격도 크게 오른 모습입니다."
+    },
+    {
+        "ID":20060,
+        "Average":-0.05,
+        "Linkage_Event":0,
+        "News_Title":"SNS와 함께 끝나다",
+        "News_Contents":"SNS로 잠시 큰 인기를 끌었던 {ItemName}피자의 인기가 떨어지면서, 원재료도 큰 타격을 입은 모습입니다."
+    },
+    {
+        "ID":30010,
+        "Average":-0.05,
+        "Linkage_Event":0,
+        "News_Title":"정체 불명의 미생물",
+        "News_Contents":"식품 연구소에서 온 보도인데요, 유해할 수 있는 병원균 A가 아가레아산 {ItemName}에서 발견되었다는 소식 입니다."
     },
     {
         "ID":30011,
-        "Type":"FestivalSeason",
-        "Average":0.04,
-        "Linkage":0,
-        "Text_Kr":"{ItemName} 축제로 인해 수요가 증가하고 있습니다."
+        "Average":0.03,
+        "Linkage_Event":30010,
+        "News_Title":"정체 불명의 미생물의 반전",
+        "News_Contents":"식품 연구소에서 연구 중인 A는 오히려 위장 건강에 좋다는 결과를 발표했습니다."
     },
     {
         "ID":30012,
-        "Type":"HarvestDrive",
+        "Average":0.01,
+        "Linkage_Event":30010,
+        "News_Title":"미생물 연구는 계속된다",
+        "News_Contents":"아가레아산 {ItemName}에서 발견되었다는 병원균에 대한 연구가 꾸준히 이루어지고 있습니다."
+    },
+    {
+        "ID":30013,
+        "Average":0.07,
+        "Linkage_Event":30012,
+        "News_Title":"위험한 미생물은 이제 안녕",
+        "News_Contents":"드디어 {ItemName}의 병원균의 치료제 개발이 성공적으로 이루어졌습니다."
+    },
+    {
+        "ID":30020,
+        "Average":0.05,
+        "Linkage_Event":0,
+        "News_Title":"생산 규제에 대한 반발",
+        "News_Contents":"농업 단체에서 {ItemName} 생산 방침에 대한 규제에 반발한 집회가 일어났습니다."
+    },
+    {
+        "ID":30021,
         "Average":-0.03,
-        "Linkage":0,
-        "Text_Kr":"청년들의 지원 사업으로 {ItemName}의 생산량이 크게 증가했습니다."
+        "Linkage_Event":30020,
+        "News_Title":"정부의 빠른 철회",
+        "News_Contents":"정부에서 농업 단체의 요구를 들어줄 것을 약속했습니다."
+    },
+    {
+        "ID":30022,
+        "Average":0.03,
+        "Linkage_Event":30020,
+        "News_Title":"집회에도 굴하지 않는 정부",
+        "News_Contents":"집회에도 불구하고 정부의 굳건한 입장에 농업 단체가 요구 조건의 수위를 낮췄습니다."
+    },
+    {
+        "ID":30023,
+        "Average":-0.02,
+        "Linkage_Event":30022,
+        "News_Title":"규제 수위 소폭 하락",
+        "News_Contents":"정부는 농업 단체의 요구를 수령하여 규제 수위를 낮추기로 결정했습니다."
+    },
+    {
+        "ID":30030,
+        "Average":0.08,
+        "Linkage_Event":0,
+        "News_Title":"대규모 흉작 위기",
+        "News_Contents":"흉작으로 인해 식량 부족 위기라는 보도입니다."
+    },
+    {
+        "ID":30031,
+        "Average":-0.03,
+        "Linkage_Event":30030,
+        "News_Title":"M의 식량 위기 돌파 사업",
+        "News_Contents":"유명한 사업가 M씨가 식량 위기를 극복하기 위한 자선 활동을 개시했습니다."
+    },
+    {
+        "ID":30032,
+        "Average":-0.08,
+        "Linkage_Event":30031,
+        "News_Title":"식량 위기 돌파의 선구자, M",
+        "News_Contents":"사업가 M씨의 자선 활동으로 인해 식량 위기는 마치 언제 있었냐는 듯, 조용해졌습니다."
+    },
+    {
+        "ID":30040,
+        "Average":-0.08,
+        "Linkage_Event":0,
+        "News_Title":"주 소비처의 몰락",
+        "News_Contents":"연료로 소모되던 {ItemName}보다 더욱 효율이 좋은 대체 연료로 인해 {ItemName}의 수요가 급감할 전망입니다."
+    },
+    {
+        "ID":30041,
+        "Average":0.03,
+        "Linkage_Event":30040,
+        "News_Title":"완전 전환보단 하이브리드",
+        "News_Contents":"{ItemName}을 연료로 전환하는 사업을 하던 D씨는 즉시 대체 연료로 전환하는 작업 보다는 두 상품 모두 사용하는 하이브리드 방식을 선택한다고 합니다."
+    },
+    {
+        "ID":30042,
+        "Average":0.08,
+        "Linkage_Event":30041,
+        "News_Title":"완벽한 대체 연료의 허점",
+        "News_Contents":"새로운 대체 연료로 떠오르던 상품이 심각한 대기 오염을 발생시킨다는 보고가 나왔습니다."
     }
 ]

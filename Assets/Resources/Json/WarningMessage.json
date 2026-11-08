@@ -9,13 +9,19 @@
     "ID": 201,
     "Type": "UI",
     "Behavior": "Block",
-    "Text_Kr": "None"
+    "Text_Kr": "금액이 부족합니다."
   },
   {
     "ID": 202,
     "Type": "UI",
     "Behavior": "Block",
-    "Text_Kr": "금액이 부족합니다."
+    "Text_Kr": "업그레이드 부품이 부족합니다."
+  },
+  {
+    "ID": 203,
+    "Type": "UI",
+    "Behavior": "Block",
+    "Text_Kr": "해당되는 장비가 없습니다."
   },
   {
     "ID": 301,
