@@ -75,7 +75,7 @@ public class Player : StatusBase
                 amount,
                 OriginDataManager.Instance
                 .itemsData[itemID]
-                .storagePeriod);
+                .StoragePeriod);
 
         if (added < amount)
         {
@@ -84,7 +84,7 @@ public class Player : StatusBase
                 amount - added,
                 OriginDataManager.Instance
                 .itemsData[itemID]
-                .storagePeriod);
+                .StoragePeriod);
         }
 
         return added;

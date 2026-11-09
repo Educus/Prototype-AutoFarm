@@ -203,7 +203,7 @@ public class UIChartView : MonoBehaviour, IScrollHandler
 
         float basicPrice = 0f;
         if (dataManager.itemsData.TryGetValue(itemID, out ItemData itemData))
-            basicPrice = itemData.basicPrice;
+            basicPrice = itemData.BasicPrice;
 
         // 기본 가격을 모르면 현재 중심값을 기준으로 함
         float reference = basicPrice > 0f ? basicPrice : center;
@@ -281,7 +281,7 @@ public class UIChartView : MonoBehaviour, IScrollHandler
         string arrow = diff > 0 ? "▲" : diff < 0 ? "▼" : "■";
 
         string itemName = dataManager.itemsData.TryGetValue(itemID, out ItemData itemData)
-            ? itemData.name : itemID.ToString();
+            ? itemData.Name : itemID.ToString();
 
         // 아이템 이미지
         itemImage.sprite = dataManager.GetItemImage(itemID);
@@ -290,7 +290,7 @@ public class UIChartView : MonoBehaviour, IScrollHandler
         string downHex = ColorUtility.ToHtmlStringRGB(downColor);
 
         // 아이템 텍스트
-        itemNameText.text = $"{itemData.name}";
+        itemNameText.text = $"{itemData.Name}";
         itemDescription.text =
             $"<color=#{colorHex}>{nowPrice}{arrow}{Mathf.Abs(diff)} ({percent:+0.0;-0.0;0.0}%)</color>\n" +
             $"<color=#{upHex}>최고 {today.high}</color>\n" +

@@ -73,7 +73,7 @@ public class UIShopReceipt : MonoBehaviour
 
             line.Setup(
                 itemID,
-                dataManager.itemsData[itemID].name,
+                dataManager.itemsData[itemID].Name,
                 dataManager.GetItemImage(itemID),
                 count,
                 shop.GetBuyPrice(itemID) * count,

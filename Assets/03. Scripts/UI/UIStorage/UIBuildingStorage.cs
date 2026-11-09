@@ -479,7 +479,7 @@ public class UIBuildingStorage : MonoBehaviour
         Inventory targetInventory;
 
         // 씨앗은 서브 인벤
-        if (itemData.type == ItemType.Seed || itemData.type == ItemType.Material)
+        if (itemData.Type == ItemType.Seed || itemData.Type == ItemType.Material)
         {
             targetInventory =
                 player.subInventory;
@@ -530,7 +530,7 @@ public class UIBuildingStorage : MonoBehaviour
 
         // Product 타입만 이동 가능
         if (OriginDataManager.Instance.itemsData[sourceSlot.itemID]
-            .type != ItemType.Product)
+            .Type != ItemType.Product)
         {
             return;
         }

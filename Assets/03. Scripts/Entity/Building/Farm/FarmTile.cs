@@ -38,7 +38,7 @@ public class FarmTile
                 player.subInventory.slots[player.selectedSubSlotIndex];
 
             return !slot.IsEmpty() &&
-                   OriginDataManager.Instance.itemsData[slot.itemID].type == ItemType.Seed;
+                   OriginDataManager.Instance.itemsData[slot.itemID].Type == ItemType.Seed;
         }
 
         return false;

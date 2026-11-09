@@ -102,10 +102,10 @@ public class UINPCStorage : MonoBehaviour
 
         foreach (var farmItem in OriginDataManager.Instance.itemsData.Values)
         {
-            if (!farmItem.useToDemo)
+            if (!farmItem.UseToDemo)
                 continue;
 
-            if (farmItem.type == ItemType.Seed)
+            if (farmItem.Type == ItemType.Seed)
             {
                 farmItems.Add(new InventorySlot
                 {
@@ -118,10 +118,10 @@ public class UINPCStorage : MonoBehaviour
 
         foreach (var ranchItem in OriginDataManager.Instance.itemsData.Values)
         {
-            if (!ranchItem.useToDemo)
+            if (!ranchItem.UseToDemo)
                 continue;
 
-            if (ranchItem.name == "Milk")
+            if (ranchItem.Name == "Milk")
             {
                 ranchItems.Add(new InventorySlot
                 {
@@ -416,7 +416,7 @@ public class UINPCStorage : MonoBehaviour
                 if (item == null)
                     continue;
 
-                if (item.type != ItemType.Seed)
+                if (item.Type != ItemType.Seed)
                     continue;
 
                 if (!seedIDs.Contains(slot.itemID))
@@ -440,7 +440,7 @@ public class UINPCStorage : MonoBehaviour
                 if (item == null)
                     continue;
 
-                if (item.type != ItemType.Seed)
+                if (item.Type != ItemType.Seed)
                     continue;
 
                 if (!seedIDs.Contains(slot.itemID))

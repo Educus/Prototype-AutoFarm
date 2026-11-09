@@ -39,10 +39,10 @@ public class UIShopBuy : MonoBehaviour
     public void SetItem(ItemData itemData, Sprite itemSprite)
     {
         itemImage.sprite = itemSprite;
-        itemName.text = itemData.name;
+        itemName.text = itemData.Name;
 
         currentItem = itemData;
-        currentPrice = itemData.basicPrice;
+        currentPrice = itemData.BasicPrice;
 
         itemPrice.text = currentPrice.ToString();
 

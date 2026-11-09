@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class UIChart : MonoBehaviour
 {
-    [SerializeField] private DataManager dataManager;
-    [SerializeField] private UIChartView uiChart;
+    [RequiredRef, SerializeField] private UIChartView uiChart;
 
-    [SerializeField] private GameObject chartIconPrefab;
-    [SerializeField] private GameObject chartIconContent;
+    [RequiredRef, SerializeField] private GameObject chartIconPrefab;
+    [RequiredRef, SerializeField] private GameObject chartIconContent;
 
     public event Action eventOnBookMark;
     public event Action eventOffBookMark;
@@ -23,22 +22,19 @@ public class UIChart : MonoBehaviour
         // product의 아이템 수만큼 게임 오브젝트 생성
         yield return null;
 
-        foreach (var product in dataManager.productsData.Values)
+        OriginDataManager origin = OriginDataManager.Instance;
+
+        foreach (var product in origin.productsData.Values)
         {
-            if (dataManager.itemsData[product.ID].useToDemo == false)
+            if (!origin.TryGetItem(product.ID, out ItemData item) || !item.UseToDemo)
                 continue;
 
             GameObject chartIcon = Instantiate(chartIconPrefab, chartIconContent.transform);
-            chartIcon.GetComponent<UIChartIcon>().GetInfo(dataManager, this, product.ID);
+            UIChartIcon icon = chartIcon.GetComponent<UIChartIcon>();
+            icon.GetInfo(this, product.ID);
 
-            eventOnBookMark += () =>
-            {
-                chartIcon.GetComponent<UIChartIcon>().OnBookMark();
-            };
-            eventOffBookMark += () =>
-            {
-                chartIcon.GetComponent<UIChartIcon>().OffBookMark();
-            };
+            eventOnBookMark += () => icon.OnBookMark();
+            eventOffBookMark += () => icon.OffBookMark();
         }
     }
 
@@ -51,7 +47,7 @@ public class UIChart : MonoBehaviour
     {
         uiChart.gameObject.SetActive(true);
 
-        uiChart.DrawChart(dataManager.productsData[itemID].ID);
+        uiChart.DrawChart(itemID);
     }
 
     public void OnBookMark()

@@ -25,10 +25,10 @@ public class UIShop : MonoBehaviour
 
         foreach (var items in dataManager.itemsData.Values)
         {
-            if (items.type == ItemType.Product)
+            if (items.Type == ItemType.Product)
                 continue;
 
-            if (items.useToDemo == false)
+            if (items.UseToDemo == false)
                 continue;
 
             GameObject shopIcon = Instantiate(shopIconPrefab, shopIconContent.transform);
@@ -68,7 +68,7 @@ public class UIShop : MonoBehaviour
 
         foreach (var item in shopItem)
         {
-            if (types.Contains(dataManager.itemsData[item.Key].type))
+            if (types.Contains(dataManager.itemsData[item.Key].Type))
             {
                 item.Value.gameObject.SetActive(true);
             }

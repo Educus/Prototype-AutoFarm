@@ -43,9 +43,9 @@ public class UIShopIcon : MonoBehaviour
     {
         button.onClick.AddListener(() => uiShop.OnClickShopButton(itemID));
         itemImage.sprite = dataManager.GetItemImage(itemID);
-        itemName.text = dataManager.itemsData[itemID].name;
+        itemName.text = dataManager.itemsData[itemID].Name;
 
-        int price = dataManager.itemsData[itemID].basicPrice;
+        int price = dataManager.itemsData[itemID].BasicPrice;
         itemPrice.text = price.ToString();
     }
 

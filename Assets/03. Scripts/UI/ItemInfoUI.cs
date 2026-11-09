@@ -22,7 +22,7 @@ public class ItemInfoUI : MonoBehaviour
         }
 
         itemIcon.sprite = icon;
-        itemName.text = item.name;
+        itemName.text = item.Name;
         itemInfo.text = $"{buildingData.width}X{buildingData.height} / -1";
 
         gameObject.SetActive(true);

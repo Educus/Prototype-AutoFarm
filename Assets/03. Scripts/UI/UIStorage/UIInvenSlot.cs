@@ -60,7 +60,7 @@ public class UIInvenSlot : MonoBehaviour
         float current = slot.remainingStoragePeriod;
 
         float max =
-            OriginDataManager.Instance.itemsData[slot.itemID].storagePeriod;
+            OriginDataManager.Instance.itemsData[slot.itemID].StoragePeriod;
 
         float value = current / max;
 

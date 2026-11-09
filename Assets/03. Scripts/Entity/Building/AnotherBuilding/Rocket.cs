@@ -312,7 +312,7 @@ public class Rocket : BuildingBase
             ItemData itemData =
               DataManager.Instance.itemsData[itemID];
 
-            if (itemData.type == ItemType.Object)
+            if (itemData.Type == ItemType.Object)
             {
                 // NPC 구매
                 if (itemID == NPCManager.NpcItemID)
@@ -344,7 +344,7 @@ public class Rocket : BuildingBase
                     break;
 
                 int added =
-                    storage.AddItem(itemID, remaining, itemData.storagePeriod);
+                    storage.AddItem(itemID, remaining, itemData.StoragePeriod);
 
                 remaining -= added;
             }
@@ -365,7 +365,7 @@ public class Rocket : BuildingBase
                     remainItem.Value,
                     DataManager.Instance
                     .itemsData[remainItem.Key]
-                    .storagePeriod);
+                    .StoragePeriod);
 
             // 적재 실패
             if (added < remainItem.Value)

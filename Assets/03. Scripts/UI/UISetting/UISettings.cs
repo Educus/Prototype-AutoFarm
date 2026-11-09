@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UISettings : MonoBehaviour
 {
+    [SerializeField] private ScrollRect scrollRect;
+
     [Header("Sound")]
     [SerializeField] private Slider masterSlider;
     [SerializeField] private Slider bgmSlider;
@@ -56,6 +58,15 @@ public class UISettings : MonoBehaviour
     private void OnEnable()
     {
         Refresh();
+
+        StartCoroutine(ScrollToTop());
+    }
+
+    private System.Collections.IEnumerator ScrollToTop()
+    {
+        yield return null;
+        Canvas.ForceUpdateCanvases();
+        scrollRect.verticalNormalizedPosition = 1f;
     }
 
     // 현재 설정값으로 UI 를 채움 (값을 바꾸는 이벤트가 다시 호출되지 않게 함)

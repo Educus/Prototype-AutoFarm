@@ -63,7 +63,7 @@ public class Inventory : MonoBehaviour
         if (data == null) return 0; // if (data != null) return 0; <= ?
         if (!CanAddItem(itemID)) return 0;
 
-        storagePeriod = (storagePeriod == -1) ? data.storagePeriod : storagePeriod;
+        storagePeriod = (storagePeriod == -1) ? data.StoragePeriod : storagePeriod;
 
         if (type == InventoryType.Upgrade)
         {
@@ -91,7 +91,7 @@ public class Inventory : MonoBehaviour
             if (slot.itemID == itemID &&
             slot.remainingStoragePeriod == storagePeriod)
             {
-                int canAdd = data.stack - slot.count;
+                int canAdd = data.Stack - slot.count;
                 int add = Mathf.Min(canAdd, remaining);
 
                 slot.count += add;
@@ -110,7 +110,7 @@ public class Inventory : MonoBehaviour
         {
             if (!slot.IsEmpty()) continue;
 
-            int add = Mathf.Min(data.stack, remaining);
+            int add = Mathf.Min(data.Stack, remaining);
 
             slot.itemID = itemID;
             slot.count = add;
@@ -207,11 +207,11 @@ public class Inventory : MonoBehaviour
         {
             if (slot.IsEmpty())
             {
-                amount += data.stack;
+                amount += data.Stack;
             }
             else if (slot.itemID == itemID)
             {
-                amount += data.stack - slot.count;
+                amount += data.Stack - slot.count;
             }
         }
 
@@ -228,7 +228,7 @@ public class Inventory : MonoBehaviour
             ItemData data =
                 OriginDataManager.Instance.itemsData[slot.itemID];
 
-            if (slot.count < data.stack)
+            if (slot.count < data.Stack)
                 return false;
         }
 
@@ -250,16 +250,16 @@ public class Inventory : MonoBehaviour
                 return true;
 
             case InventoryType.Main:
-                return data.type != ItemType.Seed &&
-                       data.type != ItemType.UpgPerk &&
-                       data.type != ItemType.Material;
+                return data.Type != ItemType.Seed &&
+                       data.Type != ItemType.UpgPerk &&
+                       data.Type != ItemType.Material;
 
             case InventoryType.Sub:
-                return data.type == ItemType.Seed ||
-                       data.type == ItemType.Material;
+                return data.Type == ItemType.Seed ||
+                       data.Type == ItemType.Material;
 
             case InventoryType.Upgrade:
-                return data.type == ItemType.UpgPerk && !ContainsItem(itemID);;
+                return data.Type == ItemType.UpgPerk && !ContainsItem(itemID);;
 
         }
 
@@ -295,7 +295,7 @@ public class Inventory : MonoBehaviour
 
             var data = OriginDataManager.Instance.itemsData[slot.itemID];
 
-            if (data.type != ItemType.Product)
+            if (data.Type != ItemType.Product)
                 continue;
 
             slot.remainingStoragePeriod--;
@@ -377,7 +377,7 @@ public class Inventory : MonoBehaviour
             OriginDataManager.Instance.itemsData[slot.itemID];
 
         // Product가 아닌 경우 맨 아래
-        if (data.type != ItemType.Product)
+        if (data.Type != ItemType.Product)
             return int.MaxValue - 1;
 
         // 유통기한 없는 경우 맨 아래
