@@ -4,9 +4,6 @@ using UnityEngine;
 [RequireComponent(typeof(Inventory))]
 public class Rocket : BuildingBase
 {
-    [Header("UI")]
-    [SerializeField] private UIStorageManagement uiStorageManagement;
-
     [Header("Rocket")]
     [SerializeField] private int defaultSlotCount = 16;
 
@@ -48,8 +45,6 @@ public class Rocket : BuildingBase
         type = BuildingType.Rocket;
         collider = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        uiStorageManagement = UIStorageManagement.Instance;
     }
 
     private void Start()
@@ -477,15 +472,15 @@ public class Rocket : BuildingBase
     {
         Debug.Log("Rocket OnNormalInteract");
 
-        uiStorageManagement.TargetBuilding(id);
-        uiStorageManagement.RocketInv();
+        UIStorageManagement.Instance.TargetBuilding(id);
+        UIStorageManagement.Instance.RocketInv();
     }
     public override void OnRInteract()
     {
         Debug.Log("Rocket OnRInteract");
 
-        uiStorageManagement.TargetBuilding(id);
-        uiStorageManagement.RocketInv();
+        UIStorageManagement.Instance.TargetBuilding(id);
+        UIStorageManagement.Instance.RocketInv();
     }
 
     #endregion

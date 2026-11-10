@@ -147,6 +147,6 @@ public class UITitle : MonoBehaviour
                 obj.SetActive(true);
         }
 
-        GameManager.Instance.isPlay = true;
+        GameManager.Instance.StartPlay();
     }
 }
