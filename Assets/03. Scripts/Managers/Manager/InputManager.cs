@@ -163,7 +163,7 @@ public class InputManager : MonoBehaviour
         var key = DataManager.Instance.PlayerDataManager;
 
         if (key.GetKeyDown("PopUp_Robot"))
-            uiManagement.OpenManagement();
+            UIManager.Instance.OpenPopUpPage();
 
         if (key.GetKeyDown("PopUp_Chart"))
         {

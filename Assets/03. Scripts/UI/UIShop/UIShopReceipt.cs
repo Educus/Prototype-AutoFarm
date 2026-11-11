@@ -92,7 +92,8 @@ public class UIShopReceipt : MonoBehaviour
         int total = shop.GetCartTotal();
         int money = currency.Get();
 
-        totalText.text = $"합계 {total:<sprite=2>}";
+        Debug.Log($"total:{total}, money:{money}");
+        totalText.text = $"합계 : {total}<sprite=2>";
         totalText.color = total > money ? shortColor : enoughColor;
 
         slotText.text = $"{shop.GetCartSlotCount()} / {ShopManager.CartSlotLimit}";

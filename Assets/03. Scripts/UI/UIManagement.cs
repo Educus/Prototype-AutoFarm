@@ -10,7 +10,7 @@ public class UIManagement : MonoBehaviour
     public UIShop uiShop;
     public UIRobot uiRobot;
 
-    [SerializeField] private UINPCInterface uiPCInterface;
+    [RequiredRef, SerializeField] private UINPCInterface uiNPCInterface;
 
     [SerializeField] private GameObject[] chartChips;
     [SerializeField] private GameObject[] shopChips;
@@ -97,6 +97,9 @@ public class UIManagement : MonoBehaviour
             return null;
         }
 
+        // 활성화는 호출한 쪽(UIManager)에서 처리 → 열릴 칩에 맞는 NPC UI 표시
+        ShowNPCInterface();
+
         // 활성화는 호출한 쪽(UIManager)에서 처리
         return management;
     }
@@ -105,6 +108,8 @@ public class UIManagement : MonoBehaviour
     {
         GameManager.Instance.ExitMode();
         ChangeIcon(0);
+
+        uiNPCInterface.OffUI();
     }
     #endregion
 
@@ -132,6 +137,10 @@ public class UIManagement : MonoBehaviour
         }
         
         ChangeIcon(0);
+
+        // Start()에서 처음 호출될 때(관리창이 닫혀 있을 때)는 표시하지 않음
+        if (management.activeInHierarchy)
+            ShowNPCInterface();
     }
 
     // 이름으로 칩 변경 및 이후 디테일 애니메이션 작업을 위한 초석
@@ -151,6 +160,25 @@ public class UIManagement : MonoBehaviour
         else if (lowered.Contains("npcmanage"))
         {
             ChangeChip((int)Chip.NPCManagement);
+        }
+    }
+
+    // 현재 칩에 맞는 NPC 인터페이스 표시 (이전 표시는 끄고 시작)
+    private void ShowNPCInterface()
+    {
+        switch (current)
+        {
+            case Chip.Chart:
+                uiNPCInterface.ShowAnchor();
+                break;
+
+            case Chip.Shop:
+                uiNPCInterface.ShowReceipt();
+                break;
+
+            case Chip.NPCManagement:
+                uiNPCInterface.ShowPlayer();
+                break;
         }
     }
     #endregion
