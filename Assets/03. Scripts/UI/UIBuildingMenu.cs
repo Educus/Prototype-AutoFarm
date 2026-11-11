@@ -8,7 +8,8 @@ public class UIBuildingMenu : MonoBehaviour
 
     [SerializeField] private RectTransform panel;
     [SerializeField] private Button destroyButton;
-    [SerializeField] private TMP_Text reasonText;   // 선택: 파괴할 수 없는 이유를 표시
+    [SerializeField] private TMP_Text brokenText;   // 파괴 버튼 텍스트
+    [SerializeField] private TMP_Text reasonText;   // 파괴할 수 없는 이유를 표시
     [SerializeField] private Vector2 screenOffset = new Vector2(0f, 60f);   // 건물 중심에서 얼마나 위에 띄울지
 
     private BuildingBase target;

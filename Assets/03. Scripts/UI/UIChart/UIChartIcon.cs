@@ -16,7 +16,7 @@ public class UIChartIcon : MonoBehaviour
     [RequiredRef, SerializeField] private Image itemImage;
     [RequiredRef, SerializeField] private TMP_Text itemName;
     [RequiredRef, SerializeField] private TMP_Text itemPrice;
-    [RequiredRef, SerializeField] private GameObject[] bookMark;     // 북마크 이미지(0 off, 1 on)
+    [RequiredRef, SerializeField] private GameObject bookMark;     // 북마크 이미지(0 off, 1 on)
 
     private PlayerDataManager Player => DataManager.Instance.PlayerDataManager;
 
@@ -120,8 +120,7 @@ public class UIChartIcon : MonoBehaviour
     {
         bool marked = Player.IsBookmarked(itemID);
 
-        bookMark[0].SetActive(!marked);
-        bookMark[1].SetActive(marked);
+        bookMark.SetActive(marked);
     }
 
     // 북마크 필터

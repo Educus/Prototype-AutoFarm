@@ -10,6 +10,8 @@ public class UIManagement : MonoBehaviour
     public UIShop uiShop;
     public UIRobot uiRobot;
 
+    [SerializeField] private UINPCInterface uiPCInterface;
+
     [SerializeField] private GameObject[] chartChips;
     [SerializeField] private GameObject[] shopChips;
     [SerializeField] private GameObject[] NPCManagementChips;
