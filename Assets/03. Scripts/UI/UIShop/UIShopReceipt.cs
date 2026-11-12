@@ -19,7 +19,7 @@ public class UIShopReceipt : MonoBehaviour
     [Header("Summary")]
     [SerializeField] private TMP_Text totalText;
     [SerializeField] private TMP_Text slotText;
-    [SerializeField] private TMP_Text moneyText;
+    // [SerializeField] private TMP_Text moneyText;
 
     [SerializeField] private Color enoughColor = Color.white;
     [SerializeField] private Color shortColor = Color.red;
@@ -97,7 +97,7 @@ public class UIShopReceipt : MonoBehaviour
         totalText.color = total > money ? shortColor : enoughColor;
 
         slotText.text = $"{shop.GetCartSlotCount()} / {ShopManager.CartSlotLimit}";
-        moneyText.text = $"보유 {money:<sprite=2>}";
+        // moneyText.text = $"보유 {money:<sprite=2>}";
 
         if (emptyMessage != null)
             emptyMessage.SetActive(!shop.HasCartItems);

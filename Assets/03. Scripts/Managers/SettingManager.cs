@@ -8,7 +8,7 @@ public class SettingManager : MonoBehaviour
     public static SettingManager Instance { get; private set; }
 
     public const float MinUIScale = 0.75f;
-    public const float MaxUIScale = 1.5f;
+    public const float MaxUIScale = 1.25f;
 
     public SettingsData Data { get; private set; } = new SettingsData();
 
