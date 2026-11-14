@@ -103,11 +103,11 @@ public class UIChartIcon : MonoBehaviour
 
         if (diff < 0)
         {
-            itemPrice.text += "<sprite=0>";
+            itemPrice.text += "<sprite=1>";
         }
         else if (diff > 0)
         {
-            itemPrice.text += "<sprite=1>";
+            itemPrice.text += "<sprite=0>";
         }
     }
 

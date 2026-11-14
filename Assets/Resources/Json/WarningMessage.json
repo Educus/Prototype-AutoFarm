@@ -24,6 +24,18 @@
     "Text_Kr": "해당되는 장비가 없습니다."
   },
   {
+    "ID": 211,
+    "Type": "UI",
+    "Behavior": "Confirm",
+    "Text_Kr": "저장된 게임이 있습니다.\\n새 게임을 시작하면 기존 저장 파일이 삭제됩니다."
+  },
+  {
+    "ID": 212,
+    "Type": "UI",
+    "Behavior": "Confirm",
+    "Text_Kr": "저장하지 않은 진행 상황은 사라집니다."
+  },
+  {
     "ID": 301,
     "Type": "Object",
     "Behavior": "Block",
@@ -34,6 +46,36 @@
     "Type": "Object",
     "Behavior": "Confirm",
     "Text_Kr": "로켓에 적재된 것이 없습니다. 출발 시키겠습니까?"
+  },
+  {
+    "ID": 303,
+    "Type": "Object",
+    "Behavior": "Block",
+    "Text_Kr": "상점 매니저를 찾을 수 없습니다."
+  },
+  {
+    "ID": 304,
+    "Type": "Object",
+    "Behavior": "Block",
+    "Text_Kr": "로켓이 이미 출발했습니다."
+  },
+  {
+    "ID": 305,
+    "Type": "Object",
+    "Behavior": "Block",
+    "Text_Kr": "배송된 아이템을 먼저 꺼내야 합니다."
+  },
+  {
+    "ID": 306,
+    "Type": "Object",
+    "Behavior": "Block",
+    "Text_Kr": "판매할 수 없는 물품이 들어 있습니다."
+  },
+  {
+    "ID": 307,
+    "Type": "Object",
+    "Behavior": "Block",
+    "Text_Kr": "판매하거나 구매할 물품이 없습니다."
   },
   {
     "ID": 401,
