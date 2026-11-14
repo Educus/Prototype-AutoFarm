@@ -1,0 +1,218 @@
+[
+  {
+    "ID": 101000,
+    "Name": "작물 종합 심은 횟수",
+    "Type": "Plant",
+    "Target_Count": 90,
+    "Compensation_Type": "UgradeParts",
+    "Compensaion_Amount": 1
+  },
+  {
+    "ID": 101001,
+    "Name": "작물 종합 심은 횟수",
+    "Type": "Plant",
+    "Target_Count": 180,
+    "Compensation_Type": "UgradeParts",
+    "Compensaion_Amount": 2
+  },
+  {
+    "ID": 101010,
+    "Name": "감자 심은 횟수",
+    "Type": "Plant",
+    "Target_Count": 30,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 1000
+  },
+  {
+    "ID": 101020,
+    "Name": "당근 심은 횟수",
+    "Type": "Plant",
+    "Target_Count": 30,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 1000
+  },
+  {
+    "ID": 101030,
+    "Name": "딸기 심은 횟수",
+    "Type": "Plant",
+    "Target_Count": 30,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 1000
+  },
+  {
+    "ID": 102000,
+    "Name": "작물 종합 수확 횟수",
+    "Type": "Harvest",
+    "Target_Count": 90,
+    "Compensation_Type": "UgradeParts",
+    "Compensaion_Amount": 1
+  },
+  {
+    "ID": 102001,
+    "Name": "작물 종합 수확 횟수",
+    "Type": "Harvest",
+    "Target_Count": 180,
+    "Compensation_Type": "UgradeParts",
+    "Compensaion_Amount": 2
+  },
+  {
+    "ID": 102010,
+    "Name": "감자 수확 횟수",
+    "Type": "Harvest",
+    "Target_Count": 30,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 1000
+  },
+  {
+    "ID": 102020,
+    "Name": "당근 수확 횟수",
+    "Type": "Harvest",
+    "Target_Count": 30,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 1000
+  },
+  {
+    "ID": 102030,
+    "Name": "딸기 수확 횟수",
+    "Type": "Harvest",
+    "Target_Count": 30,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 1000
+  },
+  {
+    "ID": 103000,
+    "Name": "축산물 종합 수확 횟수",
+    "Type": "Harvest",
+    "Target_Count": 40,
+    "Compensation_Type": "UgradeParts",
+    "Compensaion_Amount": 1
+  },
+  {
+    "ID": 103001,
+    "Name": "축산물 종합 수확 횟수",
+    "Type": "Harvest",
+    "Target_Count": 80,
+    "Compensation_Type": "UgradeParts",
+    "Compensaion_Amount": 2
+  },
+  {
+    "ID": 103010,
+    "Name": "우유 수확 횟수",
+    "Type": "Harvest",
+    "Target_Count": 20,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 5000
+  },
+  {
+    "ID": 201000,
+    "Name": "상품 종합 판매 횟수",
+    "Type": "Sell",
+    "Target_Count": 100,
+    "Compensation_Type": "UgradeParts",
+    "Compensaion_Amount": 1
+  },
+  {
+    "ID": 201001,
+    "Name": "상품 종합 판매 횟수",
+    "Type": "Sell",
+    "Target_Count": 200,
+    "Compensation_Type": "UgradeParts",
+    "Compensaion_Amount": 2
+  },
+  {
+    "ID": 201010,
+    "Name": "감자 판매 횟수",
+    "Type": "Sell",
+    "Target_Count": 30,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 1000
+  },
+  {
+    "ID": 201020,
+    "Name": "당근 판매 횟수",
+    "Type": "Sell",
+    "Target_Count": 30,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 1000
+  },
+  {
+    "ID": 201030,
+    "Name": "딸기 판매 횟수",
+    "Type": "Sell",
+    "Target_Count": 30,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 1000
+  },
+  {
+    "ID": 201040,
+    "Name": "우유 판매 횟수",
+    "Type": "Sell",
+    "Target_Count": 40,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 5000
+  },
+  {
+    "ID": 202000,
+    "Name": "아이템 종합 구매 횟수",
+    "Type": "Buy",
+    "Target_Count": 200,
+    "Compensation_Type": "UgradeParts",
+    "Compensaion_Amount": 1
+  },
+  {
+    "ID": 202001,
+    "Name": "아이템 종합 구매 횟수",
+    "Type": "Buy",
+    "Target_Count": 400,
+    "Compensation_Type": "UgradeParts",
+    "Compensaion_Amount": 2
+  },
+  {
+    "ID": 202010,
+    "Name": "씨앗 구매 횟수",
+    "Type": "Buy",
+    "Target_Count": 90,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 1000
+  },
+  {
+    "ID": 202020,
+    "Name": "축산도구 구매 횟수",
+    "Type": "Buy",
+    "Target_Count": 30,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 5000
+  },
+  {
+    "ID": 202030,
+    "Name": "동물 구매 횟수",
+    "Type": "Buy",
+    "Target_Count": 4,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 10000
+  },
+  {
+    "ID": 202040,
+    "Name": "NPC 구매 횟수",
+    "Type": "Buy",
+    "Target_Count": 5,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 5000
+  },
+  {
+    "ID": 202050,
+    "Name": "업그레이드 부품 구매 횟수",
+    "Type": "Buy",
+    "Target_Count": 20,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 5000
+  },
+  {
+    "ID": 202060,
+    "Name": "건물 키트 구매 횟수",
+    "Type": "Buy",
+    "Target_Count": 5,
+    "Compensation_Type": "Gold",
+    "Compensaion_Amount": 5000
+  }
+]

@@ -43,6 +43,12 @@
         "TimeScaleStep":0.5,
         "TimeScaleMax":2,
         "UITimeStepMinutes":10,
-        "FieldMaxExpand":2
+        "FieldMaxExpand":2,
+        "ReactorMinLevel":1,
+        "ReactorMaxLevel":3,
+        "ReactorUpgPartPerStep":5,
+        "ReactorExpandTiles":3,
+        "ReactorBaseChargeRate":1,
+        "ReactorChargeRateStep":2
     }
 ]

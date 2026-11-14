@@ -2,161 +2,181 @@
     {
         "ID":1011,
         "Name":"CornSeed",
-        "Korean":"옥수수 씨앗"
+        "Korean":"옥수수 씨앗",
+        "English":"Corn seeds"
     },
     {
         "ID":1012,
         "Name":"Corn",
-        "Korean":"옥수수"
+        "Korean":"옥수수",
+        "English":"Corn"
     },
     {
         "ID":1021,
         "Name":"PotatoSeed",
-        "Korean":"씨 감자"
+        "Korean":"감자 씨앗",
+        "English":"Potato seeds"
     },
     {
         "ID":1022,
         "Name":"Potato",
-        "Korean":"감자"
+        "Korean":"감자",
+        "English":"Potato"
     },
     {
         "ID":2011,
         "Name":"CarrotSeed",
-        "Korean":"당근 씨앗"
+        "Korean":"당근 씨앗",
+        "English":"Carrot seeds"
     },
     {
         "ID":2012,
         "Name":"Carrot",
-        "Korean":"당근"
+        "Korean":"당근",
+        "English":"Carrot"
     },
     {
         "ID":2021,
         "Name":"OnionSeed",
-        "Korean":"양파 씨앗"
+        "Korean":"양파 씨앗",
+        "English":"Onion seeds"
     },
     {
         "ID":2022,
         "Name":"Onion",
-        "Korean":"양파"
+        "Korean":"양파",
+        "English":"Onion"
     },
     {
         "ID":3011,
         "Name":"StrawberrySeed",
-        "Korean":"딸기 씨앗"
+        "Korean":"딸기 씨앗",
+        "English":"Strawberry seeds"
     },
     {
         "ID":3012,
         "Name":"Strawberry",
-        "Korean":"딸기"
+        "Korean":"딸기",
+        "English":"Strawberry"
     },
     {
         "ID":3021,
         "Name":"BlueBerrySeed",
-        "Korean":"블구베리 씨앗"
+        "Korean":"블구베리 씨앗",
+        "English":"Blueberry seeds"
     },
     {
         "ID":3022,
         "Name":"BlueBerry",
-        "Korean":"블루베리"
+        "Korean":"블루베리",
+        "English":"Blueberries"
     },
     {
         "ID":4011,
         "Name":"Bottle",
-        "Korean":"빈 병"
+        "Korean":"빈 병",
+        "English":"empty bottle"
     },
     {
         "ID":4012,
         "Name":"Milk",
-        "Korean":"우유"
-    },
-    {
-        "ID":5001,
-        "Name":"Water",
-        "Korean":"물"
+        "Korean":"우유",
+        "English":"Milk"
     },
     {
         "ID":5011,
         "Name":"100000G",
-        "Korean":"10만 골드"
+        "Korean":"10만 골드",
+        "English":"100,000 gold"
     },
     {
         "ID":5021,
         "Name":"ObjectPackage",
-        "Korean":"정착 지원 패키지"
+        "Korean":"정착 지원 패키지",
+        "English":"Settlement support package"
     },
     {
         "ID":6021,
         "Name":"Prototype",
-        "Korean":"Prototype"
+        "Korean":"Prototype",
+        "English":"prototype"
     },
     {
         "ID":6031,
         "Name":"Cow",
-        "Korean":"소"
+        "Korean":"소",
+        "English":"Small"
     },
     {
         "ID":6032,
         "Name":"Chicken",
-        "Korean":"닭"
-    },
-    {
-        "ID":7011,
-        "Name":"BatteryLv1",
-        "Korean":"베터리 LV1"
+        "Korean":"닭",
+        "English":"Chicken"
     },
     {
         "ID":8011,
         "Name":"MainInvLv1",
-        "Korean":"메인 인벤토리 LV1"
+        "Korean":"메인 인벤토리 LV1",
+        "English":"Main Inventory Lv1"
     },
     {
         "ID":8012,
         "Name":"MainInvLv2",
-        "Korean":"메인 인벤토리 LV2"
+        "Korean":"메인 인벤토리 LV2",
+        "English":"Main Inventory Lv2"
     },
     {
         "ID":8021,
         "Name":"SubInvLv1",
-        "Korean":"서브 인벤토리 LV1"
+        "Korean":"서브 인벤토리 LV1",
+        "English":"Sub inventory Lv1"
     },
     {
         "ID":8022,
         "Name":"SubInvLv2",
-        "Korean":"서브 인벤토리 LV2"
+        "Korean":"서브 인벤토리 LV2",
+        "English":"Sub inventory Lv2"
     },
     {
         "ID":8031,
         "Name":"SpeedLv1",
-        "Korean":"속도 LV1"
+        "Korean":"속도 LV1",
+        "English":"Speed Lv1"
     },
     {
         "ID":8032,
         "Name":"SpeedLv2",
-        "Korean":"속도 LV2"
+        "Korean":"속도 LV2",
+        "English":"Speed Lv2"
     },
     {
         "ID":8041,
         "Name":"EfficLv1",
-        "Korean":"효율 LV1"
+        "Korean":"효율 LV1",
+        "English":"Efficiency Lv1"
     },
     {
         "ID":8042,
         "Name":"EfficLv2",
-        "Korean":"효율 LV2"
+        "Korean":"효율 LV2",
+        "English":"Efficiency Lv2"
     },
     {
         "ID":9001,
         "Name":"Field",
-        "Korean":"밭"
+        "Korean":"밭",
+        "English":"Field"
     },
     {
         "ID":9011,
         "Name":"Storage",
-        "Korean":"창고"
+        "Korean":"창고",
+        "English":"Warehouse"
     },
     {
         "ID":9021,
         "Name":"Barn",
-        "Korean":"축사"
+        "Korean":"축사",
+        "English":"Barn"
     }
 ]
