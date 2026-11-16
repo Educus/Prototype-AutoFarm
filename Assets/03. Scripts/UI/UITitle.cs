@@ -98,7 +98,7 @@ public class UITitle : MonoBehaviour
     {
         if (SaveLoad != null && SaveLoad.HasSaveFile())
         {
-            confirmText.text = "저장된 게임이 있습니다.\n새 게임을 시작하면 기존 저장 파일이 삭제됩니다.\n계속할까요?";
+            confirmText.text = OriginDataManager.Instance.GetMessage(WarningID.NewGameConfirm);
             confirmPanel.SetActive(true);
             return;
         }

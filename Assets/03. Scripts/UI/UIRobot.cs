@@ -38,7 +38,7 @@ public class UIRobot : MonoBehaviour
                 GameObject robotIcon = Instantiate(robotIconPrefab, robotIconContent.transform);
                 robots[npcs.id] = robotIcon;
 
-                robotIcon.GetComponent<UIRobotIcon>().GetInfo(dataManager, this, npcs.id);
+                robotIcon.GetComponent<UIRobotIcon>().GetInfo(this, npcs.id);
                 robotIcon.GetComponent<Button>().onClick.AddListener(() => OnClickTargetRobot(npcs.id));
             }
 

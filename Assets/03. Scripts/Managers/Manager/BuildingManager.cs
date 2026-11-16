@@ -21,6 +21,7 @@ public class DefaultBuildingData
     public Vector2Int gridPosition;
 }
 
+[DefaultExecutionOrder(-50)]
 public class BuildingManager : MonoBehaviour
 {
     [Header("Building")]

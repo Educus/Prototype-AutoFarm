@@ -144,6 +144,7 @@ public class PlayerDataManager : MonoBehaviour
     }
 
     // 키 변경
+    // 키 변경이 불가 할 경우 해당 이유 return
     public RebindResult TryRebind(string actionName, KeyCode newKey, out string conflictAction)
     {
         conflictAction = null;
@@ -213,8 +214,7 @@ public class PlayerDataManager : MonoBehaviour
 
             foreach (var item in saved)
             {
-                if (!Enum.TryParse(item.keyCode, out KeyCode key)
-                    || !Enum.IsDefined(typeof(KeyCode), key))
+                if (!Enum.TryParse(item.keyCode, out KeyCode key))
                 {
                     Debug.LogWarning($"키 불러오기 실패 : {item.actionName}");
                     continue;
@@ -273,7 +273,25 @@ public class PlayerDataManager : MonoBehaviour
     #endregion
 
     #region 배속
+    [Header("테스트용")]
+    [Tooltip("true시 모든 배속 해제")]
+    [SerializeField] private bool unlockAllSpeedsOnStart = true;
+
     // 일시정지, 1배율 기본 해금. 1.5배, 2배 등은 UnlockSpeed 로 해금 (오름차순 유지)
+    public static readonly float[] AllSpeeds =  { 1f, 1.5f, 2f };
+
+    private void Awake()
+    {
+        if (unlockAllSpeedsOnStart)
+            UnlockAllSpeeds();
+    }
+
+    public void UnlockAllSpeeds()
+    {
+        foreach (float speed in AllSpeeds)
+            UnlockSpeed(speed);
+    }
+
     private readonly List<float> unlockedSpeeds = new List<float> { 1f };
 
     public event Action OnSpeedUnlocked;
@@ -346,6 +364,10 @@ public class PlayerDataManager : MonoBehaviour
         }
 
         unlockedSpeeds.Sort();
+
+        // 테스트
+        if (unlockAllSpeedsOnStart)
+            UnlockAllSpeeds();
 
         OnBookmarksChanged?.Invoke();
         OnSpeedUnlocked?.Invoke();

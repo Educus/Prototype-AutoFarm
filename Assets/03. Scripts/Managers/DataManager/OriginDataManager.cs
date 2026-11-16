@@ -11,6 +11,7 @@ public class OriginDataManager : MonoBehaviour
     [RequiredRef, SerializeField] private ObjectDataManager objectDataManager;
     [RequiredRef, SerializeField] private EventDataManager eventDataManager;
     [RequiredRef, SerializeField] private KeyCodeDataManager keyCodeDataManager;
+    [RequiredRef, SerializeField] private WarningMessageManager warningMessageManager;
      
     [RequiredRef, SerializeField] private Sprite[] itemImage;
     [RequiredRef, SerializeField] private Sprite[] cropsImage;
@@ -22,6 +23,11 @@ public class OriginDataManager : MonoBehaviour
     public Dictionary<int, EventData> eventsData => eventDataManager.eventData;
     public Dictionary<int, ObjectData> objectsData => objectDataManager.objectData;
     public KeyCodeDataManager KeyCodes => keyCodeDataManager;
+    public WarningMessageManager Warnings => warningMessageManager;
+
+    // 오류 문구 GetMessage(WarningID.xxx, value)
+    public string GetMessage(int warningId, params object[] args) =>
+            warningMessageManager.Get(warningId, args);
 
     // 이미지, 프리팹 캐시
     private Dictionary<string, Sprite> itemImages;

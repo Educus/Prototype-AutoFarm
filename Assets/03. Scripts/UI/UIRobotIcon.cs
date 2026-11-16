@@ -8,20 +8,25 @@ public class UIRobotIcon : MonoBehaviour
     [SerializeField] GameObject[] robotWorkIcon;
     [SerializeField] Image workItem;
 
+    private OriginDataManager originDataManager;
     private DataManager dataManager;
 
     UIRobot uiRobot;
     NPCJobConfig config;
     string id;
 
+    private void Start()
+    {
+        originDataManager = OriginDataManager.Instance;
+        dataManager = DataManager.Instance;
+    }
     private void Update()
     {
         SetInfo();
     }
 
-    public void GetInfo(DataManager data, UIRobot ui, string id)
+    public void GetInfo(UIRobot ui, string id)
     {
-        dataManager = data;
         uiRobot = ui;
         this.id = id;
 
@@ -40,7 +45,7 @@ public class UIRobotIcon : MonoBehaviour
         {
             robotWorkIcon[0].SetActive(false);
             robotWorkIcon[1].SetActive(true);
-            workItem.sprite = dataManager.GetItemImage(config.productItemID);
+            workItem.sprite = originDataManager.GetItemImage(config.productItemID);
         }
 
         robotName.text = dataManager.NPCManager.npcs[id].entityName;

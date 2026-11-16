@@ -10,9 +10,8 @@ public class KeyCodeData
     public int ID;
     public string Name;
     public string Type;
-    public string DefaultKeyCode;
-    public string Modifier1;
-    public string Modifier2;
+    public string DefaultKeyCode1;
+    public string DefaultKeyCode2;
     public int IsRebindable;
     public string Description_KR;
 }
@@ -20,33 +19,30 @@ public static class KeyNames
 {
     public static string Format(KeyCode key)
     {
-        if (key == KeyCode.None) return "없음";
+        if (key == KeyCode.None) return "None";
 
         string name = key.ToString();
 
-        // 숫자 키: Alpha1 -> 1, Keypad1 -> 숫자패드 1
+        // 숫자 키: Alpha1 -> 1, Keypad1 -> Num 1
         if (name.StartsWith("Alpha")) return name.Substring(5);
-        if (name.StartsWith("Keypad")) return "숫자패드 " + name.Substring(6);
+        if (name.StartsWith("Keypad")) return "Num " + name.Substring(6);
 
         switch (key)
         {
-            case KeyCode.Space: return "스페이스";
-            case KeyCode.Return: return "엔터";
-            case KeyCode.Backspace: return "백스페이스";
-            case KeyCode.Tab: return "탭";
-            case KeyCode.LeftShift: return "왼쪽 Shift";
-            case KeyCode.RightShift: return "오른쪽 Shift";
-            case KeyCode.LeftControl: return "왼쪽 Ctrl";
-            case KeyCode.RightControl: return "오른쪽 Ctrl";
-            case KeyCode.LeftAlt: return "왼쪽 Alt";
-            case KeyCode.RightAlt: return "오른쪽 Alt";
+            case KeyCode.Return: return "Enter";
+            case KeyCode.LeftShift: return "Left Shift";
+            case KeyCode.RightShift: return "Right Shift";
+            case KeyCode.LeftControl: return "Left Ctrl";
+            case KeyCode.RightControl: return "Right Ctrl";
+            case KeyCode.LeftAlt: return "Left Alt";
+            case KeyCode.RightAlt: return "Right Alt";
             case KeyCode.UpArrow: return "↑";
             case KeyCode.DownArrow: return "↓";
             case KeyCode.LeftArrow: return "←";
             case KeyCode.RightArrow: return "→";
-            case KeyCode.Mouse0: return "마우스 좌클릭";
-            case KeyCode.Mouse1: return "마우스 우클릭";
-            case KeyCode.Mouse2: return "마우스 휠클릭";
+            case KeyCode.Mouse0: return "Left Click";
+            case KeyCode.Mouse1: return "Right Click";
+            case KeyCode.Mouse2: return "Middle Click";
         }
 
         return name;
@@ -88,14 +84,14 @@ public class KeyCodeDataManager : MonoBehaviour
         {
             table[key.Name] = key;
 
-            if (Enum.TryParse(key.DefaultKeyCode, out KeyCode parsed)
+            if (Enum.TryParse(key.DefaultKeyCode1, out KeyCode parsed)
                 && Enum.IsDefined(typeof(KeyCode), parsed))
             {
                 defaultKeys[key.Name] = parsed;
             }
             else
             {
-                Debug.LogWarning($"Key Parse 실패 : {key.Name} (DefaultKeyCode='{key.DefaultKeyCode}')");
+                Debug.LogWarning($"Key Parse 실패 : {key.Name} (DefaultKeyCode='{key.DefaultKeyCode1}')");
             }
         }
     }

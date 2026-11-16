@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[DefaultExecutionOrder(-50)]
 public class InventoryManager : MonoBehaviour
 {
     public Dictionary<string, Inventory> inventories =

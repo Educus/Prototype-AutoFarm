@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(-50)]
 public class ShopManager : MonoBehaviour
 {
     // 영수증에 담을 수 있는 칸 수 (아이템 stack 기준)

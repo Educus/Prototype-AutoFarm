@@ -68,6 +68,18 @@ public class UIKeyBindingPanel : MonoBehaviour
             row.Refresh();
     }
 
+    public void ShowErrorKey(string actionName, KeyCode key)
+    {
+        foreach (var row in rows)
+        {
+            if (row.ActionName == actionName)
+            {
+                row.ShowErrorKey(key);
+                return;
+            }
+        }
+    }
+
     public bool TryBeginCapture(UIKeyBindingRow row)
     {
         if (capturingRow != null && capturingRow != row)

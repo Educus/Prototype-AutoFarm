@@ -25,10 +25,6 @@ public class InputManager : MonoBehaviour
     private int layerMask;
     private ContactFilter2D clickFilter;
 
-    // 일시정지 키
-    // KeycodeDataTable 의 Name 과 같아야 함
-    private const string TimeSpeedKey = "System_Multiplier";
-
     private void Start()
     {
         player = GameManager.Instance.player;
@@ -63,14 +59,13 @@ public class InputManager : MonoBehaviour
     }
     private void HandleSystemInput()
     {
-        // 테스트용 ESC
         if (DataManager.Instance.PlayerDataManager.GetKeyDown("PopUp_Setting"))
         {
             GameManager gm = GameManager.Instance;
 
             if (gm.IsMode(GameMode.None))
             {
-                // 설정 열기
+                // TODO
                 Debug.Log("설정 열기");
             }
             else
@@ -79,7 +74,7 @@ public class InputManager : MonoBehaviour
             }
         }
 
-        if (DataManager.Instance.PlayerDataManager.GetKeyDown(TimeSpeedKey))
+        if (DataManager.Instance.PlayerDataManager.GetKeyDown("System_Multiplier"))
             GameManager.Instance.CycleSpeed();
     }
 

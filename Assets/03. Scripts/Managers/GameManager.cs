@@ -1,3 +1,4 @@
+using UnityEngine.SceneManagement;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public enum GameMode
     Build,
     Work
 }
+
+[DefaultExecutionOrder(-100)]
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -203,6 +206,13 @@ public class GameManager : MonoBehaviour
         {
             isPlay = false;
         }
+    }
+    #endregion
+
+    #region ReturnTitle
+    public void ReturnToTitle()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     #endregion
 

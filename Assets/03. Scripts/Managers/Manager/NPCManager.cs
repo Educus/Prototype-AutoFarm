@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(-50)]
 public class NPCManager : MonoBehaviour
 {
     // NPC 구매 아이템 ID

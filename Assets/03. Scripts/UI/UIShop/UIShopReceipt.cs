@@ -6,10 +6,8 @@ public class UIShopReceipt : MonoBehaviour
 {
     // 영수증
     // 상점 구매 예정인 품목 나열 및 취소가능
-
     [SerializeField] private ShopManager shop;
     [SerializeField] private PlayerDataManager currency;
-    [SerializeField] private DataManager dataManager;
 
     [Header("Lines")]
     [SerializeField] private Transform lineParent;
@@ -26,10 +24,12 @@ public class UIShopReceipt : MonoBehaviour
 
     private readonly List<UIShopReceiptLine> lines = new List<UIShopReceiptLine>();
 
+    OriginDataManager Origin => OriginDataManager.Instance;
+
     #region Unity
     private void OnEnable()
     {
-        if (shop ==  null || currency == null || dataManager == null)
+        if (shop ==  null || currency == null)
         {
             Debug.LogError("[UIShopReceipt] : Manager를 연결하세요");
             return;
@@ -73,8 +73,8 @@ public class UIShopReceipt : MonoBehaviour
 
             line.Setup(
                 itemID,
-                dataManager.itemsData[itemID].Name,
-                dataManager.GetItemImage(itemID),
+                Origin.itemsData[itemID].Name,
+                Origin.GetItemImage(itemID),
                 count,
                 shop.GetBuyPrice(itemID) * count,
                 OnRemoveClicked

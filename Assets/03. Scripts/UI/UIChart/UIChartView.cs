@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class UIChartView : MonoBehaviour, IScrollHandler
 {
+    private OriginDataManager originDataManager;
     private DataManager dataManager;
     [SerializeField] private RectTransform chartArea;
 
@@ -53,6 +54,7 @@ public class UIChartView : MonoBehaviour, IScrollHandler
     #region Unity
     private void Awake()
     {
+        originDataManager = OriginDataManager.Instance;
         dataManager = DataManager.Instance;
     }
     private void OnEnable()
@@ -202,7 +204,7 @@ public class UIChartView : MonoBehaviour, IScrollHandler
         float center = (lowest + highest) * 0.5f;
 
         float basicPrice = 0f;
-        if (dataManager.itemsData.TryGetValue(itemID, out ItemData itemData))
+        if (originDataManager.itemsData.TryGetValue(itemID, out ItemData itemData))
             basicPrice = itemData.BasicPrice;
 
         // 기본 가격을 모르면 현재 중심값을 기준으로 함
@@ -280,11 +282,11 @@ public class UIChartView : MonoBehaviour, IScrollHandler
 
         string arrow = diff > 0 ? "▲" : diff < 0 ? "▼" : "■";
 
-        string itemName = dataManager.itemsData.TryGetValue(itemID, out ItemData itemData)
+        string itemName = originDataManager.itemsData.TryGetValue(itemID, out ItemData itemData)
             ? itemData.Name : itemID.ToString();
 
         // 아이템 이미지
-        itemImage.sprite = dataManager.GetItemImage(itemID);
+        itemImage.sprite = originDataManager.GetItemImage(itemID);
 
         string upHex = ColorUtility.ToHtmlStringRGB(upColor);
         string downHex = ColorUtility.ToHtmlStringRGB(downColor);

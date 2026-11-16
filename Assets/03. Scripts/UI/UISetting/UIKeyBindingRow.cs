@@ -9,11 +9,14 @@ public class UIKeyBindingRow : MonoBehaviour
     [RequiredRef, SerializeField] private Button keyButton;
     [RequiredRef, SerializeField] private TMP_Text keyText;
 
+    [SerializeField] private string inputPrompt = "Input Key";
     [SerializeField] private float messageSeconds = 1.2f;
+    [SerializeField] private Color errorColor = new Color(1f, 0.25f, 0.25f);
 
     private string actionName;
     private bool rebindable;
     private bool capturing;
+    private Coroutine restoreRoutine;
 
     private UIKeyBindingPanel panel;
 
@@ -53,7 +56,7 @@ public class UIKeyBindingRow : MonoBehaviour
 
         capturing = true;
         Player.BeginKeyCapture();
-        keyText.text = "Input Key";
+        keyText.text = inputPrompt;
     }
 
     private void Update()
@@ -64,7 +67,7 @@ public class UIKeyBindingRow : MonoBehaviour
         // 마우스 클릭 취소
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2))
         {
-            Cancel("Cancel");
+            CancelQuietly();
             return;
         }
 
@@ -78,27 +81,19 @@ public class UIKeyBindingRow : MonoBehaviour
 
             if (key == KeyCode.Escape)
             {
-                Cancel("Cancel");
+                CancelQuietly();
                 return;
             }
 
-            RebindResult result = Player.TryRebind(actionName, key, out string conflict);
+            RebindResult result = Player.TryRebind(actionName, key, out string conflictAction);
 
-            switch (result)
+            if (result == RebindResult.Success)
             {
-                case RebindResult.Success:
-                    Finish();
-                    break;
-                case RebindResult.Conflict:
-                    Cancel($"이미 사용 중인 키입니다.");
-                    break;
-                case RebindResult.InvalidKey:
-                    Cancel($"사용 할 수 없는 키입니다.");
-                    break;
-                default:
-                    Cancel("변경할 수 없습니다.");
-                    break;
+                Finish();
+                return;
             }
+
+            Fail(key, result == RebindResult.Conflict ? conflictAction : null);
 
             return;
         }
@@ -106,24 +101,47 @@ public class UIKeyBindingRow : MonoBehaviour
 
     private void Finish()
     {
-        capturing = false;
-        panel.EndCapture(this);
-
+        EndCapture();
         keyText.text = KeyNames.Format(Player.GetKey(actionName));
-
-        StartCoroutine(ReleaseCaptureNextFrame());
     }
 
-    // 취소 : 안내문구 보여주고 원래 키로 변경
-    private void Cancel(string message)
+    // 취소, 오류X
+    private void CancelQuietly()
+    {
+        EndCapture();
+        keyText.text = KeyNames.Format(Player.GetKey(actionName));
+    }
+
+    // 취소, 오류O
+    private void Fail(KeyCode pressed, string conflictAction)
+    {
+        EndCapture();
+
+        ShowErrorKey(pressed);
+
+        if (!string.IsNullOrEmpty(conflictAction))
+            panel.ShowErrorKey(conflictAction, pressed);
+    }
+
+    public void ShowErrorKey(KeyCode key)
+    {
+        if (!isActiveAndEnabled)
+            return;
+
+        StopRestore();
+
+        string hex = ColorUtility.ToHtmlStringRGB(errorColor);
+        keyText.text = $"<color=#{hex}>{KeyNames.Format(key)}</color>";
+
+        restoreRoutine = StartCoroutine(ReleaseCaptureNextFrame());
+    }
+
+    private void EndCapture()
     {
         capturing = false;
         panel.EndCapture(this);
 
-        keyText.text = message;
-
         StartCoroutine(ReleaseCaptureNextFrame());
-        StartCoroutine(RestoreTextLater());
     }
 
     // 같은 프레임에 누른 키가 입력으로 처리X
@@ -133,17 +151,30 @@ public class UIKeyBindingRow : MonoBehaviour
         Player.EndKeyCapture();
     }
 
-    private IEnumerator RestoreTextLater()
+    private IEnumerator RestoreLater()
     {
         // 일시정지 때 동작하도록
         yield return new WaitForSecondsRealtime(messageSeconds);
+
+        restoreRoutine = null;
 
         if (!capturing)
             keyText.text = KeyNames.Format(Player.GetKey(actionName));
     }
 
+    private void StopRestore()
+    {
+        if (restoreRoutine != null)
+        {
+            StopCoroutine(restoreRoutine);
+            restoreRoutine = null;
+        }
+    }
+
     private void OnDisable()
     {
+        restoreRoutine = null;
+
         if (capturing)
         {
             capturing = false;

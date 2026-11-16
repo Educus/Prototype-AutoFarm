@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[DefaultExecutionOrder(-100)]
 public class TimeManager : MonoBehaviour
 {
     public static TimeManager Instance;

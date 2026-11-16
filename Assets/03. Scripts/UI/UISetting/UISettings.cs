@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -5,25 +6,33 @@ using UnityEngine.UI;
 
 public class UISettings : MonoBehaviour
 {
-    [SerializeField] private ScrollRect scrollRect;
-
     [Header("Sound")]
-    [SerializeField] private Slider masterSlider;
-    [SerializeField] private Slider bgmSlider;
-    [SerializeField] private Slider sfxSlider;
-    [SerializeField] private TMP_Text masterLabel;
-    [SerializeField] private TMP_Text bgmLabel;
-    [SerializeField] private TMP_Text sfxLabel;
+    [RequiredRef, SerializeField] private Slider masterSlider;
+    [RequiredRef, SerializeField] private Slider bgmSlider;
+    [RequiredRef, SerializeField] private Slider sfxSlider;
+    [RequiredRef, SerializeField] private TMP_Text masterLabel;
+    [RequiredRef, SerializeField] private TMP_Text bgmLabel;
+    [RequiredRef, SerializeField] private TMP_Text sfxLabel;
 
     [Header("Screen")]
-    [SerializeField] private TMP_Dropdown resolutionDropdown;
-    [SerializeField] private TMP_Dropdown screenModeDropdown;
-    [SerializeField] private Slider uiScaleSlider;
-    [SerializeField] private TMP_Text uiScaleLabel;
+    [RequiredRef, SerializeField] private TMP_Dropdown resolutionDropdown;
+    [RequiredRef, SerializeField] private TMP_Dropdown screenModeDropdown;
+    [RequiredRef, SerializeField] private Slider uiScaleSlider;
+    [RequiredRef, SerializeField] private TMP_Text uiScaleLabel;
 
     [Header("Buttons")]
-    [SerializeField] private Button closeButton;
-    [SerializeField] private Button resetButton;
+    [RequiredRef, SerializeField] private Button closeButton;
+    [RequiredRef, SerializeField] private TMP_Text closeText;
+    [RequiredRef, SerializeField] private Button resetButton;
+
+    [Header("Scroll")]
+    [RequiredRef, SerializeField] private ScrollRect scrollRect;
+
+    [Header("Return To Title (게임 중에만 표시)")]
+    [RequiredRef, SerializeField] private GameObject returnConfirmPanel;
+    [RequiredRef, SerializeField] private TMP_Text returnConfirmText;
+    [RequiredRef, SerializeField] private Button returnYButton;
+    [RequiredRef, SerializeField] private Button returnNButton;
 
     // 드롭다운 항목 순서와 FullScreenMode 대응
     private static readonly FullScreenMode[] Modes =
@@ -33,7 +42,7 @@ public class UISettings : MonoBehaviour
         FullScreenMode.Windowed
     };
 
-    private static readonly string[] ModeNames = { "전체 화면", "테두리 없는 창", "창 모드" };
+    private static readonly string[] ModeNames = { "FullScreenWindow", "ExclusiveFullScreen", "Windowed" };
 
     private readonly List<Vector2Int> resolutions = new List<Vector2Int>();
     private bool refreshing;
@@ -53,16 +62,27 @@ public class UISettings : MonoBehaviour
 
         closeButton.onClick.AddListener(Close);
         resetButton.onClick.AddListener(ResetToDefault);
+
+        closeButton.onClick.AddListener(OnReturnTitleClicked);
+        returnYButton.onClick.AddListener(OnReturnTitleConfirmed);
+        returnNButton.onClick.AddListener(() => returnConfirmPanel.SetActive(false));
     }
 
     private void OnEnable()
     {
         Refresh();
 
+        if (GameManager.Instance != null)
+            return;
+
+        string closingText = GameManager.Instance.isTitle ? "나가기" : "타이틀로";
+        closeText.text = closingText;
+        returnConfirmPanel.SetActive(false);
+
         StartCoroutine(ScrollToTop());
     }
 
-    private System.Collections.IEnumerator ScrollToTop()
+    private IEnumerator ScrollToTop()
     {
         yield return null;
         Canvas.ForceUpdateCanvases();
@@ -186,6 +206,20 @@ public class UISettings : MonoBehaviour
     {
         SettingManager.Instance.ResetToDefault();
         Refresh();
+    }
+
+    private void OnReturnTitleClicked()
+    {
+        returnConfirmText.text = OriginDataManager.Instance.GetMessage(WarningID.ReturnToTitleConfirm);
+        returnConfirmPanel.SetActive(true);
+    }
+
+    private void OnReturnTitleConfirmed()
+    {
+        returnConfirmPanel.SetActive(false);
+
+        SettingManager.Instance.Save();
+        GameManager.Instance.ReturnToTitle();
     }
 
     public void Close()

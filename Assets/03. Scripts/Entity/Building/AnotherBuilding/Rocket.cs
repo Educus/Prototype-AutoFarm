@@ -305,7 +305,7 @@ public class Rocket : BuildingBase
             int remaining = buyItem.Value;
 
             ItemData itemData =
-              DataManager.Instance.itemsData[itemID];
+              OriginDataManager.Instance.itemsData[itemID];
 
             if (itemData.Type == ItemType.Object)
             {
@@ -358,7 +358,7 @@ public class Rocket : BuildingBase
                 inventory.AddItem(
                     remainItem.Key,
                     remainItem.Value,
-                    DataManager.Instance
+                    OriginDataManager.Instance
                     .itemsData[remainItem.Key]
                     .StoragePeriod);
 

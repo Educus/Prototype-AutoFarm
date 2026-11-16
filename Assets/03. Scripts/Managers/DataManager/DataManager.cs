@@ -41,33 +41,4 @@ public class DataManager : MonoBehaviour
 
         Instance = this;
     }
-
-    #region [임시] 기존 코드가 컴파일되도록 남겨 둔 전달 프로퍼티 - 모두 OriginDataManager로 교체 예정
-    [Obsolete("OriginDataManager.Instance.itemsData 를 사용하세요")]
-    public Dictionary<int, ItemData> itemsData => OriginDataManager.Instance.itemsData;
-
-    [Obsolete("OriginDataManager.Instance.productsData 를 사용하세요")]
-    public Dictionary<int, Product> productsData => OriginDataManager.Instance.productsData;
-
-    [Obsolete("OriginDataManager.Instance.eventsData 를 사용하세요")]
-    public Dictionary<int, EventData> eventsData => OriginDataManager.Instance.eventsData;
-
-    [Obsolete("OriginDataManager.Instance.objectsData 를 사용하세요")]
-    public Dictionary<int, ObjectData> objectsData => OriginDataManager.Instance.objectsData;
-
-    [Obsolete("OriginDataManager.Instance.GetItemImage 를 사용하세요")]
-    public Sprite GetItemImage(int itemId) => OriginDataManager.Instance.GetItemImage(itemId);
-
-    [Obsolete("OriginDataManager.Instance.GetCropImage 를 사용하세요")]
-    public Sprite GetCropImage(int itemId, float growth) => OriginDataManager.Instance.GetCropImage(itemId, growth);
-
-    [Obsolete("OriginDataManager.Instance.GetObjectPrefabs 를 사용하세요")]
-    public GameObject GetObjectPrefabs(int itemId) => OriginDataManager.Instance.GetObjectPrefabs(itemId);
-
-    [Obsolete("OriginDataManager.Instance.GetItemIDNumber 를 사용하세요")]
-    public int GetItemIDNumber(string itemName) => OriginDataManager.Instance.GetItemIDNumber(itemName);
-
-    [Obsolete("DataTotalManager.Instance.SaveLoad.ContinueGame() 을 사용하세요")]
-    public void ContinueGame() => SaveLoadManager.ContinueGame();
-    #endregion
 }

@@ -28,6 +28,8 @@ public class ItemData
     public int StoragePeriod;   // 보관 기간
     public bool UseToDemo;
 }
+
+[DefaultExecutionOrder(-100)]
 public class ItemDataManager : MonoBehaviour
 {
     public Dictionary<int, ItemData> itemData = new Dictionary<int, ItemData>();
