@@ -75,7 +75,7 @@
         "ID":4011,
         "Name":"Bottle",
         "Korean":"빈 병",
-        "English":"empty bottle"
+        "English":"Bottle"
     },
     {
         "ID":4012,
@@ -98,14 +98,14 @@
     {
         "ID":6021,
         "Name":"Prototype",
-        "Korean":"Prototype",
-        "English":"prototype"
+        "Korean":"프로토타입 MK.1",
+        "English":"prototype Mk.1"
     },
     {
         "ID":6031,
         "Name":"Cow",
         "Korean":"소",
-        "English":"Small"
+        "English":"Cow"
     },
     {
         "ID":6032,
@@ -116,8 +116,8 @@
     {
         "ID":8011,
         "Name":"MainInvLv1",
-        "Korean":"메인 인벤토리 LV1",
-        "English":"Main Inventory Lv1"
+        "Korean":"고성능 양자보관함",
+        "English":"High-performance quantum box"
     },
     {
         "ID":8012,
@@ -128,8 +128,8 @@
     {
         "ID":8021,
         "Name":"SubInvLv1",
-        "Korean":"서브 인벤토리 LV1",
-        "English":"Sub inventory Lv1"
+        "Korean":"고성능 장갑",
+        "English":"High performance gloves"
     },
     {
         "ID":8022,
@@ -140,8 +140,8 @@
     {
         "ID":8031,
         "Name":"SpeedLv1",
-        "Korean":"속도 LV1",
-        "English":"Speed Lv1"
+        "Korean":"고성능 바퀴",
+        "English":"High performance wheels"
     },
     {
         "ID":8032,
@@ -152,8 +152,8 @@
     {
         "ID":8041,
         "Name":"EfficLv1",
-        "Korean":"효율 LV1",
-        "English":"Efficiency Lv1"
+        "Korean":"고성능 헤드셋",
+        "English":"High performance headset"
     },
     {
         "ID":8042,

@@ -5,7 +5,7 @@
     "Type": "Plant",
     "Target_Count": 90,
     "Compensation_Type": "UgradeParts",
-    "Compensaion_Amount": 1
+    "Compensation_Amount": 1
   },
   {
     "ID": 101001,
@@ -13,7 +13,7 @@
     "Type": "Plant",
     "Target_Count": 180,
     "Compensation_Type": "UgradeParts",
-    "Compensaion_Amount": 2
+    "Compensation_Amount": 2
   },
   {
     "ID": 101010,
@@ -21,7 +21,7 @@
     "Type": "Plant",
     "Target_Count": 30,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 1000
+    "Compensation_Amount": 1000
   },
   {
     "ID": 101020,
@@ -29,7 +29,7 @@
     "Type": "Plant",
     "Target_Count": 30,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 1000
+    "Compensation_Amount": 1000
   },
   {
     "ID": 101030,
@@ -37,7 +37,7 @@
     "Type": "Plant",
     "Target_Count": 30,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 1000
+    "Compensation_Amount": 1000
   },
   {
     "ID": 102000,
@@ -45,7 +45,7 @@
     "Type": "Harvest",
     "Target_Count": 90,
     "Compensation_Type": "UgradeParts",
-    "Compensaion_Amount": 1
+    "Compensation_Amount": 1
   },
   {
     "ID": 102001,
@@ -53,7 +53,7 @@
     "Type": "Harvest",
     "Target_Count": 180,
     "Compensation_Type": "UgradeParts",
-    "Compensaion_Amount": 2
+    "Compensation_Amount": 2
   },
   {
     "ID": 102010,
@@ -61,7 +61,7 @@
     "Type": "Harvest",
     "Target_Count": 30,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 1000
+    "Compensation_Amount": 1000
   },
   {
     "ID": 102020,
@@ -69,7 +69,7 @@
     "Type": "Harvest",
     "Target_Count": 30,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 1000
+    "Compensation_Amount": 1000
   },
   {
     "ID": 102030,
@@ -77,7 +77,7 @@
     "Type": "Harvest",
     "Target_Count": 30,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 1000
+    "Compensation_Amount": 1000
   },
   {
     "ID": 103000,
@@ -85,7 +85,7 @@
     "Type": "Harvest",
     "Target_Count": 40,
     "Compensation_Type": "UgradeParts",
-    "Compensaion_Amount": 1
+    "Compensation_Amount": 1
   },
   {
     "ID": 103001,
@@ -93,7 +93,7 @@
     "Type": "Harvest",
     "Target_Count": 80,
     "Compensation_Type": "UgradeParts",
-    "Compensaion_Amount": 2
+    "Compensation_Amount": 2
   },
   {
     "ID": 103010,
@@ -101,7 +101,7 @@
     "Type": "Harvest",
     "Target_Count": 20,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 5000
+    "Compensation_Amount": 5000
   },
   {
     "ID": 201000,
@@ -109,7 +109,7 @@
     "Type": "Sell",
     "Target_Count": 100,
     "Compensation_Type": "UgradeParts",
-    "Compensaion_Amount": 1
+    "Compensation_Amount": 1
   },
   {
     "ID": 201001,
@@ -117,7 +117,7 @@
     "Type": "Sell",
     "Target_Count": 200,
     "Compensation_Type": "UgradeParts",
-    "Compensaion_Amount": 2
+    "Compensation_Amount": 2
   },
   {
     "ID": 201010,
@@ -125,7 +125,7 @@
     "Type": "Sell",
     "Target_Count": 30,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 1000
+    "Compensation_Amount": 1000
   },
   {
     "ID": 201020,
@@ -133,7 +133,7 @@
     "Type": "Sell",
     "Target_Count": 30,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 1000
+    "Compensation_Amount": 1000
   },
   {
     "ID": 201030,
@@ -141,7 +141,7 @@
     "Type": "Sell",
     "Target_Count": 30,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 1000
+    "Compensation_Amount": 1000
   },
   {
     "ID": 201040,
@@ -149,7 +149,7 @@
     "Type": "Sell",
     "Target_Count": 40,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 5000
+    "Compensation_Amount": 5000
   },
   {
     "ID": 202000,
@@ -157,7 +157,7 @@
     "Type": "Buy",
     "Target_Count": 200,
     "Compensation_Type": "UgradeParts",
-    "Compensaion_Amount": 1
+    "Compensation_Amount": 1
   },
   {
     "ID": 202001,
@@ -165,7 +165,7 @@
     "Type": "Buy",
     "Target_Count": 400,
     "Compensation_Type": "UgradeParts",
-    "Compensaion_Amount": 2
+    "Compensation_Amount": 2
   },
   {
     "ID": 202010,
@@ -173,7 +173,7 @@
     "Type": "Buy",
     "Target_Count": 90,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 1000
+    "Compensation_Amount": 1000
   },
   {
     "ID": 202020,
@@ -181,7 +181,7 @@
     "Type": "Buy",
     "Target_Count": 30,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 5000
+    "Compensation_Amount": 5000
   },
   {
     "ID": 202030,
@@ -189,7 +189,7 @@
     "Type": "Buy",
     "Target_Count": 4,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 10000
+    "Compensation_Amount": 10000
   },
   {
     "ID": 202040,
@@ -197,7 +197,7 @@
     "Type": "Buy",
     "Target_Count": 5,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 5000
+    "Compensation_Amount": 5000
   },
   {
     "ID": 202050,
@@ -205,7 +205,7 @@
     "Type": "Buy",
     "Target_Count": 20,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 5000
+    "Compensation_Amount": 5000
   },
   {
     "ID": 202060,
@@ -213,6 +213,6 @@
     "Type": "Buy",
     "Target_Count": 5,
     "Compensation_Type": "Gold",
-    "Compensaion_Amount": 5000
+    "Compensation_Amount": 5000
   }
 ]
