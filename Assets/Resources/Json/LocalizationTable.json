@@ -2,181 +2,181 @@
     {
         "ID":1011,
         "Name":"CornSeed",
-        "Korean":"옥수수 씨앗",
-        "English":"Corn seeds"
+        "Local_KO":"옥수수 씨앗",
+        "Local_EN":"Corn seeds"
     },
     {
         "ID":1012,
         "Name":"Corn",
-        "Korean":"옥수수",
-        "English":"Corn"
+        "Local_KO":"옥수수",
+        "Local_EN":"Corn"
     },
     {
         "ID":1021,
         "Name":"PotatoSeed",
-        "Korean":"감자 씨앗",
-        "English":"Potato seeds"
+        "Local_KO":"감자 씨앗",
+        "Local_EN":"Potato seeds"
     },
     {
         "ID":1022,
         "Name":"Potato",
-        "Korean":"감자",
-        "English":"Potato"
+        "Local_KO":"감자",
+        "Local_EN":"Potato"
     },
     {
         "ID":2011,
         "Name":"CarrotSeed",
-        "Korean":"당근 씨앗",
-        "English":"Carrot seeds"
+        "Local_KO":"당근 씨앗",
+        "Local_EN":"Carrot seeds"
     },
     {
         "ID":2012,
         "Name":"Carrot",
-        "Korean":"당근",
-        "English":"Carrot"
+        "Local_KO":"당근",
+        "Local_EN":"Carrot"
     },
     {
         "ID":2021,
         "Name":"OnionSeed",
-        "Korean":"양파 씨앗",
-        "English":"Onion seeds"
+        "Local_KO":"양파 씨앗",
+        "Local_EN":"Onion seeds"
     },
     {
         "ID":2022,
         "Name":"Onion",
-        "Korean":"양파",
-        "English":"Onion"
+        "Local_KO":"양파",
+        "Local_EN":"Onion"
     },
     {
         "ID":3011,
         "Name":"StrawberrySeed",
-        "Korean":"딸기 씨앗",
-        "English":"Strawberry seeds"
+        "Local_KO":"딸기 씨앗",
+        "Local_EN":"Strawberry seeds"
     },
     {
         "ID":3012,
         "Name":"Strawberry",
-        "Korean":"딸기",
-        "English":"Strawberry"
+        "Local_KO":"딸기",
+        "Local_EN":"Strawberry"
     },
     {
         "ID":3021,
         "Name":"BlueBerrySeed",
-        "Korean":"블구베리 씨앗",
-        "English":"Blueberry seeds"
+        "Local_KO":"블구베리 씨앗",
+        "Local_EN":"Blueberry seeds"
     },
     {
         "ID":3022,
         "Name":"BlueBerry",
-        "Korean":"블루베리",
-        "English":"Blueberries"
+        "Local_KO":"블루베리",
+        "Local_EN":"Blueberries"
     },
     {
         "ID":4011,
         "Name":"Bottle",
-        "Korean":"빈 병",
-        "English":"Bottle"
+        "Local_KO":"빈 병",
+        "Local_EN":"Bottle"
     },
     {
         "ID":4012,
         "Name":"Milk",
-        "Korean":"우유",
-        "English":"Milk"
+        "Local_KO":"우유",
+        "Local_EN":"Milk"
     },
     {
         "ID":5011,
         "Name":"100000G",
-        "Korean":"10만 골드",
-        "English":"100,000 gold"
+        "Local_KO":"10만 골드",
+        "Local_EN":"100,000 gold"
     },
     {
         "ID":5021,
         "Name":"ObjectPackage",
-        "Korean":"정착 지원 패키지",
-        "English":"Settlement support package"
+        "Local_KO":"정착 지원 패키지",
+        "Local_EN":"Settlement support package"
     },
     {
         "ID":6021,
         "Name":"Prototype",
-        "Korean":"프로토타입 MK.1",
-        "English":"prototype Mk.1"
+        "Local_KO":"프로토타입 MK.1",
+        "Local_EN":"prototype Mk.1"
     },
     {
         "ID":6031,
         "Name":"Cow",
-        "Korean":"소",
-        "English":"Cow"
+        "Local_KO":"소",
+        "Local_EN":"Cow"
     },
     {
         "ID":6032,
         "Name":"Chicken",
-        "Korean":"닭",
-        "English":"Chicken"
+        "Local_KO":"닭",
+        "Local_EN":"Chicken"
     },
     {
         "ID":8011,
         "Name":"MainInvLv1",
-        "Korean":"고성능 양자보관함",
-        "English":"High-performance quantum box"
+        "Local_KO":"고성능 양자보관함",
+        "Local_EN":"High-performance quantum box"
     },
     {
         "ID":8012,
         "Name":"MainInvLv2",
-        "Korean":"메인 인벤토리 LV2",
-        "English":"Main Inventory Lv2"
+        "Local_KO":"메인 인벤토리 LV2",
+        "Local_EN":"Main Inventory Lv2"
     },
     {
         "ID":8021,
         "Name":"SubInvLv1",
-        "Korean":"고성능 장갑",
-        "English":"High performance gloves"
+        "Local_KO":"고성능 장갑",
+        "Local_EN":"High performance gloves"
     },
     {
         "ID":8022,
         "Name":"SubInvLv2",
-        "Korean":"서브 인벤토리 LV2",
-        "English":"Sub inventory Lv2"
+        "Local_KO":"서브 인벤토리 LV2",
+        "Local_EN":"Sub inventory Lv2"
     },
     {
         "ID":8031,
         "Name":"SpeedLv1",
-        "Korean":"고성능 바퀴",
-        "English":"High performance wheels"
+        "Local_KO":"고성능 바퀴",
+        "Local_EN":"High performance wheels"
     },
     {
         "ID":8032,
         "Name":"SpeedLv2",
-        "Korean":"속도 LV2",
-        "English":"Speed Lv2"
+        "Local_KO":"속도 LV2",
+        "Local_EN":"Speed Lv2"
     },
     {
         "ID":8041,
         "Name":"EfficLv1",
-        "Korean":"고성능 헤드셋",
-        "English":"High performance headset"
+        "Local_KO":"고성능 헤드셋",
+        "Local_EN":"High performance headset"
     },
     {
         "ID":8042,
         "Name":"EfficLv2",
-        "Korean":"효율 LV2",
-        "English":"Efficiency Lv2"
+        "Local_KO":"효율 LV2",
+        "Local_EN":"Efficiency Lv2"
     },
     {
         "ID":9001,
         "Name":"Field",
-        "Korean":"밭",
-        "English":"Field"
+        "Local_KO":"밭",
+        "Local_EN":"Field"
     },
     {
         "ID":9011,
         "Name":"Storage",
-        "Korean":"창고",
-        "English":"Warehouse"
+        "Local_KO":"창고",
+        "Local_EN":"Warehouse"
     },
     {
         "ID":9021,
         "Name":"Barn",
-        "Korean":"축사",
-        "English":"Barn"
+        "Local_KO":"축사",
+        "Local_EN":"Barn"
     }
 ]

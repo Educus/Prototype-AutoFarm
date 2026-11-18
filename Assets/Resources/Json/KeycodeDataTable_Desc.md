@@ -8,4 +8,4 @@
 | DefaultKeyCode1 | String | 기본 키값 |
 | DefaultKeyCode2 | Enum: None | 조합키 1 |
 | IsRebindable | Int | 변경 가능한 지 |
-| Description_KR | String | 한국어 번역값 |
+| Description_KO | String | 한국어 번역값 |
