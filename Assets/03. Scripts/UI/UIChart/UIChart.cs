@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Xml.Linq;
 using UnityEngine;
 
 public class UIChart : MonoBehaviour
@@ -62,6 +63,5 @@ public class UIChart : MonoBehaviour
     // 3¹ø ±â´É
     public void ChartNews()
     {
-
     }
 }

@@ -17,6 +17,7 @@ public class UIShop : MonoBehaviour
     {
         StartCoroutine(IEUIShopStart());
     }
+
     private IEnumerator IEUIShopStart()
     {
         // product의 아이템 수만큼 게임 오브젝트 생성
@@ -77,6 +78,15 @@ public class UIShop : MonoBehaviour
                 item.Value.gameObject.SetActive(false);
             }
         }
+    }
+
+    public bool CloseBuyPopup()
+    {
+        if (uiShopBuy == null || !uiShopBuy.gameObject.activeSelf)
+            return false;
+
+        uiShopBuy.Exit();
+        return true;
     }
 
     public void OnClickShopButton(int itemID)

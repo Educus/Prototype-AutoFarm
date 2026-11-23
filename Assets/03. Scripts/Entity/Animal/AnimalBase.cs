@@ -54,6 +54,12 @@ public abstract class AnimalBase : MonoBehaviour, IRightInteractable, IClickPrio
 
         DataManager.Instance.AnimalManager.Register(this);
 
+        if (TimeManager.Instance == null)
+            return;
+
+        TimeManager.Instance.onMinuteEvent -= ReproducingItem;
+        TimeManager.Instance.onDayEvent -= ResetDailyProduction;
+
         TimeManager.Instance.onMinuteEvent += ReproducingItem;
         TimeManager.Instance.onDayEvent += ResetDailyProduction;
     }

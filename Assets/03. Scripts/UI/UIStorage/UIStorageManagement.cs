@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 
 public class UIStorageManagement : MonoBehaviour
@@ -13,12 +14,21 @@ public class UIStorageManagement : MonoBehaviour
     public string targetBuilding { get; private set; }
     public GameObject RocketStorage => rocketStorage;
 
+    public bool IsAnyOpen =>
+        rocketStorage.activeSelf ||
+        htdroStorage.activeSelf ||
+        buildingStorage.activeSelf ||
+        npcStorage.activeSelf;
+
     private void Awake()
     {
-        if (Instance == null) 
-            Instance = this;
-        else 
+        if (Instance != null)
+        {
             Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
     }
 
     #region Open
@@ -27,6 +37,8 @@ public class UIStorageManagement : MonoBehaviour
     {
         if (!OpenPopup())
             return;
+
+        SoundManager.Play(SFXName.PopUpOpen);
 
         rocketStorage.SetActive(true);
         buildingStorage.SetActive(true);
@@ -39,6 +51,8 @@ public class UIStorageManagement : MonoBehaviour
         if (!OpenPopup())
             return;
 
+        SoundManager.Play(SFXName.PopUpOpen);
+
         htdroStorage.SetActive(true);
     }
 
@@ -47,17 +61,18 @@ public class UIStorageManagement : MonoBehaviour
         if (!OpenPopup())
             return;
 
+        SoundManager.Play(SFXName.PopUpOpen);
+
         rocketStorage.SetActive(false);
         buildingStorage.SetActive(true);
-
-        //UIManager 스택에 추가
-        UIManager.Instance.InputPopUpOpen(buildingStorage);
     }
 
     public void NPCInv()
     {
         if (!OpenPopup())
             return;
+
+        SoundManager.Play(SFXName.PopUpOpen);
 
         npcStorage.SetActive(true);
     }
@@ -79,6 +94,8 @@ public class UIStorageManagement : MonoBehaviour
 
         targetBuilding = null;
         GameManager.Instance.ExitMode();
+
+        SoundManager.Play(SFXName.PopUpClose);
     }
 
     public void CloseRocketInv()
@@ -91,6 +108,8 @@ public class UIStorageManagement : MonoBehaviour
 
         targetBuilding = null;
         GameManager.Instance.ExitMode();
+
+        SoundManager.Play(SFXName.PopUpClose);
     }
 
     public void CloseHtdroInv()
@@ -100,6 +119,8 @@ public class UIStorageManagement : MonoBehaviour
         CheckPopupState();
 
         GameManager.Instance.ExitMode();
+
+        SoundManager.Play(SFXName.PopUpClose);
     }
 
     public void CloseNPCInv()
@@ -109,6 +130,8 @@ public class UIStorageManagement : MonoBehaviour
         CheckPopupState();
 
         GameManager.Instance.ExitMode();
+
+        SoundManager.Play(SFXName.PopUpClose);
     }
 
     #endregion
@@ -134,7 +157,6 @@ public class UIStorageManagement : MonoBehaviour
             buildingStorage.activeSelf ||
             npcStorage.activeSelf;
     }
-
     #endregion
 
     public void TargetBuilding(string buildingName)

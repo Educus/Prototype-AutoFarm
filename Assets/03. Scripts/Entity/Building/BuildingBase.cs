@@ -1,3 +1,4 @@
+using System.Xml.Linq;
 using UnityEngine;
 
 public abstract class BuildingBase : MonoBehaviour, ILeftInteractable, IRightInteractable
@@ -262,6 +263,8 @@ public abstract class BuildingBase : MonoBehaviour, ILeftInteractable, IRightInt
 
         selectedNPC.job.buildingIDs.Add(id);
         selectedNPC.JobChanged();
+
+        SoundManager.Play(SFXName.NpcWorkSpace);
 
         GameManager.Instance.RefreshHighlights();
     }

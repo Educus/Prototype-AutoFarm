@@ -25,6 +25,8 @@ public class UINPCInterface : MonoBehaviour
         panel.SetActive(true);
         npcBackGround.SetActive(true);
         staff.SetActive(true);
+
+        SoundManager.Play(SFXName.ChartAnnounce);
     }
 
     public void ShowAnchor()
@@ -34,6 +36,8 @@ public class UINPCInterface : MonoBehaviour
         panel.SetActive(true);
         npcBackGround.SetActive(true);
         anchor.SetActive(true);
+
+        SoundManager.Play(SFXName.ChartAnnounce);
     }
 
     public void ShowPlayer()
@@ -43,6 +47,8 @@ public class UINPCInterface : MonoBehaviour
         panel.SetActive(true);
         npcBackGround.SetActive(true);
         player.SetActive(true);
+
+        SoundManager.Play(SFXName.ChartAnnounce);
     }
 
     public void ShowReceipt()
@@ -51,6 +57,8 @@ public class UINPCInterface : MonoBehaviour
 
         panel.SetActive(true);
         receipt.SetActive(true);
+
+        SoundManager.Play(SFXName.ChartAnnounce);
     }
 
     public void ShowText(string text)

@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    //싱글톤 
     public static UIManager Instance;
 
     //캔버스 UI
-    #region[Screen Space]
+    #region Screen Space
     [SerializeField] private GameObject Canvas;                     // 캔버스 UI 관리
 
     [SerializeField] private GameObject ButtonManager;              // 버튼 UI 관리
@@ -17,15 +17,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject BuildingMode;               // 건설 모드 UI 관리
     [SerializeField] private GameObject UIManagement;               // UI 관리
     [SerializeField] private GameObject UIStorageManagement;        // 창고 UI 관리
-    [SerializeField] private GameObject NPCInterface;               // NPC UI 관리
     [SerializeField] private GameObject TextUIManagement;           // 텍스트 UI 관리
     [SerializeField] private GameObject Setting;                    // 설정 UI 관리
-    #endregion
-
-    //오브젝트 UI
-    #region[World Space]
-    [SerializeField] private GameObject Player;                      // 플레이어 UI 관리
-    [SerializeField] private GameObject NPC;                         // NPC UI 관리
     #endregion
 
     //Manager 오브젝트
@@ -40,15 +33,18 @@ public class UIManager : MonoBehaviour
     private UIBuildMod buildMod;
     private UIManagement uiManagement;
     private UIStorageManagement storageManagement;
-
-    //UI 스택
-    private Stack<GameObject> PopUpStack = new Stack<GameObject>();
+    private UISettings settingsUI;
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-        
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+
         //초기화
         init();
     }
@@ -65,6 +61,7 @@ public class UIManager : MonoBehaviour
         guiManagement = GUIManagement.GetComponent<GUIManagement>();
         uiManagement = UIManagement.GetComponent<UIManagement>();   
         storageManagement = UIStorageManagement.GetComponent<UIStorageManagement>();
+        settingsUI = Setting.GetComponent<UISettings>();
 
         //버튼 이벤트 초기화
         buttonManager.init();
@@ -78,51 +75,67 @@ public class UIManager : MonoBehaviour
 
     public void PlaySFX(string filename)
     {
-        soundManager.PlaySFX(filename);
+        if (soundManager != null)
+            soundManager.PlaySFX(filename);
+    }
+
+    // 설정창 열기/닫기. 다른 창이 열려 있으면 열지 않음
+    public void OpenSettings()
+    {
+        if (settingsUI == null || GameManager.Instance.isTitle)
+            return;
+
+        if (settingsUI.IsOpen)
+        {
+            settingsUI.Close();
+            return;
+        }
+
+        if (!GameManager.Instance.EnterMode(GameMode.Popup))
+            return;
+
+        settingsUI.gameObject.SetActive(true);
+        PlaySFX(SFXName.PopUpOpen);
     }
 
     // UIManagement에서 관리 팝업을 열 때 스택에 추가하는 함수
     public void OpenPopUpPage()
     {
-        GameObject popup;
-        popup = uiManagement.OpenManagement();
+        GameObject popup = uiManagement.OpenManagement();
+
         if (popup != null)
         {
             popup.SetActive(true);
-            InputPopUpOpen(popup);
+            PlaySFX(SFXName.PopUpOpen);
         }
     }
 
     public void ExitPopUpPage()
     {
-        GameObject popup;
-        popup = PopUpStack.Pop();
-        if (popup != null)
-        {
-            if(popup.transform.parent == UIManagement.transform)
-            {
-                popup.SetActive(false);
-                uiManagement.ExitButton();
-            }
+        CloseCurrentPopup();
+    }
 
-            else if (popup.transform.parent == UIStorageManagement.transform)
-            {
-                storageManagement.CloseRocketInv();
-            }
+    public bool CloseCurrentPopup()
+    {
+        if (settingsUI != null && settingsUI.IsOpen)
+            return settingsUI.CloseTop();
+
+        if (uiManagement.CloseTop())
+            return true;
+
+        if (storageManagement.IsAnyOpen)
+        {
+            storageManagement.CloseStorageManagement();
+            return true;
         }
+
+        return false;
     }
 
     // UIManagement에서 관리 팝업의 칩을 클릭해 변경하는 버튼 함수
     public void ChangeChip(string name)
     {
         uiManagement.ChangeChip(name);
-    }
-
-    // UIManager에서 관리 이외의 팝업을 열 때 스택에 추가하는 함수
-    // UIManager에서도 일관성을 위해 사용 중
-    public void InputPopUpOpen(GameObject popup)
-    {
-        PopUpStack.Push(popup);
     }
 
     // 건물 설치 시에 어떤 건물을 선택했는지 ID로 체크

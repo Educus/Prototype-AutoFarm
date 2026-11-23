@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Inventory))]
@@ -191,25 +192,10 @@ public class Rocket : BuildingBase
             return false;
         }
 
-        // 구매 대금은 출발 버튼을 누를 때 차감 (돈이 부족하면 출발하지 않음)
-        // 상태를 바꾸기 전에 실패 조건을 모두 확인: 판매 물품을 비우기 전에 먼저 검사
-        PlayerDataManager currency = DataManager.Instance.PlayerDataManager;
-        int cost = shop.GetCartTotal();
-
-        if (cost > 0 && currency.Get() < cost)
-        {
-            reason = "돈이 부족합니다.";
-            return false;
-        }
-
         Debug.Log("로켓 출발");
 
         // 판매 처리 (정산은 돌아왔을 때)
         SellItems();
-
-        // 구매 대금 차감 (위에서 확인했으므로 성공함. 판매 대금은 로켓의 money에 쌓이므로 영향 없음)
-        if (cost > 0)
-            currency.Spend(cost);
 
         // 구매 목록 확정: 장바구니를 복사가 아니라 이동 (이미 결제된 주문이라 저장 대상)
         reservedBuyItems = shop.TakeCart();
@@ -276,6 +262,7 @@ public class Rocket : BuildingBase
         if (money > 0)
         {
             DataManager.Instance.PlayerDataManager.AddMoney(money);
+            SoundManager.Play(SFXName.MoneySettlement);
 
             money = 0;
         }

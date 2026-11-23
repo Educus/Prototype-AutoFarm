@@ -1,5 +1,6 @@
 using NUnit.Framework.Internal.Execution;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -711,7 +712,8 @@ public class UINPCStorage : MonoBehaviour
         target.job.productItemID = index;
         target.JobChanged();
         RefreshWorkItem();
-        Debug.Log($"Work Menu Slot Click : {index}");
+
+        SoundManager.Play(SFXName.NpcWorkItem);
     }
     #endregion
 }

@@ -1,11 +1,17 @@
 using System.Collections.Generic;
+using System.Reflection;
+using System.Xml.Linq;
 using UnityEngine;
 
+[DefaultExecutionOrder(-130)]
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
 
     [SerializeField] private string defaultBgmName = "BGM_Main_Dawn_Loop";
+
+    // 같은 소리 동시 호출 시 무시
+    private const float MinPlayInterval = 0.05f;
 
     private Dictionary<string, AudioClip> BGM_Clips;
     private Dictionary<string, AudioClip> SFX_Clips;
@@ -17,13 +23,21 @@ public class SoundManager : MonoBehaviour
     private AudioSource BGM;
     private AudioSource SFX;
 
+    private readonly HashSet<string> warnedNames = new HashSet<string>();
+    private readonly Dictionary<string, float> lastPlayTime = new Dictionary<string, float>();
+
     private float BgmFinal => masterVilume * bgmVolume;
     private float SfxFinal => masterVilume * sfxVolume;
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else { Destroy(gameObject); return; }
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
 
         init();
     }
@@ -31,7 +45,6 @@ public class SoundManager : MonoBehaviour
     private void Update()
     {
         // 게임이 플레이 중이 아닐 때는 BGM 재생하지 않음
-        // 시간대에 따라 BGM 변경되게 업데이트 필요
         if (GameManager.Instance == null || !GameManager.Instance.isPlay) 
             return;
 
@@ -42,12 +55,20 @@ public class SoundManager : MonoBehaviour
             PlayBGM(clip, BGM);
     }
 
-    //awake 초기화 오류로 수정 필요.
     public void init()
     {
         Load_BGM();
         Load_SFX();
         ApplyVolumes();
+
+        ValidateSfxNames();
+    }
+
+    // Instance 없이 호출 가능
+    public static void Play(string name)
+    {
+        if (Instance != null)
+            Instance.PlaySFX(name);
     }
 
     #region Volume
@@ -71,6 +92,7 @@ public class SoundManager : MonoBehaviour
     }
     #endregion
 
+    #region Load
     private void Load_BGM()
     {
         AudioClip[] Clips = Resources.LoadAll<AudioClip>("Sound/BGM");
@@ -102,6 +124,32 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    private void ValidateSfxNames()
+    {
+        var registered = new HashSet<string>();
+
+        FieldInfo[] fields = typeof(SFXName).GetFields(BindingFlags.Public | BindingFlags.Static);
+
+        foreach (FieldInfo field in fields)
+        {
+            if (!field.IsLiteral || field.FieldType != typeof(string))
+                continue;
+
+            string value = (string)field.GetRawConstantValue();
+            registered.Add(value);
+
+            if (!SFX_Clips.ContainsKey(value))
+                Debug.LogWarning($"[SoundManager] SfxName.{field.Name} = \"{value}\" 에 해당하는 SFX 파일이 없습니다. (이름 오타 또는 파일 누락)");
+        }
+
+        foreach (string clipName in SFX_Clips.Keys)
+        {
+            if (!registered.Contains(clipName))
+                Debug.LogWarning($"[SoundManager] SFX 파일 \"{clipName}\" 이(가) SfxName 에 등록되어 있지 않습니다.");
+        }
+    }
+    #endregion
+
     //BGM 재생 함수
     //파일명 입력
     public void PlayBGM(AudioClip bgm, AudioSource source)
@@ -125,6 +173,9 @@ public class SoundManager : MonoBehaviour
     //특정 오브젝트에서 재생할 경우
     public void PlaySFX(string name, AudioSource source, bool isloop)
     {
+        if (source == null)
+            return;
+
         if (!SFX_Clips.TryGetValue(name, out AudioClip clip))
             return;
 
@@ -138,6 +189,9 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
+            if (MinPlaying(name))
+                return;
+
             source.PlayOneShot(clip, SfxFinal);
         }
     }
@@ -145,11 +199,9 @@ public class SoundManager : MonoBehaviour
     //Manager에서 직접 재생할 경우
     public void PlaySFX(string name)
     {
-        if (SFX_Clips == null)
-        {
-            Debug.Log("it is not init");
+        if (SFX == null || SFX_Clips == null)
             return;
-        }
+
         if (SFX_Clips.TryGetValue(name, out AudioClip clip))
         {
             if(clip == null)
@@ -157,8 +209,12 @@ public class SoundManager : MonoBehaviour
                 Debug.Log("it is not init");
                 return;
             }
-            SFX.PlayOneShot(clip);
         }
+
+        if (MinPlaying(name))
+            return;
+
+        SFX.PlayOneShot(clip);
     }
 
 
@@ -166,5 +222,16 @@ public class SoundManager : MonoBehaviour
     public void StopSFX(AudioSource source)
     {
         source.Stop();
+    }
+
+    private bool MinPlaying(string name)
+    {
+        float now = Time.unscaledTime;
+
+        if (lastPlayTime.TryGetValue(name, out float last) && now - last < MinPlayInterval)
+            return true;
+
+        lastPlayTime[name] = now;
+        return false;
     }
 }

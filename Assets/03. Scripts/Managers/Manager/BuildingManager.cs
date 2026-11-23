@@ -390,6 +390,8 @@ public class BuildingManager : MonoBehaviour
         BuildingBase building =
             obj.GetComponent<BuildingBase>();
 
+        building.itemID = itemID;
+
         // √ ±‚»≠
         building.Initialize();
 

@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
         if (moveCoroutine != null)
             StopCoroutine(moveCoroutine);
 
-        soundManager.PlaySFX("SFX_GUI_Button", SFX, true);
+        soundManager.PlaySFX(SFXName.Button, SFX, true);
         moveCoroutine = StartCoroutine(MoveAlongPath(path, onComplete));
     }
 

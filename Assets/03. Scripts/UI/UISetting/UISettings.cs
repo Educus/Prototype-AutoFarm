@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,6 +44,8 @@ public class UISettings : MonoBehaviour
     };
 
     private static readonly string[] ModeNames = { "ExclusiveFullScreen", "FullScreenWindow", "Windowed" };
+
+    public bool IsOpen => gameObject.activeSelf;
 
     private readonly List<Vector2Int> resolutions = new List<Vector2Int>();
     private bool refreshing;
@@ -256,9 +259,31 @@ public class UISettings : MonoBehaviour
         GameManager.Instance.ReturnToTitle();
     }
 
+    public bool CloseTop()
+    {
+        if (returnConfirmPanel.activeSelf)
+        {
+            returnConfirmPanel.SetActive(false);
+            return true;
+        }
+
+        Close();
+        return true;
+    }
+
     public void Close()
     {
         SettingManager.Instance.Save();
         gameObject.SetActive(false);
+
+        GameManager gm = GameManager.Instance;
+
+        if (gm != null && !gm.isTitle)
+        {
+            if (gm.IsMode(GameMode.Popup))
+                gm.ExitMode();
+
+            SoundManager.Play(SFXName.PopUpClose);
+        }
     }
 }

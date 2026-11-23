@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Xml.Linq;
 using UnityEngine;
 
 public class UIManagement : MonoBehaviour
@@ -82,6 +83,23 @@ public class UIManagement : MonoBehaviour
     #endregion
 
     #region Open / Close
+    public bool IsOpen => management != null && management.activeSelf;
+
+    public bool CloseTop()
+    {
+        if (!IsOpen)
+            return false;
+
+        if (uiShop.CloseBuyPopup())
+        {
+            SoundManager.Play(SFXName.PopUpClose);
+            return true;
+        }
+
+        ExitButton();
+        return true;
+    }
+
     public GameObject OpenManagement()
     {
         // 이미 열려있으면 닫기
@@ -106,10 +124,19 @@ public class UIManagement : MonoBehaviour
 
     public void ExitButton()
     {
-        GameManager.Instance.ExitMode();
-        ChangeIcon(0);
+        if (!IsOpen)
+            return;
 
+        GameManager.Instance.ExitMode();
+
+        uiShop.CloseBuyPopup();
+        management.SetActive(false);
         uiNPCInterface.OffUI();
+
+        // 차트 첫 화면으로
+        ChangeChip((int)Chip.Chart);
+
+        SoundManager.Play(SFXName.PopUpClose);
     }
     #endregion
 
@@ -186,15 +213,21 @@ public class UIManagement : MonoBehaviour
     #region Icon
     public void ChangeIcon(int value)
     {
+        if (SetIcon(value))
+            SoundManager.Play(SFXName.PopUpMenu);
+    }
+
+    private bool SetIcon(int value)
+    {
         if (current == Chip.None)
-            return;
+            return false;
 
         if (value < 0 || value >= icons.Length)
-            return;
+            return false;
 
         // 사용 안 함: chart와 NPC 관리에는 네 번째 아이콘이 없음
         if (value == 3 && (current == Chip.Chart || current == Chip.NPCManagement))
-            return;
+            return false;
 
         // 메뉴 페이지: chart의 즐겨찾기(1)와 shop, robot은 첫 번째 페이지를 그대로 사용
         bool usesFirstPage = (current == Chip.Chart && value == 1) || current != Chip.Chart;
@@ -204,6 +237,8 @@ public class UIManagement : MonoBehaviour
         ApplyIconToCurrentChip(value);
 
         choiceB.transform.position = icons[value][0].transform.position;
+
+        return true;
     }
 
     // 현재 칩의 메뉴에서 해당 페이지(자식)만 켬

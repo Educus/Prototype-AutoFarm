@@ -8,7 +8,6 @@ public class InputManager : MonoBehaviour
     // 우클릭: 플레이어 이동 + 도착 후 대상(IRightInteractable)과 상호작용
 
     [SerializeField] private UIBuildMod buildModeUI;
-    [SerializeField] private UIManagement uiManagement;
     [SerializeField] private UIInvenMod invenMod;
 
     private const float InteractRange = 1f;
@@ -24,6 +23,11 @@ public class InputManager : MonoBehaviour
 
     private int layerMask;
     private ContactFilter2D clickFilter;
+
+    private enum MoveAxis { None, Horizontal, Vertical }
+    private MoveAxis priorityAxis = MoveAxis.None;
+    private bool wasHorizontal;
+    private bool wasVertical;
 
     private void Start()
     {
@@ -65,8 +69,7 @@ public class InputManager : MonoBehaviour
 
             if (gm.IsMode(GameMode.None))
             {
-                // TODO
-                Debug.Log("설정 열기");
+                UIManager.Instance.OpenSettings();
             }
             else
             {
@@ -108,37 +111,75 @@ public class InputManager : MonoBehaviour
             if (key.GetKeyHeld("PC_MoveRight")) dir.x += 1;
         }
 
+        dir = RestrictToOneAxis(dir);
+
         // 입력 없어도 매번 전달(키 입력 없을 때 정지 가능)
         playerController.SetKeyboardInput(dir);
+    }
+
+    private Vector2 RestrictToOneAxis(Vector2 dir)
+    {
+        bool horizontal = dir.x != 0f;
+        bool vertical = dir.y != 0f;
+
+        bool newHorizontal = horizontal && !wasHorizontal;
+        bool newVertical = vertical && !wasVertical;
+
+        // 새로 눌린 축이 우선. 같이 눌렸으면 기존 우선 축을 유지
+        if (newHorizontal && !newVertical)
+            priorityAxis = MoveAxis.Horizontal;
+        else if (newVertical && !newHorizontal)
+            priorityAxis = MoveAxis.Vertical;
+        else if (priorityAxis == MoveAxis.None)
+            priorityAxis = MoveAxis.Vertical;
+
+        wasHorizontal = horizontal;
+        wasVertical = vertical;
+
+        if (!horizontal && !vertical)
+        {
+            priorityAxis = MoveAxis.None;
+            return dir;
+        }
+
+        if (horizontal && vertical)
+        {
+            if (priorityAxis == MoveAxis.Horizontal)
+                dir.y = 0f;
+            else
+                dir.x = 0f;
+        }
+
+        return dir;
     }
 
     public bool CloseCurrentMode()
     {
         GameManager gm = GameManager.Instance;
 
-        if (gm.IsMode(GameMode.Build))
-        {
-            DataManager.Instance.BuildingManager.ExitBuildMode();
-            buildModeUI.BuildMode(false);
-            return true;
-        }
+        switch (gm.CurrentMode)
+        { 
+            case GameMode.Build:
+                DataManager.Instance.BuildingManager.ExitBuildMode();
+                buildModeUI.BuildMode(false);
+                return true;
 
-        if (gm.IsMode(GameMode.Popup))
-        {
-            uiManagement.ExitButton();
-            UIStorageManagement.Instance.CloseStorageManagement();
-            return true;
-        }
+            case GameMode.Popup:
+                if (UIManager.Instance.CloseCurrentPopup())
+                    return true;
 
-        if (gm.IsMode(GameMode.Work))
-        {
-            Debug.Log("작업 모드 종료");
-            gm.ExitWorkMode();
-            UIStorageManagement.Instance.NPCInv();
-            return true;
-        }
+                Debug.LogWarning("[InputManager]:PopUp모드인데 열린 창이 없음. / 모드 해제");
+                gm.ExitMode();
+                return true;
 
-        return false;
+            case GameMode.Work:
+                gm.ExitWorkMode();
+                UIStorageManagement.Instance.NPCInv();
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     // 모든 모드/UI를 닫음 (불러오기 맨 앞에서 호출)

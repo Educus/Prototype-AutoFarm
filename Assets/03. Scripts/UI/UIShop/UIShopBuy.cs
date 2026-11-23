@@ -1,3 +1,4 @@
+using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,8 +48,7 @@ public class UIShopBuy : MonoBehaviour
         itemPrice.text = currentPrice.ToString();
 
         // 현재 보유 골드
-        var shop = DataManager.Instance.ShopManager;
-        int gold = DataManager.Instance.PlayerDataManager.Get() - shop.GetCartTotal();
+        int gold = DataManager.Instance.PlayerDataManager.Get();
 
         // 최대 구매 가능 수량
         if (currentPrice <= 0)
@@ -143,12 +143,12 @@ public class UIShopBuy : MonoBehaviour
         }
 
         int itemID = currentItem.ID;
-        int totalPrice = currentPrice * currentNum;
 
         // 개발자용 아이템 예외 처리
         if (itemID == 5011) 
         {
             DataManager.Instance.PlayerDataManager.AddMoney(100000 * currentNum); // 골드 10만 추가
+            SoundManager.Play(SFXName.ShopPurchase);
             Exit();
             return;
         }
@@ -162,14 +162,13 @@ public class UIShopBuy : MonoBehaviour
             return;
         }
 
-        if (DataManager.Instance.PlayerDataManager.Get() - shop.GetCartTotal() < totalPrice)
+        if (!shop.TryAddToCart(itemID, currentNum))
         {
             Debug.Log("골드가 부족합니다.");
             return;
         }
 
-        // 영수증에 추가. 골드는 여기서 차감하지 않음
-        shop.TryAddToCart(itemID, currentNum);
+        SoundManager.Play(SFXName.ShopPurchase);
 
         Exit();
     }

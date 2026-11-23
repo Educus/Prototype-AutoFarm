@@ -29,6 +29,10 @@ public class Inventory : MonoBehaviour
 
     private void OnEnable()
     {
+        if (TimeManager.Instance == null)
+            return;
+
+        TimeManager.Instance.onDayEvent -= OnDayPassed;
         TimeManager.Instance.onDayEvent += OnDayPassed;
     }
     private void OnDisable()

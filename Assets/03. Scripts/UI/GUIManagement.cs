@@ -17,19 +17,24 @@ public class GUIManagement : MonoBehaviour
     // 골드
     [SerializeField] private TMP_Text goldText;
 
-    private void Awake()
-    {
-        TimeManager.Instance.onMinuteEvent += SetTime;
-    }
-    private void Start()
-    {
-        SetTime(TimeManager.Instance.minute);
-    }
     private void Update()
     {
         SetNPC();
         SetStorage();
         SetGold();
+    }
+
+    private void OnEnable()
+    {
+        if (TimeManager.Instance == null)
+            return;
+
+        // 중복 구독 방지
+        TimeManager.Instance.onMinuteEvent -= SetTime;
+        TimeManager.Instance.onMinuteEvent += SetTime;
+
+        // 꺼져 있던 동안 흐른 시간을 바로 반영
+        SetTime(TimeManager.Instance.minute);
     }
 
     private void OnDisable()

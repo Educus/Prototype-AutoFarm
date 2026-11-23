@@ -41,6 +41,11 @@ public class ShopManager : MonoBehaviour
         if (amount <= 0 || !CanAddToCart(itemID, amount))
             return false;
 
+        int cost = GetBuyPrice(itemID) * amount;
+
+        if (cost > 0 && !DataManager.Instance.PlayerDataManager.Spend(cost))
+            return false;
+
         cart.TryGetValue(itemID, out int current);
         SetCartItem(itemID, current + amount);
 
@@ -58,6 +63,14 @@ public class ShopManager : MonoBehaviour
     // 영수증의 X 버튼: 해당 항목 구매 취소
     public void RemoveCartItem(int itemID)
     {
+        if (!cart.TryGetValue(itemID, out int count))
+            return;
+
+        int refund = GetBuyPrice(itemID) * count;
+
+        if (refund > 0)
+            DataManager.Instance.PlayerDataManager.AddMoney(refund);
+
         SetCartItem(itemID, 0);
     }
 
@@ -106,7 +119,7 @@ public class ShopManager : MonoBehaviour
         return OriginDataManager.Instance.itemsData[itemID].BasicPrice;
     }
 
-    // 영수증 합계 (Rocket.TryLaunch가 출발할 때 차감하는 금액)
+    // 영수증 합계
     public int GetCartTotal()
     {
         int total = 0;

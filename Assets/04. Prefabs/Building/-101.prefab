@@ -153,14 +153,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rocket
   type: 3
-  itemID: -99
+  itemID: -101
   id: 
   data: {fileID: 11400000, guid: c82c27b382c816b408caeee7de7c31e6, type: 2}
   icon: {fileID: -683701767980353565, guid: abc7bda1133c3f4459c2ddb347aaecdb, type: 3}
   inventory: {fileID: 0}
-  cachedRenderer: {fileID: 0}
-  uiStorageManagement: {fileID: 0}
-  defaultSlotCount: 16
+  highlightRenderers: []
+  isDefaultBuilding: 0
 --- !u!114 &4548180455539467828
 MonoBehaviour:
   m_ObjectHideFlags: 0
