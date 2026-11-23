@@ -6,7 +6,7 @@ using UnityEngine;
 public class ShopManager : MonoBehaviour
 {
     // 영수증에 담을 수 있는 칸 수 (아이템 stack 기준)
-    public const int CartSlotLimit = 16;
+    public static int CartSlotLimit => OriginDataManager.Instance.Config.RocketSlotAmount;
 
     private readonly Dictionary<int, int> cart = new Dictionary<int, int>();
 

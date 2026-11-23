@@ -61,8 +61,8 @@ public class MarketManager : MonoBehaviour
     private TimeManager timeManager;
     private static OriginDataManager Origin => OriginDataManager.Instance;
 
-    // 시세 저장 기간(최소 한 달 28일 * 1년 12개월)
-    [SerializeField][Min(336)] private int closingPriceDays = 336;
+    // 시세 저장 기간 : ConfigDataTable.DaysPerYear
+    private static int closingPriceDays => OriginDataManager.Instance.Config.DaysPerYear;
     // 이벤트 진행 기간
     [SerializeField][Min(1)] private int eventDurationDays = 7;
     // 이벤트 목표가격 계산에 사용할 기간
@@ -77,8 +77,6 @@ public class MarketManager : MonoBehaviour
 
     // 하루에 시세가 변하는 횟수 (24시간 기준)
     private const int TicksPerDay = 24;
-    // 보관할 최소 일 수
-    private const int MinCandleDays = 336;
 
     private Dictionary<int, MarketItemState> marketStates = new Dictionary<int, MarketItemState>();
     public Dictionary<int, ProductClosing> productClosingData { get; } = new Dictionary<int, ProductClosing>();
@@ -211,7 +209,7 @@ public class MarketManager : MonoBehaviour
     // 매일 00시 어제 종가를 시가로 주식 그래프 시작
     public void StartNewDay(int day)
     {
-        int maxDays = Mathf.Max(MinCandleDays, closingPriceDays);
+        int maxDays = closingPriceDays;
 
         foreach (var closing in productClosingData.Values)
         {

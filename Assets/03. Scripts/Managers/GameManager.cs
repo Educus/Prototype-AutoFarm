@@ -71,10 +71,13 @@ public class GameManager : MonoBehaviour
     #region Unity
     private void Awake()
     {
-        if (Instance == null) 
-            Instance = this;
-        else 
+        if (Instance != null)
+        {
             Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
 
         ApplyTimeScale();
     }

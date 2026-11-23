@@ -12,6 +12,8 @@ public class OriginDataManager : MonoBehaviour
     [RequiredRef, SerializeField] private EventDataManager eventDataManager;
     [RequiredRef, SerializeField] private KeyCodeDataManager keyCodeDataManager;
     [RequiredRef, SerializeField] private WarningMessageManager warningMessageManager;
+    [RequiredRef, SerializeField] private ConfigDataManager configDataManager;
+    [RequiredRef, SerializeField] private AchievementDataManager achievementDataManager;
      
     [RequiredRef, SerializeField] private Sprite[] itemImage;
     [RequiredRef, SerializeField] private Sprite[] cropsImage;
@@ -24,6 +26,8 @@ public class OriginDataManager : MonoBehaviour
     public Dictionary<int, ObjectData> objectsData => objectDataManager.objectData;
     public KeyCodeDataManager KeyCodes => keyCodeDataManager;
     public WarningMessageManager Warnings => warningMessageManager;
+    public ConfigData Config => configDataManager.Data;
+    public Dictionary<int, AchievementData> achievementData => achievementDataManager.achievementData;
 
     // 오류 문구 GetMessage(WarningID.xxx, value)
     public string GetMessage(int warningId, params object[] args) =>
@@ -37,7 +41,7 @@ public class OriginDataManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null && Instance == this)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;

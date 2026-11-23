@@ -34,6 +34,9 @@ public class GUIManagement : MonoBehaviour
 
     private void OnDisable()
     {
+        if (TimeManager.Instance == null)
+            return;
+
         TimeManager.Instance.onMinuteEvent -= SetTime;
     }
 

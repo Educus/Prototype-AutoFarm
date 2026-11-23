@@ -133,7 +133,7 @@ public class UIKeyBindingRow : MonoBehaviour
         string hex = ColorUtility.ToHtmlStringRGB(errorColor);
         keyText.text = $"<color=#{hex}>{KeyNames.Format(key)}</color>";
 
-        restoreRoutine = StartCoroutine(ReleaseCaptureNextFrame());
+        restoreRoutine = StartCoroutine(RestoreLater());
     }
 
     private void EndCapture()

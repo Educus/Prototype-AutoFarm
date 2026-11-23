@@ -8,10 +8,12 @@ public class TimeManager : MonoBehaviour
     public static TimeManager Instance;
 
     [Tooltip("현실 시간 기준 하루 길이(초)")]
-    private float realSecondsPerDay = 300f; // 테스트 5분
+    // ConfigDataTable : RealTimePerDay
+    private float realSecondsPerDay = 300f; // 테스트 5분, = 300f; 제거 및 Awake 주석 해제
 
     [Tooltip("표시 시간 단위")]
-    public int miniteStep = 10; // 10분 단위로 표시
+    // ConfigDataTable : UITimeStepMinutes
+    public int minuteStep { get; private set; }
 
     private float timer;
 
@@ -82,8 +84,18 @@ public class TimeManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+
+        ConfigData config = OriginDataManager.Instance.Config;
+
+        // realSecondsPerDay = config.RealTimePerDay;
+        minuteStep = Mathf.Max(1, config.UITimeStepMinutes);
     }
 
     void Update()
@@ -130,7 +142,6 @@ public class TimeManager : MonoBehaviour
     #endregion
 
     #region Time Flow
-    public const int minuteStep = 10;
     void AddMinute(int amount = 1)
     {
         while (amount-- > 0)
@@ -143,7 +154,7 @@ public class TimeManager : MonoBehaviour
                 AddHour();
             }
 
-            if (minute % miniteStep == 0)
+            if (minute % minuteStep == 0)
             {
                 onMinuteEvent?.Invoke(minuteStep);
                 CheckSchedules();
@@ -269,7 +280,7 @@ public class TimeManager : MonoBehaviour
     {
         if (minutes % minuteStep != 0)
         {
-            Debug.LogError("분은 10분 단위만 사용할 수 있습니다.");
+            Debug.LogError($"분은 {minuteStep}분 단위만 사용할 수 있습니다.");
         }
     }
 

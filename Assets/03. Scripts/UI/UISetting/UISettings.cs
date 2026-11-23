@@ -42,7 +42,7 @@ public class UISettings : MonoBehaviour
         FullScreenMode.Windowed
     };
 
-    private static readonly string[] ModeNames = { "FullScreenWindow", "ExclusiveFullScreen", "Windowed" };
+    private static readonly string[] ModeNames = { "ExclusiveFullScreen", "FullScreenWindow", "Windowed" };
 
     private readonly List<Vector2Int> resolutions = new List<Vector2Int>();
     private bool refreshing;
@@ -60,10 +60,9 @@ public class UISettings : MonoBehaviour
         uiScaleSlider.maxValue = SettingManager.MaxUIScale;
         uiScaleSlider.onValueChanged.AddListener(OnUIScaleChanged);
 
-        closeButton.onClick.AddListener(Close);
+        closeButton.onClick.AddListener(OnCloseButtonClicked);
         resetButton.onClick.AddListener(ResetToDefault);
 
-        closeButton.onClick.AddListener(OnReturnTitleClicked);
         returnYButton.onClick.AddListener(OnReturnTitleConfirmed);
         returnNButton.onClick.AddListener(() => returnConfirmPanel.SetActive(false));
     }
@@ -72,7 +71,7 @@ public class UISettings : MonoBehaviour
     {
         Refresh();
 
-        if (GameManager.Instance != null)
+        if (GameManager.Instance == null)
             return;
 
         string closingText = GameManager.Instance.isTitle ? "나가기" : "타이틀로";
@@ -124,19 +123,41 @@ public class UISettings : MonoBehaviour
         // 모니터가 지원하는 해상도 중 크기가 같은 것은 하나로 합침
         foreach (Resolution r in Screen.resolutions)
         {
+            if (!IsSixteenByNine(r.width, r.height))
+                continue;
+
             var size = new Vector2Int(r.width, r.height);
 
             if (!resolutions.Contains(size))
                 resolutions.Add(size);
         }
 
-        // 현재 값이 목록에 없으면 추가 (창 모드에서 임의 크기일 때)
-        var current = new Vector2Int(currentWidth, currentHeight);
-
-        if (!resolutions.Contains(current))
-            resolutions.Add(current);
+        // 지원 목록을 못 얻은 경우(에디터 등) 기본 16:9 목록
+        if (resolutions.Count == 0)
+        {
+            resolutions.Add(new Vector2Int(1280, 720));
+            resolutions.Add(new Vector2Int(1600, 900));
+            resolutions.Add(new Vector2Int(1920, 1080));
+        }
 
         resolutions.Sort((a, b) => a.x != b.x ? a.x.CompareTo(b.x) : a.y.CompareTo(b.y));
+
+        var current = new Vector2Int(currentWidth, currentHeight);
+
+        int currentIndex = resolutions.IndexOf(current);
+
+        if (currentIndex < 0)
+        {
+            int best = 0;
+
+            for (int i = 1; i < resolutions.Count; i++)
+            {
+                if (Mathf.Abs(resolutions[i].x - currentWidth) < Mathf.Abs(resolutions[best].x - currentWidth))
+                    best = i;
+            }
+
+            currentIndex = best;
+        }
 
         var options = new List<string>();
 
@@ -145,8 +166,13 @@ public class UISettings : MonoBehaviour
 
         resolutionDropdown.ClearOptions();
         resolutionDropdown.AddOptions(options);
-        resolutionDropdown.SetValueWithoutNotify(resolutions.IndexOf(current));
+        resolutionDropdown.SetValueWithoutNotify(currentIndex);
         resolutionDropdown.RefreshShownValue();
+    }
+
+    private static bool IsSixteenByNine(int width, int height)
+    {
+        return width * 9 == height * 16;
     }
 
     private void BuildModeOptions(int currentMode)
@@ -206,6 +232,14 @@ public class UISettings : MonoBehaviour
     {
         SettingManager.Instance.ResetToDefault();
         Refresh();
+    }
+
+    private void OnCloseButtonClicked()
+    {
+        if (GameManager.Instance != null && !GameManager.Instance.isTitle)
+            OnReturnTitleClicked();
+        else
+            Close();
     }
 
     private void OnReturnTitleClicked()

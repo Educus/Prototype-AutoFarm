@@ -7,15 +7,16 @@ using UnityEngine.UI;
 
 public class UIChartView : MonoBehaviour, IScrollHandler
 {
-    private OriginDataManager originDataManager;
-    private DataManager dataManager;
+    private OriginDataManager Origin => OriginDataManager.Instance;
+    private DataManager dataManager => DataManager.Instance;
+
     [SerializeField] private RectTransform chartArea;
 
     [Header("Candle")]
     [SerializeField] private UICandle candlePrefab;
 
     [FormerlySerializedAs("maxCandles")]
-    [SerializeField] private int visibleCandles = 28;   // 화면에 보이는 캔들 수
+    private int visibleCandles = 14;   // 화면에 보이는 캔들 수
 
     [SerializeField][Range(0.2f, 1f)] private float bodyWidthRatio = 0.6f;
     [SerializeField] private float wickWidth = 2f;
@@ -52,11 +53,6 @@ public class UIChartView : MonoBehaviour, IScrollHandler
     private bool subscribed;
 
     #region Unity
-    private void Awake()
-    {
-        originDataManager = OriginDataManager.Instance;
-        dataManager = DataManager.Instance;
-    }
     private void OnEnable()
     {
         Subscribe();
@@ -204,7 +200,7 @@ public class UIChartView : MonoBehaviour, IScrollHandler
         float center = (lowest + highest) * 0.5f;
 
         float basicPrice = 0f;
-        if (originDataManager.itemsData.TryGetValue(itemID, out ItemData itemData))
+        if (Origin.itemsData.TryGetValue(itemID, out ItemData itemData))
             basicPrice = itemData.BasicPrice;
 
         // 기본 가격을 모르면 현재 중심값을 기준으로 함
@@ -282,11 +278,11 @@ public class UIChartView : MonoBehaviour, IScrollHandler
 
         string arrow = diff > 0 ? "▲" : diff < 0 ? "▼" : "■";
 
-        string itemName = originDataManager.itemsData.TryGetValue(itemID, out ItemData itemData)
+        string itemName = Origin.itemsData.TryGetValue(itemID, out ItemData itemData)
             ? itemData.Name : itemID.ToString();
 
         // 아이템 이미지
-        itemImage.sprite = originDataManager.GetItemImage(itemID);
+        itemImage.sprite = Origin.GetItemImage(itemID);
 
         string upHex = ColorUtility.ToHtmlStringRGB(upColor);
         string downHex = ColorUtility.ToHtmlStringRGB(downColor);

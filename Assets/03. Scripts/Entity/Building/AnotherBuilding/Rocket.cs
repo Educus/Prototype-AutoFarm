@@ -4,13 +4,6 @@ using UnityEngine;
 [RequireComponent(typeof(Inventory))]
 public class Rocket : BuildingBase
 {
-    [Header("Rocket")]
-    [SerializeField] private int defaultSlotCount = 16;
-
-    [Header("Trip")]
-    [SerializeField] private int oneWayTripHours = 4;   // 판매 or 구매만
-    [SerializeField] private int bothTripHours = 6;     // 판매 구매 둘 다
-
     private ShopManager shop => DataManager.Instance.ShopManager;
 
     // 판매 금액 (출발 시 계산, 도착 시 지급)
@@ -31,6 +24,7 @@ public class Rocket : BuildingBase
 
     public bool IsAway => isAway;
     public int RemainingMinutes => remainingMinutes;
+    private OriginDataManager Origin => OriginDataManager.Instance;
 
     public override string GetDestroyBlockReason()
     {
@@ -88,7 +82,7 @@ public class Rocket : BuildingBase
         if (inventory.slots == null ||
             inventory.slots.Count == 0)
         {
-            inventory.Initialize(defaultSlotCount);
+            inventory.Initialize(Origin.Config.RocketSlotAmount);
         }
 
         // 인벤토리 등록
@@ -221,8 +215,9 @@ public class Rocket : BuildingBase
         reservedBuyItems = shop.TakeCart();
 
         // 둘 다 있으면 6시간, 하나만 있으면 4시간
-        int hours = (hasSellItems && hasBuyItems) ? bothTripHours : oneWayTripHours;
-        remainingMinutes = hours * 60;
+        int loads = (hasSellItems && hasBuyItems) ? 2 : 1;
+
+        remainingMinutes = Origin.Config.GetRocketTripMinutes(loads) * 60;
         isAway = true;
 
         // TODO: 이동 연출

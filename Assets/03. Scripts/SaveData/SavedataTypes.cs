@@ -68,6 +68,9 @@ public class SettingsData
     // UI 배율 (기본 1)
     public float uiScale = 1f;
 
+    // 언어 코드 (기본 KR 한국어)
+    public string language = "KR";
+
     // 바꾼 조작키 저장
     public List<KeyCodeSaveData> keyCodes = new List<KeyCodeSaveData>();
 }

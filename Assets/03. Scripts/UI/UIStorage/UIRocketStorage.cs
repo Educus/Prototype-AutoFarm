@@ -10,10 +10,12 @@ public class UIRocketStorage : MonoBehaviour
     [SerializeField] private TMP_Text slotCount;
     [SerializeField] private TMP_Text totalGold;
     [SerializeField] private Transform slotParent;
-
+    
     private List<UIInvenSlot> itemSlots = new();
     private Inventory rocketInv;
     private int sort = 0;
+
+    private int rocketSlotAmount = 0;
 
     private void Awake()
     {
@@ -54,6 +56,8 @@ public class UIRocketStorage : MonoBehaviour
                 .onClick
                 .AddListener(() => MoveItemButton(index));
         }
+
+        rocketSlotAmount = OriginDataManager.Instance.Config.RocketSlotAmount;
     }
 
     private void OnEnable()
@@ -88,7 +92,7 @@ public class UIRocketStorage : MonoBehaviour
                 gold += shop.GetSellPrice(slot.itemID) * slot.count;
         }
 
-        slotCount.text = $"{count}/16";
+        slotCount.text = $"{count}/{rocketSlotAmount}";
         totalGold.text = gold.ToString();
     }
     // 로켓에 적재된 아이템 표시
@@ -154,8 +158,7 @@ public class UIRocketStorage : MonoBehaviour
     // 준비 완료 버튼
     public void Ready()
     {
-        // 용도??
-        // 이후 수정
+        // TODO
     }
 
     // 정렬

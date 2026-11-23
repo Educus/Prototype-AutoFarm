@@ -15,7 +15,7 @@ public enum RebindResult
 public class PlayerDataManager : MonoBehaviour
 {
     #region 재화
-    public int money = 1000;
+    public int money;
 
     public Action<int> OnMoneyChanged;
 
@@ -278,10 +278,28 @@ public class PlayerDataManager : MonoBehaviour
     [SerializeField] private bool unlockAllSpeedsOnStart = true;
 
     // 일시정지, 1배율 기본 해금. 1.5배, 2배 등은 UnlockSpeed 로 해금 (오름차순 유지)
-    public static readonly float[] AllSpeeds =  { 1f, 1.5f, 2f };
+    public static List<float> AllSpeeds
+    {
+        get
+        {
+            var speeds = new List<float>();
+            ConfigData config = OriginDataManager.Instance.Config;
+
+            float step = Mathf.Max(0.01f, config.TimeScaleStep);
+
+            for (float s = 1f; s <= config.TimeScaleMax + 0.0001f; s+= step)
+            {
+                speeds.Add(Mathf.Round(s * 100f) / 100f);
+            }
+
+            return speeds;
+        }
+    }
 
     private void Awake()
     {
+        money = OriginDataManager.Instance.Config.StartingMoney;
+
         if (unlockAllSpeedsOnStart)
             UnlockAllSpeeds();
     }

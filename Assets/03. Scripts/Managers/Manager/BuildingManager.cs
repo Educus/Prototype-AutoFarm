@@ -142,12 +142,21 @@ public class BuildingManager : MonoBehaviour
                 created.isDefaultBuilding = true;
         }
 
+        OriginDataManager Origin = OriginDataManager.Instance;
+        ConfigData config = Origin.Config;
+        int seedID = Origin.GetItemIDNumber("PotatoSeed");
+        int potatoID = Origin.GetItemIDNumber("Potato");
+
         foreach (var building in buildings.Values)
         {
-            if (building.type == BuildingType.Storage)
-            {
-                building.inventory.AddItem(1021, 90, -1);
-            }
+            if (building.type != BuildingType.Storage)
+                continue;
+
+            if (seedID > 0 && config.StartingPotatoSeed > 0)
+                building.inventory.AddItem(seedID, config.StartingPotatoSeed, -1);
+
+            if (potatoID > 0 && config.StartingPotato > 0)
+                building.inventory.AddItem(potatoID, config.StartingPotato, -1);
         }
     }
 

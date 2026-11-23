@@ -13,6 +13,7 @@ public class SettingManager : MonoBehaviour
     public SettingsData Data { get; private set; } = new SettingsData();
 
     public event Action<float> OnUIScaleChanged;
+    public event Action<string> OnLanguageChanged;
 
     private PlayerDataManager keySource;
 
@@ -21,7 +22,7 @@ public class SettingManager : MonoBehaviour
     #region Unity
     private void Awake()
     {
-        if (Instance != null && Instance != this) 
+        if (Instance != null) 
         { 
             Destroy(gameObject);
             return;
@@ -103,6 +104,11 @@ public class SettingManager : MonoBehaviour
         Data.sfxVolume = Mathf.Clamp01(Data.sfxVolume);
         Data.uiScale = Mathf.Clamp(Data.uiScale, MinUIScale, MaxUIScale);
 
+        if (string.IsNullOrEmpty(Data.language))
+            Data.language = WarningMessageManager.DefaultLanguage;
+
+        Data.language = Data.language.ToUpperInvariant();
+
         if (Data.keyCodes == null)
             Data.keyCodes = new System.Collections.Generic.List<KeyCodeSaveData>();
     }
@@ -113,6 +119,7 @@ public class SettingManager : MonoBehaviour
     {
         ApplyVolume();
         ApplyScreen();
+        ApplyLanguage();
         OnUIScaleChanged?.Invoke(Data.uiScale);
     }
 
@@ -125,6 +132,14 @@ public class SettingManager : MonoBehaviour
     private void ApplyScreen()
     {
         Screen.SetResolution(Data.screenWidth, Data.screenHeight, (FullScreenMode)Data.screenMode);
+    }
+
+    private void ApplyLanguage()
+    {
+        if (OriginDataManager.Instance != null)
+            OriginDataManager.Instance.Warnings.SetLanguage(Data.language);
+
+        OnLanguageChanged?.Invoke(Data.language);
     }
     #endregion
 
@@ -154,16 +169,29 @@ public class SettingManager : MonoBehaviour
         OnUIScaleChanged?.Invoke(Data.uiScale);
     }
 
+    public void SetLanguage(string code)
+    {
+        if (string.IsNullOrEmpty(code))
+            return;
+
+        Data.language = code.ToUpperInvariant();
+
+        ApplyLanguage();
+        Save();
+    }
+
     public void ResetToDefault()
     {
         var keep = Data.keyCodes;
+        string keepLanguage = Data.language;
 
         Data = new SettingsData
         {
             screenWidth = Screen.width,
             screenHeight = Screen.height,
             screenMode = (int)Screen.fullScreenMode,
-            keyCodes = keep
+            keyCodes = keep,
+            language = keepLanguage
         };
 
         ApplyAll();
