@@ -7,4 +7,4 @@
 | Type | Enum: Plant, Harvest, Sell, Buy |  |
 | Target_Count | Int | 도전과제 달성까지 횟수 |
 | Compensation_Type | Enum: UgradeParts, Gold | 어떤 보상인지 |
-| Compensaion_Amount | Int | 얼마나 주는지 |
+| Compensation_Amount | Int | 얼마나 주는지 |

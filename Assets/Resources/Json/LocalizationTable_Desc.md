@@ -4,5 +4,5 @@
 |---|---|---|
 | ID | ID · Int |  |
 | Name | String |  |
-| Korean | String |  |
-| English | String |  |
+| Local_KO | String |  |
+| Local_EN | String |  |

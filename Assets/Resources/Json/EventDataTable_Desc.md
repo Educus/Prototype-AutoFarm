@@ -5,5 +5,5 @@
 | ID | ID · Int |  |
 | Average | Float |  |
 | Linkage_Event | Int |  |
-| News_Title | String |  |
-| News_Contents | String |  |
+| News_Title_KO | String |  |
+| News_Contents_KO | String |  |

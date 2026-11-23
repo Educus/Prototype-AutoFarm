@@ -6,7 +6,7 @@
         "DefaultKeyCode1":"Mouse0",
         "DefaultKeyCode2":"None",
         "IsRebindable":0,
-        "Description_KR":"상호작용"
+        "Description_KO":"상호작용"
     },
     {
         "ID":12,
@@ -15,7 +15,7 @@
         "DefaultKeyCode1":"Mouse1",
         "DefaultKeyCode2":"None",
         "IsRebindable":0,
-        "Description_KR":"이동"
+        "Description_KO":"이동"
     },
     {
         "ID":13,
@@ -24,7 +24,7 @@
         "DefaultKeyCode1":"W",
         "DefaultKeyCode2":"None",
         "IsRebindable":1,
-        "Description_KR":"위로 이동"
+        "Description_KO":"위로 이동"
     },
     {
         "ID":14,
@@ -33,7 +33,7 @@
         "DefaultKeyCode1":"A",
         "DefaultKeyCode2":"None",
         "IsRebindable":1,
-        "Description_KR":"왼쪽으로 이동"
+        "Description_KO":"왼쪽으로 이동"
     },
     {
         "ID":15,
@@ -42,7 +42,7 @@
         "DefaultKeyCode1":"S",
         "DefaultKeyCode2":"None",
         "IsRebindable":1,
-        "Description_KR":"아래로 이동"
+        "Description_KO":"아래로 이동"
     },
     {
         "ID":16,
@@ -51,7 +51,7 @@
         "DefaultKeyCode1":"D",
         "DefaultKeyCode2":"None",
         "IsRebindable":1,
-        "Description_KR":"오른쪽으로 이동"
+        "Description_KO":"오른쪽으로 이동"
     },
     {
         "ID":21,
@@ -60,7 +60,7 @@
         "DefaultKeyCode1":"C",
         "DefaultKeyCode2":"None",
         "IsRebindable":1,
-        "Description_KR":"차트"
+        "Description_KO":"차트"
     },
     {
         "ID":22,
@@ -69,7 +69,7 @@
         "DefaultKeyCode1":"M",
         "DefaultKeyCode2":"None",
         "IsRebindable":1,
-        "Description_KR":"상점"
+        "Description_KO":"상점"
     },
     {
         "ID":23,
@@ -78,7 +78,7 @@
         "DefaultKeyCode1":"R",
         "DefaultKeyCode2":"None",
         "IsRebindable":1,
-        "Description_KR":"로봇 관리"
+        "Description_KO":"로봇 관리"
     },
     {
         "ID":24,
@@ -87,7 +87,7 @@
         "DefaultKeyCode1":"E",
         "DefaultKeyCode2":"None",
         "IsRebindable":1,
-        "Description_KR":"창고"
+        "Description_KO":"창고"
     },
     {
         "ID":25,
@@ -96,7 +96,7 @@
         "DefaultKeyCode1":"H",
         "DefaultKeyCode2":"None",
         "IsRebindable":1,
-        "Description_KR":"하이드로 리엑터"
+        "Description_KO":"하이드로 리엑터"
     },
     {
         "ID":29,
@@ -105,7 +105,7 @@
         "DefaultKeyCode1":"Escape",
         "DefaultKeyCode2":"None",
         "IsRebindable":0,
-        "Description_KR":"설정"
+        "Description_KO":"설정"
     },
     {
         "ID":31,
@@ -114,7 +114,7 @@
         "DefaultKeyCode1":"Space",
         "DefaultKeyCode2":"None",
         "IsRebindable":1,
-        "Description_KR":"시간 배속"
+        "Description_KO":"시간 배속"
     },
     {
         "ID":41,
@@ -123,7 +123,7 @@
         "DefaultKeyCode1":"Alpha1",
         "DefaultKeyCode2":"None",
         "IsRebindable":1,
-        "Description_KR":"1번 슬롯"
+        "Description_KO":"1번 슬롯"
     },
     {
         "ID":42,
@@ -132,7 +132,7 @@
         "DefaultKeyCode1":"Alpha2",
         "DefaultKeyCode2":"None",
         "IsRebindable":1,
-        "Description_KR":"2번 슬롯"
+        "Description_KO":"2번 슬롯"
     },
     {
         "ID":43,
@@ -141,6 +141,6 @@
         "DefaultKeyCode1":"Alpha3",
         "DefaultKeyCode2":"None",
         "IsRebindable":1,
-        "Description_KR":"3번 슬롯"
+        "Description_KO":"3번 슬롯"
     }
 ]
