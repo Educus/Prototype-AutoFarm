@@ -135,6 +135,8 @@ public class UIStorageManagement : MonoBehaviour
 
     public void CloseNPCInv()
     {
+        ReleaseNPCCamera();
+
         npcStorage.SetActive(false);
 
         CheckPopupState();

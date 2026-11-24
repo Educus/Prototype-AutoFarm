@@ -76,6 +76,7 @@ public class UIRobot : MonoBehaviour
         if (!dataManager.NPCManager.npcs.TryGetValue(value, out NPC npc))
             return;
 
+        // 해당 위치로 이동 및 상점창 off
         uiManagement.ExitButton();
         npc.OnLInteract();
 
