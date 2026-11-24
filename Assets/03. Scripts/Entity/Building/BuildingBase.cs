@@ -82,17 +82,17 @@ public abstract class BuildingBase : MonoBehaviour, ILeftInteractable, IRightInt
     // 현재 상태에 맞는 하이라이트 색 (null이면 기본색)
     private Color? GetHighlightColor()
     {
-        GameManager gm = GameManager.Instance;
+        GameManager gameManager = GameManager.Instance;
 
         // WorkMode 아니면 기본색
-        if (!gm.IsMode(GameMode.Work))
+        if (!gameManager.IsMode(GameMode.Work))
             return null;
 
         // 할당 불가능 건물
         if (!CanAssignWork())
             return Color.gray;
 
-        NPC selected = gm.selectedNPC;
+        NPC selected = gameManager.selectedNPC;
 
         // 선택된 NPC 없음
         if (selected == null)

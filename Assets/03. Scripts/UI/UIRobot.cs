@@ -73,11 +73,12 @@ public class UIRobot : MonoBehaviour
     // 로봇 클릭 시 이벤트
     public void OnClickTargetRobot(string value)
     {
-        // 해당 위치로 이동 및 상점창 off
-        GameObject target = dataManager.NPCManager.npcs[value].gameObject;
-        GameManager.Instance.targetLock = target;
+        if (!dataManager.NPCManager.npcs.TryGetValue(value, out NPC npc))
+            return;
 
         uiManagement.ExitButton();
+        npc.OnLInteract();
+
         SoundManager.Play(SFXName.RobotPairing);
     }
 }

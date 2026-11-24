@@ -78,23 +78,23 @@ public class CameraController : MonoBehaviour
 
         if (Input.mousePosition.x >= Screen.width - edgeSize)
         {
-            pos.x += moveSpeed * Time.deltaTime;
+            pos.x += moveSpeed * Time.unscaledDeltaTime;
             isMoving = true;
         }
         else if (Input.mousePosition.x <= edgeSize)
         {
-            pos.x -= moveSpeed * Time.deltaTime;
+            pos.x -= moveSpeed * Time.unscaledDeltaTime;
             isMoving = true;
         }
 
         if (Input.mousePosition.y >= Screen.height - edgeSize)
         {
-            pos.y += moveSpeed * Time.deltaTime;
+            pos.y += moveSpeed * Time.unscaledDeltaTime;
             isMoving = true;
         }
         else if (Input.mousePosition.y <= edgeSize)
         {
-            pos.y -= moveSpeed * Time.deltaTime;
+            pos.y -= moveSpeed * Time.unscaledDeltaTime;
             isMoving = true;
         }
 
@@ -119,6 +119,8 @@ public class CameraController : MonoBehaviour
             targetPos.x += (0.5f - npcInvViewPos.x) * 2f * camWidth;
             targetPos.y += (0.5f - npcInvViewPos.y) * 2f * camHeight;
         }
+
+        transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.unscaledDeltaTime);
     }
 
     // 카메라 최대값

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Xml.Linq;
 using UnityEngine;
 
 public class UIStorageManagement : MonoBehaviour
@@ -81,8 +79,19 @@ public class UIStorageManagement : MonoBehaviour
     #endregion
 
     #region Close
+    private void ReleaseNPCCamera()
+    {
+        GameManager gameManager = GameManager.Instance;
+
+        if (gameManager.selectedNPC != null && gameManager.targetLock == gameManager.selectedNPC.gameObject)
+            gameManager.targetLock = null;
+    }
+
     public void CloseStorageManagement()
     {
+        if (npcStorage.activeSelf)
+            ReleaseNPCCamera();
+
         rocketStorage.SetActive(false);
         buildingStorage.SetActive(false);
         npcInterface.OffUI();
