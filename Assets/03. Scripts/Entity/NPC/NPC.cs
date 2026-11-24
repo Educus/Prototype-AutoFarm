@@ -49,15 +49,15 @@ public class NPC : MonoBehaviour, ILeftInteractable
     // 상호작용
     public void OnLInteract()
     {
-        if (GameManager.Instance.selectedNPC == this)
-        {
-            UIStorageManagement.Instance.NPCInv();
-        }
-        else
-        {
-            GameManager.Instance.selectedNPC = this;
-            GameManager.Instance.targetLock = this.gameObject;
-        }
+        GameManager gameManager = GameManager.Instance;
+
+        if (!gameManager.IsMode(GameMode.None))
+            return;
+
+        gameManager.selectedNPC = this;
+        gameManager.targetLock = gameObject;
+
+        UIStorageManagement.Instance.NPCInv();
     }
 
     // NPC 기본 세팅

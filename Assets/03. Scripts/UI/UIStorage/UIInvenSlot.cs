@@ -4,7 +4,9 @@ using UnityEngine.UI;
 
 public class UIInvenSlot : MonoBehaviour
 {
+    [SerializeField] private Sprite[] timerSprite;
     [SerializeField] private Image timerImage;
+    [SerializeField] private Image plusImage;
     [SerializeField] private Image itemImage;
     [SerializeField] private TMP_Text countText;
 
@@ -17,6 +19,8 @@ public class UIInvenSlot : MonoBehaviour
             ClearSlot();
             return;
         }
+
+        SetPlus(false);
 
         itemImage.gameObject.SetActive(true);
 
@@ -32,7 +36,6 @@ public class UIInvenSlot : MonoBehaviour
     {
         itemImage.color = color;
     }
-
     public void ClearSlot()
     {
         itemImage.sprite = null;
@@ -40,43 +43,51 @@ public class UIInvenSlot : MonoBehaviour
 
         countText.text = "";
 
-        timerImage.fillAmount = 0f;
-        timerImage.color = Color.white;
-        timerImage.gameObject.SetActive(false);
+        HideTimer();
+
+        SetPlus(true);
+    }
+
+    private void SetPlus(bool active)
+    {
+        if (plusImage != null)
+            plusImage.gameObject.SetActive(active);
     }
 
     private void RefreshTimer(InventorySlot slot)
     {
-        bool hasTimer = slot.remainingStoragePeriod != -1;
-
-        timerImage.gameObject.SetActive(hasTimer);
-
-        if (!hasTimer)
+        // 유통기한 없는 아이템
+        if (slot.remainingStoragePeriod == -1)
         {
-            timerImage.fillAmount = 0f;
+            HideTimer();
             return;
         }
 
-        float current = slot.remainingStoragePeriod;
-
-        float max =
-            OriginDataManager.Instance.itemsData[slot.itemID].StoragePeriod;
-
-        float value = current / max;
-
-        timerImage.fillAmount = value;
-
-        if (value >= 0.6f)
+        if (timerSprite == null || timerSprite.Length == 0)
         {
-            timerImage.color = Color.green;
+            HideTimer();
+            return;
         }
-        else if (value >= 0.3f)
-        {
-            timerImage.color = new Color(1f, 0.75f, 0f);
-        }
-        else
-        {
-            timerImage.color = Color.red;
-        }
+
+        float max = OriginDataManager.Instance.itemsData[slot.itemID].StoragePeriod;
+
+        float value = max > 0f ? Mathf.Clamp01(slot.remainingStoragePeriod / max) : 1f;
+
+        timerImage.sprite = timerSprite[GetStage(value)];
+        timerImage.gameObject.SetActive(true);
+    }
+
+    private int GetStage(float value)
+    {
+        int count = timerSprite.Length;
+
+        int stage = Mathf.FloorToInt((1f - value) * count);
+
+        return Mathf.Clamp(stage, 0, count - 1);
+    }
+
+    private void HideTimer()
+    {
+        timerImage.gameObject.SetActive(false);
     }
 }

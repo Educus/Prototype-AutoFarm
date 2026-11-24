@@ -202,14 +202,8 @@ public class SoundManager : MonoBehaviour
         if (SFX == null || SFX_Clips == null)
             return;
 
-        if (SFX_Clips.TryGetValue(name, out AudioClip clip))
-        {
-            if(clip == null)
-            {
-                Debug.Log("it is not init");
-                return;
-            }
-        }
+        if (!SFX_Clips.TryGetValue(name, out AudioClip clip) || clip == null)
+            return;
 
         if (MinPlaying(name))
             return;

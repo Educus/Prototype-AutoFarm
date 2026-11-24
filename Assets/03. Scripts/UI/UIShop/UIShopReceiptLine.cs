@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class UIShopReceiptLine : MonoBehaviour
 {
     [SerializeField] private Image icon;
-    [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text countText;
     [SerializeField] private TMP_Text priceText;
     [SerializeField] private Button removeButton;
@@ -34,7 +33,6 @@ public class UIShopReceiptLine : MonoBehaviour
         icon.sprite = sprite;
         icon.enabled = sprite != null;
 
-        nameText.text = itemName;
         countText.text = $"x{count}";
         priceText.text = linePrice.ToString("N0");
     }

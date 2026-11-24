@@ -203,7 +203,7 @@ public class Rocket : BuildingBase
         // 둘 다 있으면 6시간, 하나만 있으면 4시간
         int loads = (hasSellItems && hasBuyItems) ? 2 : 1;
 
-        remainingMinutes = Origin.Config.GetRocketTripMinutes(loads) * 60;
+        remainingMinutes = Origin.Config.GetRocketTripMinutes(loads);
         isAway = true;
 
         // TODO: 이동 연출

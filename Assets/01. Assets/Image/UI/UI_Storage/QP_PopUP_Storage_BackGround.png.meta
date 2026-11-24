@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 64a8449d83dcceb41bdabb068d24f8c1
+guid: 193b78180541a82419d30df571cf8835
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6566400609445519573
-    second: UP_PopUP_Storage_slot_plus_0
+      213: -2605327636986089853
+    second: "QP_PopUP_Storage_\uBC30\uACBD_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UP_PopUP_Storage_slot_plus_0
+      name: QP_PopUP_Storage_BackGround
       rect:
         serializedVersion: 2
-        x: 36
-        y: 35
-        width: 25
-        height: 25
+        x: 3
+        y: 0
+        width: 788
+        height: 668
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5d0a8e2609a802b50800000000000000
-      internalID: 6566400609445519573
+      spriteID: 38eafe9515408dbd0800000000000000
+      internalID: -2605327636986089853
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 2cd5ba9cf5f51df4ba98754111209ce6
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      UP_PopUP_Storage_slot_plus_0: 6566400609445519573
+      QP_PopUP_Storage_BackGround: -2605327636986089853
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

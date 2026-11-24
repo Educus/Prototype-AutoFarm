@@ -14,6 +14,7 @@ public class UIStorageManagement : MonoBehaviour
     public string targetBuilding { get; private set; }
     public GameObject RocketStorage => rocketStorage;
 
+    public bool IsNPCInvOpen => npcStorage != null && npcStorage.activeSelf;
     public bool IsAnyOpen =>
         rocketStorage.activeSelf ||
         htdroStorage.activeSelf ||

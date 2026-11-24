@@ -8,18 +8,13 @@ public class UIRobotIcon : MonoBehaviour
     [SerializeField] GameObject[] robotWorkIcon;
     [SerializeField] Image workItem;
 
-    private OriginDataManager originDataManager;
-    private DataManager dataManager;
+    private OriginDataManager originDataManager => OriginDataManager.Instance;
+    private DataManager dataManager => DataManager.Instance;
 
     UIRobot uiRobot;
     NPCJobConfig config;
     string id;
 
-    private void Start()
-    {
-        originDataManager = OriginDataManager.Instance;
-        dataManager = DataManager.Instance;
-    }
     private void Update()
     {
         SetInfo();
@@ -36,6 +31,9 @@ public class UIRobotIcon : MonoBehaviour
 
     public void SetInfo()
     {
+        if (config == null || !dataManager.NPCManager.npcs.ContainsKey(id))
+            return;
+
         if (config.productItemID <= 0)
         {
             robotWorkIcon[0].SetActive(true);

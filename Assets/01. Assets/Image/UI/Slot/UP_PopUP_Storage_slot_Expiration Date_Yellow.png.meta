@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1651184f3953e5849a0c72d6855cc323
+guid: e34fb0087bf8111479699edc0cd3edc6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1044369581153230405
-    second: "UP_PopUP_Storage_\uC6B0\uC8FC\uC120_0"
+      213: -1189748337867149753
+    second: UP_PopUP_Storage_slot_Expiration Date_Yellow_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "UP_PopUP_Storage_\uC6B0\uC8FC\uC120_0"
+      name: UP_PopUP_Storage_slot_Expiration Date_Yellow_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 612
-        height: 738
+        width: 94
+        height: 94
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 54e9cdac9985e7e00800000000000000
-      internalID: 1044369581153230405
+      spriteID: 74e2155b03a2d7fe0800000000000000
+      internalID: -1189748337867149753
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "UP_PopUP_Storage_\uC6B0\uC8FC\uC120_0": 1044369581153230405
+      UP_PopUP_Storage_slot_Expiration Date_Yellow_0: -1189748337867149753
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

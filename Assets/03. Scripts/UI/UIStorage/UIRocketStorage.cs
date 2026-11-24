@@ -10,11 +10,13 @@ public class UIRocketStorage : MonoBehaviour
     [SerializeField] private TMP_Text slotCount;
     [SerializeField] private TMP_Text totalGold;
     [SerializeField] private Transform slotParent;
-    
+    [SerializeField] private Button launchButton;
+
     private List<UIInvenSlot> itemSlots = new();
     private Inventory rocketInv;
     private int sort = 0;
 
+    private const string RocketID = "Building_-101_0";
     private int rocketSlotAmount = 0;
 
     private void Awake()
@@ -25,7 +27,7 @@ public class UIRocketStorage : MonoBehaviour
 
     private void Start()
     {
-        if (!DataManager.Instance.InventoryManager.inventories.TryGetValue("Building_-101_0", out rocketInv))
+        if (!DataManager.Instance.InventoryManager.inventories.TryGetValue(RocketID, out rocketInv))
         {
             Debug.LogError("Rocket inventory not found.");
             return;
@@ -58,6 +60,9 @@ public class UIRocketStorage : MonoBehaviour
         }
 
         rocketSlotAmount = OriginDataManager.Instance.Config.RocketSlotAmount;
+
+        if (launchButton != null)
+            launchButton.onClick.AddListener(Ready);
     }
 
     private void OnEnable()
@@ -158,7 +163,22 @@ public class UIRocketStorage : MonoBehaviour
     // 준비 완료 버튼
     public void Ready()
     {
-        // TODO
+        SoundManager.Play(SFXName.Button);
+
+        Rocket rocket = DataManager.Instance.BuildingManager.Get<Rocket>(RocketID);
+
+        if (rocket == null)
+        {
+            Debug.LogError($"Rocket not found : {RocketID}");
+            return;
+        }
+
+        if (!rocket.TryLaunch(out string reason))
+        {
+            return;
+        }
+
+        UIStorageManagement.Instance.CloseStorageManagement();
     }
 
     // 정렬

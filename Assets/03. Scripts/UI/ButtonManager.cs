@@ -40,8 +40,7 @@ public class ButtonManager : MonoBehaviour
                     UIManager.Instance.OpenSettings();
                 });
             }
-
-            if (buttonName.Contains("gui"))
+            else if (buttonName.Contains("gui"))
             {
                 GUIButtonInit(buttonName, button);
             }

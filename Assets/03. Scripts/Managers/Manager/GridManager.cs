@@ -34,9 +34,9 @@ public class Node
 
 public class GridManager : MonoBehaviour
 {
-    public int width = 100;
-    public int height = 100;
-    public float cellSize = 1f;
+    [HideInInspector] public int width = 40;
+    [HideInInspector] public int height = 30;
+    [HideInInspector] public float cellSize = 1f;
 
     private const float StandOffsetY1 = 0f;
     private const float CellOffsetY1 = 0.5f;

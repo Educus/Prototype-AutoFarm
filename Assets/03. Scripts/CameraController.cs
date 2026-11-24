@@ -18,6 +18,8 @@ public class CameraController : MonoBehaviour
 
     private Camera mainCamera;
 
+    private Vector2 npcInvViewPos = new Vector2(0.25f, 0.5f);
+
     void Start()
     {
         mainCamera = Camera.main;
@@ -30,15 +32,20 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Instance.targetLock != null)
-        {
-            FollowTarget();
-        }
+        bool menuOpen = UIBuildingMenu.Instance != null && UIBuildingMenu.Instance.IsOpen;
 
-        if (!GameManager.Instance.IsMode(GameMode.Popup))
+        if (!menuOpen)
         {
-            HandleZoom();
-            HandleMovement();
+            if (GameManager.Instance.targetLock != null)
+            {
+                FollowTarget();
+            }
+
+            if (!GameManager.Instance.IsMode(GameMode.Popup))
+            {
+                HandleZoom();
+                HandleMovement();
+            }
         }
 
         ClampCamera();
@@ -104,7 +111,14 @@ public class CameraController : MonoBehaviour
         Vector3 targetPos = GameManager.Instance.targetLock.transform.position;
         targetPos.z = transform.position.z;
 
-        transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);
+        if (UIStorageManagement.Instance != null && UIStorageManagement.Instance.IsNPCInvOpen)
+        {
+            float camHeight = mainCamera.orthographicSize;
+            float camWidth = camHeight * Screen.width / Screen.height;
+
+            targetPos.x += (0.5f - npcInvViewPos.x) * 2f * camWidth;
+            targetPos.y += (0.5f - npcInvViewPos.y) * 2f * camHeight;
+        }
     }
 
     // 카메라 최대값

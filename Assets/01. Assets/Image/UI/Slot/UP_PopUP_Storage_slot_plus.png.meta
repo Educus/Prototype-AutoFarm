@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: aa2b707e292fd6d43a4841bfba3a9eed
+guid: 64a8449d83dcceb41bdabb068d24f8c1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2605327636986089853
-    second: "QP_PopUP_Storage_\uBC30\uACBD_0"
+      213: 6566400609445519573
+    second: UP_PopUP_Storage_slot_plus_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "QP_PopUP_Storage_\uBC30\uACBD_0"
+      name: UP_PopUP_Storage_slot_plus_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 786
-        height: 682
+        x: 36
+        y: 35
+        width: 25
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 38eafe9515408dbd0800000000000000
-      internalID: -2605327636986089853
+      spriteID: 5d0a8e2609a802b50800000000000000
+      internalID: 6566400609445519573
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "QP_PopUP_Storage_\uBC30\uACBD_0": -2605327636986089853
+      UP_PopUP_Storage_slot_plus_0: 6566400609445519573
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
