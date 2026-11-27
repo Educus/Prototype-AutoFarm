@@ -3,12 +3,14 @@ using UnityEngine;
 
 public class ChunkManager : MonoBehaviour
 {
-    public int chunkSize = 30;
+    public int chunkWidth = 40;
+    public int chunkHeight = 30;
 
     private HashSet<Vector2Int> unlockedChunks = new HashSet<Vector2Int>();
 
     [Header("Debug")]
     public bool drawGizmos = true;
+    public int gizmoRange = 2;
     public Color unlockedColor = new Color(0, 0, 1, 0.2f); // 파랑
     public Color lockedColor = new Color(0, 0, 0, 0.4f);   // 검정
 
@@ -27,8 +29,8 @@ public class ChunkManager : MonoBehaviour
     public Vector2Int WorldToChunk(Vector2Int gridPos)
     {
         return new Vector2Int(
-            Mathf.FloorToInt((float)gridPos.x / chunkSize),
-            Mathf.FloorToInt((float)gridPos.y / chunkSize)
+            Mathf.FloorToInt((float)gridPos.x / chunkWidth),
+            Mathf.FloorToInt((float)gridPos.y / chunkHeight)
         );
     }
 
@@ -74,7 +76,7 @@ public class ChunkManager : MonoBehaviour
         if (!drawGizmos) return;
 
         // 주변 몇 개만 그리기 (성능)
-        int range = 3;
+        int range = gizmoRange;
 
         for (int cx = -range; cx <= range; cx++)
         {
@@ -87,12 +89,12 @@ public class ChunkManager : MonoBehaviour
                 Gizmos.color = unlocked ? unlockedColor : lockedColor;
 
                 Vector3 center = new Vector3(
-                    (cx * chunkSize) + chunkSize / 2f,
-                    (cy * chunkSize) + chunkSize / 2f,
+                    (cx * chunkWidth) + chunkWidth / 2f,
+                    (cy * chunkHeight) + chunkHeight / 2f,
                     0
                 );
 
-                Vector3 size = new Vector3(chunkSize, chunkSize, 0.1f);
+                Vector3 size = new Vector3(chunkWidth, chunkHeight, 0.1f);
 
                 Gizmos.DrawCube(center, size);
 
@@ -106,56 +108,26 @@ public class ChunkManager : MonoBehaviour
 
         foreach (var chunk in unlockedChunks)
         {
-            DrawChunkBorder(chunk, chunkSize);
+            DrawChunkBorder(chunk);
         }
     }
 
-    void DrawChunkBorder(Vector2Int chunk, float size)
+    void DrawChunkBorder(Vector2Int chunk)
     {
         float t = 0.2f; // 두께
 
-        Vector3 center = new Vector3(chunk.x * size + size / 2, chunk.y * size + size / 2, 0);
+        Vector3 center = new Vector3(chunk.x * chunkWidth + chunkWidth / 2f, chunk.y * chunkHeight + chunkHeight / 2f, 0);
 
         // 아래
-        Gizmos.DrawCube(center + new Vector3(0, -size / 2, 0), new Vector3(size, t, 0));
+        Gizmos.DrawCube(center + new Vector3(0, -chunkHeight / 2f, 0), new Vector3(chunkWidth, t, 0));
 
         // 위
-        Gizmos.DrawCube(center + new Vector3(0, size / 2, 0), new Vector3(size, t, 0));
+        Gizmos.DrawCube(center + new Vector3(0, chunkHeight / 2f, 0), new Vector3(chunkWidth, t, 0));
 
         // 왼쪽
-        Gizmos.DrawCube(center + new Vector3(-size / 2, 0, 0), new Vector3(t, size, 0));
+        Gizmos.DrawCube(center + new Vector3(-chunkWidth / 2f, 0, 0), new Vector3(t, chunkHeight, 0));
 
         // 오른쪽
-        Gizmos.DrawCube(center + new Vector3(size / 2, 0, 0), new Vector3(t, size, 0));
+        Gizmos.DrawCube(center + new Vector3(chunkWidth / 2f, 0, 0), new Vector3(t, chunkHeight, 0));
     }
 }
-/*
-using System.Collections.Generic;
-using UnityEngine;
-
-public class ChunkManager : MonoBehaviour
-{
-    // 청크 관리
-    // 청크 크기 나중에 수정
-    public int ChunkSize = 100;
-    private HashSet<Vector2Int> unlockedChunks = new HashSet<Vector2Int>();
-
-    private void Start()
-    {
-        // 초기 청크 언락 (0,0)
-        UnlockChunk(Vector2Int.zero);
-    }
-
-    public bool IsUnlocked(Vector2Int gridPos)
-    {
-        Vector2Int chunk = new Vector2Int(gridPos.x / ChunkSize, gridPos.y / ChunkSize);
-
-        return unlockedChunks.Contains(chunk);
-    }
-
-    public void UnlockChunk(Vector2Int chunkCoord)
-    {
-        unlockedChunks.Add(chunkCoord);
-    }
-}
-*/

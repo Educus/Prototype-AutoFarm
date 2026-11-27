@@ -11,6 +11,7 @@ public class UIChartView : MonoBehaviour, IScrollHandler
     private DataManager dataManager => DataManager.Instance;
 
     [SerializeField] private RectTransform chartArea;
+    [SerializeField] private Button closechartB;
 
     [Header("Candle")]
     [SerializeField] private UICandle candlePrefab;
@@ -38,10 +39,15 @@ public class UIChartView : MonoBehaviour, IScrollHandler
 
     [Header("Item Info")]
     [SerializeField] private Image itemImage;
-    [SerializeField] private TMP_Text itemDescription;
+    [SerializeField] private TMP_Text itemNameText;
+    [SerializeField] private TMP_Text itemNowPrice;
+    [SerializeField] private TMP_Text itemNowPercentage;
+    [SerializeField] private TMP_Text itemHighText;
+    [SerializeField] private TMP_Text itemHighPrice;
+    [SerializeField] private TMP_Text itemLowText;
+    [SerializeField] private TMP_Text itemLowPrice;
 
     [Header("가격 표시")]
-    [SerializeField] private TMP_Text itemNameText;
     [SerializeField] private TMP_Text maxPriceText;
     [SerializeField] private TMP_Text midPriceText;
     [SerializeField] private TMP_Text minPriceText;
@@ -53,6 +59,11 @@ public class UIChartView : MonoBehaviour, IScrollHandler
     private bool subscribed;
 
     #region Unity
+    private void Awake()
+    {
+        closechartB.onClick.RemoveAllListeners();
+        closechartB.onClick.AddListener(CloseChart);
+    }
     private void OnEnable()
     {
         Subscribe();
@@ -276,7 +287,7 @@ public class UIChartView : MonoBehaviour, IScrollHandler
         Color priceColor = diff > 0 ? upColor : diff < 0 ? downColor : flatColor;
         string colorHex = ColorUtility.ToHtmlStringRGB(priceColor);
 
-        string arrow = diff > 0 ? "▲" : diff < 0 ? "▼" : "■";
+        string arrow = diff > 0 ? "<sprite=0>" : diff < 0 ? "<sprite=1>" : "";
 
         string itemName = Origin.itemsData.TryGetValue(itemID, out ItemData itemData)
             ? itemData.Name : itemID.ToString();
@@ -289,12 +300,22 @@ public class UIChartView : MonoBehaviour, IScrollHandler
 
         // 아이템 텍스트
         itemNameText.text = $"{itemData.Name}";
-        itemDescription.text =
-            $"<color=#{colorHex}>{nowPrice}{arrow}{Mathf.Abs(diff)} ({percent:+0.0;-0.0;0.0}%)</color>\n" +
-            $"<color=#{upHex}>최고 {today.high}</color>\n" +
-            $"<color=#{downHex}> 최저 {today.low}</color>";
+        itemNowPrice.text = $"<color=#{colorHex}>{nowPrice}{arrow}</color>";
+        itemNowPercentage.text =  $"<color=#{colorHex}>{percent:+0.0;-0.0;0.0}%</color>";
+        itemHighText.text = $"최고";
+        itemHighPrice.text = $"<color=#{upHex}>{today.high}</color>";
+        itemLowText.text = $"최저";
+        itemLowPrice.text = $"<color=#{downHex}>{today.low}</color>";
 
         if (scrollOffset > 0)
-            itemDescription.text += $"\n<size=70%>과거 보는 중 ({scrollOffset}일 전)</size>";
+        {
+            itemNowPrice.text = $"<size=50%>과거 보는 중</size>";
+            itemNowPercentage.text = $"<size=70%>({scrollOffset}일 전)</size>";
+        }
+    }
+
+    private void CloseChart()
+    {
+        gameObject.SetActive(false);
     }
 }

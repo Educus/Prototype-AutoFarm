@@ -4,11 +4,21 @@ using UnityEngine;
 
 public class EventData
 {
-    [SerializeField] public int ID;
-    [SerializeField] public string Type;
-    [SerializeField] public float Average;
-    [SerializeField] public int Linkage;
-    [SerializeField] public string Text_Kr;
+    [JsonProperty("ID")]
+    public int ID;
+
+    [JsonProperty("Average")]
+    public float Average;
+
+    // 0 이면 단독 발생, 0 이 아니면 후속이벤트
+    [JsonProperty("Linkage_Event")]
+    public int Linkage;
+
+    [JsonProperty("News_Title_KO")]
+    public string NewsTitle;
+
+    [JsonProperty("News_Contents_KO")]
+    public string NewsContents;
 }
 
 [DefaultExecutionOrder(-100)]
@@ -43,15 +53,6 @@ public class EventDataManager : MonoBehaviour
         foreach (var events in eventDataList)
         {
             eventData[events.ID] = events;
-        }
-    }
-
-    // 테스트 출력
-    public void PrintAll()
-    {
-        foreach (var pair in eventData)
-        {
-            Debug.Log($"Key:{pair.Key} ID:{pair.Value.ID} Name:{pair.Value.Type} Text:{pair.Value.Text_Kr}");
         }
     }
 }

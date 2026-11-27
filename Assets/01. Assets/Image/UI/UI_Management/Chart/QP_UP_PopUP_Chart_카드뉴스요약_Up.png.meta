@@ -103,12 +103,12 @@ TextureImporter:
       name: "QP_UP_PopUP_Chart_\uCE74\uB4DC\uB274\uC2A4\uC694\uC57D_Up_0"
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 0
         width: 446
         height: 191
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 90f271f295763aa4cbb0581623b0f5f9
     internalID: 0
     vertices: []
     indices: 

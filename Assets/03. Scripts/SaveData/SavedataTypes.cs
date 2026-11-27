@@ -146,6 +146,25 @@ public class MarketItemSaveData
     // 그래서 이벤트 존재 여부를 따로 저장
     public bool hasEvent;
     public MarketEvent currentEvent;   // hasEvent가 false면 무시
+
+    // 소문
+    public bool isRumor;
+    public int rumorEventID;
+
+    // 평균 회귀 중 시간당 평균 값
+    public float reversionMean;
+
+    // 긴급 이벤트
+    public int lastUrgentID;
+    public int lastUrgentStartDay;
+    public List<int> usedLinkedIDs = new List<int>();
+    public bool graceActive;
+    public int graceEndDay;
+
+    // 지지/저항 선
+    public List<MarketLine> lines = new List<MarketLine>();
+    public List<float> urgentCloses = new List<float>();
+    public int virtualClearDay;
 }
 
 [Serializable]
@@ -162,5 +181,10 @@ public class MarketSaveData
 {
     public List<MarketItemSaveData> states = new List<MarketItemSaveData>();
     public List<ClosingPriceSaveData> closingPrices = new List<ClosingPriceSaveData>();
+
+    public bool isRumor;
+    public int rumorEventID;
+
+    public float reversionMean;
 }
 #endregion

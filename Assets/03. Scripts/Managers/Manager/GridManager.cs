@@ -337,6 +337,11 @@ public class GridManager : MonoBehaviour
 
     void OnDrawGizmos()
     {
+        Vector3 areaSize = new Vector3(width * cellSize, height * cellSize, 0f);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(areaSize / 2f, areaSize);
+
         if (grid == null) return;
 
         for (int x = 0; x < width; x++)
@@ -346,9 +351,7 @@ public class GridManager : MonoBehaviour
                 Node node = grid[x, y];
                 if (node == null) continue;
 
-                Vector3 pos = GridToWorld(x, y);
-
-                Vector3 center = pos + new Vector3(cellSize / 2f, cellSize / 2f, 0);
+                Vector3 center = GetCellCenter(x, y);
 
                 // 색상 설정
                 if (node.tileType == TileType.Water)
